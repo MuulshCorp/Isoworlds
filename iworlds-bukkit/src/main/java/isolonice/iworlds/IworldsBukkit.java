@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public final class IworldsBukkit extends JavaPlugin {
     public IworldsBukkit instance;
     private Logger logger;
-    private Mysql database;
+    public Mysql database;
     private String server;
     private int delay;
     static Map<String, Integer> worlds = new HashMap<String, Integer>();

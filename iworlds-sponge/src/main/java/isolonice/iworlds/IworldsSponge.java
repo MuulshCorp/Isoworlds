@@ -120,6 +120,7 @@ public class IworldsSponge {
     @Listener
     public void onGameInit(GameInitializationEvent event) {
         try {
+
             if (!this.configuration.exists()) {
                 this.logger.info("Fichier de configuration non trouvé, création en cours...");
                 this.configuration.createNewFile();

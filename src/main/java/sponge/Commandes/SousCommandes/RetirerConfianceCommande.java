@@ -127,14 +127,12 @@ public class RetirerConfianceCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-
         Collection<Player> colPlayers = Sponge.getServer().getWorld(IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld").get().getPlayers();
         Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
-        for (Player player : colPlayers) {
-            player.setLocation(spawn);
-            player.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.").color(TextColors.AQUA))).build()));
-        }
+        Player player = Sponge.getServer().getPlayer(arg[0]).get();
+        player.setLocation(spawn);
+        player.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            .append(Text.of(Text.builder("Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.").color(TextColors.AQUA))).build()));
 
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("INSERT Sijania indique que le joueur n'a désormais plus accès à votre iWorld.").color(TextColors.AQUA))).build()));

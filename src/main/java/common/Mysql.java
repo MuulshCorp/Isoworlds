@@ -153,7 +153,7 @@ public class Mysql {
     }
 
     public void connect() throws ClassNotFoundException, SQLException {
-        this.connection = DriverManager.getConnection("jdbc:Mysql://" + getHost() + ":" + getPort() + "/" + getDatabase() + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=" + Boolean.toString(isAutoReconnect()), getUsername(), getPassword());
+        this.connection = DriverManager.getConnection("jdbc:mysql://" + getHost() + ":" + getPort() + "/" + getDatabase() + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=" + Boolean.toString(isAutoReconnect()), getUsername(), getPassword());
     }
 
     public Statement query(String query)

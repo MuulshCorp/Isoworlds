@@ -1,13 +1,10 @@
-package isolonice.iworlds.Commandes.SousCommandes;
+package isolonice.bukkit.Commandes.SousCommandes;
 
-import isolonice.iworlds.Locations.IworldsLocations;
-import isolonice.iworlds.Utils.IworldsUtils;
+import isolonice.bukkit.Locations.IworldsLocations;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Optional;
 
 /**
  * Created by Edwin on 20/10/2017.

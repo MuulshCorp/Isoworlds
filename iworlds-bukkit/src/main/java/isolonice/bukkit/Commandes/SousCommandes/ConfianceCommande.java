@@ -1,7 +1,7 @@
-package isolonice.iworlds.Commandes.SousCommandes;
+package isolonice.bukkit.Commandes.SousCommandes;
 
-import isolonice.iworlds.IworldsBukkit;
-import isolonice.iworlds.Utils.IworldsUtils;
+import isolonice.bukkit.IworldsBukkit;
+import isolonice.bukkit.Utils.IworldsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

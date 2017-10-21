@@ -1,14 +1,13 @@
-package isolonice.iworlds.Commandes.SousCommandes;
+package isolonice.bukkit.Commandes.SousCommandes;
 
 /**
  * Created by Edwin on 20/10/2017.
  */
 import commonUtils.ManageFiles;
-import isolonice.iworlds.IworldsBukkit;
-import isolonice.iworlds.Locations.IworldsLocations;
-import isolonice.iworlds.Utils.IworldsUtils;
+import isolonice.bukkit.IworldsBukkit;
+import isolonice.bukkit.Locations.IworldsLocations;
+import isolonice.bukkit.Utils.IworldsUtils;
 import org.bukkit.*;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

@@ -1,4 +1,4 @@
-package isolonice.iworlds.Utils;
+package isolonice.bukkit.Utils;
 
 import org.bukkit.Bukkit;
 
@@ -10,4 +10,7 @@ public class IworldsUtils {
     public static void cm(String message){
         Bukkit.getConsoleSender().sendMessage(message);
     }
+
+
+
 }

@@ -1,6 +1,6 @@
 name: Iworlds
 version: @version@
-main: isolonice.iworlds.IworldsBukkit
+main: IworldsBukkit
 authors: [Sythiel]
 description: Manager de mondes personnels
 website: https://isolonice.fr

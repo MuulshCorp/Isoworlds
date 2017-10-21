@@ -2,8 +2,7 @@ package isolonice.iworlds.Locations;
 
 import isolonice.iworlds.IworldsSponge;
 import isolonice.iworlds.Utils.IworldsUtils;
-import isolonice.iworlds.Utils.IworldsUtils;
-import isolonice.iworlds.IworldsSponge;
+
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.data.property.AbstractProperty;

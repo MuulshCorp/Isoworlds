@@ -1,8 +1,6 @@
-package isolonice.iworlds.Commandes.SousCommandes;
+package isolonice.bukkit.Commandes.SousCommandes;
 
-import com.google.common.collect.Iterables;
-import isolonice.iworlds.IworldsBukkit;
-import isolonice.iworlds.Utils.IworldsUtils;
+import isolonice.bukkit.IworldsBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -10,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.UUID;
 
 /**

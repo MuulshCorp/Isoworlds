@@ -1,4 +1,4 @@
-package isolonice.iworlds.Commandes.SousCommandes;
+package isolonice.bukkit.Commandes.SousCommandes;
 
 import org.bukkit.command.CommandSender;
 

@@ -1,5 +1,6 @@
 package isolonice.iworlds.Commandes.SousCommandes;
 
+import commonUtils.ManageFiles;
 import isolonice.iworlds.IworldsSponge;
 import isolonice.iworlds.Utils.IworldsUtils;
 
@@ -42,10 +43,10 @@ public class RefonteCommande implements CommandExecutor {
         String worldname = "";
         Player pPlayer = (Player) source;
 
-        fullpath = (IworldsUtils.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+        fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        File sourceDir = new File(IworldsUtils.getPath() + worldname);
-        File destDir = new File(IworldsUtils.getPath() + "/iWORLDS-REFONTE/" + worldname);
+        File sourceDir = new File(ManageFiles.getPath() + worldname);
+        File destDir = new File(ManageFiles.getPath() + "/iWORLDS-REFONTE/" + worldname);
         destDir.mkdir();
         if (!Sponge.getServer().getWorld(worldname).isPresent()) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)

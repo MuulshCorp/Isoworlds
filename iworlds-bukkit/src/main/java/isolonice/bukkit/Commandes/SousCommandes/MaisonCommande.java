@@ -1,8 +1,7 @@
-package isolonice.iworlds.Commandes.SousCommandes;
+package isolonice.bukkit.Commandes.SousCommandes;
 
-import isolonice.iworlds.IworldsBukkit;
-import isolonice.iworlds.Locations.IworldsLocations;
-import isolonice.iworlds.Utils.IworldsUtils;
+import isolonice.bukkit.IworldsBukkit;
+import isolonice.bukkit.Utils.IworldsUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -21,6 +20,7 @@ public class MaisonCommande {
     public MaisonCommande(IworldsBukkit instance) {
         this.plugin = instance;
     }
+
     public static void Maison(CommandSender sender, String[] args) {
 
         // Variables

@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/iworlds_jar</output-path>
     <root id="archive" name="iworlds.jar">
       <element id="module-output" name="iworlds-common_main" />
-      <element id="module-output" name="iworlds-bukkit_main" />
       <element id="module-output" name="iworlds-sponge_main" />
     </root>
   </artifact>

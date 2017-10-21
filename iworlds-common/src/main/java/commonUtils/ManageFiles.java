@@ -3,7 +3,6 @@ package commonUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.CopyOption;
-import java.nio.file.Files;
 
 /**
  * Created by Edwin on 20/10/2017.

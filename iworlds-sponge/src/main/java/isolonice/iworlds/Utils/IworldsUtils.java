@@ -11,10 +11,6 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 import org.spongepowered.api.world.Location;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.UUID;
 

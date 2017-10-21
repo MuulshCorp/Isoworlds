@@ -112,10 +112,9 @@ public class RetirerConfianceCommande {
 
         Collection<Player> colPlayers = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-iWorld").getPlayers();
         Location spawn = Bukkit.getServer().getWorld("Isolonice").getSpawnLocation();
-        for (Player player : colPlayers) {
-            player.teleport(spawn);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.");
-        }
+        Player player = Bukkit.getServer().getPlayer(args[0]);
+        player.teleport(spawn);
+        player.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.");
 
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "INSERT Sijania indique que le joueur n'a désormais plus accès à votre iWorld.");
         return;

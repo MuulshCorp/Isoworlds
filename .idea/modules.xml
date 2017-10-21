@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-bukkit/iworlds-bukkit.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-bukkit/iworlds-bukkit.iml" group="iworlds-bukkit" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-bukkit/iworlds-bukkit_main.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-bukkit/iworlds-bukkit_main.iml" group="iworlds-bukkit" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-bukkit/iworlds-bukkit_test.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-bukkit/iworlds-bukkit_test.iml" group="iworlds-bukkit" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-common/iworlds-common.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-common/iworlds-common.iml" group="iworlds-common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-common/iworlds-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-common/iworlds-common_main.iml" group="iworlds-common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-common/iworlds-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-common/iworlds-common_test.iml" group="iworlds-common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-sponge/iworlds-sponge.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-sponge/iworlds-sponge.iml" group="iworlds-sponge" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-sponge/iworlds-sponge_main.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-sponge/iworlds-sponge_main.iml" group="iworlds-sponge" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iworlds-sponge/iworlds-sponge_test.iml" filepath="$PROJECT_DIR$/.idea/modules/iworlds-sponge/iworlds-sponge_test.iml" group="iworlds-sponge" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Isolonice-iWorlds.iml" filepath="$PROJECT_DIR$/.idea/Isolonice-iWorlds.iml" />
     </modules>
   </component>
 </project>

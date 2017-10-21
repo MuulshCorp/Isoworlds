@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Isolonice-iWorlds:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Isolonice_iWorlds_jar</output-path>
+    <root id="archive" name="Isolonice-iWorlds.jar">
+      <element id="module-output" name="Isolonice-iWorlds" />
+    </root>
+  </artifact>
+</component>

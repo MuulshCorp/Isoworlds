@@ -1,3 +1,0 @@
-rootProject.name = 'iworlds'
-
-include 'iworlds-common', 'iworlds-bukkit', 'iworlds-sponge'

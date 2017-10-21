@@ -1,0 +1,8 @@
+serveur-minecraft: ""
+id:
+sql:
+  serveur: "176.31.106.17"
+  port: "3306"
+  nom-bdd: "iWorlds"
+  utilisateur: "iWorlds"
+  mdp: "806de245af712155c74dea135e6491d8"

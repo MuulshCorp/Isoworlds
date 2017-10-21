@@ -3,6 +3,7 @@ package bukkit;
 import bukkit.Utils.IworldsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -17,6 +18,7 @@ public final class IworldsBukkit extends JavaPlugin {
     public Mysql database;
     private String server;
     private int delay;
+    FileConfiguration config = getConfig();
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
 
     @Override
@@ -25,18 +27,18 @@ public final class IworldsBukkit extends JavaPlugin {
         this.logger = getLogger();
         this.logger.info("Reading config...");
         this.createConfig();
-        this.server = getConfig().getString("server");
-        this.delay = getConfig().getInt("delay");
+        this.server = getConfig().getString("serveur-minecraft");
+        this.delay = getConfig().getInt("id");
 
         this.database = new Mysql(
-                getConfig().getString("sql.host"),
+                getConfig().getString("sql.serveur"),
                 getConfig().getInt("sql.port"),
-                getConfig().getString("sql.database"),
-                getConfig().getString("sql.username"),
-                getConfig().getString("sql.password"), true
+                getConfig().getString("sql.nom-bdd"),
+                getConfig().getString("sql.utilisateur"),
+                getConfig().getString("sql.mdp"), true
         );
 
-        this.logger.info("Connecting to database...");
+        this.logger.info("Connexion à la base de données...");
         try {
             this.database.connect();
         } catch (Exception ex) {
@@ -104,7 +106,7 @@ public final class IworldsBukkit extends JavaPlugin {
                 getLogger().info("config.yml non trouvé, création!");
                 saveDefaultConfig();
             } else {
-                getLogger().info("config.yml trouvé, création!");
+                getLogger().info("config.yml trouvé!");
             }
         } catch (Exception e) {
             e.printStackTrace();

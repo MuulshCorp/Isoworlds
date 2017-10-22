@@ -43,16 +43,16 @@ public class IworldsListeners implements Listener {
         String check_p;
         String check_w;
 
+        Location worldTo = event.getTo();
         Player pPlayer = event.getPlayer();
-        //String eventworld = event.getFromTransform().getExtent().getName();
-        String eventworld = event.getTo().toString();
-        //String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        //IworldsUtils.cm("To: " + eventworld);
-        //IworldsUtils.cm("World: " + worldname);*
 
-        if (Bukkit.getServer().getWorld(eventworld) == null) {
+        String eventworld = worldTo.getWorld().getName();
+
+        if (eventworld == null) {
             IworldsUtils.cm("Ce monde doit être chargé avant téléportation, préparation...");
-            Bukkit.getServer().createWorld(new WorldCreator(event.getTo().toString()));
+            IworldsUtils.cm("DEBUG DUPE: " + event.getTo().toString());
+            Bukkit.getServer().createWorld(new WorldCreator(eventworld));
+
         }
 
         if (eventworld.contains("-iWorld")) {

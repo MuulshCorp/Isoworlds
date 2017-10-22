@@ -19,13 +19,11 @@ import java.util.Collection;
  */
 public class RefonteCommande {
 
-    static IworldsBukkit plugin;
-
-    public RefonteCommande(IworldsBukkit instance) {
-        this.plugin = instance;
-    }
+    public static IworldsBukkit instance;
 
     public static void Refonte(CommandSender sender, String[] args) {
+
+        instance = IworldsBukkit.getInstance();
 
         final String Iuuid_p;
         final String Iuuid_w;
@@ -70,8 +68,8 @@ public class RefonteCommande {
 
         // DELETE
         try {
-            PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
-            PreparedStatement delete_iworlds = plugin.database.prepare(DELETE_IWORLDS);
+            PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
+            PreparedStatement delete_iworlds = instance.database.prepare(DELETE_IWORLDS);
             // UUID_P
             Iuuid_p = pPlayer.getUniqueId().toString();
             delete_iworlds.setString(1, Iuuid_p);

@@ -15,13 +15,11 @@ import java.util.UUID;
  */
 public class ListeCommande {
 
-    static IworldsBukkit plugin;
-
-    public ListeCommande(IworldsBukkit instance) {
-        this.plugin = instance;
-    }
+    public static IworldsBukkit instance;
 
     public static void Liste(CommandSender sender, String[] args) {
+
+        instance = IworldsBukkit.getInstance();
 
         Player pPlayer = (Player) sender;
         ArrayList<World> worlds = new ArrayList<World>();

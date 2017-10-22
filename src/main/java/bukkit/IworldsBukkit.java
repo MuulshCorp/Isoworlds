@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public final class IworldsBukkit extends JavaPlugin {
-    public IworldsBukkit instance;
+    public static IworldsBukkit instance;
     private Logger logger;
     public Mysql database;
     private String server;
@@ -31,10 +31,7 @@ public final class IworldsBukkit extends JavaPlugin {
         this.server = getConfig().getString("serveur-minecraft");
         this.delay = getConfig().getInt("id");
 
-
-        IworldsCommandes commandExecutor = new IworldsCommandes(this);
-        getCommand("iw").setExecutor(commandExecutor);
-
+        this.getCommand("iw").setExecutor(new IworldsCommandes());
 
         this.database = new Mysql(
                 getConfig().getString("sql.serveur"),
@@ -64,6 +61,10 @@ public final class IworldsBukkit extends JavaPlugin {
     public void onDisable() {
         this.logger.info("iWorlds désactivé !");
         Bukkit.getScheduler().cancelTasks(this);
+        this.instance = null;
+        this.server = null;
+        this.database = null;
+        this.logger = null;
 
     }
 
@@ -102,6 +103,10 @@ public final class IworldsBukkit extends JavaPlugin {
             }
             IworldsUtils.cm("[iWorlds] Les iWorlds vides depuis 10 minutes viennent d'être déchargé");
         }), 1200 * 10, 1200 * 10);
+    }
+
+    public static IworldsBukkit getInstance() {
+        return instance;
     }
 
     private void createConfig() {

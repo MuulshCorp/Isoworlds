@@ -15,13 +15,11 @@ import java.sql.ResultSet;
  */
 public class MaisonCommande {
 
-    static IworldsBukkit plugin;
-
-    public MaisonCommande(IworldsBukkit instance) {
-        this.plugin = instance;
-    }
+    public static IworldsBukkit instance;
 
     public static void Maison(CommandSender sender, String[] args) {
+
+        instance = IworldsBukkit.getInstance();
 
         // Variables
         String worldname = "";
@@ -33,7 +31,7 @@ public class MaisonCommande {
         worldname = (pPlayer.getUniqueId() + "-iWorld");
 
         try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
+            PreparedStatement check = instance.database.prepare(CHECK);
 
             // UUID _P
             check_p = pPlayer.getUniqueId().toString();

@@ -4,9 +4,14 @@ main: bukkit.IworldsBukkit
 authors: [Sythiel]
 description: Manager de mondes personnels
 website: https://isolonice.fr
+
 commands:
-   iw:
-      description: Commande de base des iworlds
-      usage: /<iw> [creation][liste][maison][confiance][on][off][teleport]
-      permission: iworlds.default
-      permission-message: Sijania ne vous autorise pas à utiliser cette commande: <permission>
+    iw:
+        description: Commande de base des iworlds
+        usage: /<iw> [creation][liste][maison][confiance][on][off][teleport]
+        aliases: [iworlds]
+
+permission:
+    iworlds.default:
+      description: Autoriser une utilisation des iworlds
+      defaut: true

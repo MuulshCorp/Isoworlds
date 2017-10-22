@@ -10,6 +10,7 @@ import bukkit.Utils.IworldsUtils;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import sponge.Commandes.IworldsCommande;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,14 +23,10 @@ public class CreationCommande {
     static final String INSERT_TRUST = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
     static final String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
 
-    static IworldsBukkit plugin;
 
-    public CreationCommande(IworldsBukkit instance) {
-        this.plugin = instance;
-    }
-
+    static IworldsBukkit instance;
     public static void Creation(CommandSender sender, String[] args) {
-
+        instance = IworldsBukkit.getInstance();
 
         // Variables
         String fullpath = "";
@@ -42,7 +39,8 @@ public class CreationCommande {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
+            PreparedStatement check = instance.database.prepare(CHECK);
+            IworldsUtils.cm("test2: " + check);
 
             // UUID _P
             check_p = pPlayer.getUniqueId().toString();
@@ -56,11 +54,12 @@ public class CreationCommande {
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
                 IworldsUtils.cm("CHECK: Le joueur existe déjà");
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que votre iWorld est déjà créé.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK 1 Sijania indique que votre iWorld est déjà créé.");
                 return;
             }
         } catch (Exception se){
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que votre iWorld est déjà créé.");
+            se.printStackTrace();
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK 2 Sijania indique que votre iWorld est déjà créé.");
             return;
         }
 
@@ -71,7 +70,7 @@ public class CreationCommande {
         IworldsUtils.cm("worldname: " + worldname);
 
         // Check si le monde existe déjà
-        if (Bukkit.getServer().getWorld(worldname) == null) {
+        if (Bukkit.getServer().getWorld(worldname) != null) {
             IworldsUtils.cm("Le monde existe déjà");
             return;
         }
@@ -95,8 +94,8 @@ public class CreationCommande {
 
         // INSERT
         try {
-            PreparedStatement insert = plugin.database.prepare(INSERT);
-            PreparedStatement insert_trust = plugin.database.prepare(INSERT_TRUST);
+            PreparedStatement insert = instance.database.prepare(INSERT);
+            PreparedStatement insert_trust = instance.database.prepare(INSERT_TRUST);
             // UUID_P
             Iuuid_p = pPlayer.getUniqueId().toString();
             insert.setString(1, Iuuid_p);

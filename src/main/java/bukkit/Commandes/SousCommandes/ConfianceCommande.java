@@ -22,13 +22,12 @@ public class ConfianceCommande {
     static final String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
     static final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
 
-    static IworldsBukkit plugin;
-
-    public ConfianceCommande(IworldsBukkit instance) {
-        this.plugin = instance;
-    }
+    public static IworldsBukkit instance;
 
     public static void Confiance(CommandSender sender, String[] args) {
+
+        instance = IworldsBukkit.getInstance();
+
         // SQL Variables
         final String Suuid_p;
         final String Suuid_w;
@@ -55,7 +54,7 @@ public class ConfianceCommande {
             IworldsUtils.cm("Ajout d'un trust.");
             // CHECK AUTORISATIONS
             try {
-                PreparedStatement check = plugin.database.prepare(CHECK);
+                PreparedStatement check = instance.database.prepare(CHECK);
 
                 // UUID _P
                 check_p = uuidcible.toString();
@@ -80,7 +79,7 @@ public class ConfianceCommande {
 
             // SELECT WORLD
             try {
-                PreparedStatement select = plugin.database.prepare(SELECT);
+                PreparedStatement select = instance.database.prepare(SELECT);
 
                 // UUID_P
                 Suuid_p = pPlayer.getUniqueId().toString();
@@ -105,7 +104,7 @@ public class ConfianceCommande {
 
             // INSERT
             try {
-                PreparedStatement insert = plugin.database.prepare(INSERT);
+                PreparedStatement insert = instance.database.prepare(INSERT);
 
                 // UUID_P
                 Iuuid_p = uuidcible.toString();

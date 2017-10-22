@@ -12,13 +12,9 @@ import org.bukkit.command.CommandSender;
  */
 public class IworldsCommandes implements CommandExecutor {
 
-    static IworldsBukkit plugin;
-    public IworldsCommandes(IworldsBukkit instance) {
-        this.plugin = instance;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+
         if (args.length > 0) {
             String arg = args[0].toLowerCase();
             if (arg.equals("creation") || arg.equals("créer") || arg.equals("creer") || arg.equals("create") || arg.equals("c")) {

@@ -23,13 +23,11 @@ public class RetirerConfianceCommande {
     static final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
     static final String REMOVE = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
 
-    static IworldsBukkit plugin;
-
-    public RetirerConfianceCommande(IworldsBukkit instance) {
-        this.plugin = instance;
-    }
+    public static IworldsBukkit instance;
 
     public static void RetirerConfiance(CommandSender sender, String[] args) {
+
+        instance = IworldsBukkit.getInstance();
 
         // SQL Variables
         final String Suuid_p;
@@ -57,7 +55,7 @@ public class RetirerConfianceCommande {
             IworldsUtils.cm("Suppression du trust.");
             // CHECK AUTORISATIONS
             try {
-                PreparedStatement check = plugin.database.prepare(CHECK);
+                PreparedStatement check = instance.database.prepare(CHECK);
 
                 // UUID _P
                 check_p = pPlayer.getUniqueId().toString();
@@ -88,7 +86,7 @@ public class RetirerConfianceCommande {
             }
 
             try {
-                PreparedStatement insert = plugin.database.prepare(REMOVE);
+                PreparedStatement insert = instance.database.prepare(REMOVE);
 
                 // UUID_P
                 Iuuid_p = uuidcible.toString();

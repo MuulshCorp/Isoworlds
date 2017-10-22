@@ -42,8 +42,9 @@ public class RetirerConfianceCommande {
         Player pPlayer = (Player) sender;
         UUID uuidcible;
         Boolean is;
+        Integer len = args.length;
 
-        if (args.length > 3) {
+        if (len < 2) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez entrer le nom d'un joueur.");
             return;
         }

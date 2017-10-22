@@ -41,19 +41,17 @@ public class ConfianceCommande {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Player pPlayer = (Player) sender;
         UUID uuidcible;
+        Integer len = args.length;
+
+        if (len < 2) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez entrer le nom d'un joueur.");
+            return;
+        }
 
         if (Bukkit.getServer().getPlayer(args[1]) == null) {
             uuidcible = Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId();
         } else {
             uuidcible = Bukkit.getServer().getPlayer(args[1]).getUniqueId();
-        }
-
-        IworldsUtils.cm("Argument 0" + args.length);
-        IworldsUtils.cm("Argument 1" + uuidcible.toString());
-
-        if (args.length > 3) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez entrer le nom d'un joueur.");
-            return;
         }
 
         if (uuidcible.toString() == null) {

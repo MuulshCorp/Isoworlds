@@ -30,7 +30,6 @@ public class IworldsListeners implements Listener {
 
         Player p = event.getPlayer();
         String worldname = (p.getUniqueId() + "-iWorld");
-        Location spawn = Bukkit.getServer().getWorld(worldname).getSpawnLocation();
         Integer maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
         Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
 

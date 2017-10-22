@@ -7,8 +7,14 @@ import org.bukkit.Bukkit;
  */
 public class IworldsUtils {
 
+    // Console message
     public static void cm(String message){
         Bukkit.getConsoleSender().sendMessage(message);
+    }
+
+    // Commande console
+    public static void cmd(String cmd) {
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
     }
 
 

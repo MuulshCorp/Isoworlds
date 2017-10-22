@@ -18,6 +18,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
+import static bukkit.Utils.IworldsUtils.cmd;
+
 public class CreationCommande {
     static final String INSERT = "INSERT INTO `iworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
     static final String INSERT_TRUST = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
@@ -123,9 +125,10 @@ public class CreationCommande {
         // Configuration du monde
         Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
         IworldsUtils.cm("iWorld " + worldname + ": KeepSpawnLoaded activé.");
-        Bukkit.getServer().getWorld(worldname).getWorldBorder().setCenter(0, 0);
+        cmd("wb " + worldname + "set 250 250 0 0");
+        //Bukkit.getServer().getWorld(worldname).getWorldBorder().setCenter(0, 0);
         IworldsUtils.cm("iWorld " + worldname + ": Centre du WorldBorder défini en x:0, y:0.");
-        Bukkit.getServer().getWorld(worldname).getWorldBorder().setSize(500);
+        //Bukkit.getServer().getWorld(worldname).getWorldBorder().setSize(500);
         IworldsUtils.cm("iWorld " + worldname + ": Diamètre du WorldBorder défini à 500");
 
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de terminer son oeuvre, voici votre iWorld !");

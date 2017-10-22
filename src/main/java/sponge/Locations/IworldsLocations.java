@@ -60,12 +60,16 @@ public class IworldsLocations {
             Double Y = top.getY();
             if (Y == null) {
                 Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(instance).get()).build());
+                go = new Location<>(spawn.getExtent(), 0, 61, 0);
+            } else {
+                secours = IworldsLocations.getHighestLoc(maxy).orElse(null);
+                go = new Location<>(spawn.getExtent(), 0, secours.getBlockY(), 0);
             }
         } catch (NullPointerException npe) {
             Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(instance).get()).build());;
         }
 
-        go = new Location<>(spawn.getExtent(), 0, 61, 0);
+
 
         // Téléportation du joueur
         if (player.setLocationSafely(go)) {

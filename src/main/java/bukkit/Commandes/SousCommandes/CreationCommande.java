@@ -130,6 +130,9 @@ public class CreationCommande {
         IworldsUtils.cm("iWorld " + worldname + ": Centre du WorldBorder défini en x:0, y:0.");
         //Bukkit.getServer().getWorld(worldname).getWorldBorder().setSize(500);
         IworldsUtils.cm("iWorld " + worldname + ": Diamètre du WorldBorder défini à 500");
+        Integer y = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+        Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y, 0);
+        IworldsUtils.cm("Point de spawn défini");
 
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de terminer son oeuvre, voici votre iWorld !");
 

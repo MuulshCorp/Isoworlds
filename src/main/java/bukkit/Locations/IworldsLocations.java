@@ -20,12 +20,13 @@ public class IworldsLocations {
             Double Y = top.getLocation().getY();
             if (Y == null) {
                 Bukkit.getServer().getWorld(world).getBlockAt(go).setType(Material.DIRT);
-                }
+                go = new Location (Bukkit.getServer().getWorld(world), 0, 61, 0);
+            } else {
+                go = new Location (Bukkit.getServer().getWorld(world), 0, top.getY(), 0);
+            }
         } catch (NullPointerException npe) {
             Bukkit.getServer().getWorld(world).getBlockAt(go).setType(Material.DIRT);
         }
-
-        go = new Location (Bukkit.getServer().getWorld(world), 0, 61, 0);
 
         // Téléportation du joueur
         if (player.teleport(go)) {

@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IworldsBukkit;
 import bukkit.Utils.IworldsUtils;
+import com.google.common.base.Charsets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,15 +40,10 @@ public class RetirerConfianceCommande {
 
         UUID uuidcible;
         Player pPlayer = (Player) sender;
+        Player cible = Bukkit.getServer().getPlayer(args[0]);
 
-        try {
-            uuidcible = pPlayer.getUniqueId();
-            if (uuidcible.toString().isEmpty()) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.");
-                return;
-            }
-        } catch (NoSuchElementException | IllegalArgumentException i) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.");
+        if (!cible.isOnline()) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que le joueur doit être en ligne pour l'autoriser sur votre iWorld.");
             return;
         }
 
@@ -58,7 +54,7 @@ public class RetirerConfianceCommande {
                 PreparedStatement check = instance.database.prepare(CHECK);
 
                 // UUID _P
-                check_p = pPlayer.getUniqueId().toString();
+                check_p = cible.getUniqueId().toString();
                 check.setString(1, check_p);
                 // UUID_W
                 check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
@@ -80,8 +76,33 @@ public class RetirerConfianceCommande {
 
             // REMOVE
 
-            if (uuidcible.toString().equals(pPlayer.getName())) {
+            if (cible.getName() == pPlayer.getName()) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "REMOVE Sijania indique que vous ne pouvez vous retirer de votre iWorld.");
+                return;
+            }
+
+            // SELECT WORLD
+            try {
+                PreparedStatement select = instance.database.prepare(SELECT);
+
+                // UUID_P
+                Suuid_p = pPlayer.getUniqueId().toString();
+                select.setString(1, Suuid_p);
+                // UUID_W
+                Suuid_w = (pPlayer.getUniqueId() + "-iWorld");
+                select.setString(2, Suuid_w);
+
+                IworldsUtils.cm("SELECT REQUEST: " + select);
+                // Requête
+                ResultSet rselect = select.executeQuery();
+                if (!rselect.isBeforeFirst() ) {
+                    IworldsUtils.cm("SELECT: Vide, l'iWorld n'existe pas");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                    return;
+                }
+
+            } catch (Exception se) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
                 return;
             }
 
@@ -89,7 +110,7 @@ public class RetirerConfianceCommande {
                 PreparedStatement insert = instance.database.prepare(REMOVE);
 
                 // UUID_P
-                Iuuid_p = uuidcible.toString();
+                Iuuid_p = cible.getUniqueId().toString();
                 insert.setString(1, Iuuid_p);
 
                 // UUID_W

@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IworldsBukkit;
 import bukkit.Utils.IworldsUtils;
+import com.google.common.base.Charsets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -36,17 +37,12 @@ public class ConfianceCommande {
         final String check_w;
         final String check_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        UUID uuidcible;
         Player pPlayer = (Player) sender;
 
-        try {
-            uuidcible = Bukkit.getOfflinePlayer(pPlayer.getName()).getUniqueId();
-            if (uuidcible.toString().isEmpty()) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.");
-                return;
-            }
-        } catch (NoSuchElementException | IllegalArgumentException i) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.");
+        Player cible = Bukkit.getServer().getPlayer(args[0]);
+
+        if (!cible.isOnline()) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que le joueur doit être en ligne pour l'autoriser sur votre iWorld.");
             return;
         }
 
@@ -57,7 +53,7 @@ public class ConfianceCommande {
                 PreparedStatement check = instance.database.prepare(CHECK);
 
                 // UUID _P
-                check_p = uuidcible.toString();
+                check_p = cible.getUniqueId().toString();
                 check.setString(1, check_p);
                 // UUID_W
                 check_w = (pPlayer.getUniqueId() + "-iWorld");
@@ -107,7 +103,7 @@ public class ConfianceCommande {
                 PreparedStatement insert = instance.database.prepare(INSERT);
 
                 // UUID_P
-                Iuuid_p = uuidcible.toString();
+                Iuuid_p = cible.getUniqueId().toString();
                 insert.setString(1, Iuuid_p);
 
                 // UUID_W

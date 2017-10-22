@@ -1,6 +1,7 @@
 package sponge.Commandes.SousCommandes;
 
 import common.ManageFiles;
+import javafx.util.converter.TimeStringConverter;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
 
@@ -19,9 +20,10 @@ import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.io.File;
 import java.sql.PreparedStatement;
-import java.util.Collection;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Edwin on 10/10/2017.
@@ -33,15 +35,35 @@ public class RefonteCommande implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
+        final Map<String, Timestamp> confirm = new HashMap<String, Timestamp>();
         final String Iuuid_p;
         final String Iuuid_w;
         final String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ?";
         final String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
 
         // Variables
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
+
+        // Confirm
+        Timestamp confirmation = confirm.get(pPlayer.getUniqueId().toString());
+        if (confirmation == null) {
+            confirm.put(pPlayer.getUniqueId().toString(), timestamp);
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.").color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        } else {
+            long millis = timestamp.getTime() - (confirm.get(pPlayer.getUniqueId().toString()).getTime());
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+
+            if (minutes > 1) {
+                confirm.remove(pPlayer.getUniqueId().toString());
+                return CommandResult.success();
+            }
+        }
 
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");

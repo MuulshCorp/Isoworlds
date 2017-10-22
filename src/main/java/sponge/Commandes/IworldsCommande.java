@@ -42,7 +42,7 @@ public class IworldsCommande implements CommandExecutor {
                 .child(OffCommande.getCommand(), "off", "desactiver", "désactiver", "décharger", "decharger", "unload")
                 .child(OnCommande.getCommand(), "on", "charger", "activer", "load")
                 .child(new TeleportCommande(), "teleport", "tp")
-                .child(new ConfianceCommande(), "autoriser", "trust", "allow", "accepter", "a", "confiance")
+                .child(new ConfianceCommande(), "confiance", "trust", "a")
                 .child(new RetirerConfianceCommande(), "retirer", "supprimer", "untrust", "remove")
                 .executor(new IworldsCommande())
                 .build();

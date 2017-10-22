@@ -38,7 +38,7 @@ public class IworldsCommandes implements CommandExecutor {
             } else if (arg.equals("teleport") || arg.equals("tp") || arg.equals("teleportation")) {
                 TeleportCommande.Teleport(sender, args);
                 return true;
-            } else if (arg.equals("autoriser") || arg.equals("trust") || arg.equals("allow") || arg.equals("accepter") || arg.equals("a") || arg.equals("confiance")) {
+            } else if (arg.equals("confiance") || arg.equals("trust") || arg.equals("a")) {
                 ConfianceCommande.Confiance(sender, args);
                 return true;
             } else if (arg.equals("retirer") || arg.equals("supprimer") || arg.equals("untrust") || arg.equals("remove")) {
@@ -62,7 +62,7 @@ public class IworldsCommandes implements CommandExecutor {
         s.sendMessage(ChatColor.BLUE + "- Maison: /iw [maison][home][h][m]");
         s.sendMessage(ChatColor.BLUE + "- Désactivation: /iw [désactiver][off][décharger][unload]");
         s.sendMessage(ChatColor.BLUE + "- Activation: /iw [activer][charger][on][load]");
-        s.sendMessage(ChatColor.BLUE + "- Confiance: /iw [confiance][trust][allow][accepter][a][autoriser] <nom>");
-        s.sendMessage(ChatColor.BLUE + "- Retirer Confiance: /iw [retirer][untrust][supprimer][remove] <nom>");
+        s.sendMessage(ChatColor.BLUE + "- Confiance: /iw [confiance][trust][a] <nom>");
+        s.sendMessage(ChatColor.BLUE + "- Retirer: /iw [retirer][untrust][supprimer][remove] <nom>");
     }
 }

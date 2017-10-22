@@ -1,6 +1,7 @@
 package bukkit.Commandes;
 
 import bukkit.Commandes.SousCommandes.*;
+import bukkit.IworldsBukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,6 +11,12 @@ import org.bukkit.command.CommandSender;
  * Created by Edwin on 20/10/2017.
  */
 public class IworldsCommandes implements CommandExecutor {
+
+    static IworldsBukkit plugin;
+    public IworldsCommandes(IworldsBukkit instance) {
+        this.plugin = instance;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (args.length > 0) {

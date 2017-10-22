@@ -1,5 +1,6 @@
 package bukkit;
 
+import bukkit.Commandes.IworldsCommandes;
 import bukkit.Utils.IworldsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -29,6 +30,11 @@ public final class IworldsBukkit extends JavaPlugin {
         this.createConfig();
         this.server = getConfig().getString("serveur-minecraft");
         this.delay = getConfig().getInt("id");
+
+
+        IworldsCommandes commandExecutor = new IworldsCommandes(this);
+        getCommand("iw").setExecutor(commandExecutor);
+
 
         this.database = new Mysql(
                 getConfig().getString("sql.serveur"),

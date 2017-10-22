@@ -49,8 +49,11 @@ public class IworldsListeners implements Listener {
         //String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         //IworldsUtils.cm("To: " + eventworld);
         //IworldsUtils.cm("World: " + worldname);*
-        IworldsUtils.cm("Ce monde doit être chargé avant téléportation, préparation...");
-        Bukkit.getServer().createWorld(new WorldCreator(event.getTo().toString()));
+
+        if (Bukkit.getServer().getWorld(eventworld) == null) {
+            IworldsUtils.cm("Ce monde doit être chargé avant téléportation, préparation...");
+            Bukkit.getServer().createWorld(new WorldCreator(event.getTo().toString()));
+        }
 
         if (eventworld.contains("-iWorld")) {
             try {

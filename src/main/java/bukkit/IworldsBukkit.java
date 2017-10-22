@@ -32,6 +32,8 @@ public final class IworldsBukkit extends JavaPlugin {
         this.server = getConfig().getString("serveur-minecraft");
         this.delay = getConfig().getInt("id");
 
+        Bukkit.getServer().getPluginManager().registerEvents(new IworldsListeners(),this);
+
         this.getCommand("iw").setExecutor(new IworldsCommandes());
 
         this.database = new Mysql(

@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -20,7 +21,7 @@ import java.sql.ResultSet;
  * Created by Edwin on 22/10/2017.
  */
 
-public class IworldsListeners {
+public class IworldsListeners implements Listener {
 
     private final IworldsBukkit instance = IworldsBukkit.getInstance();
 

@@ -102,7 +102,7 @@ public final class IworldsBukkit extends JavaPlugin {
                 }
             }
             IworldsUtils.cm("[iWorlds] Les iWorlds vides depuis 10 minutes viennent d'être déchargé");
-        }), 1200 * 10, 1200 * 10);
+        }), 1200 * 1, 1200 * 1);
     }
 
     public static IworldsBukkit getInstance() {

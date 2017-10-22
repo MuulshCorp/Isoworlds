@@ -47,8 +47,8 @@ public class RefonteCommande {
         }
         if (Bukkit.getServer().getWorld(worldname) != null) {
             Collection<Player> colPlayers = Bukkit.getServer().getWorld(worldname).getPlayers();
-            Block maxY = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-            Location refonte = new Location (Bukkit.getServer().getWorld(worldname), 0, maxY.getY(), 0);
+            Integer maxY = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+            Location refonte = new Location (Bukkit.getServer().getWorld("Isolonice"), 0, maxY, 0);
             for (Player player : colPlayers) {
                 player.teleport(refonte);
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania entame une destruction entière de l'iWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection.");

@@ -11,7 +11,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import sponge.Commandes.IworldsCommande;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +66,7 @@ public class CreationCommande {
         }
 
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania entame la construction de votre iWorld...");
-        fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-iWorld");
+        fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-iWorld/");
         worldname = (pPlayer.getUniqueId().toString() + "-iWorld");
         IworldsUtils.cm("fullpath: " + fullpath);
         IworldsUtils.cm("worldname: " + worldname);
@@ -78,8 +77,26 @@ public class CreationCommande {
             return;
         }
 
-        File sourceFile = new File(ManageFiles.getPath() + "PATERN");
+        File deleteFile = new File(fullpath + "region");
+        File sourceFile = new File(ManageFiles.getPath() + "PATERN/");
         File destFile = new File(fullpath);
+
+//        Integer t = 0;
+//        if (t==0){
+//            return;
+//        }
+
+        try {
+            Bukkit.getServer().createWorld(new WorldCreator(worldname));
+        } catch (Exception ie) {
+            ie.printStackTrace();
+        }
+
+        // Remove - unload - copy - load
+
+        Bukkit.getServer().unloadWorld(worldname, true);
+
+        ManageFiles.deleteDir(deleteFile);
 
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
@@ -89,11 +106,7 @@ public class CreationCommande {
             return;
         }
 
-        try {
-            Bukkit.getServer().createWorld(new WorldCreator(worldname));
-        } catch (Exception ie) {
-            ie.printStackTrace();
-        }
+        Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
         // INSERT
         try {

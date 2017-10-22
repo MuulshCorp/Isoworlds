@@ -31,8 +31,8 @@ public class IworldsListeners implements Listener {
 
         Player p = event.getPlayer();
         String worldname = (p.getUniqueId() + "-iWorld");
-        Block maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-        Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy.getY(), 0);
+        Integer maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+        Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
 
         p.teleport(top);
     }

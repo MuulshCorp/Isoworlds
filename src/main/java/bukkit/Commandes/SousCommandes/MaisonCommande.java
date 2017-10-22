@@ -52,18 +52,17 @@ public class MaisonCommande {
         }
 
         // Construction du point de respawn
-        Block top = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-        Block secours;
+        Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+        Integer secours;
         Location go = new Location (Bukkit.getServer().getWorld(worldname), 0, 60, 0);
 
         try {
-            Double Y = top.getLocation().getY();
-            if (Y == null) {
+            if (top == null) {
                 Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
                 go = new Location (Bukkit.getServer().getWorld(worldname), 0, 61, 0);
             } else {
-                secours = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-                go = new Location (Bukkit.getServer().getWorld(worldname), 0, secours.getY(), 0);
+                secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+                go = new Location (Bukkit.getServer().getWorld(worldname), 0, secours, 0);
             }
         } catch (NullPointerException npe) {
             Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);

@@ -38,7 +38,9 @@ public final class IworldsBukkit extends JavaPlugin {
                 getConfig().getString("sql.mdp"), true
         );
 
-        this.logger.info("Connexion à la base de données...");
+        this.logger.info(this.database.toString());
+
+        this.logger.info("Connexion à la base de données    ...");
         try {
             this.database.connect();
         } catch (Exception ex) {
@@ -93,7 +95,7 @@ public final class IworldsBukkit extends JavaPlugin {
                 }
             }
             IworldsUtils.cm("[iWorlds] Les iWorlds vides depuis 10 minutes viennent d'être déchargé");
-        }), 1200 * this.delay, 1200 * this.delay);
+        }), 1200 * 10, 1200 * 10);
     }
 
     private void createConfig() {

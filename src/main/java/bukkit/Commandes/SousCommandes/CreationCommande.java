@@ -8,6 +8,7 @@ import bukkit.IworldsBukkit;
 import bukkit.Locations.IworldsLocations;
 import bukkit.Utils.IworldsUtils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import sponge.Commandes.IworldsCommande;
@@ -130,8 +131,8 @@ public class CreationCommande {
         IworldsUtils.cm("iWorld " + worldname + ": Centre du WorldBorder défini en x:0, y:0.");
         //Bukkit.getServer().getWorld(worldname).getWorldBorder().setSize(500);
         IworldsUtils.cm("iWorld " + worldname + ": Diamètre du WorldBorder défini à 500");
-        Integer y = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-        Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y, 0);
+        Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
+        Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
         IworldsUtils.cm("Point de spawn défini");
 
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de terminer son oeuvre, voici votre iWorld !");

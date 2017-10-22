@@ -24,9 +24,15 @@ public class IworldsCommande implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         Player pPlayer = (Player) source;
-
-        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("/iw [creation][lister][maison][on][off][teleport]").color(TextColors.RED))).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds] Commandes disponibles").color(TextColors.GOLD).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("- Basique: /iw || /iworld || /iworlds").color(TextColors.BLUE).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("- Création: /iw [création][créer][creer][create][c]").color(TextColors.BLUE).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("- Refonte: /iw [refonte][refondre][r]").color(TextColors.BLUE).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("- Maison: /iw [maison][home][h][m]").color(TextColors.BLUE).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("- Désactivation: /iw [désactiver][off][décharger][unload]").color(TextColors.BLUE).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("- Activation: /iw [activer][charger][on][load]").color(TextColors.BLUE).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("- Confiance: /iw [confiance][trust][a] <nom>").color(TextColors.BLUE).build()));
+        pPlayer.sendMessage(Text.of(Text.builder("- Retirer: /iw [retirer][untrust][supprimer][remove] <nom>").color(TextColors.BLUE).build()));
         return CommandResult.success();
     }
 

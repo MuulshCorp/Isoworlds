@@ -48,7 +48,7 @@ public class ConfianceCommande {
             uuidcible = Bukkit.getServer().getPlayer(args[1]).getUniqueId();
         }
 
-        IworldsUtils.cm("Argument 0" + args[1]);
+        IworldsUtils.cm("Argument 0" + args.length);
         IworldsUtils.cm("Argument 1" + uuidcible.toString());
 
         if (args.length > 3) {

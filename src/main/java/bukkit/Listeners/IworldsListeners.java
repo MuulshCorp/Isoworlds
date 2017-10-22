@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,8 +31,8 @@ public class IworldsListeners implements Listener {
 
         Player p = event.getPlayer();
         String worldname = (p.getUniqueId() + "-iWorld");
-        Integer maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-        Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
+        Block maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
+        Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy.getY(), 0);
 
         p.teleport(top);
     }
@@ -78,16 +79,18 @@ public class IworldsListeners implements Listener {
                 if (rselect.isBeforeFirst() ) {
                     IworldsUtils.cm("CHECK: Le joueur est autorisé");
                     pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania vient de vous autoriser la téléporation.");
-
+                    return;
                     // Cas du untrust, pour ne pas rester bloquer
                 } else if (pPlayer.getWorld().getName() == eventworld) {
                     IworldsUtils.cm("Monde joueur: " + pPlayer.getWorld().getName());
                     IworldsUtils.cm("Monde event: " + eventworld);
                     IworldsUtils.cm("CHECK: Le joueur est autorisé");
                     pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania vient de vous autoriser la téléporation.");
+                    return;
                 } else {
                     event.setCancelled(true);
                     pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania vient de vous refuser la téléportation.");
+                    return;
                 }
 
             } catch (Exception se) {

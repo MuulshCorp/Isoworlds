@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -46,9 +47,10 @@ public class RefonteCommande {
         }
         if (Bukkit.getServer().getWorld(worldname) != null) {
             Collection<Player> colPlayers = Bukkit.getServer().getWorld(worldname).getPlayers();
-            Location spawn = Bukkit.getServer().getWorld("Isolonice").getSpawnLocation();
+            Block maxY = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
+            Location refonte = new Location (Bukkit.getServer().getWorld(worldname), 0, maxY.getY(), 0);
             for (Player player : colPlayers) {
-                player.teleport(spawn);
+                player.teleport(refonte);
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania entame une destruction entière de l'iWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection.");
             }
             World world = Bukkit.getServer().getWorld(worldname);

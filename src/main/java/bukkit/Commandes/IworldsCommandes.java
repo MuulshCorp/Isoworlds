@@ -38,26 +38,31 @@ public class IworldsCommandes implements CommandExecutor {
             } else if (arg.equals("teleport") || arg.equals("tp") || arg.equals("teleportation")) {
                 TeleportCommande.Teleport(sender, args);
                 return true;
-            } else if (arg.equals("autoriser") || arg.equals("trust") || arg.equals("allow") || arg.equals("accept") || arg.equals("accepter") || arg.equals("confiance")) {
+            } else if (arg.equals("autoriser") || arg.equals("trust") || arg.equals("allow") || arg.equals("accepter") || arg.equals("a") || arg.equals("confiance")) {
                 ConfianceCommande.Confiance(sender, args);
                 return true;
-            } else if (arg.equals("retirer") || arg.equals("interdire") || arg.equals("untrust") || arg.equals("remove") ||arg.equals("disallow") || arg.equals("deny")) {
+            } else if (arg.equals("retirer") || arg.equals("supprimer") || arg.equals("untrust") || arg.equals("remove")) {
                 RetirerConfianceCommande.RetirerConfiance(sender, args);
                 return true;
             } else {
-                // Invalid arg given
-                sendHelp(sender);
+                help(sender);
                 return true;
             }
         } else {
-            sendHelp(sender);
+            help(sender);
             return true;
         }
     }
 
-    public void sendHelp(CommandSender s) {
-        if (s.hasPermission("iworlds.default"))
-            s.sendMessage(ChatColor.GREEN + "/iw aide" + ChatColor.BLUE + " - ");
-
+    public void help(CommandSender s) {
+        s.sendMessage(ChatColor.GOLD + "[iWorlds] Commandes disponibles");
+        s.sendMessage(ChatColor.BLUE + "- Basique: /iw || /iworld || /iworlds");
+        s.sendMessage(ChatColor.BLUE + "- Création: /iw [création][créer][creer][create][c]");
+        s.sendMessage(ChatColor.BLUE + "- Refonte: /iw [refonte][refondre][r]");
+        s.sendMessage(ChatColor.BLUE + "- Maison: /iw [maison][home][h][m]");
+        s.sendMessage(ChatColor.BLUE + "- Désactivation: /iw [désactiver][off][décharger][unload]");
+        s.sendMessage(ChatColor.BLUE + "- Activation: /iw [activer][charger][on][load]");
+        s.sendMessage(ChatColor.BLUE + "- Confiance: /iw [confiance][trust][allow][accepter][a][autoriser] <nom>");
+        s.sendMessage(ChatColor.BLUE + "- Retirer Confiance: /iw [retirer][untrust][supprimer][remove] <nom>");
     }
 }

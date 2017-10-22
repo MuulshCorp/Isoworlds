@@ -6,6 +6,7 @@ import com.google.common.base.Charsets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,12 +39,29 @@ public class RetirerConfianceCommande {
         final String check_w;
         final String check_p;
 
-        UUID uuidcible;
         Player pPlayer = (Player) sender;
-        Player cible = Bukkit.getServer().getPlayer(args[0]);
+        UUID uuidcible;
+        Boolean is;
 
-        if (!cible.isOnline()) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que le joueur doit être en ligne pour l'autoriser sur votre iWorld.");
+        if (args.length > 3) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez entrer le nom d'un joueur.");
+            return;
+        }
+
+        if (Bukkit.getServer().getPlayer(args[1]) == null) {
+            is = false;
+            uuidcible = Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId();
+        } else {
+            is = true;
+            uuidcible = Bukkit.getServer().getPlayer(args[1]).getUniqueId();
+        }
+
+        IworldsUtils.cm("Argument 0" + args[1]);
+        IworldsUtils.cm("Argument 1" + uuidcible.toString());
+
+
+        if (uuidcible == null) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que ce joueur n'existe pas.");
             return;
         }
 
@@ -54,7 +72,7 @@ public class RetirerConfianceCommande {
                 PreparedStatement check = instance.database.prepare(CHECK);
 
                 // UUID _P
-                check_p = cible.getUniqueId().toString();
+                check_p = uuidcible.toString();
                 check.setString(1, check_p);
                 // UUID_W
                 check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
@@ -76,7 +94,7 @@ public class RetirerConfianceCommande {
 
             // REMOVE
 
-            if (cible.getName() == pPlayer.getName()) {
+            if (uuidcible.toString().equals(pPlayer.getUniqueId().toString())) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "REMOVE Sijania indique que vous ne pouvez vous retirer de votre iWorld.");
                 return;
             }
@@ -110,7 +128,7 @@ public class RetirerConfianceCommande {
                 PreparedStatement insert = instance.database.prepare(REMOVE);
 
                 // UUID_P
-                Iuuid_p = cible.getUniqueId().toString();
+                Iuuid_p = uuidcible.toString();
                 insert.setString(1, Iuuid_p);
 
                 // UUID_W
@@ -128,12 +146,12 @@ public class RetirerConfianceCommande {
             return;
         }
 
-
-        Collection<Player> colPlayers = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-iWorld").getPlayers();
         Location spawn = Bukkit.getServer().getWorld("Isolonice").getSpawnLocation();
-        Player player = Bukkit.getServer().getPlayer(args[0]);
-        player.teleport(spawn);
-        player.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.");
+        if (is == true) {
+            Player player = Bukkit.getServer().getPlayer(args[1]);
+            player.teleport(spawn);
+            player.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.");
+        } // Gestion du kick offline à gérer dès que possible
 
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "INSERT Sijania indique que le joueur n'a désormais plus accès à votre iWorld.");
         return;

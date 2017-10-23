@@ -47,7 +47,7 @@ public class RefonteCommande {
 
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
             IworldsUtils.cm("Value3: ");
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.");
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             return;
         } else {
@@ -58,7 +58,7 @@ public class RefonteCommande {
             if (minutes >= 1) {
                 IworldsUtils.cm("Timestamp: supérieur à 1 minute, suppression");
                 confirm.remove(pPlayer.getUniqueId().toString());
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.");
                 return;
             }
         }
@@ -71,7 +71,7 @@ public class RefonteCommande {
         File destDir = new File(ManageFiles.getPath() + "/iWORLDS-REFONTE/" + worldname);
         destDir.mkdir();
         if (Bukkit.getServer().getWorld(worldname) == null) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous ne possédez aucun iWorld, elle vous recommande d'entrez la commande: /iw creation.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania indique que vous ne possédez aucun iWorld, elle vous recommande d'entrez la commande: /iw creation.");
             return;
         }
         if (Bukkit.getServer().getWorld(worldname) != null) {
@@ -80,7 +80,7 @@ public class RefonteCommande {
             Location refonte = new Location (Bukkit.getServer().getWorld("Isolonice"), 0, maxY, 0);
             for (Player player : colPlayers) {
                 player.teleport(refonte);
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania entame une destruction entière de l'iWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania entame une destruction entière de l'iWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection.");
             }
             World world = Bukkit.getServer().getWorld(worldname);
             Bukkit.getServer().unloadWorld(Bukkit.getServer().getWorld(worldname), true);
@@ -116,12 +116,12 @@ public class RefonteCommande {
             delete_autorisations.executeUpdate();
             delete_iworlds.executeUpdate();
         } catch (Exception ex) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "INSERT Sijania n'est pas parvenue à refondre votre iWorld, veuillez contacter l'équipe Isolonice.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "INSERT Sijania n'est pas parvenue à refondre votre iWorld, veuillez contacter l'équipe Isolonice.");
             return;
         }
 
         IworldsUtils.cm("Fin de la procédure de refonte");
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de terminer son travail, vous pouvez lui demander un nouveau iWorld en entrant la commande: /iw creation.");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania vient de terminer son travail, vous pouvez lui demander un nouveau iWorld en entrant la commande: /iw creation.");
         return;
 
     }

@@ -44,7 +44,7 @@ public class ConfianceCommande {
         Integer len = args.length;
 
         if (len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez entrer le nom d'un joueur.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania indique que vous devez entrer le nom d'un joueur.");
             return;
         }
 
@@ -55,7 +55,7 @@ public class ConfianceCommande {
         }
 
         if (uuidcible.toString() == null) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que le joueur doit être en ligne pour l'autoriser sur votre iWorld.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania indique que le joueur doit être en ligne pour l'autoriser sur votre iWorld.");
             return;
         }
 
@@ -77,7 +77,7 @@ public class ConfianceCommande {
                 ResultSet rselect = check.executeQuery();
                 if (rselect.isBeforeFirst() ) {
                     IworldsUtils.cm("CHECK: Le joueur existe déjà");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que ce joueur est déjà autorisé à rejoindre votre iWorld.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que ce joueur est déjà autorisé à rejoindre votre iWorld.");
                     return;
                 }
 
@@ -102,12 +102,12 @@ public class ConfianceCommande {
                 ResultSet rselect = select.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
                     IworldsUtils.cm("SELECT: Vide, l'iWorld n'existe pas");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
                 return;
             }
 
@@ -137,7 +137,7 @@ public class ConfianceCommande {
             return;
         }
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "INSERT Sijania que le joueur a désormais accès à votre iWorld.");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "INSERT Sijania que le joueur a désormais accès à votre iWorld.");
         return;
     }
 }

@@ -56,16 +56,16 @@ public class CreationCommande {
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
                 IworldsUtils.cm("CHECK: Le joueur existe déjà");
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK 1 Sijania indique que votre iWorld est déjà créé.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK 1 Sijania indique que votre iWorld est déjà créé.");
                 return;
             }
         } catch (Exception se){
             se.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK 2 Sijania indique que votre iWorld est déjà créé.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK 2 Sijania indique que votre iWorld est déjà créé.");
             return;
         }
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania entame la construction de votre iWorld...");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania entame la construction de votre iWorld...");
         fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-iWorld/");
         worldname = (pPlayer.getUniqueId().toString() + "-iWorld");
         IworldsUtils.cm("fullpath: " + fullpath);
@@ -101,8 +101,8 @@ public class CreationCommande {
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania ne parvient pas à créer votre iWorld, veuillez contacter un membre de l'équipe.");
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Dans le cas ou vous possédez déjà un iWorld et que vous souhaitez le réinitialiser: /iw refonte.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania ne parvient pas à créer votre iWorld, veuillez contacter un membre de l'équipe.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Dans le cas ou vous possédez déjà un iWorld et que vous souhaitez le réinitialiser: /iw refonte.");
             return;
         }
 
@@ -130,7 +130,7 @@ public class CreationCommande {
             insert.executeUpdate();
             insert_trust.executeUpdate();
         } catch (Exception ex) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "INSERT Sijania indique que votre iWorld est déjà créé.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "INSERT Sijania indique que votre iWorld est déjà créé.");
             return;
         }
 
@@ -147,11 +147,11 @@ public class CreationCommande {
         Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
         IworldsUtils.cm("Point de spawn défini");
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de terminer son oeuvre, voici votre iWorld !");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania vient de terminer son oeuvre, voici votre iWorld !");
 
         IworldsLocations.teleport(pPlayer, worldname);
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Cet iWorld, vous appartient désormais !");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Cet iWorld, vous appartient désormais !");
         return;
     }
 }

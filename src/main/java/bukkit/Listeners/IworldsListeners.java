@@ -72,29 +72,29 @@ public class IworldsListeners implements Listener {
                 IworldsUtils.cm("Monde event: " + eventworld);
 
                 if (pPlayer.hasPermission("iworlds.bypass.teleport")) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania vient de vous autoriser la téléporation, car vous faites partie de l'équipe.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania vient de vous autoriser la téléporation, car vous faites partie de l'équipe.");
                     return;
                 }
 
                 if (rselect.isBeforeFirst() ) {
                     IworldsUtils.cm("CHECK: Le joueur est autorisé");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania vient de vous autoriser la téléporation.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania vient de vous autoriser la téléporation.");
                     return;
                     // Cas du untrust, pour ne pas rester bloquer
                 } else if (pPlayer.getWorld().getName() == eventworld) {
                     IworldsUtils.cm("Monde joueur: " + pPlayer.getWorld().getName());
                     IworldsUtils.cm("Monde event: " + eventworld);
                     IworldsUtils.cm("CHECK: Le joueur est autorisé");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania vient de vous autoriser la téléporation.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania vient de vous autoriser la téléporation.");
                     return;
                 } else {
                     event.setCancelled(true);
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania vient de vous refuser la téléportation.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania vient de vous refuser la téléportation.");
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
             }
 
         }

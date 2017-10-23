@@ -115,7 +115,7 @@ public class IworldsUtils {
         Text cm2 = Text.of(Text.builder("- Création:").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
                 .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
-                .append(Text.of(Text.builder("création").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("creation").color(TextColors.GREEN)))
                 .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
 
                 .append(Text.of(Text.builder("créer").color(TextColors.GREEN)))

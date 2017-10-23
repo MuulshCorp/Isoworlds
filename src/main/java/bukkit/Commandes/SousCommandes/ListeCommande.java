@@ -33,10 +33,10 @@ public class ListeCommande {
         }
 
         if (check == true) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania ne repère aucun iWorld dans le Royaume Isolonice");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania ne repère aucun iWorld dans le Royaume Isolonice");
             return;
         }
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "[Liste des iWorlds]");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "[Liste des iWorlds]");
         for(World w : worlds ) {
             String worldname = w.getName();
             String[] split = w.getName().split("-iWorld");
@@ -59,7 +59,7 @@ public class ListeCommande {
             int numOfEntities = w.getEntities().size();
             int loadedChunks = (w.getLoadedChunks().length);
 
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + pname + " [" + status +"] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + pname + " [" + status +"] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
         }
         return;
 

@@ -45,7 +45,7 @@ public class RetirerConfianceCommande {
         Integer len = args.length;
 
         if (len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania indique que vous devez entrer le nom d'un joueur.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania indique que vous devez entrer le nom d'un joueur.");
             return;
         }
 
@@ -62,7 +62,7 @@ public class RetirerConfianceCommande {
 
 
         if (uuidcible == null) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que ce joueur n'existe pas.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que ce joueur n'existe pas.");
             return;
         }
 
@@ -84,12 +84,12 @@ public class RetirerConfianceCommande {
                 ResultSet rselect = check.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
                     IworldsUtils.cm("CHECK: Le joueur n'est pas présent dans le claim");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que ce joueur n'est pas autorisé à rejoindre votre iWorld.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que ce joueur n'est pas autorisé à rejoindre votre iWorld.");
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
                 return;
             }
 
@@ -116,12 +116,12 @@ public class RetirerConfianceCommande {
                 ResultSet rselect = select.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
                     IworldsUtils.cm("SELECT: Vide, l'iWorld n'existe pas");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
                 return;
             }
 
@@ -139,7 +139,7 @@ public class RetirerConfianceCommande {
 
                 insert.executeUpdate();
             } catch (Exception ex) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "REMOVE Sijania indique que ce joueur n'est autorisé à rejoindre votre iWorld.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "REMOVE Sijania indique que ce joueur n'est autorisé à rejoindre votre iWorld.");
                 return;
             }
         } catch (Exception ex) {
@@ -151,10 +151,10 @@ public class RetirerConfianceCommande {
         if (is == true) {
             Player player = Bukkit.getServer().getPlayer(args[1]);
             player.teleport(spawn);
-            player.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.");
+            player.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.");
         } // Gestion du kick offline à gérer dès que possible
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "INSERT Sijania indique que le joueur n'a désormais plus accès à votre iWorld.");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "INSERT Sijania indique que le joueur n'a désormais plus accès à votre iWorld.");
         return;
 
     }

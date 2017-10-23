@@ -96,9 +96,9 @@ public class IworldsUtils {
     }
 
     public static void getHelp(Player pPlayer) {
-        pPlayer.sendMessage(Text.of(Text.builder("---------------- [ ").color(TextColors.GOLD)
+        pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("iWorlds ").color(TextColors.AQUA)))
-                .append(Text.of(Text.builder("] ----------------").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
                 .build()));
 
         pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
@@ -108,7 +108,7 @@ public class IworldsUtils {
                 .append(Text.of(Text.builder("|| ").color(TextColors.GOLD)))
                 .append(Text.of(Text.builder("/iworld ").color(TextColors.GREEN)))
                 .append(Text.of(Text.builder("|| ").color(TextColors.GOLD)))
-                .append(Text.of(Text.builder(" /iworlds").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("/iworlds").color(TextColors.GREEN)))
                 .build());
         pPlayer.sendMessage(cm1);
 

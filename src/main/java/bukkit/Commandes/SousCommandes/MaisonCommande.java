@@ -45,6 +45,9 @@ public class MaisonCommande {
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
                 Bukkit.getServer().createWorld(new WorldCreator(worldname));
+            } else {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que vous ne possédez aucun iWorld.");
+                return;
             }
         } catch (Exception se){
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CHECK Sijania indique que vous ne possédez aucun iWorld.");

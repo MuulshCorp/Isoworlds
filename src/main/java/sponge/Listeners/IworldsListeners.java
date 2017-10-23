@@ -1,5 +1,6 @@
 package sponge.Listeners;
 
+import org.spongepowered.api.entity.Transform;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
 import sponge.IworldsSponge;
@@ -36,20 +37,26 @@ public class IworldsListeners {
         Player p = event.getTargetEntity();
         String worldname = (p.getUniqueId() + "-iWorld");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
+        IworldsUtils.cm("Spawn point: " + spawn.getPosition());
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
         Location<World> top = IworldsLocations.getHighestLoc(maxy).orElse(null);
+        IworldsUtils.cm("Point de spawn:" + top.getPosition());
 
-        if(p.getOrNull(Keys.RESPAWN_LOCATIONS) != null)
-        {
-            Map<UUID,RespawnLocation> map = p.get(Keys.RESPAWN_LOCATIONS).get();
-            RespawnLocation newLoc = RespawnLocation.builder()
-                    .world(Sponge.getServer().getWorld(worldname).get().getUniqueId())
-                    .position(top.getPosition())
-                    .forceSpawn(false)
-                    .build();
-            map.put(Sponge.getServer().getWorld(worldname).get().getUniqueId(), newLoc);
-            DataTransactionResult result = p.offer(Keys.RESPAWN_LOCATIONS, map);
-        }
+        Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), top.getPosition());
+        event.setToTransform(t);
+//
+//        if(p.getOrNull(Keys.RESPAWN_LOCATIONS) != null) {
+//            IworldsUtils.cm("PDP: 1");
+//            Map<UUID, RespawnLocation> map = p.get(Keys.RESPAWN_LOCATIONS).get();
+//            IworldsUtils.cm("Key: " + p.get(Keys.RESPAWN_LOCATIONS).get());
+//            RespawnLocation newLoc = RespawnLocation.builder()
+//                    .world(event.getFromTransform().getExtent().getUniqueId())
+//                    .position(top.getPosition())
+//                    .forceSpawn(false).build();
+//            map.put(event.getFromTransform().getExtent().getUniqueId(), newLoc);
+//            DataTransactionResult result = p.offer(Keys.RESPAWN_LOCATIONS, map);
+//            IworldsUtils.cm("DataTransactionResult " + result.toString());
+//       }
     }
 
     @Listener
@@ -58,11 +65,8 @@ public class IworldsListeners {
         String check_p;
         String check_w;
 
-        //String eventworld = event.getFromTransform().getExtent().getName();
+
         String eventworld = event.getToTransform().getExtent().getName();
-        //String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        //IworldsUtils.cm("To: " + eventworld);
-        //IworldsUtils.cm("World: " + worldname);*
         IworldsUtils.cm("Ce monde doit être chargé avant téléportation, préparation...");
         Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
 

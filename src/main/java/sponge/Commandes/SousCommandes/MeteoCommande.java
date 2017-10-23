@@ -45,15 +45,15 @@ public class MeteoCommande implements CommandCallable {
         }
 
         if (size == 1) {
-            pPlayer.sendMessage(Text.of(Text.builder("---------------- [ ").color(TextColors.GOLD)
+            pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("iWorlds ").color(TextColors.AQUA)))
-                    .append(Text.of(Text.builder("] ----------------").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
                     .build()));
 
             pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
 
             // Soleil
-            Text meteo = Text.of(Text.builder("Sijania vous propose trois type de météo:").color(TextColors.AQUA).build());
+            Text meteo = Text.of(Text.builder("Sijania vous propose trois types de météo:").color(TextColors.AQUA).build());
             pPlayer.sendMessage(meteo);
             Text rain1 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Pluie").color(TextColors.AQUA)))
@@ -133,6 +133,7 @@ public class MeteoCommande implements CommandCallable {
             pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
 
             return CommandResult.success();
+            
         } else if (size == 3) {
             if (arg[0].equals("soleil") || arg[0].equals("sun")) {
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));

@@ -36,7 +36,7 @@ public class ListeCommande {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "Sijania ne repère aucun iWorld dans le Royaume Isolonice");
             return;
         }
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "[Liste des iWorlds (cliquables)]");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "[Liste des iWorlds]");
         for(World w : worlds ) {
             String worldname = w.getName();
             String[] split = w.getName().split("-iWorld");

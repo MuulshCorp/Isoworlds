@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import org.bukkit.command.Command;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
@@ -53,6 +54,9 @@ public class MaisonCommande implements CommandExecutor {
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
                 Sponge.getServer().loadWorld(worldname);
+            } else {
+                IworldsUtils.coloredMessage(pPlayer, "Sijania indique que vous ne possédez aucun iWorld");
+                return CommandResult.success();
             }
         } catch (Exception se){
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)

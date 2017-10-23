@@ -23,6 +23,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
+import static sponge.Utils.IworldsUtils.iworldExists;
+
 /**
  * Created by Edwin on 05/10/2017.
  */
@@ -30,7 +32,6 @@ import java.sql.Timestamp;
 public class CreationCommande implements CommandExecutor {
     static final String INSERT = "INSERT INTO `iworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
     static final String INSERT_TRUST = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
-    static final String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
     private final IworldsSponge plugin = IworldsSponge.instance;
 
     @Override
@@ -40,36 +41,11 @@ public class CreationCommande implements CommandExecutor {
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
-        final String check_w;
-        final String check_p;
-        final String Iuuid_p;
-        final String Iuuid_w;
+        String Iuuid_p;
+        String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        try {
-            PreparedStatement check = plugin.database.prepare(this.CHECK);
-
-            // UUID _P
-            check_p = IworldsUtils.PlayerToUUID(pPlayer).toString();
-            check.setString(1, check_p);
-            // UUID_W
-            check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-            check.setString(2, check_w);
-
-            IworldsUtils.cm("CHECK REQUEST: " + check);
-            // Requête
-            ResultSet rselect = check.executeQuery();
-            if (rselect.isBeforeFirst() ) {
-                IworldsUtils.cm("CHECK: Le joueur existe déjà");
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("CHECK Sijania indique que votre iWorld est déjà créé.").color(TextColors.AQUA))).build()));
-                return CommandResult.success();
-            }
-        } catch (Exception se){
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("CHECK Sijania indique que votre iWorld est déjà créé.").color(TextColors.AQUA))).build()));
-            return CommandResult.success();
-        }
+        iworldExists(pPlayer);
 
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Sijania entame la construction de votre iWorld...").color(TextColors.AQUA))).build()));

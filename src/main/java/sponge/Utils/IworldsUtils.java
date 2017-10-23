@@ -1,5 +1,6 @@
 package sponge.Utils;
 
+import org.spongepowered.api.command.CommandResult;
 import sponge.IworldsSponge;
 
 import org.spongepowered.api.Sponge;
@@ -11,6 +12,8 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 import org.spongepowered.api.world.Location;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
@@ -85,5 +88,37 @@ public class IworldsUtils {
             colour = TextColors.RED;
         }
         return Text.of(colour, tpsFormat.format(currentTps));
+    }
+
+    public static Boolean iworldExists(Player pPlayer) {
+        String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        IworldsSponge plugin = IworldsSponge.instance;
+        String check_w;
+        String check_p;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // UUID _P
+            check_p = IworldsUtils.PlayerToUUID(pPlayer).toString();
+            check.setString(1, check_p);
+            // UUID_W
+            check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+            check.setString(2, check_w);
+
+            IworldsUtils.cm("CHECK REQUEST: " + check);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            if (rselect.isBeforeFirst() ) {
+                IworldsUtils.cm("CHECK: Le joueur existe déjà");
+                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("CHECK Sijania indique que votre iWorld est déjà créé.").color(TextColors.AQUA))).build()));
+                return true;
+            }
+        } catch (Exception se){
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("CHECK Sijania indique que votre iWorld est déjà créé.").color(TextColors.AQUA))).build()));
+            return false;
+        }
+        return false;
     }
 }

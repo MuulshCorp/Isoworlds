@@ -139,7 +139,8 @@ public class CreationCommande {
         // Configuration du monde
         Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
         IworldsUtils.cm("iWorld " + worldname + ": KeepSpawnLoaded activé.");
-        cmd("wb " + worldname + "set 250 250 0 0");
+
+        IworldsUtils.cmd("wb " + worldname + "set 250 250 0 0");
         IworldsUtils.cm("iWorld " + worldname + ": Centre du WorldBorder défini en x:0, y:0.");
         IworldsUtils.cm("iWorld " + worldname + ": Diamètre du WorldBorder défini à 500");
         Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);

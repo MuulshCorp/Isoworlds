@@ -96,10 +96,12 @@ public class IworldsUtils {
     }
 
     public static void getHelp(Player pPlayer) {
-        pPlayer.sendMessage(Text.of(Text.builder("------- [ ").color(TextColors.GOLD)
+        pPlayer.sendMessage(Text.of(Text.builder("---------------- [ ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("iWorlds ").color(TextColors.AQUA)))
-                .append(Text.of(Text.builder("] -------").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("] ----------------").color(TextColors.GOLD)))
                 .build()));
+
+        pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
 
         Text cm1 = Text.of(Text.builder("- Basique:").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
@@ -214,6 +216,9 @@ public class IworldsUtils {
                 .append(Text.of(Text.builder(">").color(TextColors.GOLD)))
                 .build());
         pPlayer.sendMessage(cm8);
+
+        pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
+
     }
 
     public static Boolean iworldExists(Player pPlayer, String message) {

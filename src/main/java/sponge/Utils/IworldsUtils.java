@@ -90,7 +90,12 @@ public class IworldsUtils {
         return Text.of(colour, tpsFormat.format(currentTps));
     }
 
-    public static Boolean iworldExists(Player pPlayer) {
+    public static void coloredMessage(Player pPlayer, String message){
+        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(message).color(TextColors.AQUA))).build()));
+    }
+
+    public static Boolean iworldExists(Player pPlayer, String message) {
         String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         IworldsSponge plugin = IworldsSponge.instance;
         String check_w;
@@ -111,14 +116,14 @@ public class IworldsUtils {
             if (rselect.isBeforeFirst() ) {
                 IworldsUtils.cm("CHECK: Le joueur existe déjà");
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("CHECK Sijania indique que votre iWorld est déjà créé.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(message).color(TextColors.AQUA))).build()));
                 return true;
             }
         } catch (Exception se){
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("CHECK Sijania indique que votre iWorld est déjà créé.").color(TextColors.AQUA))).build()));
+            se.printStackTrace();
             return false;
         }
         return false;
     }
+
 }

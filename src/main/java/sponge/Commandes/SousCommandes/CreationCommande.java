@@ -20,7 +20,6 @@ import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.io.*;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 
 import static sponge.Utils.IworldsUtils.iworldExists;
@@ -45,10 +44,8 @@ public class CreationCommande implements CommandExecutor {
         String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        iworldExists(pPlayer);
-
-        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("Sijania entame la construction de votre iWorld...").color(TextColors.AQUA))).build()));
+        IworldsUtils.iworldExists(pPlayer, "CHECK Sijania indique que votre iWorld est déjà créé.");
+        IworldsUtils.coloredMessage(pPlayer, "Sijania entame la construction de votre iWorld...");
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         IworldsUtils.cm("fullpath: " + fullpath);
@@ -65,10 +62,8 @@ public class CreationCommande implements CommandExecutor {
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania ne parvient pas à créer votre iWorld, veuillez contacter un membre de l'équipe.").color(TextColors.RED))).build()));
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Dans le cas ou vous possédez déjà un iWorld et que vous souhaitez le réinitialiser: /iw refonte.").color(TextColors.GREEN))).build()));
+            IworldsUtils.coloredMessage(pPlayer, "Sijania ne parvient pas à créer votre iWorld, veuillez contacter un membre de l'équipe.");
+            IworldsUtils.coloredMessage(pPlayer, "Dans le cas ou vous possédez déjà un iWorld et que vous souhaitez le réinitialiser: /iw refonte.");
             return CommandResult.success();
         }
 
@@ -106,8 +101,7 @@ public class CreationCommande implements CommandExecutor {
             insert.executeUpdate();
             insert_trust.executeUpdate();
         } catch (Exception ex) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("INSERT Sijania indique que votre iWorld est déjà créé.").color(TextColors.AQUA))).build()));
+            IworldsUtils.coloredMessage(pPlayer,"INSERT Sijania indique que votre iWorld est déjà créé.");
             return CommandResult.success();
         }
 

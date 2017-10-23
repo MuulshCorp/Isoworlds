@@ -58,13 +58,11 @@ public class ConfianceCommande implements CommandCallable {
             Optional<User> player = userStorage.get(arg[0]);
             uuidcible = player.get().getUniqueId();
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.").color(TextColors.AQUA))).build()));
+                IworldsUtils.coloredMessage(pPlayer, "Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.");
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.").color(TextColors.AQUA))).build()));
+            IworldsUtils.coloredMessage(pPlayer,"Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.");
             return CommandResult.success();
         }
 

@@ -44,7 +44,12 @@ public class IworldsListeners implements Listener {
         String check_w;
 
         Location worldTo = event.getTo();
+        Location worldFrom = event.getFrom();
         Player pPlayer = event.getPlayer();
+
+        if (worldTo.toString().equals(worldFrom.toString())) {
+            return;
+        }
 
         String eventworld = worldTo.getWorld().getName();
 

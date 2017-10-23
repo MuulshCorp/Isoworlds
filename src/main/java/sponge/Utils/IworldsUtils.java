@@ -217,6 +217,37 @@ public class IworldsUtils {
                 .build());
         pPlayer.sendMessage(cm8);
 
+        Text cm9 = Text.of(Text.builder("- Météo:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("météo").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("meteo").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("weather").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("m").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                .build());
+        pPlayer.sendMessage(cm9);
+
+        Text cm10 = Text.of(Text.builder("- Maison:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("maison").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("home").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("h").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                .build());
+        pPlayer.sendMessage(cm10);
+
         pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
 
     }

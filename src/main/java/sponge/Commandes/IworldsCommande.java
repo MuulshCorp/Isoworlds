@@ -39,13 +39,13 @@ public class IworldsCommande implements CommandExecutor {
                 .child(CreationCommande.getCommand(), "creation", "créer", "creer", "create", "c")
                 .child(ListeCommande.getCommand(), "lister", "liste", "list", "l")
                 .child(RefonteCommande.getCommand(), "refonte", "refondre", "r")
-                .child(MaisonCommande.getCommand(), "maison", "m", "home", "h")
+                .child(MaisonCommande.getCommand(), "maison", "home", "h")
                 .child(OffCommande.getCommand(), "off", "desactiver", "désactiver", "décharger", "decharger", "unload")
                 .child(OnCommande.getCommand(), "on", "charger", "activer", "load")
                 .child(new TeleportCommande(), "teleport", "tp")
                 .child(new ConfianceCommande(), "confiance", "trust", "a")
                 .child(new RetirerConfianceCommande(), "retirer", "supprimer", "untrust", "remove")
-                .child(new MeteoCommande(), "meteo", "weather", "m")
+                .child(new MeteoCommande(), "meteo", "weather", "m", "météo")
                 .executor(new IworldsCommande())
                 .build();
     }

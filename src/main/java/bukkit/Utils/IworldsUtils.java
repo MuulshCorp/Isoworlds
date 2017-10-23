@@ -33,7 +33,6 @@ public class IworldsUtils {
 
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
-            IworldsUtils.cm("test2: " + check);
 
             // UUID _P
             check_p = pPlayer.getUniqueId().toString();
@@ -73,12 +72,12 @@ public class IworldsUtils {
         s.sendMessage(ChatColor.GOLD + "- Confiance: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "[" + ChatColor.GREEN + "trust"
                 + ChatColor.GOLD + "][" + ChatColor.GREEN + "a" + ChatColor.GOLD + "] <" + ChatColor.GREEN + "pseudo" + ChatColor.GOLD + ">");
         s.sendMessage(ChatColor.GOLD + "- Retirer: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "[" + ChatColor.GREEN + "retirer"
-                + ChatColor.GOLD + "][" + ChatColor.GREEN + "untrust" + ChatColor.GOLD + "][" + ChatColor.GREEN + "supprimer" + ChatColor.GOLD + "][" + ChatColor.GREEN + "revemo"
+                + ChatColor.GOLD + "][" + ChatColor.GREEN + "untrust" + ChatColor.GOLD + "][" + ChatColor.GREEN + "supprimer" + ChatColor.GOLD + "][" + ChatColor.GREEN + "revome"
                 + ChatColor.GOLD + "] <" + ChatColor.GREEN + "pseudo" + ChatColor.GOLD + ">");
         s.sendMessage(ChatColor.GOLD + "- Météo: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "[" + ChatColor.GREEN + "météo"
                 + ChatColor.GOLD + "][" + ChatColor.GREEN + "meteo" + ChatColor.GOLD + "][" + ChatColor.GREEN + "weather" + ChatColor.GOLD + "][" + ChatColor.GREEN + "m" + ChatColor.GOLD + "]");
         s.sendMessage(ChatColor.GOLD + "- Maison: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "[" + ChatColor.GREEN + "maison"
-                + ChatColor.GOLD + "][" + ChatColor.GREEN + "home" + ChatColor.GOLD + "][" + ChatColor.GREEN + "h");
+                + ChatColor.GOLD + "][" + ChatColor.GREEN + "home" + ChatColor.GOLD + "][" + ChatColor.GREEN + "h" + ChatColor.GOLD + "]");
         s.sendMessage(" ");
     }
 

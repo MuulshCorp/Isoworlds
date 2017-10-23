@@ -9,7 +9,7 @@ commands:
     iw:
         description: Commande de base des iworlds
         usage: /<iw> [creation][liste][maison][confiance][on][off][teleport]
-        aliases: [iworlds]
+        aliases: [iworlds, iworld]
 
 permission:
     iworlds.default:

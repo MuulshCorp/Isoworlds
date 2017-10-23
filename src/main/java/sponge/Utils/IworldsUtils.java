@@ -95,13 +95,125 @@ public class IworldsUtils {
                 .append(Text.of(Text.builder(message).color(TextColors.AQUA))).build()));
     }
 
-    public static void meteoMessage(Player pPlayer, String message) {
-        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder(message).color(TextColors.AQUA)))
-                .append(Text.of(Text.builder(message).color(TextColors.AQUA)))
-                .append(Text.of(Text.builder(message).color(TextColors.AQUA)))
-                .append(Text.of(Text.builder(message).color(TextColors.AQUA)))
+    public static void getHelp(Player pPlayer) {
+        pPlayer.sendMessage(Text.of(Text.builder("------- [ ").color(TextColors.GOLD)
+                .append(Text.of(Text.builder("iWorlds ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("] -------").color(TextColors.GOLD)))
                 .build()));
+
+        Text cm1 = Text.of(Text.builder("- Basique:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("|| ").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("/iworld ").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("|| ").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder(" /iworlds").color(TextColors.GREEN)))
+                .build());
+        pPlayer.sendMessage(cm1);
+
+        Text cm2 = Text.of(Text.builder("- Création:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("création").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("créer").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("creer").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("create").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("c").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                .build());
+        pPlayer.sendMessage(cm2);
+
+        Text cm3 = Text.of(Text.builder("- Refonte:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("refonte").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("refondre").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("r").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                .build());
+        pPlayer.sendMessage(cm3);
+
+        Text cm5 = Text.of(Text.builder("- Désactivation:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("désactiver").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("off").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("décharger").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("unload").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                .build());
+        pPlayer.sendMessage(cm5);
+
+        Text cm6 = Text.of(Text.builder("- Activation:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("activer").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("charger").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("on").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("load").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                .build());
+        pPlayer.sendMessage(cm6);
+
+        Text cm7 = Text.of(Text.builder("- Confiance:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("confiance").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("trust").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("a").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("] <").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("pseudo").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder(">").color(TextColors.GOLD)))
+                .build());
+        pPlayer.sendMessage(cm7);
+
+        Text cm8 = Text.of(Text.builder("- Retirer:").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("[").color(TextColors.GOLD)))
+                .append(Text.of(Text.builder("retirer").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("untrust").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("supprimer").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("][").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("remove").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("] <").color(TextColors.GOLD)))
+
+                .append(Text.of(Text.builder("pseudo").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder(">").color(TextColors.GOLD)))
+                .build());
+        pPlayer.sendMessage(cm8);
     }
 
     public static Boolean iworldExists(Player pPlayer, String message) {

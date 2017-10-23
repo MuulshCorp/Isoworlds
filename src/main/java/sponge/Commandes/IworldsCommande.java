@@ -13,6 +13,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import org.spongepowered.api.text.format.TextColors;
+import sponge.Utils.IworldsUtils;
 
 /**
  * Created by Edwin on 10/10/2017.
@@ -24,15 +25,9 @@ public class IworldsCommande implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         Player pPlayer = (Player) source;
-        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds] Commandes disponibles").color(TextColors.GOLD).build()));
-        pPlayer.sendMessage(Text.of(Text.builder("- Basique: /iw || /iworld || /iworlds").color(TextColors.BLUE).build()));
-        pPlayer.sendMessage(Text.of(Text.builder("- Création: /iw [création][créer][creer][create][c]").color(TextColors.BLUE).build()));
-        pPlayer.sendMessage(Text.of(Text.builder("- Refonte: /iw [refonte][refondre][r]").color(TextColors.BLUE).build()));
-        pPlayer.sendMessage(Text.of(Text.builder("- Maison: /iw [maison][home][h][m]").color(TextColors.BLUE).build()));
-        pPlayer.sendMessage(Text.of(Text.builder("- Désactivation: /iw [désactiver][off][décharger][unload]").color(TextColors.BLUE).build()));
-        pPlayer.sendMessage(Text.of(Text.builder("- Activation: /iw [activer][charger][on][load]").color(TextColors.BLUE).build()));
-        pPlayer.sendMessage(Text.of(Text.builder("- Confiance: /iw [confiance][trust][a] <nom>").color(TextColors.BLUE).build()));
-        pPlayer.sendMessage(Text.of(Text.builder("- Retirer: /iw [retirer][untrust][supprimer][remove] <nom>").color(TextColors.BLUE).build()));
+
+        IworldsUtils.getHelp(pPlayer);
+
         return CommandResult.success();
     }
 

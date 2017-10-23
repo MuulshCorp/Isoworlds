@@ -90,7 +90,7 @@ public class MeteoCommande implements CommandCallable {
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
                     .onClick(TextActions.runCommand("/iw meteo pluie 60 " + worldname)).build());
             pPlayer.sendMessage(rain3);
-            Text rain = Text.of(Text.builder("- [Temps: ").color(TextColors.GREEN)
+            Text rain = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Soleil").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("Sun").color(TextColors.AQUA)))
@@ -128,7 +128,7 @@ public class MeteoCommande implements CommandCallable {
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
                     .onClick(TextActions.runCommand("/iw meteo soleil 60 " + worldname)).build());
             pPlayer.sendMessage(sun3);
-            Text sun = Text.of(Text.builder("- [Temps: ").color(TextColors.GREEN)
+            Text sun = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Soleil").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("Sun").color(TextColors.AQUA)))

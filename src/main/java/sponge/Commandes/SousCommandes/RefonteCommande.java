@@ -31,11 +31,11 @@ import java.util.concurrent.TimeUnit;
 public class RefonteCommande implements CommandExecutor {
 
     private final IworldsSponge plugin = IworldsSponge.instance;
+    final static Map<String, Timestamp> confirm = new HashMap<String, Timestamp>();
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
-        final Map<String, Timestamp> confirm = new HashMap<String, Timestamp>();
         final String Iuuid_p;
         final String Iuuid_w;
         final String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ?";
@@ -49,8 +49,10 @@ public class RefonteCommande implements CommandExecutor {
         Player pPlayer = (Player) source;
 
         // Confirm
-        Timestamp confirmation = confirm.get(pPlayer.getUniqueId().toString());
-        if (confirmation == null) {
+        IworldsUtils.cm("Timestamp: " + timestamp);
+
+        if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
+            IworldsUtils.cm("Value3: ");
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.").color(TextColors.AQUA))).build()));
@@ -58,12 +60,18 @@ public class RefonteCommande implements CommandExecutor {
         } else {
             long millis = timestamp.getTime() - (confirm.get(pPlayer.getUniqueId().toString()).getTime());
             long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-
-            if (minutes > 1) {
+            IworldsUtils.cm("Timestamp: " + millis);
+            IworldsUtils.cm("Timestamp: " + minutes);
+            if (minutes >= 1) {
+                IworldsUtils.cm("Timestamp: supérieur à 1 minute, suppression");
                 confirm.remove(pPlayer.getUniqueId().toString());
+                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.").color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
         }
+
+        confirm.remove(pPlayer.getUniqueId().toString());
 
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");

@@ -13,7 +13,11 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -21,6 +25,7 @@ import java.util.Collection;
 public class RefonteCommande {
 
     public static IworldsBukkit instance;
+    final static Map<String, Timestamp> confirm = new HashMap<String, Timestamp>();
 
     public static void Refonte(CommandSender sender, String[] args) {
 
@@ -30,11 +35,35 @@ public class RefonteCommande {
         final String Iuuid_w;
         final String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ?";
         final String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         // Variables
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) sender;
+
+        // Confirm
+        IworldsUtils.cm("Timestamp: " + timestamp);
+
+        if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
+            IworldsUtils.cm("Value3: ");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.");
+            confirm.put(pPlayer.getUniqueId().toString(), timestamp);
+            return;
+        } else {
+            long millis = timestamp.getTime() - (confirm.get(pPlayer.getUniqueId().toString()).getTime());
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+            IworldsUtils.cm("Timestamp: " + millis);
+            IworldsUtils.cm("Timestamp: " + minutes);
+            if (minutes >= 1) {
+                IworldsUtils.cm("Timestamp: supérieur à 1 minute, suppression");
+                confirm.remove(pPlayer.getUniqueId().toString());
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.");
+                return;
+            }
+        }
+
+        confirm.remove(pPlayer.getUniqueId().toString());
 
         fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-iWorld");
         worldname = (pPlayer.getUniqueId().toString() + "-iWorld");

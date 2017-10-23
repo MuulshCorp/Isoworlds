@@ -50,6 +50,7 @@ public class IworldsCommande implements CommandExecutor {
                 .child(new TeleportCommande(), "teleport", "tp")
                 .child(new ConfianceCommande(), "confiance", "trust", "a")
                 .child(new RetirerConfianceCommande(), "retirer", "supprimer", "untrust", "remove")
+                .child(new MeteoCommande(), "meteo", "weather", "m")
                 .executor(new IworldsCommande())
                 .build();
     }

@@ -95,6 +95,15 @@ public class IworldsUtils {
                 .append(Text.of(Text.builder(message).color(TextColors.AQUA))).build()));
     }
 
+    public static void meteoMessage(Player pPlayer, String message) {
+        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(message).color(TextColors.AQUA)))
+                .append(Text.of(Text.builder(message).color(TextColors.AQUA)))
+                .append(Text.of(Text.builder(message).color(TextColors.AQUA)))
+                .append(Text.of(Text.builder(message).color(TextColors.AQUA)))
+                .build()));
+    }
+
     public static Boolean iworldExists(Player pPlayer, String message) {
         String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         IworldsSponge plugin = IworldsSponge.instance;

@@ -1,6 +1,5 @@
 package sponge;
 
-import bukkit.Commandes.SousCommandes.RefonteCommande;
 import com.google.inject.Inject;
 
 import sponge.Listeners.IworldsListeners;
@@ -32,6 +31,7 @@ import java.util.concurrent.TimeUnit;
         name = "iWorlds",
         description = "Manager de iworlds Isolonice",
         url = "https://isolonice.fr",
+        version = "0.6-DEV",
         authors = {
                 "Sythiel"
         }

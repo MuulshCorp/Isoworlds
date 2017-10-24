@@ -30,6 +30,7 @@ public class ConfianceCommande {
     public static void Confiance(CommandSender sender, String[] args) {
 
         instance = IworldsBukkit.getInstance();
+        instance.servername;
 
         // SQL Variables
         String Suuid_p;

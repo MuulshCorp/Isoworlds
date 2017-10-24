@@ -18,8 +18,7 @@ public final class IworldsBukkit extends JavaPlugin {
     public static IworldsBukkit instance;
     private Logger logger;
     public Mysql database;
-    private String server;
-    private int delay;
+    public String servername;
     FileConfiguration config = getConfig();
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
 
@@ -29,8 +28,7 @@ public final class IworldsBukkit extends JavaPlugin {
         this.logger = getLogger();
         this.logger.info("Reading config...");
         this.createConfig();
-        this.server = getConfig().getString("serveur-minecraft");
-        this.delay = getConfig().getInt("id");
+        this.servername = getConfig().getString("id");
 
         Bukkit.getServer().getPluginManager().registerEvents(new IworldsListeners(),this);
 
@@ -65,7 +63,7 @@ public final class IworldsBukkit extends JavaPlugin {
         this.logger.info("iWorlds désactivé !");
         Bukkit.getScheduler().cancelTasks(this);
         this.instance = null;
-        this.server = null;
+        this.id = null;
         this.database = null;
         this.logger = null;
 

@@ -22,7 +22,6 @@ public class MeteoCommande {
     public static void Meteo(CommandSender sender, String[] args) {
 
         instance = IworldsBukkit.getInstance();
-
         int num;
         Player pPlayer = (Player) sender;
         Integer len = args.length;

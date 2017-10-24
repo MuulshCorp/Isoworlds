@@ -131,7 +131,6 @@ public class IworldsSponge {
 
             this.logger.info("Lecture de la configuration   ...");
             this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
-            this.server = ((String) this.configurationNode.getNode(new Object[]{"iWorlds", "server"}).getValue());
 
             this.database = new Mysql(
                     (String) this.configurationNode.getNode(new Object[]{"iWorlds", "sql_host"}).getValue(),

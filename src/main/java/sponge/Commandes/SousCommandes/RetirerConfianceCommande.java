@@ -88,6 +88,8 @@ public class RetirerConfianceCommande implements CommandCallable {
             return CommandResult.success();
         }
 
+        
+
         Collection<Player> colPlayers = Sponge.getServer().getWorld(IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld").get().getPlayers();
         Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
         Player player = Sponge.getServer().getPlayer(arg[0]).get();

@@ -55,10 +55,9 @@ public class IworldsSponge {
     public Mysql database;
 
     @Inject
-    public IworldsSponge(Logger logger, Game game, String servername) {
+    public IworldsSponge(Logger logger, Game game) {
         this.logger = logger;
         this.game = game;
-        this.servername = (String) this.configurationNode.getNode(new Object[]{"iWorlds", "id"}).getValue();
         instance = this;
     }
 
@@ -114,12 +113,11 @@ public class IworldsSponge {
     @Listener
     public void onGameInit(GameInitializationEvent event) {
         try {
-
             if (!this.configuration.exists()) {
                 this.logger.info("Fichier de configuration non trouvé, création en cours...");
                 this.configuration.createNewFile();
                 this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
-                this.configurationNode.getNode(new Object[]{"iWorlds", "server"}).setValue("iworlds");
+                this.configurationNode.getNode(new Object[]{"iWorlds", "id"}).setValue("iworlds");
                 this.configurationNode.getNode(new Object[]{"iWorlds", "sql_host"}).setValue("176.31.106.17");
                 this.configurationNode.getNode(new Object[]{"iWorlds", "sql_port"}).setValue(3306);
                 this.configurationNode.getNode(new Object[]{"iWorlds", "sql_database"}).setValue("iworlds");
@@ -130,7 +128,11 @@ public class IworldsSponge {
 
             this.logger.info("Lecture de la configuration   ...");
             this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
-
+            try {
+                this.servername = (String) this.configurationNode.getNode(new Object[]{"iWorlds", "id"}).getValue();
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
+            }
             this.database = new Mysql(
                     (String) this.configurationNode.getNode(new Object[]{"iWorlds", "sql_host"}).getValue(),
                     (Integer) this.configurationNode.getNode(new Object[]{"iWorlds", "sql_port"}).getValue(),

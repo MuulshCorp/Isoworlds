@@ -41,7 +41,7 @@ public class Msg {
         public static final String SUCCES_RETIRER_CONFIANCE
                 = "'Sijania': Ce joueur ressent une brûlure... La marque de confiance vient de lui être retirée !";
         public static final String SUCCES_CREATION_1
-                = "Sijania vient de terminer son oeuvre et vous offre votre iWorld !.";
+                = "Sijania vient de terminer son oeuvre et vous offre votre iWorld !";
         public static final String SUCCES_CREATION_2
                 = "Cet iWorld est désormais votre !";
         public static final String OFF_JOUEUR
@@ -62,5 +62,7 @@ public class Msg {
                 = "[Erreur 1]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
         public static final String FICHIERS
                 = "[Erreur 2]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
+        public static final String DATA
+                = "[Erreur 3]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
     }
 }

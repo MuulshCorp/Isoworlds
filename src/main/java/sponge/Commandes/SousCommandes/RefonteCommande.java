@@ -89,8 +89,6 @@ public class RefonteCommande implements CommandExecutor {
             Sponge.getServer().unloadWorld(world);
         }
 
-
-
         //iWorldsUtils.deleteDir(sourceDir);
         Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(worldname);
         WorldProperties world = optionalWorld.get();
@@ -105,13 +103,6 @@ public class RefonteCommande implements CommandExecutor {
 
         // DELETE WORLD
         if (!IworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
-            return CommandResult.success();
-        }
-
-        // DELETE AUTORISATIONS
-        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();

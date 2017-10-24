@@ -53,14 +53,20 @@ public class ConfianceCommande implements CommandCallable {
         try {
             UserStorageService userStorage = Sponge.getServiceManager().provide(UserStorageService.class).get();
             Optional<User> player = userStorage.get(arg[0]);
-            uuidcible = player.get().getUniqueId();
+            try {
+                uuidcible = player.get().getUniqueId();
+            } catch (NoSuchElementException e){
+                e.printStackTrace();
+                return CommandResult.success();
+            }
+
             if (uuidcible.toString().isEmpty() || (size > 1)) {
                 IworldsUtils.coloredMessage(pPlayer, Msg.keys.INVALIDE_JOUEUR);
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
             i.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
+            IworldsUtils.coloredMessage(pPlayer, Msg.keys.DATA);
             return CommandResult.success();
         }
 

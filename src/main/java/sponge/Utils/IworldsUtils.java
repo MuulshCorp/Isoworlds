@@ -272,6 +272,7 @@ public class IworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
+                Sponge.getServer().loadWorld(IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
                 return true;
             }
         } catch (Exception se){

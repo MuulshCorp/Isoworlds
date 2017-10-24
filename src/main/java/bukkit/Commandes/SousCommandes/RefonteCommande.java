@@ -93,12 +93,6 @@ public class RefonteCommande {
             return;
         }
 
-        // DELETE AUTORISATIONS
-        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
-            return;
-        }
-
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
         CommandSender newSender = pPlayer.getPlayer();
         CreationCommande.Creation(newSender, args);

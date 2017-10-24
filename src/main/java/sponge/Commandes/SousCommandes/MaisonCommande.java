@@ -19,6 +19,7 @@ import org.spongepowered.api.world.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.NoSuchElementException;
 
 /**
  * Created by Edwin on 10/10/2017.
@@ -32,21 +33,29 @@ public class MaisonCommande implements CommandExecutor {
 
         // Variables
         String worldname = "";
+        Location<World> spawn;
         Player pPlayer = (Player) source;
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
 
         // SELECT WORLD
-        if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         // Construction du point de respawn
-        Location<World> spawn = plugin.getGame().getServer().getWorld(worldname).get().getSpawnLocation();
+        try {
+            spawn = plugin.getGame().getServer().getWorld(worldname).get().getSpawnLocation();
+        } catch (NullPointerException | NoSuchElementException e) {
+            e.printStackTrace();
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.DATA).color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        }
+
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
         Location<World> top = IworldsLocations.getHighestLoc(maxy).orElse(null);
-
         // Téléportation du joueur
         if (pPlayer.setLocationSafely(top)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)

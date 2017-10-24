@@ -1,6 +1,5 @@
 package sponge.Commandes.SousCommandes;
 
-import org.bukkit.command.Command;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
@@ -80,7 +79,6 @@ public class MaisonCommande implements CommandExecutor {
 
         return CommandResult.success();
     }
-
 
     // Constructeurs
     public static CommandSpec getCommand() {

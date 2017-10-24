@@ -4,6 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 14/10/2017.
  */
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Key;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.world.weather.Weathers;
 import sponge.IworldsSponge;
@@ -27,7 +28,6 @@ import static java.lang.Integer.parseInt;
 public class MeteoCommande implements CommandCallable {
 
     private final IworldsSponge plugin = IworldsSponge.instance;
-
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
@@ -147,6 +147,8 @@ public class MeteoCommande implements CommandCallable {
         }
         return CommandResult.success();
     }
+
+
 
     @Override
     public List<String> getSuggestions(CommandSource source, String arguments, @Nullable Location<World> targetPosition) throws CommandException {

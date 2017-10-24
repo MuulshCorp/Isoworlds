@@ -6,13 +6,9 @@ import java.util.Map;
 /**
  * Created by Edwin on 24/10/2017.
  */
-public class Messages {
+public class Messages implements Interfaces.clefs {
 
-    public static void erreurSQL() {
-
-    }
-
-    // Renvoi les messages d'erreur
+        // Renvoi les messages d'erreur
     public static String getError(String type) {
         Map<String, String> message = new HashMap<String, String>();
         message.put("SQL", "[Erreur 1: " + type + "] Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).");

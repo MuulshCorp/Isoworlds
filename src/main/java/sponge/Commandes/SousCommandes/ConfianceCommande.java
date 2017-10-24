@@ -5,6 +5,7 @@ package sponge.Commandes.SousCommandes;
  */
 
 import common.Messages;
+import org.spongepowered.api.data.key.Key;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
 
@@ -137,6 +138,7 @@ public class ConfianceCommande implements CommandCallable {
                     .append(Text.of(Text.builder(Messages.getError("SQL")).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
+
 
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Messages.getMessage("SUCCES_TRUST")).color(TextColors.AQUA))).build()));

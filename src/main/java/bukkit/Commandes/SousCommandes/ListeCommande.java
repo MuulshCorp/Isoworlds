@@ -58,7 +58,6 @@ public class ListeCommande {
 
             int numOfEntities = w.getEntities().size();
             int loadedChunks = (w.getLoadedChunks().length);
-
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + pname + " [" + status +"] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
         }
         return;

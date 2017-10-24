@@ -2,9 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IworldsBukkit;
 import bukkit.Utils.IworldsUtils;
-import com.google.common.base.Charsets;
-import common.Interfaces;
-import common.Messages;
+import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -46,7 +44,7 @@ public class ConfianceCommande {
         Integer len = args.length;
 
         if (len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage(Interfaces.clefs.INVALIDE_JOUEUR));
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }
 
@@ -69,12 +67,12 @@ public class ConfianceCommande {
                 // Requête
                 ResultSet rselect = check.executeQuery();
                 if (rselect.isBeforeFirst() ) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage(Interfaces.clefs.EXISTE_TRUST));
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
                     return;
                 }
             } catch (Exception se) {
                 se.printStackTrace();
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Messages.getError(Interfaces.clefs.SQL));
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Msg.keys.SQL);
                 return;
             }
 
@@ -90,12 +88,12 @@ public class ConfianceCommande {
                 // Requête
                 ResultSet rselect = select.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage(Interfaces.clefs.EXISTE_PAS_IWORLD));
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
                     return;
                 }
             } catch (Exception se) {
                 se.printStackTrace();
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getError(Interfaces.clefs.SQL));
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
                 return;
             }
 
@@ -113,16 +111,16 @@ public class ConfianceCommande {
                 insert.executeUpdate();
             } catch (Exception ex) {
                 ex.printStackTrace();
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getError(Interfaces.clefs.SQL));
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
                 return;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getError(Interfaces.clefs.SQL));
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage(Interfaces.clefs.SUCCES_TRUST));
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TRUST);
         return;
     }
 }

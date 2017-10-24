@@ -4,9 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 14/10/2017.
  */
 
-import common.Interfaces;
-import common.Messages;
-import org.spongepowered.api.data.key.Key;
+import common.Msg;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
 
@@ -61,12 +59,12 @@ public class ConfianceCommande implements CommandCallable {
             Optional<User> player = userStorage.get(arg[0]);
             uuidcible = player.get().getUniqueId();
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                IworldsUtils.coloredMessage(pPlayer, Messages.getMessage(Interfaces.clefs.INVALIDE_JOUEUR));
+                IworldsUtils.coloredMessage(pPlayer, Msg.keys.INVALIDE_JOUEUR);
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
             i.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Messages.getError(Interfaces.clefs.SQL));
+            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
             return CommandResult.success();
         }
 
@@ -84,13 +82,13 @@ public class ConfianceCommande implements CommandCallable {
                 ResultSet rselect = check.executeQuery();
                 if (rselect.isBeforeFirst() ) {
                     pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(Messages.getMessage(Interfaces.clefs.EXISTE_TRUST)).color(TextColors.AQUA))).build()));
+                            .append(Text.of(Text.builder(Msg.keys.EXISTE_TRUST).color(TextColors.AQUA))).build()));
                     return CommandResult.success();
                 }
             } catch (Exception se) {
                 se.printStackTrace();
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Messages.getError(Interfaces.clefs.SQL)).color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
 
@@ -107,13 +105,13 @@ public class ConfianceCommande implements CommandCallable {
                 ResultSet rselect = select.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
                     pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(Messages.getMessage(Interfaces.clefs.EXISTE_PAS_IWORLD)).color(TextColors.AQUA))).build()));
+                            .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
                     return CommandResult.success();
                 }
             } catch (Exception se) {
                 se.printStackTrace();
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Messages.getError("SQL")).color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
 
@@ -136,13 +134,13 @@ public class ConfianceCommande implements CommandCallable {
         } catch (Exception ex) {
             ex.printStackTrace();
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Messages.getError(Interfaces.clefs.SQL)).color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
 
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder(Messages.getMessage(Interfaces.clefs.SUCCES_TRUST)).color(TextColors.AQUA))).build()));
+                .append(Text.of(Text.builder(Msg.keys.SUCCES_TRUST).color(TextColors.AQUA))).build()));
         return CommandResult.success();
     }
 

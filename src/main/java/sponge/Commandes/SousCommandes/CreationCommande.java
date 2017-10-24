@@ -1,6 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
-import common.Messages;
+import common.Msg;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
@@ -44,14 +44,14 @@ public class CreationCommande implements CommandExecutor {
         String Iuuid_p;
         String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        IworldsUtils.iworldExists(pPlayer, Messages.getMessage("EXISTE_IWORLD"), Messages.getMessage("SQL"));
-        IworldsUtils.coloredMessage(pPlayer, Messages.getMessage("CREATION_IWORLD"));
+        IworldsUtils.iworldExists(pPlayer, Msg.keys.EXISTE_IWORLD, Msg.keys.SQL);
+        IworldsUtils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
 
         // Check si le monde existe déjà
         if (Sponge.getServer().getWorldProperties(worldname).isPresent()) {
-            throw new CommandException(Text.of(TextColors.DARK_GRAY, worldname, Messages.getError("EXISTE_IWORLD")), false);
+            throw new CommandException(Text.of(TextColors.DARK_GRAY, worldname, Msg.keys.EXISTE_IWORLD), false);
         }
 
         File sourceFile = new File(ManageFiles.getPath() + "PATERN");
@@ -61,7 +61,7 @@ public class CreationCommande implements CommandExecutor {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
             ie.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Messages.getError("SQL"));
+            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
             return CommandResult.success();
         }
 
@@ -75,7 +75,7 @@ public class CreationCommande implements CommandExecutor {
 
         } catch (IOException ie) {
             ie.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Messages.getError("SQL"));
+            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
         }
 
         // INSERT
@@ -97,7 +97,7 @@ public class CreationCommande implements CommandExecutor {
             insert_trust.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Messages.getError("SQL"));
+            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
             return CommandResult.success();
         }
 
@@ -106,9 +106,9 @@ public class CreationCommande implements CommandExecutor {
         Sponge.getServer().getWorld(worldname).get().getWorldBorder().setCenter(0, 0);
         Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);;
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder(Messages.getMessage("SUCCES_CREATION_1")).color(TextColors.AQUA))).build()));
+                .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
         IworldsLocations.teleport(pPlayer, worldname);
-        pPlayer.sendTitle(IworldsUtils.titleSubtitle(Messages.getMessage("TITRE_BIENVENUE_1") + pPlayer.getName(), Messages.getMessage("TITRE_BIENVENUE_2") ));
+        pPlayer.sendTitle(IworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
         return CommandResult.success();
     }
 

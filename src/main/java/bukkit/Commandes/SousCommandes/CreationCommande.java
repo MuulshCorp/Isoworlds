@@ -7,7 +7,7 @@ import common.ManageFiles;
 import bukkit.IworldsBukkit;
 import bukkit.Locations.IworldsLocations;
 import bukkit.Utils.IworldsUtils;
-import common.Messages;
+import common.Msg;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -41,7 +41,7 @@ public class CreationCommande {
         final String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        IworldsUtils.iworldExists(pPlayer, Messages.getMessage("EXISTE_IWORLD"), Messages.getMessage("SQL"));
+        IworldsUtils.iworldExists(pPlayer, Msg.keys.EXISTE_IWORLD, Msg.keys.SQL);
 
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
@@ -54,16 +54,16 @@ public class CreationCommande {
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage("EXISTE_IWORLD"));
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 return;
             }
         } catch (Exception se){
             se.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getError("SQL"));
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage("CREATION_IWORLD"));
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.CREATION_IWORLD);
         fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-iWorld/");
         worldname = (pPlayer.getUniqueId().toString() + "-iWorld");
         // Check si le monde existe déjà
@@ -80,7 +80,7 @@ public class CreationCommande {
             Bukkit.getServer().createWorld(new WorldCreator(worldname));
         } catch (Exception ie) {
             ie.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getError("SQL"));
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
         }
 
         // Remove - unload - copy - load
@@ -90,7 +90,7 @@ public class CreationCommande {
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getError("SQL"));
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 
@@ -115,7 +115,7 @@ public class CreationCommande {
             insert_trust.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage("EXISTE_IWORLD"));
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
 
@@ -125,7 +125,7 @@ public class CreationCommande {
         Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
         Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
         IworldsLocations.teleport(pPlayer, worldname);
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage("SUCCES_CREATION_1"));
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
         return;
     }
 }

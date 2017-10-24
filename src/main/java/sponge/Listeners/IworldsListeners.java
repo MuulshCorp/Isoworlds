@@ -49,7 +49,7 @@ public class IworldsListeners {
 
     @Listener
     public void onPlayerChangeWorld(MoveEntityEvent.Teleport event, @Getter("getTargetEntity") Player pPlayer) {
-        final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_p;
         String check_w;
 
@@ -61,12 +61,13 @@ public class IworldsListeners {
             try {
                 PreparedStatement check = plugin.database.prepare(CHECK);
                 // UUID_P
-                check_p = IworldsUtils.PlayerToUUID(pPlayer).toString();
+                check_p = pPlayer.getUniqueId().toString();
                 check.setString(1, check_p);
                 // UUID_W
                 check_w = eventworld;
                 check.setString(2, check_w);
                 // Requête
+                check.setString(3, plugin.servername);
                 ResultSet rselect = check.executeQuery();
                 IworldsUtils.cm("Monde event: " + eventworld);
                 if (pPlayer.hasPermission("iworlds.bypass.teleport")) {

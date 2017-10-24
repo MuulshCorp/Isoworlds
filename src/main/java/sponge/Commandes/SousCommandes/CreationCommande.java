@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import com.flowpowered.math.vector.Vector3i;
 import common.Msg;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
@@ -55,7 +56,7 @@ public class CreationCommande implements CommandExecutor {
 
         // Check si le monde existe déjà
         if (Sponge.getServer().getWorldProperties(worldname).isPresent()) {
-            throw new CommandException(Text.of(TextColors.DARK_GRAY, worldname, Msg.keys.EXISTE_IWORLD), false);
+            return CommandResult.success();
         }
 
         File sourceFile = new File(ManageFiles.getPath() + "PATERN");
@@ -96,7 +97,11 @@ public class CreationCommande implements CommandExecutor {
         Sponge.getServer().getWorld(worldname).get().setKeepSpawnLoaded(true);
         Sponge.getServer().getWorld(worldname).get().getWorldBorder().setCenter(0, 0);
         Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);
-        ;
+
+        Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
+        Location<World> firstspawn = IworldsLocations.getHighestLoc(neutral).orElse(null);
+        Sponge.getServer().getWorld(worldname).get().getProperties().setSpawnPosition(firstspawn.getBlockPosition());
+
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
         IworldsLocations.teleport(pPlayer, worldname);

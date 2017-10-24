@@ -5,6 +5,7 @@ package sponge.Commandes.SousCommandes;
  */
 
 import common.Msg;
+import org.spongepowered.api.command.args.CommandArgs;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
 
@@ -31,25 +32,22 @@ import java.util.*;
 
 public class RetirerConfianceCommande implements CommandCallable {
 
-    static final String SELECT = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-    static final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-    static final String REMOVE = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-
     private final IworldsSponge plugin = IworldsSponge.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
-        // SQL Variables
-        final String Iuuid_p;
-        final String Iuuid_w;
-        final String check_w;
-        final String check_p;
-
         UUID uuidcible;
         Player pPlayer = (Player) source;
         String[] arg = args.split(" ");
         int size = arg.length;
+        Optional<User> player;
+
+        if (size != 1 || size == 0 || size == 2) {
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        }
 
         // SELECT WORLD
         if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
@@ -60,11 +58,18 @@ public class RetirerConfianceCommande implements CommandCallable {
 
         try {
             UserStorageService userStorage = Sponge.getServiceManager().provide(UserStorageService.class).get();
-            Optional<User> player = userStorage.get(arg[0]);
-            uuidcible = player.get().getUniqueId();
-            if (uuidcible.toString().isEmpty() || (size > 1)) {
+            player = userStorage.get(arg[0]);
+            try {
+                uuidcible = player.get().getUniqueId();
+            } catch (NoSuchElementException e){
+                e.printStackTrace();
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
+                return CommandResult.success();
+            }
+
+            if (uuidcible.toString().isEmpty() || (size > 1)) {
+                IworldsUtils.coloredMessage(pPlayer, Msg.keys.INVALIDE_JOUEUR);
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
@@ -77,25 +82,31 @@ public class RetirerConfianceCommande implements CommandCallable {
         // CHECK AUTORISATIONS
         if (!IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_TRUST).color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_TRUST_2).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         // DELETE AUTORISATION
-        if (!IworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
+        if (!IworldsUtils.deleteTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
-        
+        try {
+            if (player.get().isOnline()) {
+                Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
+                Player playerOnline = Sponge.getServer().getPlayer(arg[0]).get();
+                playerOnline.setLocation(spawn);
+                playerOnline.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder(Msg.keys.KICK_TRUST).color(TextColors.AQUA))).build()));
+            }
+        } catch (NoSuchElementException nse) {
+            nse.printStackTrace();
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.DATA).color(TextColors.AQUA))).build()));
 
-        Collection<Player> colPlayers = Sponge.getServer().getWorld(IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld").get().getPlayers();
-        Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
-        Player player = Sponge.getServer().getPlayer(arg[0]).get();
-        player.setLocation(spawn);
-        player.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-            .append(Text.of(Text.builder(Msg.keys.KICK_TRUST).color(TextColors.AQUA))).build()));
+        }
 
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_RETIRER_CONFIANCE).color(TextColors.AQUA))).build()));

@@ -256,7 +256,7 @@ public class IworldsUtils {
 
     // check if iworld exists
     public static Boolean iworldExists(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         IworldsSponge plugin = IworldsSponge.instance;
         String check_w;
         String check_p;
@@ -269,6 +269,8 @@ public class IworldsUtils {
             // UUID_W
             check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
             check.setString(2, check_w);
+            // SERVEUR_ID
+            check.setString(3, plugin.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
@@ -412,15 +414,14 @@ public class IworldsUtils {
     }
 
     // Delete trust
-    public static Boolean deleteTrust(Player pPlayer, String messageErreur) {
+    public static Boolean deleteTrust(Player pPlayer, UUID uuid, String messageErreur) {
         IworldsSponge plugin = IworldsSponge.instance;
         String Iuuid_p;
         String Iuuid_w;
-        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         try {
             PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
-            Iuuid_p = pPlayer.getUniqueId().toString();
+            Iuuid_p = uuid.toString();
             Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
 
             // delete autorisation

@@ -4,6 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 14/10/2017.
  */
 
+import common.Msg;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
@@ -39,7 +40,7 @@ public class TeleportCommande implements CommandCallable {
 
         IworldsUtils.cm("Total arguments" + lenght);
         if (lenght < 1 || lenght < 2) {
-            Text message = Text.of("Veuillez indiquer le joueur cible et le monde cible.");
+            Text message = Text.of(Msg.keys.INVALIDE_JOUEUR);
             pPlayer.sendMessage(message);
             return CommandResult.success();
         }

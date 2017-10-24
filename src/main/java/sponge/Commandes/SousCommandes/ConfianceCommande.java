@@ -69,77 +69,63 @@ public class ConfianceCommande implements CommandCallable {
         }
 
         try {
-            IworldsUtils.cm("Ajout d'un trust.");
             // CHECK AUTORISATIONS
             try {
                 PreparedStatement check = plugin.database.prepare(this.CHECK);
-
                 // UUID _P
                 check_p = uuidcible.toString();
                 check.setString(1, check_p);
                 // UUID_W
                 check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
                 check.setString(2, check_w);
-
-                IworldsUtils.cm("CHECK REQUEST: " + check);
                 // Requête
                 ResultSet rselect = check.executeQuery();
                 if (rselect.isBeforeFirst() ) {
-                    IworldsUtils.cm("CHECK: Le joueur existe déjà");
                     pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder("CHECK Sijania indique que ce joueur est déjà autorisé à rejoindre votre iWorld.").color(TextColors.AQUA))).build()));
+                            .append(Text.of(Text.builder(Messages.getMessage("EXISTE_TRUST")).color(TextColors.AQUA))).build()));
                     return CommandResult.success();
                 }
-
             } catch (Exception se) {
+                se.printStackTrace();
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("CHECK Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Messages.getError("SQL")).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
 
             // SELECT WORLD
             try {
                 PreparedStatement select = plugin.database.prepare(this.SELECT);
-
                 // UUID_P
                 Suuid_p = pPlayer.getUniqueId().toString();
                 select.setString(1, Suuid_p);
                 // UUID_W
                 Suuid_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
                 select.setString(2, Suuid_w);
-
-                IworldsUtils.cm("SELECT REQUEST: " + select);
                 // Requête
                 ResultSet rselect = select.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
-                    IworldsUtils.cm("SELECT: Vide, l'iWorld n'existe pas");
                     pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(" SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
+                            .append(Text.of(Text.builder(Messages.getMessage("EXISTE_PAS_IWORLD")).color(TextColors.AQUA))).build()));
                     return CommandResult.success();
                 }
-
             } catch (Exception se) {
+                se.printStackTrace();
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(" SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Messages.getError("SQL")).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
 
             // INSERT
             try {
                 PreparedStatement insert = plugin.database.prepare(this.INSERT);
-
                 // UUID_P
                 Iuuid_p = uuidcible.toString();
                 insert.setString(1, Iuuid_p);
-
                 // UUID_W
                 Iuuid_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
                 insert.setString(2, Iuuid_w);
-                IworldsUtils.cm("INSERT REQUEST: " + insert);
-
                 // Date
                 insert.setString(3, (timestamp.toString()));
-
                 insert.executeUpdate();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -147,11 +133,13 @@ public class ConfianceCommande implements CommandCallable {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Messages.getError("SQL")).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("INSERT Sijania que le joueur a désormais accès à votre iWorld.").color(TextColors.AQUA))).build()));
+                .append(Text.of(Text.builder(Messages.getMessage("SUCCES_TRUST")).color(TextColors.AQUA))).build()));
         return CommandResult.success();
     }
 

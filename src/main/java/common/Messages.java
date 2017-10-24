@@ -8,6 +8,10 @@ import java.util.Map;
  */
 public class Messages {
 
+    public static void erreurSQL() {
+
+    }
+
     // Renvoi les messages d'erreur
     public static String getError(String type) {
         Map<String, String> message = new HashMap<String, String>();

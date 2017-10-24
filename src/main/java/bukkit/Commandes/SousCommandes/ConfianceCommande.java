@@ -120,6 +120,7 @@ public class ConfianceCommande {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getError("SQL"));
             return;
         }
+
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Messages.getMessage("SUCCES_TRUST"));
         return;
     }

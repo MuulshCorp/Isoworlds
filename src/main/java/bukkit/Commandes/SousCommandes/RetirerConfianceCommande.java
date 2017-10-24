@@ -31,14 +31,13 @@ public class RetirerConfianceCommande {
     public static void RetirerConfiance(CommandSender sender, String[] args) {
 
         instance = IworldsBukkit.getInstance();
-
         // SQL Variables
-        final String Suuid_p;
-        final String Suuid_w;
-        final String Iuuid_p;
-        final String Iuuid_w;
-        final String check_w;
-        final String check_p;
+        String Suuid_p;
+        String Suuid_w;
+        String Iuuid_p;
+        String Iuuid_w;
+        String check_w;
+        String check_p;
 
         Player pPlayer = (Player) sender;
         UUID uuidcible;

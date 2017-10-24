@@ -26,7 +26,6 @@ public class CreationCommande {
     static final String INSERT_TRUST = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
     static final String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
 
-
     static IworldsBukkit instance;
     public static void Creation(CommandSender sender, String[] args) {
         instance = IworldsBukkit.getInstance();
@@ -35,10 +34,11 @@ public class CreationCommande {
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) sender;
-        final String check_w;
-        final String check_p;
-        final String Iuuid_p;
-        final String Iuuid_w;
+        String check_w;
+        String check_p;
+        String Iuuid_p;
+        String Iuuid_w;
+
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
@@ -121,7 +121,7 @@ public class CreationCommande {
 
         // Configuration du monde
         Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
-        IworldsUtils.cmd("wb " + worldname + "set 250 250 0 0");
+        IworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
         Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
         Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
         IworldsLocations.teleport(pPlayer, worldname);

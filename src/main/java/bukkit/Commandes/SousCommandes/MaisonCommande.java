@@ -25,9 +25,9 @@ public class MaisonCommande {
         // Variables
         String worldname = "";
         Player pPlayer = (Player) sender;
-        final String check_p;
-        final String check_w;
-        final String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        String check_p;
+        String check_w;
+        String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         worldname = (pPlayer.getUniqueId() + "-iWorld");
 
         try {

@@ -121,7 +121,7 @@ public class RefonteCommande implements CommandExecutor {
 
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_REFONTE).color(TextColors.AQUA))).build()));
-        Sponge.getCommandManager().process(pPlayer, "/iw creation");
+        Sponge.getCommandManager().process(pPlayer, "iw creation");
         return CommandResult.success();
     }
 

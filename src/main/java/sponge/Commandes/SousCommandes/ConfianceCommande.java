@@ -5,6 +5,11 @@ package sponge.Commandes.SousCommandes;
  */
 
 import common.Msg;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.ConfigurationOptions;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
 
@@ -25,6 +30,7 @@ import org.spongepowered.api.world.World;
 
 import javax.annotation.Nullable;
 
+import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -42,12 +48,12 @@ public class ConfianceCommande implements CommandCallable {
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
         // SQL Variables
-        final String Suuid_p;
-        final String Suuid_w;
-        final String Iuuid_p;
-        final String Iuuid_w;
-        final String check_w;
-        final String check_p;
+        String Suuid_p;
+        String Suuid_w;
+        String Iuuid_p;
+        String Iuuid_w;
+        String check_w;
+        String check_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         UUID uuidcible;
         Player pPlayer = (Player) source;

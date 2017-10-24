@@ -31,11 +31,10 @@ public class RefonteCommande {
     public static void Refonte(CommandSender sender, String[] args) {
 
         instance = IworldsBukkit.getInstance();
-
-        final String Iuuid_p;
-        final String Iuuid_w;
-        final String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ?";
-        final String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        String Iuuid_p;
+        String Iuuid_w;
+        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ?";
+        String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         // Variables

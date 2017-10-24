@@ -43,7 +43,6 @@ public class IworldsListeners implements Listener {
         final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         String check_p;
         String check_w;
-
         Location worldTo = event.getTo();
         Location worldFrom = event.getFrom();
         Player pPlayer = event.getPlayer();

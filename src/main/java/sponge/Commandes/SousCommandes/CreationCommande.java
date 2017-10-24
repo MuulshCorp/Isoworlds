@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import common.Messages;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
@@ -43,18 +44,14 @@ public class CreationCommande implements CommandExecutor {
         String Iuuid_p;
         String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-        IworldsUtils.iworldExists(pPlayer, "CHECK Sijania indique que votre iWorld est déjà créé.", "Message erreur");
-
-        IworldsUtils.coloredMessage(pPlayer, "Sijania entame la construction de votre iWorld...");
+        IworldsUtils.iworldExists(pPlayer, Messages.getMessage("EXISTE_IWORLD"), Messages.getMessage("SQL"));
+        IworldsUtils.coloredMessage(pPlayer, Messages.getMessage("CREATION_IWORLD"));
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        IworldsUtils.cm("fullpath: " + fullpath);
-        IworldsUtils.cm("worldname: " + worldname);
 
         // Check si le monde existe déjà
         if (Sponge.getServer().getWorldProperties(worldname).isPresent()) {
-            throw new CommandException(Text.of(TextColors.DARK_GRAY, worldname, " already exists"), false);
+            throw new CommandException(Text.of(TextColors.DARK_GRAY, worldname, Messages.getError("EXISTE_IWORLD")), false);
         }
 
         File sourceFile = new File(ManageFiles.getPath() + "PATERN");
@@ -63,8 +60,8 @@ public class CreationCommande implements CommandExecutor {
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
-            IworldsUtils.coloredMessage(pPlayer, "Sijania ne parvient pas à créer votre iWorld, veuillez contacter un membre de l'équipe.");
-            IworldsUtils.coloredMessage(pPlayer, "Dans le cas ou vous possédez déjà un iWorld et que vous souhaitez le réinitialiser: /iw refonte.");
+            ie.printStackTrace();
+            IworldsUtils.coloredMessage(pPlayer, Messages.getError("SQL"));
             return CommandResult.success();
         }
 
@@ -78,6 +75,7 @@ public class CreationCommande implements CommandExecutor {
 
         } catch (IOException ie) {
             ie.printStackTrace();
+            IworldsUtils.coloredMessage(pPlayer, Messages.getError("SQL"));
         }
 
         // INSERT
@@ -88,40 +86,29 @@ public class CreationCommande implements CommandExecutor {
             Iuuid_p = pPlayer.getUniqueId().toString();
             insert.setString(1, Iuuid_p);
             insert_trust.setString(1, Iuuid_p);
-
             // UUID_W
             Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
             insert.setString(2, Iuuid_w);
             insert_trust.setString(2, Iuuid_w);
-            IworldsUtils.cm("INSERT REQUEST: " + insert);
-
             // Date
             insert.setString(3, (timestamp.toString()));
             insert_trust.setString(3, (timestamp.toString()));
-
             insert.executeUpdate();
             insert_trust.executeUpdate();
         } catch (Exception ex) {
-            IworldsUtils.coloredMessage(pPlayer,"INSERT Sijania indique que votre iWorld est déjà créé.");
+            ex.printStackTrace();
+            IworldsUtils.coloredMessage(pPlayer, Messages.getError("SQL"));
             return CommandResult.success();
         }
 
-        IworldsUtils.cm("INSERT REQUEST: OK");
-
         // Configuration du monde
         Sponge.getServer().getWorld(worldname).get().setKeepSpawnLoaded(true);
-        IworldsUtils.cm("iWorld " + worldname + ": KeepSpawnLoaded activé.");
         Sponge.getServer().getWorld(worldname).get().getWorldBorder().setCenter(0, 0);
-        IworldsUtils.cm("iWorld " + worldname + ": Centre du WorldBorder défini en x:0, y:0.");
-        Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);
-        IworldsUtils.cm("iWorld " + worldname + ": Diamètre du WorldBorder défini à 500");
-
+        Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);;
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("Sijania vient de terminer son oeuvre, voici votre iWorld !").color(TextColors.AQUA))).build()));
-
+                .append(Text.of(Text.builder(Messages.getMessage("SUCCES_CREATION_1")).color(TextColors.AQUA))).build()));
         IworldsLocations.teleport(pPlayer, worldname);
-
-        pPlayer.sendTitle(IworldsUtils.titleSubtitle("Bienvenue, " + pPlayer.getName(), "Cet iWorld, vous appartient désormais !" ));
+        pPlayer.sendTitle(IworldsUtils.titleSubtitle(Messages.getMessage("TITRE_BIENVENUE_1") + pPlayer.getName(), Messages.getMessage("TITRE_BIENVENUE_2") ));
         return CommandResult.success();
     }
 

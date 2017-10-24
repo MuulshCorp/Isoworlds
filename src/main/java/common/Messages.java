@@ -15,7 +15,8 @@ public class Messages {
     // Renvoi les messages d'erreur
     public static String getError(String type) {
         Map<String, String> message = new HashMap<String, String>();
-        message.put("SQL", "[Erreur: " + type + "] Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).");
+        message.put("SQL", "[Erreur 1: " + type + "] Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).");
+        message.put("EXISTE_IWORLD", "[Erreur 2: iWorld physique existant] Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).");
         return (message.get(type));
     }
 
@@ -23,9 +24,10 @@ public class Messages {
     public static String getMessage(String type) {
         Map<String, String> message = new HashMap<String, String>();
 
-        message.put("TITRE_BIENVENUE", "");
-        message.put("TITRE_BIENVENUE_2", "");
-        message.put("EXISTE_IWORLD", "");
+        message.put("CREATION_IWORLD", "Sijania rassemble son pouvoir...");
+        message.put("TITRE_BIENVENUE_1", "Bienvenue, ");
+        message.put("TITRE_BIENVENUE_2", "Cet iWorld est désormais votre.");
+        message.put("EXISTE_IWORLD", "Sijania vous a déjà créé un iWorld.");
         message.put("EXISTE_PAS_IWORLD", "Sijania ne trouve aucun iWorld vous appartenant.");
         message.put("EXISTE_TRUST", "Sijania vous indique que ce joueur est déjà de confiance.");
         message.put("EXISTE_PAS_TRUST", "");

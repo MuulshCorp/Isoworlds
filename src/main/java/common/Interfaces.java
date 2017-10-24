@@ -47,5 +47,8 @@ public class Interfaces {
                 = "OFF_JOUEUR";
         public static final String ON_JOUEUR
                 = "ON_JOUEUR";
+
+        public static final String SQL
+                = "SQL";
     }
 }

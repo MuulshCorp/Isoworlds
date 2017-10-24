@@ -4,6 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 14/10/2017.
  */
 
+import common.Messages;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
 
@@ -58,11 +59,12 @@ public class ConfianceCommande implements CommandCallable {
             Optional<User> player = userStorage.get(arg[0]);
             uuidcible = player.get().getUniqueId();
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                IworldsUtils.coloredMessage(pPlayer, "Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.");
+                IworldsUtils.coloredMessage(pPlayer, Messages.getMessage("INVALIDE_JOUEUR"));
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
-            IworldsUtils.coloredMessage(pPlayer,"Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.");
+            i.printStackTrace();
+            IworldsUtils.coloredMessage(pPlayer, Messages.getError("SQL"));
             return CommandResult.success();
         }
 

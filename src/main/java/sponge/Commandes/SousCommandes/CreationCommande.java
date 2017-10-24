@@ -44,7 +44,8 @@ public class CreationCommande implements CommandExecutor {
         String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        IworldsUtils.iworldExists(pPlayer, "CHECK Sijania indique que votre iWorld est déjà créé.");
+        IworldsUtils.iworldExists(pPlayer, "CHECK Sijania indique que votre iWorld est déjà créé.", "Message erreur");
+
         IworldsUtils.coloredMessage(pPlayer, "Sijania entame la construction de votre iWorld...");
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");

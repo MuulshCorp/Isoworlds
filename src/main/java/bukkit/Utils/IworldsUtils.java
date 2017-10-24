@@ -24,7 +24,8 @@ public class IworldsUtils {
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
     }
 
-    public static Boolean iworldExists(Player pPlayer, String message) {
+    // Check if iworld exists
+    public static Boolean iworldExists(Player pPlayer, String message, String messageErreur) {
         IworldsBukkit instance;
         String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         String check_w;
@@ -40,18 +41,16 @@ public class IworldsUtils {
             // UUID_W
             check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
             check.setString(2, check_w);
-
-            IworldsUtils.cm("EXISTS REQUEST: " + check);
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
-                IworldsUtils.cm("EXISTS: Le joueur existe déjà");
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "EXISTS 1 Sijania indique que votre iWorld est déjà créé.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + message);
                 return true;
             }
         } catch (Exception se){
             se.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "EXISTS 2 Sijania indique que votre iWorld est déjà créé.");
+            IworldsUtils.cm("[Erreur: 1]: Incident à traiter par les administrateurs");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
         return false;

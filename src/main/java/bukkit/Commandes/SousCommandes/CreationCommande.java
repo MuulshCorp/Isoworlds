@@ -40,6 +40,8 @@ public class CreationCommande {
         final String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+        IworldsUtils.iworldExists(pPlayer, "Sijania indique que votre iWorld est déjà créé.", "[Erreur: 1]. Une erreur est survenue, veuillez contacter l'équipe Isolonice");
+
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
             IworldsUtils.cm("test2: " + check);
@@ -147,11 +149,9 @@ public class CreationCommande {
         Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
         IworldsUtils.cm("Point de spawn défini");
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania vient de terminer son oeuvre, voici votre iWorld !");
-
         IworldsLocations.teleport(pPlayer, worldname);
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Cet iWorld, vous appartient désormais !");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania vient de terminer son oeuvre, voici votre iWorld !");
         return;
     }
 }

@@ -252,7 +252,8 @@ public class IworldsUtils {
 
     }
 
-    public static Boolean iworldExists(Player pPlayer, String message) {
+    // check if iworld exists
+    public static Boolean iworldExists(Player pPlayer, String message, String messageErreur) {
         String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         IworldsSponge plugin = IworldsSponge.instance;
         String check_w;
@@ -266,18 +267,18 @@ public class IworldsUtils {
             // UUID_W
             check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
             check.setString(2, check_w);
-
-            IworldsUtils.cm("CHECK REQUEST: " + check);
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
-                IworldsUtils.cm("CHECK: Le joueur existe déjà");
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder(message).color(TextColors.AQUA))).build()));
                 return true;
             }
         } catch (Exception se){
             se.printStackTrace();
+            IworldsUtils.cm("[Erreur: 1]: Incident à traiter par les administrateurs");
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
         return false;

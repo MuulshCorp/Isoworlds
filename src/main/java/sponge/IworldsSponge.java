@@ -42,7 +42,7 @@ public class IworldsSponge {
     public static IworldsSponge instance;
     private Logger logger;
     private Game game;
-    private String servername;
+    public String servername;
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
 
     @Inject
@@ -81,7 +81,6 @@ public class IworldsSponge {
     }
 
     private void unload() {
-
         Task.builder().execute(() -> {
             IworldsUtils.cm("[iWorlds] Analyse des iWorls vides...");
             for(World world : Sponge.getServer().getWorlds()) {

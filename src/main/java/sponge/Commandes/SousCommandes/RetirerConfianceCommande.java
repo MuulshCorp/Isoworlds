@@ -41,8 +41,6 @@ public class RetirerConfianceCommande implements CommandCallable {
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
         // SQL Variables
-        final String Suuid_p;
-        final String Suuid_w;
         final String Iuuid_p;
         final String Iuuid_w;
         final String check_w;
@@ -52,6 +50,13 @@ public class RetirerConfianceCommande implements CommandCallable {
         Player pPlayer = (Player) source;
         String[] arg = args.split(" ");
         int size = arg.length;
+
+        // SELECT WORLD
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        }
 
         try {
             UserStorageService userStorage = Sponge.getServiceManager().provide(UserStorageService.class).get();
@@ -69,53 +74,17 @@ public class RetirerConfianceCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-        try {
-            // CHECK AUTORISATIONS
-            try {
-                PreparedStatement check = plugin.database.prepare(this.CHECK);
-                // UUID _P
-                check_p = IworldsUtils.PlayerToUUID(pPlayer).toString();
-                check.setString(1, check_p);
-                // UUID_W
-                check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-                check.setString(2, check_w);
-                // Requête
-                ResultSet rselect = check.executeQuery();
-                if (!rselect.isBeforeFirst() ) {
-                    return CommandResult.success();
-                }
+        // CHECK AUTORISATIONS
+        if (!IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_TRUST).color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        }
 
-            } catch (Exception se) {
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-                return CommandResult.success();
-            }
-
-            // REMOVE
-
-            if (uuidcible.toString() == pPlayer.getName()) {
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.DENY_SELF_REMOVE).color(TextColors.AQUA))).build()));
-                return CommandResult.success();
-            }
-
-            try {
-                PreparedStatement insert = plugin.database.prepare(this.REMOVE);
-                // UUID_P
-                Iuuid_p = uuidcible.toString();
-                insert.setString(1, Iuuid_p);
-                // UUID_W
-                Iuuid_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-                insert.setString(2, Iuuid_w);
-                insert.executeUpdate();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
-                return CommandResult.success();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        // DELETE AUTORISATION
+        if (!IworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 

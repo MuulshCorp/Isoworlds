@@ -178,6 +178,8 @@ public class IworldsUtils {
             delete_autorisations.executeUpdate();
             delete_iworlds.executeUpdate();
         } catch (Exception ex) {
+            ex.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
@@ -205,6 +207,8 @@ public class IworldsUtils {
             // execute
             delete_autorisations.executeUpdate();
         } catch (Exception ex) {
+            ex.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }

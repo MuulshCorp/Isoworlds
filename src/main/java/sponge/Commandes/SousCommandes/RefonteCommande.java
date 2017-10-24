@@ -37,17 +37,20 @@ public class RefonteCommande implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
-        final String Iuuid_p;
-        final String Iuuid_w;
-        final String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ?";
-        final String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
         // Variables
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
 
+        // SELECT WORLD
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        }
+
+        // Confirmation
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {;
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
@@ -99,23 +102,18 @@ public class RefonteCommande implements CommandExecutor {
             ie.printStackTrace();
         }
 
-        // DELETE
-        try {
-            PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
-            PreparedStatement delete_iworlds = plugin.database.prepare(DELETE_IWORLDS);
-            // UUID_P
-            Iuuid_p = pPlayer.getUniqueId().toString();
-            delete_iworlds.setString(1, Iuuid_p);
-            // UUID_W
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
-            delete_autorisations.setString(1, Iuuid_w);
-            delete_iworlds.setString(2, Iuuid_w);
-            delete_autorisations.executeUpdate();
-            delete_iworlds.executeUpdate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        // DELETE WORLD
+        if (!IworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        }
+
+        // DELETE AUTORISATIONS
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 

@@ -30,41 +30,35 @@ public class ConfianceCommande {
         UUID uuidcible;
         Integer len = args.length;
 
+        // SELECT WORLD
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            return;
+        }
+
         if (len < 2) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }
 
+        // Getting uuidcible
         if (Bukkit.getServer().getPlayer(args[1]) == null) {
             uuidcible = Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId();
         } else {
             uuidcible = Bukkit.getServer().getPlayer(args[1]).getUniqueId();
         }
 
-        try {
-            // CHECK AUTORISATIONS
-            if (IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
-                return;
-            }
-
-            // SELECT WORLD
-            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-                return;
-            }
-
-            // INSERT
-            if (!IworldsUtils.insertTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
-                return;
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+        // CHECK AUTORISATIONS
+        if (IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
             return;
         }
+
+        // INSERT
+        if (!IworldsUtils.insertTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+            return;
+        }
+
 
         pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TRUST);
         return;

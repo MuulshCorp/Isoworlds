@@ -32,7 +32,6 @@ public class MeteoCommande implements CommandCallable {
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
         // SQL Variables
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Player pPlayer = (Player) source;
         String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         String[] arg = args.split(" ");

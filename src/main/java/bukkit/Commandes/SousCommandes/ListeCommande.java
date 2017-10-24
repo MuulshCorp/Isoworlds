@@ -20,7 +20,6 @@ public class ListeCommande {
     public static void Liste(CommandSender sender, String[] args) {
 
         instance = IworldsBukkit.getInstance();
-
         Player pPlayer = (Player) sender;
         ArrayList<World> worlds = new ArrayList<World>();
         Boolean check = false;

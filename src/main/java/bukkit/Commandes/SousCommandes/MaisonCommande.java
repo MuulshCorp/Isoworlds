@@ -27,31 +27,24 @@ public class MaisonCommande {
         Player pPlayer = (Player) sender;
         worldname = (pPlayer.getUniqueId() + "-iWorld");
 
-        try {
-
-            // SELECT WORLD
-            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-                return;
-            }
-        } catch (Exception se){
-            se.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+        // SELECT WORLD
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
 
         // Construction du point de respawn
         Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
         Integer secours;
-        Location go = new Location (Bukkit.getServer().getWorld(worldname), 0, 60, 0);
+        Location go = new Location(Bukkit.getServer().getWorld(worldname), 0, 60, 0);
 
         try {
             if (top == null) {
                 Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
-                go = new Location (Bukkit.getServer().getWorld(worldname), 0, 61, 0);
+                go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
             } else {
                 secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-                go = new Location (Bukkit.getServer().getWorld(worldname), 0, secours, 0);
+                go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
             }
         } catch (NullPointerException npe) {
             Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
@@ -61,7 +54,8 @@ public class MaisonCommande {
         if (pPlayer.teleport(go)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION + pPlayer.getName());
         } else {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.");;
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.");
+            ;
         }
         return;
 

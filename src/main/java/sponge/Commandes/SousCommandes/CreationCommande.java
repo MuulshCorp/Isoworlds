@@ -41,13 +41,17 @@ public class CreationCommande implements CommandExecutor {
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
-        String Iuuid_p;
-        String Iuuid_w;
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
         IworldsUtils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+
+        // SELECT WORLD
+        if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        }
 
         // Check si le monde existe déjà
         if (Sponge.getServer().getWorldProperties(worldname).isPresent()) {
@@ -79,32 +83,20 @@ public class CreationCommande implements CommandExecutor {
         }
 
         // INSERT
-        try {
-            PreparedStatement insert = plugin.database.prepare(this.INSERT);
-            PreparedStatement insert_trust = plugin.database.prepare(this.INSERT_TRUST);
-            // UUID_P
-            Iuuid_p = pPlayer.getUniqueId().toString();
-            insert.setString(1, Iuuid_p);
-            insert_trust.setString(1, Iuuid_p);
-            // UUID_W
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
-            insert.setString(2, Iuuid_w);
-            insert_trust.setString(2, Iuuid_w);
-            // Date
-            insert.setString(3, (timestamp.toString()));
-            insert_trust.setString(3, (timestamp.toString()));
-            insert.executeUpdate();
-            insert_trust.executeUpdate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
+        if (!IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+            return CommandResult.success();
+        }
+
+        // INSERT TRUST
+        if (!IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
             return CommandResult.success();
         }
 
         // Configuration du monde
         Sponge.getServer().getWorld(worldname).get().setKeepSpawnLoaded(true);
         Sponge.getServer().getWorld(worldname).get().getWorldBorder().setCenter(0, 0);
-        Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);;
+        Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);
+        ;
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
         IworldsLocations.teleport(pPlayer, worldname);

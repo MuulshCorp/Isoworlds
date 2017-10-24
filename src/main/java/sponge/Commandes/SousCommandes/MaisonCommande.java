@@ -33,32 +33,12 @@ public class MaisonCommande implements CommandExecutor {
         // Variables
         String worldname = "";
         Player pPlayer = (Player) source;
-        final String check_p;
-        final String check_w;
-        final String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
 
-        try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
-            // UUID _P
-            check_p = IworldsUtils.PlayerToUUID(pPlayer).toString();
-            check.setString(1, check_p);
-            // UUID_W
-            check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-            check.setString(2, check_w);
-            // Requête
-            ResultSet rselect = check.executeQuery();
-            if (rselect.isBeforeFirst() ) {
-                Sponge.getServer().loadWorld(worldname);
-            } else {
-                IworldsUtils.coloredMessage(pPlayer, Msg.keys.EXISTE_PAS_IWORLD);
-                return CommandResult.success();
-            }
-        } catch (Exception se){
-            se.printStackTrace();
+        // SELECT WORLD
+        if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 

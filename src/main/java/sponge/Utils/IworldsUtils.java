@@ -1,5 +1,6 @@
 package sponge.Utils;
 
+import common.Msg;
 import org.spongepowered.api.command.CommandResult;
 import sponge.IworldsSponge;
 
@@ -14,6 +15,7 @@ import org.spongepowered.api.world.Location;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
@@ -274,12 +276,168 @@ public class IworldsUtils {
             }
         } catch (Exception se){
             se.printStackTrace();
-            IworldsUtils.cm("[Erreur: 1]: Incident à traiter par les administrateurs");
+            IworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
         return false;
     }
+
+    // Check autorisation trust
+    public static Boolean trustExists(Player pPlayer, UUID uuidcible, String messageErreur) {
+        IworldsSponge plugin = IworldsSponge.instance;
+        String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String check_w;
+        String check_p;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+            // UUID _P
+            check_p = uuidcible.toString();
+            check.setString(1, check_p);
+            // UUID_W
+            check_w = (pPlayer.getUniqueId() + "-iWorld");
+            check.setString(2, check_w);
+            // SERVEUR_ID
+            check.setString(3, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            if (rselect.isBeforeFirst() ) {
+                return true;
+            }
+        } catch (Exception se) {
+            se.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return false;
+        }
+        return false;
+    }
+
+    // insert trust
+    public static Boolean insertCreation(Player pPlayer, String messageErreur) {
+        IworldsSponge plugin = IworldsSponge.instance;
+        String INSERT = "INSERT INTO `iworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
+        String Iuuid_w;
+        String Iuuid_p;
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        try {
+            PreparedStatement insert = plugin.database.prepare(INSERT);
+            // UUID_P
+            Iuuid_p = pPlayer.getUniqueId().toString();
+            insert.setString(1, Iuuid_p);
+            // UUID_W
+            Iuuid_w = ((pPlayer.getUniqueId()) + "-iWorld");
+            insert.setString(2, Iuuid_w);
+            // Date
+            insert.setString(3, (timestamp.toString()));
+            // Serveur_id
+            insert.setString(4, plugin.servername);
+            insert.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return false;
+        }
+        return true;
+    }
+
+    // insert trust
+    public static Boolean insertTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
+        IworldsSponge plugin = IworldsSponge.instance;
+        String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
+        String Iuuid_w;
+        String Iuuid_p;
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        try {
+            PreparedStatement insert = plugin.database.prepare(INSERT);
+            // UUID_P
+            Iuuid_p = uuidcible.toString();
+            insert.setString(1, Iuuid_p);
+            // UUID_W
+            Iuuid_w = ((pPlayer.getUniqueId()) + "-iWorld");
+            insert.setString(2, Iuuid_w);
+            // Date
+            insert.setString(3, (timestamp.toString()));
+            // Serveur_id
+            insert.setString(4, plugin.servername);
+            insert.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return false;
+        }
+        return true;
+    }
+
+    // delete iworld
+    public static Boolean deleteIworld(Player pPlayer, String messageErreur) {
+        IworldsSponge plugin = IworldsSponge.instance;
+        String Iuuid_p;
+        String Iuuid_w;
+        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        try {
+            PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
+            PreparedStatement delete_iworlds = plugin.database.prepare(DELETE_IWORLDS);
+            Iuuid_p = pPlayer.getUniqueId().toString();
+            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
+
+            // delete autorisations
+            delete_autorisations.setString(1, Iuuid_w);
+            delete_autorisations.setString(2, plugin.servername);
+
+            // delete iworld
+            delete_iworlds.setString(1, Iuuid_p);
+            delete_iworlds.setString(2, Iuuid_w);
+            delete_iworlds.setString(3, plugin.servername);
+
+            // execute
+            delete_autorisations.executeUpdate();
+            delete_iworlds.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return false;
+        }
+        return true;
+    }
+
+    // Delete trust
+    public static Boolean deleteTrust(Player pPlayer, String messageErreur) {
+        IworldsSponge plugin = IworldsSponge.instance;
+        String Iuuid_p;
+        String Iuuid_w;
+        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        try {
+            PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
+            Iuuid_p = pPlayer.getUniqueId().toString();
+            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
+
+            // delete autorisation
+            delete_autorisations.setString(1, Iuuid_p);
+            delete_autorisations.setString(2, Iuuid_w);
+            delete_autorisations.setString(3, plugin.servername);
+
+            // execute
+            delete_autorisations.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return false;
+        }
+        return true;
+    }
+
 
 }

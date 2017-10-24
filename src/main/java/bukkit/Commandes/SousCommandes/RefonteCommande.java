@@ -30,24 +30,18 @@ public class RefonteCommande {
 
     public static void Refonte(CommandSender sender, String[] args) {
 
-        instance = IworldsBukkit.getInstance();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
 
         // Variables
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) sender;
+        instance = IworldsBukkit.getInstance();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        try {
-            // SELECT WORLD
-            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
-                return;
-            }
-        } catch (Exception se){
-            se.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+        // SELECT WORLD
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
 
@@ -80,7 +74,7 @@ public class RefonteCommande {
         if (Bukkit.getServer().getWorld(worldname) != null) {
             Collection<Player> colPlayers = Bukkit.getServer().getWorld(worldname).getPlayers();
             Integer maxY = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-            Location refonte = new Location (Bukkit.getServer().getWorld("Isolonice"), 0, maxY, 0);
+            Location refonte = new Location(Bukkit.getServer().getWorld("Isolonice"), 0, maxY, 0);
             for (Player player : colPlayers) {
                 player.teleport(refonte);
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.REFONTE_KICK);
@@ -90,26 +84,18 @@ public class RefonteCommande {
         }
 
         //iWorldsUtils.deleteDir(sourceDir);
-        File remove = new File ((ManageFiles.getPath() + worldname));
+        File remove = new File((ManageFiles.getPath() + worldname));
         ManageFiles.deleteDir(remove);
 
-        // DELETE
-        try {
+        // DELETE WORLD
+        if (!IworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+            return;
+        }
 
-            // DELETE WORLD
-            if (!IworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
-                return;
-            }
-
-            // DELETE AUTORISATIONS
-            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
-                return;
-            }
-
-        } catch (Exception ex) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+        // DELETE AUTORISATIONS
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
 

@@ -31,13 +31,6 @@ public class RetirerConfianceCommande {
 
         instance = IworldsBukkit.getInstance();
         // SQL Variables
-        String Suuid_p;
-        String Suuid_w;
-        String Iuuid_p;
-        String Iuuid_w;
-        String check_w;
-        String check_p;
-
         Player pPlayer = (Player) sender;
         UUID uuidcible;
         Boolean is;
@@ -54,7 +47,7 @@ public class RetirerConfianceCommande {
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 return;
             }
-        } catch (Exception se){
+        } catch (Exception se) {
             se.printStackTrace();
             IworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
@@ -82,22 +75,15 @@ public class RetirerConfianceCommande {
             return;
         }
 
-        try {
-            // CHECK AUTORISATIONS
-            if (!IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
-                return;
-            }
+        // CHECK AUTORISATIONS
+        if (!IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
+            return;
+        }
 
-            // DELETE AUTORISATION
-            if (!IworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
-                return;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Msg.keys.SQL);
+        // DELETE AUTORISATION
+        if (!IworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 

@@ -3,6 +3,7 @@ package bukkit.Commandes.SousCommandes;
 /**
  * Created by Edwin on 20/10/2017.
  */
+
 import common.ManageFiles;
 import bukkit.IworldsBukkit;
 import bukkit.Locations.IworldsLocations;
@@ -15,17 +16,12 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 
-import static bukkit.Utils.IworldsUtils.cmd;
-
 public class CreationCommande {
-    static final String INSERT = "INSERT INTO `iworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
-    static final String INSERT_TRUST = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
 
     static IworldsBukkit instance;
+
     public static void Creation(CommandSender sender, String[] args) {
 
         // Variables
@@ -37,16 +33,9 @@ public class CreationCommande {
 
         IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
 
-        try {
-            // SELECT WORLD
-            if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
-                return;
-            }
-        } catch (Exception se){
-            se.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+        // SELECT WORLD
+        if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
 
@@ -86,20 +75,12 @@ public class CreationCommande {
         Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
         // INSERT
-        try {
+        if (!IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+            return;
+        }
 
-            // INSERT
-            if (!IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
-                return;
-            }
-
-            // INSERT TRUST
-            if (!IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
-                return;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+        // INSERT TRUST
+        if (!IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
             return;
         }
 

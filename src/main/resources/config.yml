@@ -1,5 +1,5 @@
 serveur-minecraft: ""
-id:
+id: ""
 sql:
   serveur: "176.31.106.17"
   port: 3306

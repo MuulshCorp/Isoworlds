@@ -42,6 +42,7 @@ public class IworldsSponge {
     public static IworldsSponge instance;
     private Logger logger;
     private Game game;
+    private String servername;
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
 
     @Inject
@@ -51,13 +52,13 @@ public class IworldsSponge {
     @DefaultConfig(sharedRoot = true)
     private ConfigurationLoader<CommentedConfigurationNode> configurationLoader = null;
     private CommentedConfigurationNode configurationNode = null;
-    private String server;
     public Mysql database;
 
     @Inject
-    public IworldsSponge(Logger logger, Game game) {
+    public IworldsSponge(Logger logger, Game game, String servername) {
         this.logger = logger;
         this.game = game;
+        this.servername = (String) this.configurationNode.getNode(new Object[]{"iWorlds", "id"}).getValue();
         instance = this;
     }
 

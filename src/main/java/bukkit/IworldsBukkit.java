@@ -79,11 +79,8 @@ public final class IworldsBukkit extends JavaPlugin {
             for (World world : Bukkit.getServer().getWorlds()) {
                 if (world != null & worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
                     if (world.getName().contains("-iWorld")) {
-                        IworldsUtils.cm("Monde non enregistré: " + world.getName());
                         worlds.put(world.getName(), 1);
-                        IworldsUtils.cm("Valeur définie à: " + worlds.get(world.getName()));
                     } else {
-                        IworldsUtils.cm("Le monde " + world.getName() + " n'est pas un iWorld");
                         continue;
                     }
                 } else {
@@ -91,10 +88,7 @@ public final class IworldsBukkit extends JavaPlugin {
                         worlds.remove(world.getName());
                         continue;
                     }
-                    IworldsUtils.cm("Monde enregistré: " + world.getName());
-                    IworldsUtils.cm("Ancienne valeur: " + worlds.get(world.getName()));
                     worlds.put(world.getName(), worlds.get(world.getName()) + 1);
-                    IworldsUtils.cm("Nouvelle valeur: " + worlds.get(world.getName()));
                     if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 10) {
                         IworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
                         Bukkit.getServer().unloadWorld(world, true);

@@ -43,7 +43,7 @@ public class ConfianceCommande implements CommandCallable {
         String[] arg = args.split(" ");
         int size = arg.length;
 
-        if (size != 1 || size == 0 || size == 2) {
+        if (size > 1) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
             return CommandResult.success();

@@ -36,7 +36,7 @@ public class RetirerConfianceCommande {
         Boolean is;
         Integer len = args.length;
 
-        if (len < 2) {
+        if (len > 1) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }

@@ -38,10 +38,8 @@ public class IworldsListeners {
         Player p = event.getTargetEntity();
         String worldname = (p.getUniqueId() + "-iWorld");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        IworldsUtils.cm("Spawn point: " + spawn.getPosition());
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
         Location<World> top = IworldsLocations.getHighestLoc(maxy).orElse(null);
-        IworldsUtils.cm("Point de spawn:" + top.getPosition());
 
         Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), top.getPosition());
         event.setToTransform(t);

@@ -4,6 +4,7 @@ import bukkit.IworldsBukkit;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -49,6 +50,7 @@ public class IworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
+                Bukkit.getServer().createWorld(new WorldCreator(pPlayer.getUniqueId().toString() + "-iWorld"));
                 return true;
             }
         } catch (Exception se){

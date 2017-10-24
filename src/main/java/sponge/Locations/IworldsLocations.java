@@ -69,17 +69,12 @@ public class IworldsLocations {
             Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(instance).get()).build());;
         }
 
-
-
         // Téléportation du joueur
         if (player.setLocationSafely(go)) {
             IworldsUtils.cm("Le joueur a bien été téléporté !");
         } else {
             IworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
         }
-
-        IworldsUtils.cm("La position du nouveau spawn est : " + go.getBlockPosition());
-        IworldsUtils.cm("iw " + world + ": Point de respawn du joueur défini sur le spawn du iWorld");
 
     }
 }

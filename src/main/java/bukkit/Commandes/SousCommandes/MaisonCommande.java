@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IworldsBukkit;
 import bukkit.Utils.IworldsUtils;
+import common.Msg;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -27,30 +28,26 @@ public class MaisonCommande {
         final String check_p;
         final String check_w;
         final String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-
         worldname = (pPlayer.getUniqueId() + "-iWorld");
 
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
-
             // UUID _P
             check_p = pPlayer.getUniqueId().toString();
             check.setString(1, check_p);
             // UUID_W
             check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
             check.setString(2, check_w);
-
-            IworldsUtils.cm("CHECK REQUEST: " + check);
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
                 Bukkit.getServer().createWorld(new WorldCreator(worldname));
             } else {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que vous ne possédez aucun iWorld.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
                 return;
             }
         } catch (Exception se){
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que vous ne possédez aucun iWorld.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
 
@@ -73,7 +70,7 @@ public class MaisonCommande {
 
         // Téléportation du joueur
         if (pPlayer.teleport(go)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Bon retour à vous, " + pPlayer.getName());
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION + pPlayer.getName());
         } else {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.");;
         }

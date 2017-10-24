@@ -3,6 +3,7 @@ package bukkit.Commandes.SousCommandes;
 import bukkit.IworldsBukkit;
 import bukkit.Utils.IworldsUtils;
 import com.google.common.base.Charsets;
+import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -45,7 +46,7 @@ public class RetirerConfianceCommande {
         Integer len = args.length;
 
         if (len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania indique que vous devez entrer le nom d'un joueur.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }
 
@@ -57,89 +58,76 @@ public class RetirerConfianceCommande {
             uuidcible = Bukkit.getServer().getPlayer(args[1]).getUniqueId();
         }
 
-        IworldsUtils.cm("Argument 0" + args[1]);
-        IworldsUtils.cm("Argument 1" + uuidcible.toString());
-
 
         if (uuidcible == null) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que ce joueur n'existe pas.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }
 
         try {
-            IworldsUtils.cm("Suppression du trust.");
             // CHECK AUTORISATIONS
             try {
                 PreparedStatement check = instance.database.prepare(CHECK);
-
                 // UUID _P
                 check_p = uuidcible.toString();
                 check.setString(1, check_p);
                 // UUID_W
                 check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
                 check.setString(2, check_w);
-
-                IworldsUtils.cm("CHECK REQUEST: " + check);
                 // Requête
                 ResultSet rselect = check.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
-                    IworldsUtils.cm("CHECK: Le joueur n'est pas présent dans le claim");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que ce joueur n'est pas autorisé à rejoindre votre iWorld.");
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                se.printStackTrace();
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
                 return;
             }
 
             // REMOVE
 
             if (uuidcible.toString().equals(pPlayer.getUniqueId().toString())) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + "REMOVE Sijania indique que vous ne pouvez vous retirer de votre iWorld.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Msg.keys.DENY_SELF_REMOVE);
                 return;
             }
 
             // SELECT WORLD
             try {
                 PreparedStatement select = instance.database.prepare(SELECT);
-
                 // UUID_P
                 Suuid_p = pPlayer.getUniqueId().toString();
                 select.setString(1, Suuid_p);
                 // UUID_W
                 Suuid_w = (pPlayer.getUniqueId() + "-iWorld");
                 select.setString(2, Suuid_w);
-
                 IworldsUtils.cm("SELECT REQUEST: " + select);
                 // Requête
                 ResultSet rselect = select.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
-                    IworldsUtils.cm("SELECT: Vide, l'iWorld n'existe pas");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "SELECT Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                se.printStackTrace();
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
                 return;
             }
 
             try {
                 PreparedStatement insert = instance.database.prepare(REMOVE);
-
                 // UUID_P
                 Iuuid_p = uuidcible.toString();
                 insert.setString(1, Iuuid_p);
-
                 // UUID_W
                 Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
                 insert.setString(2, Iuuid_w);
-                IworldsUtils.cm("REMOVE REQUEST: " + insert);
-
                 insert.executeUpdate();
             } catch (Exception ex) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "REMOVE Sijania indique que ce joueur n'est autorisé à rejoindre votre iWorld.");
+                ex.printStackTrace();
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
                 return;
             }
         } catch (Exception ex) {
@@ -151,10 +139,10 @@ public class RetirerConfianceCommande {
         if (is == true) {
             Player player = Bukkit.getServer().getPlayer(args[1]);
             player.teleport(spawn);
-            player.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.");
+            player.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
         } // Gestion du kick offline à gérer dès que possible
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "INSERT Sijania indique que le joueur n'a désormais plus accès à votre iWorld.");
+        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_RETIRER_CONFIANCE);
         return;
 
     }

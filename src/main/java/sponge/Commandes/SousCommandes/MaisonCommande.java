@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import common.Msg;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
@@ -40,26 +41,24 @@ public class MaisonCommande implements CommandExecutor {
 
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
-
             // UUID _P
             check_p = IworldsUtils.PlayerToUUID(pPlayer).toString();
             check.setString(1, check_p);
             // UUID_W
             check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
             check.setString(2, check_w);
-
-            IworldsUtils.cm("CHECK REQUEST: " + check);
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
                 Sponge.getServer().loadWorld(worldname);
             } else {
-                IworldsUtils.coloredMessage(pPlayer, "Sijania indique que vous ne possédez aucun iWorld");
+                IworldsUtils.coloredMessage(pPlayer, Msg.keys.EXISTE_PAS_IWORLD);
                 return CommandResult.success();
             }
         } catch (Exception se){
+            se.printStackTrace();
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("CHECK Sijania indique que vous ne possédez aucun iWorld.").color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
@@ -71,7 +70,7 @@ public class MaisonCommande implements CommandExecutor {
         // Téléportation du joueur
         if (pPlayer.setLocationSafely(top)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Bon retour à vous, " + pPlayer.getName()).color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION + pPlayer.getName()).color(TextColors.AQUA))).build()));
         } else {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.").color(TextColors.AQUA))).build()));

@@ -2,6 +2,7 @@ package bukkit.Listeners;
 
 import bukkit.IworldsBukkit;
 import bukkit.Utils.IworldsUtils;
+import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -54,52 +55,39 @@ public class IworldsListeners implements Listener {
         String eventworld = worldTo.getWorld().getName();
 
         if (eventworld == null) {
-            IworldsUtils.cm("Ce monde doit être chargé avant téléportation, préparation...");
-            IworldsUtils.cm("DEBUG DUPE: " + event.getTo().toString());
             Bukkit.getServer().createWorld(new WorldCreator(eventworld));
-
         }
 
         if (eventworld.contains("-iWorld")) {
             try {
                 PreparedStatement check = instance.database.prepare(CHECK);
-
                 // UUID_P
                 check_p = pPlayer.getUniqueId().toString();
                 check.setString(1, check_p);
                 // UUID_W
                 check_w = eventworld;
                 check.setString(2, check_w);
-
-                IworldsUtils.cm("CHECK REQUEST: " + check);
                 // Requête
                 ResultSet rselect = check.executeQuery();
-                IworldsUtils.cm("Monde event: " + eventworld);
-
                 if (pPlayer.hasPermission("iworlds.bypass.teleport")) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania vient de vous autoriser la téléporation, car vous faites partie de l'équipe.");
                     return;
                 }
 
                 if (rselect.isBeforeFirst() ) {
-                    IworldsUtils.cm("CHECK: Le joueur est autorisé");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania vient de vous autoriser la téléporation.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
                     return;
                     // Cas du untrust, pour ne pas rester bloquer
                 } else if (pPlayer.getWorld().getName() == eventworld) {
-                    IworldsUtils.cm("Monde joueur: " + pPlayer.getWorld().getName());
-                    IworldsUtils.cm("Monde event: " + eventworld);
-                    IworldsUtils.cm("CHECK: Le joueur est autorisé");
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania vient de vous autoriser la téléporation.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA +Msg.keys.SUCCES_RETIRER_CONFIANCE);
                     return;
                 } else {
                     event.setCancelled(true);
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania vient de vous refuser la téléportation.");
+                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.DENY_TELEPORT);
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "CHECK Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.");
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             }
 
         }

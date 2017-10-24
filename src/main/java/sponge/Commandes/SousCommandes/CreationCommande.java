@@ -44,7 +44,7 @@ public class CreationCommande implements CommandExecutor {
         String Iuuid_p;
         String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        IworldsUtils.iworldExists(pPlayer, Msg.keys.EXISTE_IWORLD, Msg.keys.SQL);
+        IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
         IworldsUtils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");

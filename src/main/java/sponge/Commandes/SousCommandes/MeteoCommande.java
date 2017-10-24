@@ -4,7 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 14/10/2017.
  */
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Key;
+import common.Msg;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.world.weather.Weathers;
 import sponge.IworldsSponge;
@@ -38,9 +38,9 @@ public class MeteoCommande implements CommandCallable {
         String[] arg = args.split(" ");
         int size = arg.length;
 
-        if (IworldsUtils.iworldExists(pPlayer, "Sijania vient de changer le temps de votre iWorld.") == false) {
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania indique que vous ne possédez aucun iWorld.").color(TextColors.RED))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
             return CommandResult.success();
         }
 

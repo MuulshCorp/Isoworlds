@@ -48,7 +48,16 @@ public class Msg {
                 = "'Sijania': Ce joueur n'est pas reveillé...";
         public static final String ON_JOUEUR
                 = "'Sijania': Ce joueur est présent.";
-
+        public static final String CONFIRMATION
+                = "Veuillez de nouveau entrer la commande pour confirmer";
+        public static final String REFONTE_KICK
+                = "Sijania entame une destruction entière de l'iWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection";
+        public static final String DENY_SELF_REMOVE
+                = "'Sijania': Vous ne pouvez retirer vos droit de ma création...";
+        public static final String KICK_TRUST
+                = "'Sijania': Votre marque de confiance vient d'être retirée par le maître de l'iWorld dans lequel vous vous trouviez. Ce sanctuaire vous est désormais interdit.";
+        public static final String DENY_TELEPORT
+                = "'Sijania': Vous ne pouvez pénétrer ce sanctuaire sans une marque de confiance.";
         public static final String SQL
                 = "[Erreur 1]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
     }

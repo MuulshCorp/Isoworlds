@@ -25,7 +25,7 @@ public class IworldsUtils {
     }
 
     // Check if iworld exists
-    public static Boolean iworldExists(Player pPlayer, String message, String messageErreur) {
+    public static Boolean iworldExists(Player pPlayer, String messageErreur) {
         IworldsBukkit instance;
         String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         String check_w;
@@ -44,7 +44,6 @@ public class IworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + message);
                 return true;
             }
         } catch (Exception se){

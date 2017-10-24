@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IworldsBukkit;
 
+import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -27,7 +28,7 @@ public class MeteoCommande {
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 
-        if (IworldsUtils.iworldExists(pPlayer, "Sijania vient de changer le temps de votre iWorld.") == false) {
+        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]" + ChatColor.AQUA + "Sijania indique que vous ne possédez aucun iWorld.");
             return;
         }

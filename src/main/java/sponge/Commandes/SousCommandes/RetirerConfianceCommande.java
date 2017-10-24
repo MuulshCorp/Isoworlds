@@ -4,6 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 14/10/2017.
  */
 
+import common.Msg;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
 
@@ -58,41 +59,35 @@ public class RetirerConfianceCommande implements CommandCallable {
             uuidcible = player.get().getUniqueId();
             if (uuidcible.toString().isEmpty() || (size > 1)) {
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
+            i.printStackTrace();
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania indique que vous devez fournir un nom de joueur valide. /iw confiance nomjoueur.").color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         try {
-            IworldsUtils.cm("Suppression du trust.");
             // CHECK AUTORISATIONS
             try {
                 PreparedStatement check = plugin.database.prepare(this.CHECK);
-
                 // UUID _P
                 check_p = IworldsUtils.PlayerToUUID(pPlayer).toString();
                 check.setString(1, check_p);
                 // UUID_W
                 check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
                 check.setString(2, check_w);
-
-                IworldsUtils.cm("CHECK REQUEST: " + check);
                 // Requête
                 ResultSet rselect = check.executeQuery();
                 if (!rselect.isBeforeFirst() ) {
-                    IworldsUtils.cm("CHECK: Le joueur n'est pas présent dans le claim");
-                    pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder("CHECK Sijania indique que ce joueur n'est pas autorisé à rejoindre votre iWorld.").color(TextColors.AQUA))).build()));
                     return CommandResult.success();
                 }
 
             } catch (Exception se) {
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("CHECK Sijania indique que votre iWorld ne semble pas exister, /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
 
@@ -100,26 +95,23 @@ public class RetirerConfianceCommande implements CommandCallable {
 
             if (uuidcible.toString() == pPlayer.getName()) {
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("REMOVE Sijania indique que vous ne pouvez vous retirer de votre iWorld.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.DENY_SELF_REMOVE).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
 
             try {
                 PreparedStatement insert = plugin.database.prepare(this.REMOVE);
-
                 // UUID_P
                 Iuuid_p = uuidcible.toString();
                 insert.setString(1, Iuuid_p);
-
                 // UUID_W
                 Iuuid_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
                 insert.setString(2, Iuuid_w);
-                IworldsUtils.cm("REMOVE REQUEST: " + insert);
-
                 insert.executeUpdate();
             } catch (Exception ex) {
+                ex.printStackTrace();
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("REMOVE Sijania indique que ce joueur n'est autorisé à rejoindre votre iWorld.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
         } catch (Exception ex) {
@@ -132,10 +124,10 @@ public class RetirerConfianceCommande implements CommandCallable {
         Player player = Sponge.getServer().getPlayer(arg[0]).get();
         player.setLocation(spawn);
         player.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-            .append(Text.of(Text.builder("Sijania vient de vous retirer les droits d'accès de l'iWorld dans lequel vous vous trouviez.").color(TextColors.AQUA))).build()));
+            .append(Text.of(Text.builder(Msg.keys.KICK_TRUST).color(TextColors.AQUA))).build()));
 
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("INSERT Sijania indique que le joueur n'a désormais plus accès à votre iWorld.").color(TextColors.AQUA))).build()));
+                .append(Text.of(Text.builder(Msg.keys.SUCCES_RETIRER_CONFIANCE).color(TextColors.AQUA))).build()));
         return CommandResult.success();
     }
 

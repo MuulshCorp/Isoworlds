@@ -41,7 +41,7 @@ public class CreationCommande {
         final String Iuuid_w;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        IworldsUtils.iworldExists(pPlayer, Msg.keys.EXISTE_IWORLD, Msg.keys.SQL);
+        IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
 
         try {
             PreparedStatement check = instance.database.prepare(CHECK);

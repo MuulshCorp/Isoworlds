@@ -35,9 +35,5 @@ public class IworldsLocations {
         } else {
             IworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
         }
-
-        IworldsUtils.cm("La position du nouveau spawn est : " + go);
-        IworldsUtils.cm("iw " + world + ": Point de respawn du joueur défini sur le spawn du iWorld");
-
     }
 }

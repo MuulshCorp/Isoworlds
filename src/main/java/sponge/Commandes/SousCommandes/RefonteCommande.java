@@ -1,6 +1,7 @@
 package sponge.Commandes.SousCommandes;
 
 import common.ManageFiles;
+import common.Msg;
 import javafx.util.converter.TimeStringConverter;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
@@ -42,37 +43,27 @@ public class RefonteCommande implements CommandExecutor {
         final String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-
         // Variables
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
 
-        // Confirm
-        IworldsUtils.cm("Timestamp: " + timestamp);
-
-        if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
-            IworldsUtils.cm("Value3: ");
+        if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {;
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.").color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         } else {
             long millis = timestamp.getTime() - (confirm.get(pPlayer.getUniqueId().toString()).getTime());
             long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-            IworldsUtils.cm("Timestamp: " + millis);
-            IworldsUtils.cm("Timestamp: " + minutes);
             if (minutes >= 1) {
-                IworldsUtils.cm("Timestamp: supérieur à 1 minute, suppression");
                 confirm.remove(pPlayer.getUniqueId().toString());
                 pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("CONFIRM: Sijania vous indique de rentrer la commande de nouveau pour confirmer la refonte.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
         }
-
         confirm.remove(pPlayer.getUniqueId().toString());
-
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         File sourceDir = new File(ManageFiles.getPath() + worldname);
@@ -80,7 +71,7 @@ public class RefonteCommande implements CommandExecutor {
         destDir.mkdir();
         if (!Sponge.getServer().getWorld(worldname).isPresent()) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania indique que vous ne possédez aucun iWorld, elle vous recommande d'entrez la commande: /iw creation.").color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
         if (Sponge.getServer().getWorld(worldname).get().isLoaded()) {
@@ -89,31 +80,24 @@ public class RefonteCommande implements CommandExecutor {
             for (Player player : colPlayers) {
                 player.setLocation(spawn);
                 player.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("Sijania entame une destruction entière de l'iWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection.").color(TextColors.AQUA))).build()));
+                        .append(Text.of(Text.builder(Msg.keys.REFONTE_KICK).color(TextColors.AQUA))).build()));
             }
             World world = Sponge.getServer().getWorld(worldname).get();
             Sponge.getServer().unloadWorld(world);
-            IworldsUtils.cm("L'iWorld :" + worldname + " a bien été déchargé");
         }
 
 
 
         //iWorldsUtils.deleteDir(sourceDir);
-        IworldsUtils.cm("Le monde :" + worldname + " a bien été déplacé dans le dossier de refonte");
         Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(worldname);
         WorldProperties world = optionalWorld.get();
         try {
             if (Sponge.getServer().deleteWorld(world).get()) {
                 IworldsUtils.cm("Le monde: " + worldname + " a bien été supprimé");
-                IworldsUtils.cm("Le properties du monde ont bien été supprimées");
             }
         } catch (InterruptedException | ExecutionException ie) {
             ie.printStackTrace();
         }
-
-        //move(sourceDir, destDir);
-        IworldsUtils.cm("sourceDir: " + sourceDir);
-        IworldsUtils.cm("destDir: " + destDir);
 
         // DELETE
         try {
@@ -122,26 +106,22 @@ public class RefonteCommande implements CommandExecutor {
             // UUID_P
             Iuuid_p = pPlayer.getUniqueId().toString();
             delete_iworlds.setString(1, Iuuid_p);
-
             // UUID_W
             Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
             delete_autorisations.setString(1, Iuuid_w);
             delete_iworlds.setString(2, Iuuid_w);
-
-            IworldsUtils.cm("DELETE_AUTORISATIONS: " + delete_autorisations);
-            IworldsUtils.cm("DELETE_IWORLDS" + delete_iworlds);
-
             delete_autorisations.executeUpdate();
             delete_iworlds.executeUpdate();
         } catch (Exception ex) {
+            ex.printStackTrace();
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("INSERT Sijania n'est pas parvenue à refondre votre iWorld, veuillez contacter l'équipe Isolonice.").color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
-        IworldsUtils.cm("Fin de la procédure de refonte");
         pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("Sijania vient de terminer son travail, vous pouvez lui demander un nouveau iWorld en entrant la commande: /iw creation.").color(TextColors.AQUA))).build()));
+                .append(Text.of(Text.builder(Msg.keys.SUCCES_REFONTE).color(TextColors.AQUA))).build()));
+        Sponge.getCommandManager().process(pPlayer, "/iw creation");
         return CommandResult.success();
     }
 

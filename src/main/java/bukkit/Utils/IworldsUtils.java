@@ -194,7 +194,7 @@ public class IworldsUtils {
         instance = IworldsBukkit.getInstance();
         String Iuuid_p;
         String Iuuid_w;
-        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try {
             PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);

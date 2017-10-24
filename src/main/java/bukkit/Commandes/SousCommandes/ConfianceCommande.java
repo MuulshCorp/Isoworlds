@@ -36,7 +36,7 @@ public class ConfianceCommande {
             return;
         }
 
-        if (len > 1) {
+        if (len > 2 || len < 2) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }

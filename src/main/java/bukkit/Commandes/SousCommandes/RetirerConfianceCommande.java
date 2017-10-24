@@ -22,7 +22,6 @@ import java.util.UUID;
  */
 public class RetirerConfianceCommande {
 
-    static final String SELECT = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
     static final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
     static final String REMOVE = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
 
@@ -49,6 +48,20 @@ public class RetirerConfianceCommande {
             return;
         }
 
+        try {
+            // SELECT WORLD
+            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+                return;
+            }
+        } catch (Exception se){
+            se.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+            return;
+        }
+
+        // Defining uuidcible
         if (Bukkit.getServer().getPlayer(args[1]) == null) {
             is = false;
             uuidcible = Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId();
@@ -57,80 +70,34 @@ public class RetirerConfianceCommande {
             uuidcible = Bukkit.getServer().getPlayer(args[1]).getUniqueId();
         }
 
-
+        // IF TARGET NOT SET
         if (uuidcible == null) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }
 
+        // DENY SELF REMOVE
+        if (uuidcible.toString().equals(pPlayer.getUniqueId().toString())) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Msg.keys.DENY_SELF_REMOVE);
+            return;
+        }
+
         try {
             // CHECK AUTORISATIONS
-            try {
-                PreparedStatement check = instance.database.prepare(CHECK);
-                // UUID _P
-                check_p = uuidcible.toString();
-                check.setString(1, check_p);
-                // UUID_W
-                check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
-                check.setString(2, check_w);
-                // Requête
-                ResultSet rselect = check.executeQuery();
-                if (!rselect.isBeforeFirst() ) {
-                    return;
-                }
-
-            } catch (Exception se) {
-                se.printStackTrace();
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+            if (!IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
                 return;
             }
 
-            // REMOVE
-
-            if (uuidcible.toString().equals(pPlayer.getUniqueId().toString())) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Msg.keys.DENY_SELF_REMOVE);
-                return;
-            }
-
-            // SELECT WORLD
-            try {
-                PreparedStatement select = instance.database.prepare(SELECT);
-                // UUID_P
-                Suuid_p = pPlayer.getUniqueId().toString();
-                select.setString(1, Suuid_p);
-                // UUID_W
-                Suuid_w = (pPlayer.getUniqueId() + "-iWorld");
-                select.setString(2, Suuid_w);
-                IworldsUtils.cm("SELECT REQUEST: " + select);
-                // Requête
-                ResultSet rselect = select.executeQuery();
-                if (!rselect.isBeforeFirst() ) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-                    return;
-                }
-
-            } catch (Exception se) {
-                se.printStackTrace();
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
-                return;
-            }
-
-            try {
-                PreparedStatement insert = instance.database.prepare(REMOVE);
-                // UUID_P
-                Iuuid_p = uuidcible.toString();
-                insert.setString(1, Iuuid_p);
-                // UUID_W
-                Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
-                insert.setString(2, Iuuid_w);
-                insert.executeUpdate();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            // DELETE AUTORISATION
+            if (!IworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
                 return;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Msg.keys.SQL);
             return;
         }
 

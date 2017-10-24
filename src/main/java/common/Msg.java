@@ -60,5 +60,7 @@ public class Msg {
                 = "'Sijania': Vous ne pouvez pénétrer ce sanctuaire sans une marque de confiance.";
         public static final String SQL
                 = "[Erreur 1]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
+        public static final String FICHIERS
+                = "[Erreur 2]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
     }
 }

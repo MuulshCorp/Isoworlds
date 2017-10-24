@@ -15,8 +15,6 @@ import bukkit.Utils.IworldsUtils;
  */
 public class MeteoCommande {
 
-    static final String SELECT = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-
     public static IworldsBukkit instance;
 
     public static void Meteo(CommandSender sender, String[] args) {
@@ -27,7 +25,7 @@ public class MeteoCommande {
         Integer len = args.length;
 
         if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]" + ChatColor.AQUA + "Sijania indique que vous ne possédez aucun iWorld.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
 

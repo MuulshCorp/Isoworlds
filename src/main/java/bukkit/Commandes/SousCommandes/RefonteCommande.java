@@ -31,10 +31,6 @@ public class RefonteCommande {
     public static void Refonte(CommandSender sender, String[] args) {
 
         instance = IworldsBukkit.getInstance();
-        String Iuuid_p;
-        String Iuuid_w;
-        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ?";
-        String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         // Variables
@@ -42,6 +38,20 @@ public class RefonteCommande {
         String worldname = "";
         Player pPlayer = (Player) sender;
 
+        try {
+            // SELECT WORLD
+            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+                return;
+            }
+        } catch (Exception se){
+            se.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+            return;
+        }
+
+        // Confirmation
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.CONFIRMATION);
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
@@ -85,17 +95,19 @@ public class RefonteCommande {
 
         // DELETE
         try {
-            PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
-            PreparedStatement delete_iworlds = instance.database.prepare(DELETE_IWORLDS);
-            // UUID_P
-            Iuuid_p = pPlayer.getUniqueId().toString();
-            delete_iworlds.setString(1, Iuuid_p);
-            // UUID_W
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
-            delete_autorisations.setString(1, Iuuid_w);
-            delete_iworlds.setString(2, Iuuid_w);
-            delete_autorisations.executeUpdate();
-            delete_iworlds.executeUpdate();
+
+            // DELETE WORLD
+            if (!IworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+                return;
+            }
+
+            // DELETE AUTORISATIONS
+            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+                return;
+            }
+
         } catch (Exception ex) {
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;

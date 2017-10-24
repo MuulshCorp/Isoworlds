@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IworldsBukkit;
 import bukkit.Utils.IworldsUtils;
+import com.sun.org.apache.xml.internal.serializer.utils.MsgKey;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,25 +22,10 @@ import java.util.UUID;
  */
 public class ConfianceCommande {
 
-    static final String SELECT = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-    static final String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
-    static final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-
     public static IworldsBukkit instance;
 
     public static void Confiance(CommandSender sender, String[] args) {
 
-        instance = IworldsBukkit.getInstance();
-        instance.servername;
-
-        // SQL Variables
-        String Suuid_p;
-        String Suuid_w;
-        String Iuuid_p;
-        String Iuuid_w;
-        String check_w;
-        String check_p;
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Player pPlayer = (Player) sender;
         UUID uuidcible;
         Integer len = args.length;
@@ -57,66 +43,25 @@ public class ConfianceCommande {
 
         try {
             // CHECK AUTORISATIONS
-            try {
-                PreparedStatement check = instance.database.prepare(CHECK);
-                // UUID _P
-                check_p = uuidcible.toString();
-                check.setString(1, check_p);
-                // UUID_W
-                check_w = (pPlayer.getUniqueId() + "-iWorld");
-                check.setString(2, check_w);
-                // Requête
-                ResultSet rselect = check.executeQuery();
-                if (rselect.isBeforeFirst() ) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
-                    return;
-                }
-            } catch (Exception se) {
-                se.printStackTrace();
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Msg.keys.SQL);
+            if (IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
                 return;
             }
 
             // SELECT WORLD
-            try {
-                PreparedStatement select = instance.database.prepare(SELECT);
-                // UUID_P
-                Suuid_p = pPlayer.getUniqueId().toString();
-                select.setString(1, Suuid_p);
-                // UUID_W
-                Suuid_w = (pPlayer.getUniqueId() + "-iWorld");
-                select.setString(2, Suuid_w);
-                // Requête
-                ResultSet rselect = select.executeQuery();
-                if (!rselect.isBeforeFirst() ) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-                    return;
-                }
-            } catch (Exception se) {
-                se.printStackTrace();
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
                 return;
             }
 
             // INSERT
-            try {
-                PreparedStatement insert = instance.database.prepare(INSERT);
-                // UUID_P
-                Iuuid_p = uuidcible.toString();
-                insert.setString(1, Iuuid_p);
-                // UUID_W
-                Iuuid_w = ((pPlayer.getUniqueId()) + "-iWorld");
-                insert.setString(2, Iuuid_w);
-                // Date
-                insert.setString(3, (timestamp.toString()));
-                insert.executeUpdate();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+            if (!IworldsUtils.insertTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
                 return;
             }
+
         } catch (Exception ex) {
             ex.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }

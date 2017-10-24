@@ -24,41 +24,28 @@ import static bukkit.Utils.IworldsUtils.cmd;
 public class CreationCommande {
     static final String INSERT = "INSERT INTO `iworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
     static final String INSERT_TRUST = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
-    static final String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
 
     static IworldsBukkit instance;
     public static void Creation(CommandSender sender, String[] args) {
-        instance = IworldsBukkit.getInstance();
 
         // Variables
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) sender;
-        String check_w;
-        String check_p;
-        String Iuuid_p;
-        String Iuuid_w;
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
 
         try {
-            PreparedStatement check = instance.database.prepare(CHECK);
-            // UUID _P
-            check_p = pPlayer.getUniqueId().toString();
-            check.setString(1, check_p);
-            // UUID_W
-            check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
-            check.setString(2, check_w);
-            // Requête
-            ResultSet rselect = check.executeQuery();
-            if (rselect.isBeforeFirst() ) {
+            // SELECT WORLD
+            if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 return;
             }
         } catch (Exception se){
             se.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
@@ -80,6 +67,7 @@ public class CreationCommande {
             Bukkit.getServer().createWorld(new WorldCreator(worldname));
         } catch (Exception ie) {
             ie.printStackTrace();
+            IworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
         }
 
@@ -90,7 +78,8 @@ public class CreationCommande {
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+            IworldsUtils.cm(Msg.keys.FICHIERS);
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.FICHIERS);
             return;
         }
 
@@ -98,24 +87,19 @@ public class CreationCommande {
 
         // INSERT
         try {
-            PreparedStatement insert = instance.database.prepare(INSERT);
-            PreparedStatement insert_trust = instance.database.prepare(INSERT_TRUST);
-            // UUID_P
-            Iuuid_p = pPlayer.getUniqueId().toString();
-            insert.setString(1, Iuuid_p);
-            insert_trust.setString(1, Iuuid_p);
-            // UUID_W
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
-            insert.setString(2, Iuuid_w);
-            insert_trust.setString(2, Iuuid_w);
-            // Date
-            insert.setString(3, (timestamp.toString()));
-            insert_trust.setString(3, (timestamp.toString()));
-            insert.executeUpdate();
-            insert_trust.executeUpdate();
+
+            // INSERT
+            if (!IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+                return;
+            }
+
+            // INSERT TRUST
+            if (!IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+                return;
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 

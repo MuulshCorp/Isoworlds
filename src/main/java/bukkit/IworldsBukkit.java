@@ -63,7 +63,7 @@ public final class IworldsBukkit extends JavaPlugin {
         this.logger.info("iWorlds désactivé !");
         Bukkit.getScheduler().cancelTasks(this);
         this.instance = null;
-        this.id = null;
+        this.servername = null;
         this.database = null;
         this.logger = null;
 

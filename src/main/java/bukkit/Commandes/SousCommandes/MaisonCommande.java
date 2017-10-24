@@ -25,29 +25,18 @@ public class MaisonCommande {
         // Variables
         String worldname = "";
         Player pPlayer = (Player) sender;
-        String check_p;
-        String check_w;
-        String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         worldname = (pPlayer.getUniqueId() + "-iWorld");
 
         try {
-            PreparedStatement check = instance.database.prepare(CHECK);
-            // UUID _P
-            check_p = pPlayer.getUniqueId().toString();
-            check.setString(1, check_p);
-            // UUID_W
-            check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
-            check.setString(2, check_w);
-            // Requête
-            ResultSet rselect = check.executeQuery();
-            if (rselect.isBeforeFirst() ) {
-                Bukkit.getServer().createWorld(new WorldCreator(worldname));
-            } else {
+
+            // SELECT WORLD
+            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
                 return;
             }
         } catch (Exception se){
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            se.printStackTrace();
+            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 

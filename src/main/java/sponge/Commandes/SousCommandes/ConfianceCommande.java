@@ -5,11 +5,6 @@ package sponge.Commandes.SousCommandes;
  */
 
 import common.Msg;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.ConfigurationOptions;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
 import sponge.IworldsSponge;
 import sponge.Utils.IworldsUtils;
 

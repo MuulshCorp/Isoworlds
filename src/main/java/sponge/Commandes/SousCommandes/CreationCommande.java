@@ -2,6 +2,7 @@ package sponge.Commandes.SousCommandes;
 
 import com.flowpowered.math.vector.Vector3i;
 import common.Msg;
+import org.spongepowered.api.scheduler.Task;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
@@ -40,12 +41,11 @@ public class CreationCommande implements CommandExecutor {
 
         // Variables
         String fullpath = "";
-        String worldname = "";
         Player pPlayer = (Player) source;
+        final String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
         IworldsUtils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
 
         // SELECT WORLD
         if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
@@ -76,7 +76,10 @@ public class CreationCommande implements CommandExecutor {
             Sponge.getServer().getWorldProperties(worldname).get().setLoadOnStartup(false);
             Sponge.getServer().getWorldProperties(worldname).get().getDimensionType().getId();
             Sponge.getServer().saveWorldProperties(worldProperties);
-            Sponge.getGame().getServer().loadWorld(worldname);
+            Task.builder().async().delayTicks(20).execute(c -> {
+                Sponge.getGame().getServer().loadWorld(worldname);
+            }).submit(plugin);
+
 
         } catch (IOException ie) {
             ie.printStackTrace();

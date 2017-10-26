@@ -2,6 +2,7 @@ package sponge.Utils;
 
 import common.Msg;
 import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.scheduler.Task;
 import sponge.IworldsSponge;
 
 import org.spongepowered.api.Sponge;
@@ -274,7 +275,9 @@ public class IworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
-                Sponge.getServer().loadWorld(IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+                Task.builder().async().delayTicks(20).execute(c -> {
+                    Sponge.getServer().loadWorld(IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+                }).submit(plugin);
                 return true;
             }
         } catch (Exception se){

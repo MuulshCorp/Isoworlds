@@ -33,10 +33,7 @@ public class TeleportCommande implements CommandCallable {
         Player pPlayer = (Player) source;
         int lenght = 0;
         String[] arg = args.split(" ");
-        for (int i = 0; i < args.length(); i++) {
-            lenght = lenght + 1;
-            IworldsUtils.cm("arg: " + lenght);
-        }
+        int length = arg.length;
 
         IworldsUtils.cm("Total arguments" + lenght);
         if (lenght < 1 || lenght < 2) {

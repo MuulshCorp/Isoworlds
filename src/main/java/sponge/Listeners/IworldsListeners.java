@@ -2,6 +2,7 @@ package sponge.Listeners;
 
 import common.Msg;
 import org.spongepowered.api.entity.Transform;
+import org.spongepowered.api.scheduler.Task;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
 import sponge.IworldsSponge;
@@ -22,8 +23,7 @@ import org.spongepowered.api.world.World;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Map;
-import java.util.UUID;
+
 
 /**
  * Created by Edwin on 08/10/2017.
@@ -53,8 +53,9 @@ public class IworldsListeners {
 
 
         String eventworld = event.getToTransform().getExtent().getName();
-        Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
-
+        Task.builder().async().delayTicks(20).execute(c -> {
+            Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
+        }).submit(plugin);
         if (eventworld.contains("-iWorld")) {
             try {
                 PreparedStatement check = plugin.database.prepare(CHECK);

@@ -42,11 +42,11 @@ public class CreationCommande implements CommandExecutor {
         // Variables
         String fullpath = "";
         Player pPlayer = (Player) source;
-        final String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
         IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
         IworldsUtils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-
+        final String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+        final String taskworld = worldname;
         // SELECT WORLD
         if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
@@ -70,45 +70,43 @@ public class CreationCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
-        try {
-            //WorldArchetype worldArchetype = WorldArchetype.builder().dimension(DimensionTypes.OVERWORLD).reset().build(worldname, worldname);
-            WorldProperties worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-            Sponge.getServer().getWorldProperties(worldname).get().setLoadOnStartup(false);
-            Sponge.getServer().getWorldProperties(worldname).get().getDimensionType().getId();
-            Sponge.getServer().saveWorldProperties(worldProperties);
-            Task.builder().async().delayTicks(20).execute(c -> {
-                Sponge.getGame().getServer().loadWorld(worldname);
-            }).submit(plugin);
+        Task.builder().async().delayTicks(20).execute(c -> {
+
+            try {
+                //WorldArchetype worldArchetype = WorldArchetype.builder().dimension(DimensionTypes.OVERWORLD).reset().build(worldname, worldname);
+                WorldProperties worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
+                Sponge.getServer().getWorldProperties(worldname).get().setLoadOnStartup(false);
+                Sponge.getServer().getWorldProperties(worldname).get().getDimensionType().getId();
+                Sponge.getServer().saveWorldProperties(worldProperties);
 
 
-        } catch (IOException ie) {
-            ie.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
-        }
+            } catch (IOException ie) {
+                ie.printStackTrace();
+                IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
+            }
 
-        // INSERT
-        if (!IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
-            return CommandResult.success();
-        }
+            // INSERT
+            if (IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+                // INSERT TRUST
+                if (IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+                    // Configuration du monde
+                    Sponge.getServer().getWorld(worldname).get().setKeepSpawnLoaded(true);
+                    Sponge.getServer().getWorld(worldname).get().getWorldBorder().setCenter(0, 0);
+                    Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);
 
-        // INSERT TRUST
-        if (!IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
-            return CommandResult.success();
-        }
+                    Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
+                    Location<World> firstspawn = IworldsLocations.getHighestLoc(neutral).orElse(null);
+                    Sponge.getServer().getWorld(worldname).get().getProperties().setSpawnPosition(firstspawn.getBlockPosition());
 
-        // Configuration du monde
-        Sponge.getServer().getWorld(worldname).get().setKeepSpawnLoaded(true);
-        Sponge.getServer().getWorld(worldname).get().getWorldBorder().setCenter(0, 0);
-        Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);
+                    pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                            .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
+                    IworldsLocations.teleport(pPlayer, worldname);
+                    pPlayer.sendTitle(IworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
 
-        Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
-        Location<World> firstspawn = IworldsLocations.getHighestLoc(neutral).orElse(null);
-        Sponge.getServer().getWorld(worldname).get().getProperties().setSpawnPosition(firstspawn.getBlockPosition());
-
-        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
-        IworldsLocations.teleport(pPlayer, worldname);
-        pPlayer.sendTitle(IworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
+                    Sponge.getGame().getServer().loadWorld(taskworld);
+                }
+            }
+        }).submit(plugin);
         return CommandResult.success();
     }
 

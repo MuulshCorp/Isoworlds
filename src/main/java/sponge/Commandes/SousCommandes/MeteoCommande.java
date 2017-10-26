@@ -134,16 +134,23 @@ public class MeteoCommande implements CommandCallable {
             return CommandResult.success();
             
         } else if (size == 3) {
+            IworldsUtils.cm("Meteo 1");
             if (arg[0].equals("soleil") || arg[0].equals("sun")) {
+                IworldsUtils.cm("Meteo 2");
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));
+                IworldsUtils.cm("Meteo 3");
             } else if (arg[0].equals("pluie") || arg[0].equals("rain")){
+                IworldsUtils.cm("Meteo 4");
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));
             } else if (arg[0].equals("eternel") || arg[0].equals("eternal")) {
+                IworldsUtils.cm("Meteo 5");
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));
             }
         } else {
+            IworldsUtils.cm("Meteo 6");
             return CommandResult.success();
         }
+        IworldsUtils.cm("Meteo 7");
         return CommandResult.success();
     }
 

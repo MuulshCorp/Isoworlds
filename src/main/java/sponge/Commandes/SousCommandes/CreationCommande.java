@@ -1,8 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
-import com.flowpowered.math.vector.Vector3i;
 import common.Msg;
-import org.spongepowered.api.scheduler.Task;
 import sponge.IworldsSponge;
 import sponge.Locations.IworldsLocations;
 import sponge.Utils.IworldsUtils;
@@ -24,6 +22,7 @@ import org.spongepowered.api.world.storage.WorldProperties;
 import java.io.*;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.util.NoSuchElementException;
 
 import static sponge.Utils.IworldsUtils.iworldExists;
 
@@ -41,12 +40,13 @@ public class CreationCommande implements CommandExecutor {
 
         // Variables
         String fullpath = "";
+        String worldname = "";
         Player pPlayer = (Player) source;
         IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
         IworldsUtils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
         fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        final String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        final String taskworld = worldname;
+        worldname = (pPlayer.getUniqueId().toString() + "-iWorld");
+        IworldsUtils.cm("iWorld name: " + worldname);
         // SELECT WORLD
         if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
@@ -70,25 +70,20 @@ public class CreationCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
-        Task.builder().async().delayTicks(20).execute(c -> {
 
-            try {
-                //WorldArchetype worldArchetype = WorldArchetype.builder().dimension(DimensionTypes.OVERWORLD).reset().build(worldname, worldname);
-                WorldProperties worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-                Sponge.getServer().getWorldProperties(worldname).get().setLoadOnStartup(false);
-                Sponge.getServer().getWorldProperties(worldname).get().getDimensionType().getId();
-                Sponge.getServer().saveWorldProperties(worldProperties);
+        try {
+            //WorldArchetype worldArchetype = WorldArchetype.builder().dimension(DimensionTypes.OVERWORLD).reset().build(worldname, worldname);
+            WorldProperties worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
+            Sponge.getServer().getWorldProperties(worldname).get().setLoadOnStartup(false);
+            Sponge.getServer().getWorldProperties(worldname).get().getDimensionType().getId();
+            Sponge.getServer().saveWorldProperties(worldProperties);
 
-
-            } catch (IOException ie) {
-                ie.printStackTrace();
-                IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
-            }
 
             // INSERT
             if (IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
                 // INSERT TRUST
                 if (IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+                    Sponge.getGame().getServer().loadWorld(worldname);
                     // Configuration du monde
                     Sponge.getServer().getWorld(worldname).get().setKeepSpawnLoaded(true);
                     Sponge.getServer().getWorld(worldname).get().getWorldBorder().setCenter(0, 0);
@@ -102,11 +97,15 @@ public class CreationCommande implements CommandExecutor {
                             .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
                     IworldsLocations.teleport(pPlayer, worldname);
                     pPlayer.sendTitle(IworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
-
-                    Sponge.getGame().getServer().loadWorld(taskworld);
                 }
             }
-        }).submit(plugin);
+
+
+        } catch (IOException | NoSuchElementException ie) {
+            ie.printStackTrace();
+            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
+            return CommandResult.success();
+        }
         return CommandResult.success();
     }
 

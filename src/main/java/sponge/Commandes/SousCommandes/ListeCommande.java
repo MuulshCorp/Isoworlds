@@ -78,7 +78,7 @@ public class ListeCommande implements CommandExecutor {
                     .color(TextColors.GREEN)
                     .append(Text.builder(" | TPS: " + Sponge.getServer().getTicksPerSecond())
                             .color(IworldsUtils.getTPS(Sponge.getServer().getTicksPerSecond()).getColor()).build())
-                    .onClick(TextActions.runCommand("/iw teleport " + pPlayer.getName() + " " + worldname))
+                    .onClick(TextActions.runCommand("/iw teleport " + pPlayer.getName().toString() + " " + worldname))
                     .onHover(TextActions.showText(Text.of(worldname))).build());
             pPlayer.sendMessage(name);
         }

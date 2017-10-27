@@ -31,12 +31,14 @@ public class TeleportCommande implements CommandCallable {
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
         Player pPlayer = (Player) source;
-        int lenght = 0;
+        int length = 0;
         String[] arg = args.split(" ");
-        int length = arg.length;
+        length = arg.length;
 
-        IworldsUtils.cm("Total arguments" + lenght);
-        if (lenght < 1 || lenght < 2) {
+        IworldsUtils.cm("Total arguments" + length);
+        IworldsUtils.cm("Total arguments2" + args);
+        IworldsUtils.cm("Total arguments3" + arg);
+        if (length != 2) {
             Text message = Text.of(Msg.keys.INVALIDE_JOUEUR);
             pPlayer.sendMessage(message);
             return CommandResult.success();

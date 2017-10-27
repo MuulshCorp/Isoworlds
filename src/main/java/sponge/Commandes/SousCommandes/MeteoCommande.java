@@ -19,15 +19,18 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+
 import javax.annotation.Nullable;
 import java.sql.Timestamp;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
 
 public class MeteoCommande implements CommandCallable {
 
     private final IworldsSponge plugin = IworldsSponge.instance;
+
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
@@ -61,7 +64,7 @@ public class MeteoCommande implements CommandCallable {
                     .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("10 Minutes").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
-                    .onClick(TextActions.runCommand("/iw meteo pluie 10 " + worldname)).build());
+                    .onClick(TextActions.runCommand("/iw meteo pluie 1200 " + worldname)).build());
             pPlayer.sendMessage(rain1);
             Text rain2 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Pluie").color(TextColors.AQUA)))
@@ -70,7 +73,7 @@ public class MeteoCommande implements CommandCallable {
                     .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("30 Minutes").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
-                    .onClick(TextActions.runCommand("/iw meteo pluie 30 " + worldname)).build());
+                    .onClick(TextActions.runCommand("/iw meteo pluie 36000 " + worldname)).build());
             pPlayer.sendMessage(rain2);
             Text rain3 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Pluie").color(TextColors.AQUA)))
@@ -79,45 +82,45 @@ public class MeteoCommande implements CommandCallable {
                     .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("1 Heure").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
-                    .onClick(TextActions.runCommand("/iw meteo pluie 60 " + worldname)).build());
+                    .onClick(TextActions.runCommand("/iw meteo pluie 72000 " + worldname)).build());
             pPlayer.sendMessage(rain3);
             Text rain = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Soleil").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("Pluie").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
-                    .append(Text.of(Text.builder("Sun").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("Rain").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("Eternel").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
                     .onClick(TextActions.runCommand("/iw meteo pluie " + Integer.MAX_VALUE + " " + worldname)).build());
             pPlayer.sendMessage(rain);
 
-            // Soleil
+            // rain
             Text sun1 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Pluie").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("Soleil").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
-                    .append(Text.of(Text.builder("Rain").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("Sun").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("10 Minutes").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
-                    .onClick(TextActions.runCommand("/iw meteo soleil 10 " + worldname)).build());
+                    .onClick(TextActions.runCommand("/iw meteo soleil 1200 " + worldname)).build());
             pPlayer.sendMessage(sun1);
             Text sun2 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Pluie").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("Soleil").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
-                    .append(Text.of(Text.builder("Rain").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("Sun").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("30 Minutes").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
-                    .onClick(TextActions.runCommand("/iw meteo soleil 30 " + worldname)).build());
+                    .onClick(TextActions.runCommand("/iw meteo soleil 36000 " + worldname)).build());
             pPlayer.sendMessage(sun2);
             Text sun3 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Pluie").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("Soleil").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
-                    .append(Text.of(Text.builder("Rain").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("Sun").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
                     .append(Text.of(Text.builder("1 Heure").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
-                    .onClick(TextActions.runCommand("/iw meteo soleil 60 " + worldname)).build());
+                    .onClick(TextActions.runCommand("/iw meteo soleil 72000 " + worldname)).build());
             pPlayer.sendMessage(sun3);
             Text sun = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Soleil").color(TextColors.AQUA)))
@@ -129,31 +132,62 @@ public class MeteoCommande implements CommandCallable {
                     .onClick(TextActions.runCommand("/iw meteo soleil " + Integer.MAX_VALUE + " " + worldname)).build());
             pPlayer.sendMessage(sun);
 
+            // Storm
+            pPlayer.sendMessage(meteo);
+            Text storm1 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Déluge").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("Storm").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("10 Minutes").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                    .onClick(TextActions.runCommand("/iw meteo deluge 1200 " + worldname)).build());
+            pPlayer.sendMessage(storm1);
+            Text storm2 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Déluge").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("Storm").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("30 Minutes").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                    .onClick(TextActions.runCommand("/iw meteo deluge 36000 " + worldname)).build());
+            pPlayer.sendMessage(storm2);
+            Text storm3 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Déluge").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("Storm").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("1 Heure").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                    .onClick(TextActions.runCommand("/iw meteo deluge 72000 " + worldname)).build());
+            pPlayer.sendMessage(storm3);
+            Text storm = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Déluge").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("Storm").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("] - [Durée: ").color(TextColors.GOLD)))
+                    .append(Text.of(Text.builder("Eternel").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("]").color(TextColors.GOLD)))
+                    .onClick(TextActions.runCommand("/iw meteo deluge " + Integer.MAX_VALUE + " " + worldname)).build());
+            pPlayer.sendMessage(storm);
+
             pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
 
             return CommandResult.success();
-            
+
         } else if (size == 3) {
-            IworldsUtils.cm("Meteo 1");
             if (arg[0].equals("soleil") || arg[0].equals("sun")) {
-                IworldsUtils.cm("Meteo 2");
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));
-                IworldsUtils.cm("Meteo 3");
-            } else if (arg[0].equals("pluie") || arg[0].equals("rain")){
-                IworldsUtils.cm("Meteo 4");
-                Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));
-            } else if (arg[0].equals("eternel") || arg[0].equals("eternal")) {
-                IworldsUtils.cm("Meteo 5");
-                Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));
+            } else if (arg[0].equals("pluie") || arg[0].equals("rain")) {
+                Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.RAIN, parseInt(arg[1]));
+            } else if (arg[0].equals("deluge") || arg[0].equals("storm")) {
+                Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.THUNDER_STORM, parseInt(arg[1]));
             }
         } else {
-            IworldsUtils.cm("Meteo 6");
             return CommandResult.success();
         }
-        IworldsUtils.cm("Meteo 7");
         return CommandResult.success();
     }
-
 
 
     @Override

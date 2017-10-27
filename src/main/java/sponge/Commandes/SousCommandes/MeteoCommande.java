@@ -133,7 +133,6 @@ public class MeteoCommande implements CommandCallable {
             pPlayer.sendMessage(sun);
 
             // Storm
-            pPlayer.sendMessage(meteo);
             Text storm1 = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Déluge").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("/").color(TextColors.GOLD)))

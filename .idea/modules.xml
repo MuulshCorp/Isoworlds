@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/iworlds.iml" filepath="$PROJECT_DIR$/iworlds.iml" />
+      <module fileurl="file://$PROJECT_DIR$/isoworlds.iml" filepath="$PROJECT_DIR$/isoworlds.iml" />
     </modules>
   </component>
 </project>

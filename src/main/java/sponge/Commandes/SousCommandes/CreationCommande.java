@@ -1,9 +1,9 @@
 package sponge.Commandes.SousCommandes;
 
 import common.Msg;
-import sponge.IworldsSponge;
-import sponge.Locations.IworldsLocations;
-import sponge.Utils.IworldsUtils;
+import sponge.IsoworldsSponge;
+import sponge.Locations.IsoworldsLocations;
+import sponge.Utils.IsoworldsUtils;
 import common.ManageFiles;
 
 import org.spongepowered.api.Sponge;
@@ -20,20 +20,16 @@ import org.spongepowered.api.world.*;
 import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.io.*;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.NoSuchElementException;
-
-import static sponge.Utils.IworldsUtils.iworldExists;
 
 /**
  * Created by Edwin on 05/10/2017.
  */
 
 public class CreationCommande implements CommandExecutor {
-    static final String INSERT = "INSERT INTO `iworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
+    static final String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
     static final String INSERT_TRUST = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
-    private final IworldsSponge plugin = IworldsSponge.instance;
+    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
@@ -42,14 +38,14 @@ public class CreationCommande implements CommandExecutor {
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
-        IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
-        IworldsUtils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
-        fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        worldname = (pPlayer.getUniqueId().toString() + "-iWorld");
-        IworldsUtils.cm("iWorld name: " + worldname);
+        IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
+        IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
+        fullpath = (ManageFiles.getPath() + IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
+        worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
+        IsoworldsUtils.cm("IsoWorld name: " + worldname);
         // SELECT WORLD
-        if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        if (IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
@@ -66,7 +62,7 @@ public class CreationCommande implements CommandExecutor {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
             ie.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
+            IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
             return CommandResult.success();
         }
 
@@ -80,9 +76,9 @@ public class CreationCommande implements CommandExecutor {
 
 
             // INSERT
-            if (IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+            if (IsoworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
                 // INSERT TRUST
-                if (IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+                if (IsoworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
                     Sponge.getGame().getServer().loadWorld(worldname);
                     // Configuration du monde
                     Sponge.getServer().getWorld(worldname).get().setKeepSpawnLoaded(true);
@@ -90,20 +86,20 @@ public class CreationCommande implements CommandExecutor {
                     Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);
 
                     Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
-                    Location<World> firstspawn = IworldsLocations.getHighestLoc(neutral).orElse(null);
+                    Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
                     Sponge.getServer().getWorld(worldname).get().getProperties().setSpawnPosition(firstspawn.getBlockPosition());
 
-                    pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                             .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
-                    IworldsLocations.teleport(pPlayer, worldname);
-                    pPlayer.sendTitle(IworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
+                    IsoworldsLocations.teleport(pPlayer, worldname);
+                    pPlayer.sendTitle(IsoworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
                 }
             }
 
 
         } catch (IOException | NoSuchElementException ie) {
             ie.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
+            IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
             return CommandResult.success();
         }
         return CommandResult.success();
@@ -113,7 +109,7 @@ public class CreationCommande implements CommandExecutor {
     public static CommandSpec getCommand() {
         return CommandSpec.builder()
                 .description(Text.of("Commandes de création des iWorlds"))
-                .permission("iworlds.creation")
+                .permission("isoworlds.creation")
                 .executor(new CreationCommande())
                 .build();
     }

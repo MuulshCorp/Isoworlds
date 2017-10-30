@@ -1,7 +1,7 @@
 package sponge.Locations;
 
-import sponge.IworldsSponge;
-import sponge.Utils.IworldsUtils;
+import sponge.IsoworldsSponge;
+import sponge.Utils.IsoworldsUtils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockTypes;
@@ -14,15 +14,15 @@ import org.spongepowered.api.world.World;
 
 import java.util.Optional;
 
-import static sponge.IworldsSponge.instance;
+import static sponge.IsoworldsSponge.instance;
 
 /**
  * Created by Edwin on 08/10/2017.
  */
 
-public class IworldsLocations {
+public class IsoworldsLocations {
 
-    private final IworldsSponge plugin = instance;
+    private final IsoworldsSponge plugin = instance;
 
     public static Optional<Location<World>> getHighestLoc(Location<World> loc) {
         Optional<Integer> y = getHighestY(loc.getExtent(), loc.getX(), loc.getZ());
@@ -52,7 +52,7 @@ public class IworldsLocations {
     public static void teleport(Player player, String world) {
         Location<World> spawn = Sponge.getGame().getServer().getWorld(world).get().getSpawnLocation();
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-        Location<World> top = IworldsLocations.getHighestLoc(maxy).orElse(null);
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
         Location<World> secours;
         Location<World> go = new Location<>(spawn.getExtent(), 0, 60, 0);
 
@@ -62,7 +62,7 @@ public class IworldsLocations {
                 Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(instance).get()).build());
                 go = new Location<>(spawn.getExtent(), 0, 61, 0);
             } else {
-                secours = IworldsLocations.getHighestLoc(maxy).orElse(null);
+                secours = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
                 go = new Location<>(spawn.getExtent(), 0, secours.getBlockY(), 0);
             }
         } catch (NullPointerException npe) {
@@ -71,9 +71,9 @@ public class IworldsLocations {
 
         // Téléportation du joueur
         if (player.setLocationSafely(go)) {
-            IworldsUtils.cm("Le joueur a bien été téléporté !");
+            IsoworldsUtils.cm("Le joueur a bien été téléporté !");
         } else {
-            IworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
+            IsoworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
         }
 
     }

@@ -1,8 +1,8 @@
 package sponge.Commandes.SousCommandes;
 
 import com.google.common.collect.Iterables;
-import sponge.IworldsSponge;
-import sponge.Utils.IworldsUtils;
+import sponge.IsoworldsSponge;
+import sponge.Utils.IsoworldsUtils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -28,7 +28,7 @@ import java.util.UUID;
  */
 public class ListeCommande implements CommandExecutor {
 
-    private final IworldsSponge plugin = IworldsSponge.instance;
+    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
@@ -38,22 +38,22 @@ public class ListeCommande implements CommandExecutor {
         Boolean check = false;
         for(World world : Sponge.getServer().getWorlds()) {
             if (world.isLoaded()) {
-                if (world.getName().contains("-iWorld")) {
+                if (world.getName().contains("-IsoWorld")) {
                     worlds.add(world);
                 }
             }
         }
 
         if (check == true) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania ne repère aucun iWorld dans le Royaume Isolonice").color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld dans le Royaume Isolonice").color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
-        Text title = Text.of(Text.builder("[Liste des iWorlds (cliquables)]").color(TextColors.GOLD).build());
+        Text title = Text.of(Text.builder("[Liste des IsoWorlds (cliquables)]").color(TextColors.GOLD).build());
         pPlayer.sendMessage(title);
         for(World w : worlds ) {
             String worldname = w.getName();
-            String[] split = w.getName().split("-iWorld");
+            String[] split = w.getName().split("-IsoWorld");
             UUID uuid = UUID.fromString(split[0]);
             UserStorageService userStorage = Sponge.getServiceManager().provide(UserStorageService.class).get();
             Optional<User> player = userStorage.get(uuid);
@@ -77,7 +77,7 @@ public class ListeCommande implements CommandExecutor {
             Text name = Text.of(Text.builder(pname + " [" + status +"] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities)
                     .color(TextColors.GREEN)
                     .append(Text.builder(" | TPS: " + Sponge.getServer().getTicksPerSecond())
-                            .color(IworldsUtils.getTPS(Sponge.getServer().getTicksPerSecond()).getColor()).build())
+                            .color(IsoworldsUtils.getTPS(Sponge.getServer().getTicksPerSecond()).getColor()).build())
                     .onClick(TextActions.runCommand("/iw teleport " + pPlayer.getName().toString() + " " + worldname))
                     .onHover(TextActions.showText(Text.of(worldname))).build());
             pPlayer.sendMessage(name);
@@ -89,7 +89,7 @@ public class ListeCommande implements CommandExecutor {
     public static CommandSpec getCommand() {
         return CommandSpec.builder()
                 .description(Text.of("Commande pour lister les iWorlds"))
-                .permission("iworlds.liste")
+                .permission("isoworlds.liste")
                 .executor(new ListeCommande())
                 .build();
     }

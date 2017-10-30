@@ -7,8 +7,8 @@ package sponge.Commandes.SousCommandes;
 import common.Msg;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.world.weather.Weathers;
-import sponge.IworldsSponge;
-import sponge.Utils.IworldsUtils;
+import sponge.IsoworldsSponge;
+import sponge.Utils.IsoworldsUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -21,7 +21,6 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import javax.annotation.Nullable;
-import java.sql.Timestamp;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
@@ -29,26 +28,26 @@ import static java.lang.Long.parseLong;
 
 public class MeteoCommande implements CommandCallable {
 
-    private final IworldsSponge plugin = IworldsSponge.instance;
+    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
         // SQL Variables
         Player pPlayer = (Player) source;
-        String worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+        String worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
         String[] arg = args.split(" ");
         int size = arg.length;
 
-        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
             return CommandResult.success();
         }
 
         if (size == 1) {
             pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("iWorlds ").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("IsoWorlds ").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
                     .build()));
 

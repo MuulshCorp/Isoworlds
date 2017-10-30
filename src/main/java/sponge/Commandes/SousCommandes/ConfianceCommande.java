@@ -5,8 +5,8 @@ package sponge.Commandes.SousCommandes;
  */
 
 import common.Msg;
-import sponge.IworldsSponge;
-import sponge.Utils.IworldsUtils;
+import sponge.IsoworldsSponge;
+import sponge.Utils.IsoworldsUtils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
@@ -28,7 +28,7 @@ import java.util.*;
 
 public class ConfianceCommande implements CommandCallable {
 
-    private final IworldsSponge plugin = IworldsSponge.instance;
+    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
@@ -39,14 +39,14 @@ public class ConfianceCommande implements CommandCallable {
         int size = arg.length;
 
         if (size > 1) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         // SELECT WORLD
-        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
@@ -58,34 +58,34 @@ public class ConfianceCommande implements CommandCallable {
                 uuidcible = player.get().getUniqueId();
             } catch (NoSuchElementException e){
                 e.printStackTrace();
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
 
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                IworldsUtils.coloredMessage(pPlayer, Msg.keys.INVALIDE_JOUEUR);
+                IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.INVALIDE_JOUEUR);
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
             i.printStackTrace();
-            IworldsUtils.coloredMessage(pPlayer, Msg.keys.DATA);
+            IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.DATA);
             return CommandResult.success();
         }
 
         // CHECK AUTORISATIONS
-        if (IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        if (IsoworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_TRUST).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         // INSERT
-        if (!IworldsUtils.insertTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.insertTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
             return CommandResult.success();
         }
 
-        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_TRUST).color(TextColors.AQUA))).build()));
         return CommandResult.success();
     }

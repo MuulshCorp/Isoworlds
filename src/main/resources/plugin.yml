@@ -1,15 +1,15 @@
 name: Iworlds
 version: @version@
-main: bukkit.IworldsBukkit
+main: bukkit.IsoworldsBukkit
 authors: [Sythiel]
 description: Manager de mondes personnels
 website: https://isolonice.fr
 
 commands:
     iw:
-        description: Commande de base des iworlds
+        description: Commande de base des isoworlds
         usage: /<iw> [creation][liste][maison][confiance][on][off][teleport]
-        aliases: [iworlds, iworld]
+        aliases: [isoworlds, isoworld]
 
 permission:
     iworlds.default:

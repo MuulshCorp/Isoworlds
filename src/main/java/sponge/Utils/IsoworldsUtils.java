@@ -1,9 +1,8 @@
 package sponge.Utils;
 
 import common.Msg;
-import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.scheduler.Task;
-import sponge.IworldsSponge;
+import sponge.IsoworldsSponge;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.property.block.SolidCubeProperty;
@@ -23,9 +22,9 @@ import java.util.UUID;
 /**
  * Created by Edwin on 08/10/2017.
  */
-public class IworldsUtils {
+public class IsoworldsUtils {
 
-    private final IworldsSponge plugin = IworldsSponge.instance;
+    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     public static boolean isSolid(Location blockLoc) {
         if (blockLoc.getProperty(SolidCubeProperty.class).isPresent()) {
@@ -44,12 +43,12 @@ public class IworldsUtils {
 
     // Envoie un message au serveur
     public static void sm(String msg) {
-        Sponge.getServer().getBroadcastChannel().send(Text.of("[iWorlds]: " + msg));
+        Sponge.getServer().getBroadcastChannel().send(Text.of("[IsoWorlds]: " + msg));
     }
 
     // Envoie un message à la console
     public static void cm(String msg) {
-        Sponge.getServer().getConsole().sendMessage(Text.of("[iWorlds]: " + msg));
+        Sponge.getServer().getConsole().sendMessage(Text.of("[IsoWorlds]: " + msg));
     }
 
     // Executer une commande sur le serveur
@@ -94,13 +93,13 @@ public class IworldsUtils {
     }
 
     public static void coloredMessage(Player pPlayer, String message){
-        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(message).color(TextColors.AQUA))).build()));
     }
 
     public static void getHelp(Player pPlayer) {
         pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("iWorlds ").color(TextColors.AQUA)))
+                .append(Text.of(Text.builder("IsoWorlds ").color(TextColors.AQUA)))
                 .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
                 .build()));
 
@@ -109,9 +108,9 @@ public class IworldsUtils {
         Text cm1 = Text.of(Text.builder("- Basique:").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(" /iw ").color(TextColors.AQUA)))
                 .append(Text.of(Text.builder("|| ").color(TextColors.GOLD)))
-                .append(Text.of(Text.builder("/iworld ").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("/isoworld ").color(TextColors.GREEN)))
                 .append(Text.of(Text.builder("|| ").color(TextColors.GOLD)))
-                .append(Text.of(Text.builder("/iworlds").color(TextColors.GREEN)))
+                .append(Text.of(Text.builder("/isoworlds").color(TextColors.GREEN)))
                 .build());
         pPlayer.sendMessage(cm1);
 
@@ -257,18 +256,18 @@ public class IworldsUtils {
 
     // check if iworld exists
     public static Boolean iworldExists(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        IworldsSponge plugin = IworldsSponge.instance;
+        String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String check_w;
         String check_p;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
             // UUID _P
-            check_p = IworldsUtils.PlayerToUUID(pPlayer).toString();
+            check_p = IsoworldsUtils.PlayerToUUID(pPlayer).toString();
             check.setString(1, check_p);
             // UUID_W
-            check_w = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+            check_w = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
             check.setString(2, check_w);
             // SERVEUR_ID
             check.setString(3, plugin.servername);
@@ -276,14 +275,14 @@ public class IworldsUtils {
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
                 Task.builder().async().delayTicks(20).execute(c -> {
-                    Sponge.getServer().loadWorld(IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+                    Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
                 }).submit(plugin);
                 return true;
             }
         } catch (Exception se){
             se.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
@@ -292,7 +291,7 @@ public class IworldsUtils {
 
     // Check autorisation trust
     public static Boolean trustExists(Player pPlayer, UUID uuidcible, String messageErreur) {
-        IworldsSponge plugin = IworldsSponge.instance;
+        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
         String check_p;
@@ -302,7 +301,7 @@ public class IworldsUtils {
             check_p = uuidcible.toString();
             check.setString(1, check_p);
             // UUID_W
-            check_w = (pPlayer.getUniqueId() + "-iWorld");
+            check_w = (pPlayer.getUniqueId() + "-IsoWorld");
             check.setString(2, check_w);
             // SERVEUR_ID
             check.setString(3, plugin.servername);
@@ -313,8 +312,8 @@ public class IworldsUtils {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
@@ -323,8 +322,8 @@ public class IworldsUtils {
 
     // insert trust
     public static Boolean insertCreation(Player pPlayer, String messageErreur) {
-        IworldsSponge plugin = IworldsSponge.instance;
-        String INSERT = "INSERT INTO `iworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
+        IsoworldsSponge plugin = IsoworldsSponge.instance;
+        String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -334,7 +333,7 @@ public class IworldsUtils {
             Iuuid_p = pPlayer.getUniqueId().toString();
             insert.setString(1, Iuuid_p);
             // UUID_W
-            Iuuid_w = ((pPlayer.getUniqueId()) + "-iWorld");
+            Iuuid_w = ((pPlayer.getUniqueId()) + "-IsoWorld");
             insert.setString(2, Iuuid_w);
             // Date
             insert.setString(3, (timestamp.toString()));
@@ -343,8 +342,8 @@ public class IworldsUtils {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
@@ -353,7 +352,7 @@ public class IworldsUtils {
 
     // insert trust
     public static Boolean insertTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
-        IworldsSponge plugin = IworldsSponge.instance;
+        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
@@ -364,7 +363,7 @@ public class IworldsUtils {
             Iuuid_p = uuidcible.toString();
             insert.setString(1, Iuuid_p);
             // UUID_W
-            Iuuid_w = ((pPlayer.getUniqueId()) + "-iWorld");
+            Iuuid_w = ((pPlayer.getUniqueId()) + "-IsoWorld");
             insert.setString(2, Iuuid_w);
             // Date
             insert.setString(3, (timestamp.toString()));
@@ -373,8 +372,8 @@ public class IworldsUtils {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
@@ -383,16 +382,16 @@ public class IworldsUtils {
 
     // delete iworld
     public static Boolean deleteIworld(Player pPlayer, String messageErreur) {
-        IworldsSponge plugin = IworldsSponge.instance;
+        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String DELETE_IWORLDS = "DELETE FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         try {
             PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
             PreparedStatement delete_iworlds = plugin.database.prepare(DELETE_IWORLDS);
             Iuuid_p = pPlayer.getUniqueId().toString();
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
+            Iuuid_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
 
             // delete autorisations
             delete_autorisations.setString(1, Iuuid_w);
@@ -408,8 +407,8 @@ public class IworldsUtils {
             delete_iworlds.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
@@ -418,14 +417,14 @@ public class IworldsUtils {
 
     // Delete trust
     public static Boolean deleteTrust(Player pPlayer, UUID uuid, String messageErreur) {
-        IworldsSponge plugin = IworldsSponge.instance;
+        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         try {
             PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
             Iuuid_p = uuid.toString();
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
+            Iuuid_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
 
             // delete autorisation
             delete_autorisations.setString(1, Iuuid_p);
@@ -436,8 +435,8 @@ public class IworldsUtils {
             delete_autorisations.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }

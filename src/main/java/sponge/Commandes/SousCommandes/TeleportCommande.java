@@ -5,9 +5,9 @@ package sponge.Commandes.SousCommandes;
  */
 
 import common.Msg;
-import sponge.IworldsSponge;
-import sponge.Locations.IworldsLocations;
-import sponge.Utils.IworldsUtils;
+import sponge.IsoworldsSponge;
+import sponge.Locations.IsoworldsLocations;
+import sponge.Utils.IsoworldsUtils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class TeleportCommande implements CommandCallable {
 
-    private final IworldsSponge plugin = IworldsSponge.instance;
+    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
@@ -35,9 +35,9 @@ public class TeleportCommande implements CommandCallable {
         String[] arg = args.split(" ");
         length = arg.length;
 
-        IworldsUtils.cm("Total arguments" + length);
-        IworldsUtils.cm("Total arguments2" + args);
-        IworldsUtils.cm("Total arguments3" + arg);
+        IsoworldsUtils.cm("Total arguments" + length);
+        IsoworldsUtils.cm("Total arguments2" + args);
+        IsoworldsUtils.cm("Total arguments3" + arg);
         if (length != 2) {
             Text message = Text.of(Msg.keys.INVALIDE_JOUEUR);
             pPlayer.sendMessage(message);
@@ -52,7 +52,7 @@ public class TeleportCommande implements CommandCallable {
             return CommandResult.success();
         } else {
             player = target.get().getPlayer().get();
-            IworldsLocations.teleport(player, arg[1]);
+            IsoworldsLocations.teleport(player, arg[1]);
         }
         return CommandResult.success();
     }

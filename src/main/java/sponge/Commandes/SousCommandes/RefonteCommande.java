@@ -2,9 +2,8 @@ package sponge.Commandes.SousCommandes;
 
 import common.ManageFiles;
 import common.Msg;
-import javafx.util.converter.TimeStringConverter;
-import sponge.IworldsSponge;
-import sponge.Utils.IworldsUtils;
+import sponge.IsoworldsSponge;
+import sponge.Utils.IsoworldsUtils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -20,7 +19,6 @@ import org.spongepowered.api.world.*;
 import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.io.File;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -31,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RefonteCommande implements CommandExecutor {
 
-    private final IworldsSponge plugin = IworldsSponge.instance;
+    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
     final static Map<String, Timestamp> confirm = new HashMap<String, Timestamp>();
 
     @Override
@@ -44,8 +42,8 @@ public class RefonteCommande implements CommandExecutor {
         Player pPlayer = (Player) source;
 
         // SELECT WORLD
-        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
@@ -53,7 +51,7 @@ public class RefonteCommande implements CommandExecutor {
         // Confirmation
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {;
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         } else {
@@ -61,19 +59,19 @@ public class RefonteCommande implements CommandExecutor {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
             if (minutes >= 1) {
                 confirm.remove(pPlayer.getUniqueId().toString());
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
         }
         confirm.remove(pPlayer.getUniqueId().toString());
-        fullpath = (ManageFiles.getPath() + IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
-        worldname = (IworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+        fullpath = (ManageFiles.getPath() + IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
+        worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
         File sourceDir = new File(ManageFiles.getPath() + worldname);
-        File destDir = new File(ManageFiles.getPath() + "/iWORLDS-REFONTE/" + worldname);
+        File destDir = new File(ManageFiles.getPath() + "/IsoWorlds-REFONTE/" + worldname);
         destDir.mkdir();
         if (!Sponge.getServer().getWorld(worldname).isPresent()) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
@@ -82,7 +80,7 @@ public class RefonteCommande implements CommandExecutor {
             Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
             for (Player player : colPlayers) {
                 player.setLocation(spawn);
-                player.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                player.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder(Msg.keys.REFONTE_KICK).color(TextColors.AQUA))).build()));
             }
             World world = Sponge.getServer().getWorld(worldname).get();
@@ -94,7 +92,7 @@ public class RefonteCommande implements CommandExecutor {
         WorldProperties world = optionalWorld.get();
         try {
             if (Sponge.getServer().deleteWorld(world).get()) {
-                IworldsUtils.cm("Le monde: " + worldname + " a bien été supprimé");
+                IsoworldsUtils.cm("Le monde: " + worldname + " a bien été supprimé");
             }
         } catch (InterruptedException | ExecutionException ie) {
             ie.printStackTrace();
@@ -102,13 +100,13 @@ public class RefonteCommande implements CommandExecutor {
 
 
         // DELETE WORLD
-        if (!IworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        if (!IsoworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
-        pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_REFONTE).color(TextColors.AQUA))).build()));
         Sponge.getCommandManager().process(pPlayer, "iw creation");
         return CommandResult.success();

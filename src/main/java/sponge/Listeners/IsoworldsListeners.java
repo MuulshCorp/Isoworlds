@@ -3,13 +3,11 @@ package sponge.Listeners;
 import common.Msg;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.scheduler.Task;
-import sponge.Locations.IworldsLocations;
-import sponge.Utils.IworldsUtils;
-import sponge.IworldsSponge;
+import sponge.Locations.IsoworldsLocations;
+import sponge.Utils.IsoworldsUtils;
+import sponge.IsoworldsSponge;
 
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.DataTransactionResult;
-import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.MoveEntityEvent;
@@ -17,7 +15,6 @@ import org.spongepowered.api.event.entity.living.humanoid.player.RespawnPlayerEv
 import org.spongepowered.api.event.filter.Getter;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.RespawnLocation;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -28,18 +25,18 @@ import java.sql.ResultSet;
 /**
  * Created by Edwin on 08/10/2017.
  */
-public class IworldsListeners {
+public class IsoworldsListeners {
 
-    private final IworldsSponge plugin = IworldsSponge.instance;
+    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Listener
     public void onRespawnPlayerEvent(RespawnPlayerEvent event) {
 
         Player p = event.getTargetEntity();
-        String worldname = (p.getUniqueId() + "-iWorld");
+        String worldname = (p.getUniqueId() + "-IsoWorld");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-        Location<World> top = IworldsLocations.getHighestLoc(maxy).orElse(null);
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
 
         Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), top.getPosition());
         event.setToTransform(t);
@@ -57,7 +54,7 @@ public class IworldsListeners {
             Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
         }).submit(plugin);
 
-        if (eventworld.contains("-iWorld")) {
+        if (eventworld.contains("-IsoWorld")) {
             try {
                 PreparedStatement check = plugin.database.prepare(CHECK);
                 // UUID_P
@@ -69,26 +66,26 @@ public class IworldsListeners {
                 // Requête
                 check.setString(3, plugin.servername);
                 ResultSet rselect = check.executeQuery();
-                IworldsUtils.cm("Monde event: " + eventworld);
-                if (pPlayer.hasPermission("iworlds.bypass.teleport")) {
+                IsoworldsUtils.cm("Monde event: " + eventworld);
+                if (pPlayer.hasPermission("isoworlds.bypass.teleport")) {
                     return;
                 }
 
                 if (rselect.isBeforeFirst() ) {
-                    pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                             .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION).color(TextColors.AQUA))).build()));
                     // Cas du untrust, pour ne pas rester bloquer
                 } else if (pPlayer.getWorld().getName() == eventworld) {
-                    pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                             .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION).color(TextColors.AQUA))).build()));
                 } else {
                     event.setCancelled(true);
-                    pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                             .append(Text.of(Text.builder(Msg.keys.DENY_TELEPORT).color(TextColors.AQUA))).build()));
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             }
 

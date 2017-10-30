@@ -2,8 +2,8 @@ package sponge;
 
 import com.google.inject.Inject;
 
-import sponge.Listeners.IworldsListeners;
-import sponge.Utils.IworldsUtils;
+import sponge.Listeners.IsoworldsListeners;
+import sponge.Utils.IsoworldsUtils;
 
 import common.Mysql;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -27,19 +27,19 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Plugin(
-        id = "iworlds",
-        name = "iWorlds",
-        description = "Manager de iworlds Isolonice",
+        id = "isoworlds",
+        name = "IsoWorlds",
+        description = "Manager de isoworlds Isolonice",
         url = "https://isolonice.fr",
-        version = "0.6-DEV",
+        version = "1.1-SNAPSHOT",
         authors = {
                 "Sythiel"
         }
 )
 
-public class IworldsSponge {
+public class IsoworldsSponge {
 
-    public static IworldsSponge instance;
+    public static IsoworldsSponge instance;
     private Logger logger;
     private Game game;
     public String servername;
@@ -55,7 +55,7 @@ public class IworldsSponge {
     public Mysql database;
 
     @Inject
-    public IworldsSponge(Logger logger, Game game) {
+    public IsoworldsSponge(Logger logger, Game game) {
         this.logger = logger;
         this.game = game;
         instance = this;
@@ -66,25 +66,25 @@ public class IworldsSponge {
 
         registerEvents();
 
-        logger.info("Chargement des iWorlds...");
+        logger.info("Chargement des IsoWorlds...");
 
-        Sponge.getCommandManager().register(this, IworldsCommande.getCommand(), "iw", "iworld", "iworlds");
+        Sponge.getCommandManager().register(this, IsoworldsCommande.getCommand(), "iw", "isoworld", "isoworlds");
 
-        logger.info("Les iWorlds sont chargés et opérationnels !");
+        logger.info("Les IsoWorlds sont chargés et opérationnels !");
     }
 
     private void everyMinutes() {
         Task task = Task.builder().execute(() -> this.unload())
                 .async().delay(100, TimeUnit.MILLISECONDS).interval(1, TimeUnit.MINUTES)
-                .name("Analyse des iWorlds vides...").submit(this.instance);
+                .name("Analyse des IsoWorlds vides...").submit(this.instance);
     }
 
     private void unload() {
         Task.builder().execute(() -> {
-            IworldsUtils.cm("[iWorlds] Analyse des iWorls vides...");
+            IsoworldsUtils.cm("[IsoWorlds] Analyse des iWorls vides...");
             for(World world : Sponge.getServer().getWorlds()) {
                 if (world.isLoaded() & worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
-                    if (world.getName().contains("-iWorld")) {
+                    if (world.getName().contains("-IsoWorld")) {
                         worlds.put(world.getName(), 1);
                     } else {
                         continue;
@@ -96,7 +96,7 @@ public class IworldsSponge {
                     }
                     worlds.put(world.getName(), worlds.get(world.getName()) + 1);
                     if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 10) {
-                        IworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
+                        IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
                         Sponge.getServer().unloadWorld(world);
                         worlds.remove(world.getName());
                     } else {
@@ -104,10 +104,10 @@ public class IworldsSponge {
                     }
                 }
             }
-            IworldsUtils.cm("[iWorlds] Les iWorlds vides depuis 10 minutes viennent d'être déchargé");
+            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 10 minutes viennent d'être déchargé");
 
 
-        }).async().name("Les iWorlds vides depuis 5 minutes viennent d'être déchargé").submit(this);
+        }).async().name("Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé").submit(this);
     }
 
     @Listener
@@ -117,12 +117,12 @@ public class IworldsSponge {
                 this.logger.info("Fichier de configuration non trouvé, création en cours...");
                 this.configuration.createNewFile();
                 this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
-                this.configurationNode.getNode(new Object[]{"iWorlds", "id"}).setValue("iworlds");
-                this.configurationNode.getNode(new Object[]{"iWorlds", "sql_host"}).setValue("176.31.106.17");
-                this.configurationNode.getNode(new Object[]{"iWorlds", "sql_port"}).setValue(3306);
-                this.configurationNode.getNode(new Object[]{"iWorlds", "sql_database"}).setValue("iworlds");
-                this.configurationNode.getNode(new Object[]{"iWorlds", "sql_username"}).setValue("iworlds");
-                this.configurationNode.getNode(new Object[]{"iWorlds", "sql_password"}).setValue("806de245af712155c74dea135e6491d8");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).setValue("iworlds");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_host"}).setValue("176.31.106.17");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_port"}).setValue(3306);
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_database"}).setValue("iworlds");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_username"}).setValue("iworlds");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).setValue("806de245af712155c74dea135e6491d8");
                 this.configurationLoader.save(this.configurationNode);
             }
 
@@ -134,11 +134,11 @@ public class IworldsSponge {
                 npe.printStackTrace();
             }
             this.database = new Mysql(
-                    (String) this.configurationNode.getNode(new Object[]{"iWorlds", "sql_host"}).getValue(),
-                    (Integer) this.configurationNode.getNode(new Object[]{"iWorlds", "sql_port"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"iWorlds", "sql_database"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"iWorlds", "sql_username"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"iWorlds", "sql_password"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_host"}).getValue(),
+                    (Integer) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_port"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_database"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_username"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).getValue(),
                     true
             );
         } catch (IOException ex) {
@@ -152,7 +152,7 @@ public class IworldsSponge {
             ex.printStackTrace();
             return;
         }
-        this.logger.info("iWorlds connecté avec succès à la base de données !");
+        this.logger.info("IsoWorlds connecté avec succès à la base de données !");
         everyMinutes();
 
     }
@@ -162,7 +162,7 @@ public class IworldsSponge {
     }
 
     private void registerEvents() {
-        Sponge.getEventManager().registerListeners(this, new IworldsListeners());
+        Sponge.getEventManager().registerListeners(this, new IsoworldsListeners());
     }
 
     public Game getGame() {

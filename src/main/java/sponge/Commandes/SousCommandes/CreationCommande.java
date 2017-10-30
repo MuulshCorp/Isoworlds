@@ -72,6 +72,7 @@ public class CreationCommande implements CommandExecutor {
             WorldProperties worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
             Sponge.getServer().getWorldProperties(worldname).get().setLoadOnStartup(false);
             Sponge.getServer().getWorldProperties(worldname).get().getDimensionType().getId();
+            Sponge.getServer().getWorldProperties(worldname).get().setGenerateSpawnOnLoad(false);
             Sponge.getServer().saveWorldProperties(worldProperties);
 
 

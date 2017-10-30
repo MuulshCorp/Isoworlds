@@ -1,6 +1,6 @@
 package bukkit.Locations;
 
-import bukkit.Utils.IworldsUtils;
+import bukkit.Utils.IsoworldsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 /**
  * Created by Edwin on 21/10/2017.
  */
-public class IworldsLocations {
+public class IsoworldsLocations {
 
     public static void teleport(Player player, String world) {
         Block top = Bukkit.getServer().getWorld(world).getHighestBlockAt(0, 0);
@@ -31,9 +31,9 @@ public class IworldsLocations {
 
         // Téléportation du joueur
         if (player.teleport(go)) {
-            IworldsUtils.cm("Le joueur a bien été téléporté !");
+            IsoworldsUtils.cm("Le joueur a bien été téléporté !");
         } else {
-            IworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
+            IsoworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
         }
     }
 }

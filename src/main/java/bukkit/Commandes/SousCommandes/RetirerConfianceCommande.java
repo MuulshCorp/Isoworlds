@@ -1,20 +1,14 @@
 package bukkit.Commandes.SousCommandes;
 
-import bukkit.IworldsBukkit;
-import bukkit.Utils.IworldsUtils;
-import com.google.common.base.Charsets;
+import bukkit.IsoworldsBukkit;
+import bukkit.Utils.IsoworldsUtils;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Collection;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 /**
@@ -25,11 +19,11 @@ public class RetirerConfianceCommande {
     static final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
     static final String REMOVE = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
 
-    public static IworldsBukkit instance;
+    public static IsoworldsBukkit instance;
 
     public static void RetirerConfiance(CommandSender sender, String[] args) {
 
-        instance = IworldsBukkit.getInstance();
+        instance = IsoworldsBukkit.getInstance();
         // SQL Variables
         Player pPlayer = (Player) sender;
         UUID uuidcible;
@@ -37,20 +31,20 @@ public class RetirerConfianceCommande {
         Integer len = args.length;
 
         if (len > 2 || len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }
 
         try {
             // SELECT WORLD
-            if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+            if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 return;
             }
         } catch (Exception se) {
             se.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 
@@ -65,25 +59,25 @@ public class RetirerConfianceCommande {
 
         // IF TARGET NOT SET
         if (uuidcible == null) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             return;
         }
 
         // DENY SELF REMOVE
         if (uuidcible.toString().equals(pPlayer.getUniqueId().toString())) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + Msg.keys.DENY_SELF_REMOVE);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.BLUE + Msg.keys.DENY_SELF_REMOVE);
             return;
         }
 
         // CHECK AUTORISATIONS
-        if (!IworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
+        if (!IsoworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
             return;
         }
 
         // DELETE AUTORISATION
-        if (!IworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+        if (!IsoworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 
@@ -91,10 +85,10 @@ public class RetirerConfianceCommande {
         if (is == true) {
             Player player = Bukkit.getServer().getPlayer(args[1]);
             player.teleport(spawn);
-            player.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
+            player.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
         } // Gestion du kick offline à gérer dès que possible
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_RETIRER_CONFIANCE);
+        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_RETIRER_CONFIANCE);
         return;
 
     }

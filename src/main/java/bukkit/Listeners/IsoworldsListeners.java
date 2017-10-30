@@ -1,6 +1,6 @@
 package bukkit.Listeners;
 
-import bukkit.IworldsBukkit;
+import bukkit.IsoworldsBukkit;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,15 +19,15 @@ import java.sql.ResultSet;
  * Created by Edwin on 22/10/2017.
  */
 
-public class IworldsListeners implements Listener {
+public class IsoworldsListeners implements Listener {
 
-    private final IworldsBukkit instance = IworldsBukkit.getInstance();
+    private final IsoworldsBukkit instance = IsoworldsBukkit.getInstance();
 
     @EventHandler
     public static void onRespawnPlayerEvent(PlayerRespawnEvent event) {
 
         Player p = event.getPlayer();
-        String worldname = (p.getUniqueId() + "-iWorld");
+        String worldname = (p.getUniqueId() + "-IsoWorld");
         Integer maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
         Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
 
@@ -53,7 +53,7 @@ public class IworldsListeners implements Listener {
             Bukkit.getServer().createWorld(new WorldCreator(eventworld));
         }
 
-        if (eventworld.contains("-iWorld")) {
+        if (eventworld.contains("-IsoWorld")) {
             try {
                 PreparedStatement check = instance.database.prepare(CHECK);
                 // UUID_P
@@ -64,25 +64,25 @@ public class IworldsListeners implements Listener {
                 check.setString(2, check_w);
                 // Requête
                 ResultSet rselect = check.executeQuery();
-                if (pPlayer.hasPermission("iworlds.bypass.teleport")) {
+                if (pPlayer.hasPermission("isoworlds.bypass.teleport")) {
                     return;
                 }
 
                 if (rselect.isBeforeFirst() ) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
+                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
                     return;
                     // Cas du untrust, pour ne pas rester bloquer
                 } else if (pPlayer.getWorld().getName() == eventworld) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA +Msg.keys.SUCCES_RETIRER_CONFIANCE);
+                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA +Msg.keys.SUCCES_RETIRER_CONFIANCE);
                     return;
                 } else {
                     event.setCancelled(true);
-                    pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.DENY_TELEPORT);
+                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.DENY_TELEPORT);
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             }
 
         }

@@ -1,6 +1,6 @@
 package bukkit.Commandes.SousCommandes;
 
-import bukkit.IworldsBukkit;
+import bukkit.IsoworldsBukkit;
 
 import common.Msg;
 import org.bukkit.Bukkit;
@@ -8,29 +8,29 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import bukkit.Utils.IworldsUtils;
+import bukkit.Utils.IsoworldsUtils;
 
 /**
  * Created by Edwin on 24/10/2017.
  */
 public class MeteoCommande {
 
-    public static IworldsBukkit instance;
+    public static IsoworldsBukkit instance;
 
     public static void Meteo(CommandSender sender, String[] args) {
 
-        instance = IworldsBukkit.getInstance();
+        instance = IsoworldsBukkit.getInstance();
         int num;
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 
-        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
 
         if (len < 3) {
-            pPlayer.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "iWorlds " + ChatColor.GOLD + "] ---------------------");
+            pPlayer.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "IsoWorlds " + ChatColor.GOLD + "] ---------------------");
             pPlayer.sendMessage(" ");
             pPlayer.sendMessage(ChatColor.AQUA + "Sijania vous propose trois types de météo:");
             pPlayer.sendMessage(ChatColor.GOLD + "- Pluie: " + ChatColor.AQUA + "/iw meteo " + ChatColor.GOLD + "[" + ChatColor.GREEN + "pluie"
@@ -45,16 +45,16 @@ public class MeteoCommande {
                 return;
             }
             World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-iWorld");
-            IworldsUtils.cm("Weather world: " + weather.getName());
+            IsoworldsUtils.cm("Weather world: " + weather.getName());
             if (args[1].equals("pluie") || args[1].equals("rain")) {
                 weather.setStorm(true);
                 weather.setWeatherDuration(num);
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre iWorld.");
+                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre IsoWorld.");
                 return;
             } else if (args[1].equals("soleil") || args[1].equals("sun")) {
                 weather.setStorm(false);
                 weather.setWeatherDuration(num);
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre iWorld.");
+                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre IsoWorld.");
                 return;
             }
             return;

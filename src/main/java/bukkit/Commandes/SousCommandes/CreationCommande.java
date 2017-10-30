@@ -5,9 +5,9 @@ package bukkit.Commandes.SousCommandes;
  */
 
 import common.ManageFiles;
-import bukkit.IworldsBukkit;
-import bukkit.Locations.IworldsLocations;
-import bukkit.Utils.IworldsUtils;
+import bukkit.IsoworldsBukkit;
+import bukkit.Locations.IsoworldsLocations;
+import bukkit.Utils.IsoworldsUtils;
 import common.Msg;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 
 public class CreationCommande {
 
-    static IworldsBukkit instance;
+    static IsoworldsBukkit instance;
 
     public static void Creation(CommandSender sender, String[] args) {
 
@@ -31,20 +31,20 @@ public class CreationCommande {
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
+        IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL);
 
         // SELECT WORLD
-        if (IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+        if (IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.CREATION_IWORLD);
-        fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-iWorld/");
-        worldname = (pPlayer.getUniqueId().toString() + "-iWorld");
+        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.CREATION_IWORLD);
+        fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-IsoWorld/");
+        worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         // Check si le monde existe déjà
         if (Bukkit.getServer().getWorld(worldname) != null) {
-            IworldsUtils.cm("Le monde existe déjà");
+            IsoworldsUtils.cm("Le monde existe déjà");
             return;
         }
 
@@ -56,8 +56,8 @@ public class CreationCommande {
             Bukkit.getServer().createWorld(new WorldCreator(worldname));
         } catch (Exception ie) {
             ie.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
         }
 
         // Remove - unload - copy - load
@@ -67,30 +67,30 @@ public class CreationCommande {
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
-            IworldsUtils.cm(Msg.keys.FICHIERS);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.FICHIERS);
+            IsoworldsUtils.cm(Msg.keys.FICHIERS);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.FICHIERS);
             return;
         }
 
         Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
         // INSERT
-        if (!IworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
             return;
         }
 
         // INSERT TRUST
-        if (!IworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+        if (!IsoworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
             return;
         }
 
         // Configuration du monde
         Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
-        IworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
+        IsoworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
         Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
         Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
-        IworldsLocations.teleport(pPlayer, worldname);
-        pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
+        IsoworldsLocations.teleport(pPlayer, worldname);
+        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
         return;
     }
 }

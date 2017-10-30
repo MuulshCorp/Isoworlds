@@ -1,8 +1,8 @@
 package bukkit;
 
-import bukkit.Commandes.IworldsCommandes;
-import bukkit.Listeners.IworldsListeners;
-import bukkit.Utils.IworldsUtils;
+import bukkit.Commandes.IsoworldsCommandes;
+import bukkit.Listeners.IsoworldsListeners;
+import bukkit.Utils.IsoworldsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public final class IworldsBukkit extends JavaPlugin {
-    public static IworldsBukkit instance;
+public final class IsoworldsBukkit extends JavaPlugin {
+    public static IsoworldsBukkit instance;
     private Logger logger;
     public Mysql database;
     public String servername;
@@ -26,13 +26,13 @@ public final class IworldsBukkit extends JavaPlugin {
     public void onEnable() {
         this.instance = this;
         this.logger = getLogger();
-        this.logger.info("Reading config...");
+        this.logger.info("Lecture de la configuration...");
         this.createConfig();
         this.servername = getConfig().getString("id");
 
-        Bukkit.getServer().getPluginManager().registerEvents(new IworldsListeners(),this);
+        Bukkit.getServer().getPluginManager().registerEvents(new IsoworldsListeners(),this);
 
-        this.getCommand("iw").setExecutor(new IworldsCommandes());
+        this.getCommand("iw").setExecutor(new IsoworldsCommandes());
 
         this.database = new Mysql(
                 getConfig().getString("sql.serveur"),
@@ -48,19 +48,19 @@ public final class IworldsBukkit extends JavaPlugin {
         try {
             this.database.connect();
         } catch (Exception ex) {
-            this.logger.severe("Une erreur est survenue lors de la connexion à la base de donnéesw: " + ex.getMessage());
+            this.logger.severe("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
             ex.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
         this.logger.info("Démarrage des tâches...");
         everyMinutes();
-        this.logger.info("iWorlds activé !");
+        this.logger.info("IsoWorlds activé !");
     }
 
     @Override
     public void onDisable() {
-        this.logger.info("iWorlds désactivé !");
+        this.logger.info("IsoWorlds désactivé !");
         Bukkit.getScheduler().cancelTasks(this);
         this.instance = null;
         this.servername = null;
@@ -71,12 +71,12 @@ public final class IworldsBukkit extends JavaPlugin {
 
     @SuppressWarnings("deprecation")
     private void everyMinutes() {
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IworldsBukkit.this.instance, () -> {
-            IworldsUtils.cm("[iWorlds] Analyse des iWorls vides...");
-            IworldsUtils.cm("map: " + worlds);
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
+            IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
+            IsoworldsUtils.cm("map: " + worlds);
             for (World world : Bukkit.getServer().getWorlds()) {
                 if (world != null & worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
-                    if (world.getName().contains("-iWorld")) {
+                    if (world.getName().contains("-IsoWorld")) {
                         worlds.put(world.getName(), 1);
                     } else {
                         continue;
@@ -88,7 +88,7 @@ public final class IworldsBukkit extends JavaPlugin {
                     }
                     worlds.put(world.getName(), worlds.get(world.getName()) + 1);
                     if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 10) {
-                        IworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
+                        IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
                         Bukkit.getServer().unloadWorld(world, true);
                         worlds.remove(world.getName());
                     } else {
@@ -96,11 +96,11 @@ public final class IworldsBukkit extends JavaPlugin {
                     }
                 }
             }
-            IworldsUtils.cm("[iWorlds] Les iWorlds vides depuis 10 minutes viennent d'être déchargé");
+            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 10 minutes viennent d'être déchargé");
         }), 1200 * 1, 1200 * 1);
     }
 
-    public static IworldsBukkit getInstance() {
+    public static IsoworldsBukkit getInstance() {
         return instance;
     }
 

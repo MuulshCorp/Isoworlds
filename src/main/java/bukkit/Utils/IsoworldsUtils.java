@@ -1,6 +1,6 @@
 package bukkit.Utils;
 
-import bukkit.IworldsBukkit;
+import bukkit.IsoworldsBukkit;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * Created by Edwin on 20/10/2017.
  */
-public class IworldsUtils {
+public class IsoworldsUtils {
 
     // Console message
     public static void cm(String message){
@@ -30,9 +30,9 @@ public class IworldsUtils {
 
     // Check if iworld exists
     public static Boolean iworldExists(Player pPlayer, String messageErreur) {
-        IworldsBukkit instance;
-        instance = IworldsBukkit.getInstance();
-        String CHECK = "SELECT * FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        IsoworldsBukkit instance;
+        instance = IsoworldsBukkit.getInstance();
+        String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
         String check_p;
 
@@ -43,20 +43,20 @@ public class IworldsUtils {
             check_p = pPlayer.getUniqueId().toString();
             check.setString(1, check_p);
             // UUID_W
-            check_w = (pPlayer.getUniqueId().toString() + "-iWorld");
+            check_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
             check.setString(2, check_w);
             // SERVEUR_ID
             check.setString(3, instance.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
-                Bukkit.getServer().createWorld(new WorldCreator(pPlayer.getUniqueId().toString() + "-iWorld"));
+                Bukkit.getServer().createWorld(new WorldCreator(pPlayer.getUniqueId().toString() + "-IsoWorld"));
                 return true;
             }
         } catch (Exception se){
             se.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + messageErreur);
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
         return false;
@@ -64,8 +64,8 @@ public class IworldsUtils {
 
     // Check autorisation trust
     public static Boolean trustExists(Player pPlayer, UUID uuidcible, String messageErreur) {
-        IworldsBukkit instance;
-        instance = IworldsBukkit.getInstance();
+        IsoworldsBukkit instance;
+        instance = IsoworldsBukkit.getInstance();
         String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
         String check_p;
@@ -75,7 +75,7 @@ public class IworldsUtils {
             check_p = uuidcible.toString();
             check.setString(1, check_p);
             // UUID_W
-            check_w = (pPlayer.getUniqueId() + "-iWorld");
+            check_w = (pPlayer.getUniqueId() + "-IsoWorld");
             check.setString(2, check_w);
             // SERVEUR_ID
             check.setString(3, instance.servername);
@@ -86,8 +86,8 @@ public class IworldsUtils {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.BLUE + messageErreur);
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.BLUE + messageErreur);
             return false;
         }
         return false;
@@ -95,9 +95,9 @@ public class IworldsUtils {
 
     // insert trust
     public static Boolean insertCreation(Player pPlayer, String messageErreur) {
-        IworldsBukkit instance;
-        instance = IworldsBukkit.getInstance();
-        String INSERT = "INSERT INTO `iworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
+        IsoworldsBukkit instance;
+        instance = IsoworldsBukkit.getInstance();
+        String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -116,8 +116,8 @@ public class IworldsUtils {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + messageErreur);
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
         return true;
@@ -125,8 +125,8 @@ public class IworldsUtils {
 
     // insert trust
     public static Boolean insertTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
-        IworldsBukkit instance;
-        instance = IworldsBukkit.getInstance();
+        IsoworldsBukkit instance;
+        instance = IsoworldsBukkit.getInstance();
         String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
@@ -137,7 +137,7 @@ public class IworldsUtils {
             Iuuid_p = uuidcible.toString();
             insert.setString(1, Iuuid_p);
             // UUID_W
-            Iuuid_w = ((pPlayer.getUniqueId()) + "-iWorld");
+            Iuuid_w = ((pPlayer.getUniqueId()) + "-IsoWorld");
             insert.setString(2, Iuuid_w);
             // Date
             insert.setString(3, (timestamp.toString()));
@@ -146,8 +146,8 @@ public class IworldsUtils {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + messageErreur);
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
         return true;
@@ -155,17 +155,17 @@ public class IworldsUtils {
 
     // delete iworld
     public static Boolean deleteIworld(Player pPlayer, String messageErreur) {
-        IworldsBukkit instance;
-        instance = IworldsBukkit.getInstance();
+        IsoworldsBukkit instance;
+        instance = IsoworldsBukkit.getInstance();
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        String DELETE_IWORLDS = "DELETE FROM `iworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String DELETE_IWORLDS = "DELETE FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         try {
             PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
             PreparedStatement delete_iworlds = instance.database.prepare(DELETE_IWORLDS);
             Iuuid_p = pPlayer.getUniqueId().toString();
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
+            Iuuid_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
 
             // delete autorisations
             delete_autorisations.setString(1, Iuuid_w);
@@ -181,8 +181,8 @@ public class IworldsUtils {
             delete_iworlds.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + messageErreur);
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
         return true;
@@ -190,8 +190,8 @@ public class IworldsUtils {
 
     // Delete trust
     public static Boolean deleteTrust(Player pPlayer, String messageErreur) {
-        IworldsBukkit instance;
-        instance = IworldsBukkit.getInstance();
+        IsoworldsBukkit instance;
+        instance = IsoworldsBukkit.getInstance();
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
@@ -199,7 +199,7 @@ public class IworldsUtils {
         try {
             PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
             Iuuid_p = pPlayer.getUniqueId().toString();
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-iWorld");
+            Iuuid_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
 
             // delete autorisation
             delete_autorisations.setString(1, Iuuid_p);
@@ -210,17 +210,17 @@ public class IworldsUtils {
             delete_autorisations.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + messageErreur);
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
         return true;
     }
 
     public static void getHelp(CommandSender s) {
-        s.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "iWorlds " + ChatColor.GOLD + "] ---------------------");
+        s.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "IsoWorlds " + ChatColor.GOLD + "] ---------------------");
         s.sendMessage(" ");
-        s.sendMessage(ChatColor.GOLD + "- Basique: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "||" + ChatColor.GREEN + "iworld" + ChatColor.GOLD + "/" + ChatColor.GREEN + "iworlds");
+        s.sendMessage(ChatColor.GOLD + "- Basique: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "||" + ChatColor.GREEN + "isoworld" + ChatColor.GOLD + "/" + ChatColor.GREEN + "isoworlds");
         s.sendMessage(ChatColor.GOLD + "- Création: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "[" + ChatColor.GREEN + "création"
                 + ChatColor.GOLD + "][" + ChatColor.GREEN + "créer" + ChatColor.GOLD + "][" + ChatColor.GREEN + "create" + ChatColor.GOLD + "][" + ChatColor.GREEN + "c" + ChatColor.GOLD + "]");
         s.sendMessage(ChatColor.GOLD + "- Refonte: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "[" + ChatColor.GREEN + "refonte"

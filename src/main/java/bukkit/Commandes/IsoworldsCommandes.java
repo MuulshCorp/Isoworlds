@@ -1,7 +1,7 @@
 package bukkit.Commandes;
 
 import bukkit.Commandes.SousCommandes.*;
-import bukkit.Utils.IworldsUtils;
+import bukkit.Utils.IsoworldsUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 /**
  * Created by Edwin on 20/10/2017.
  */
-public class IworldsCommandes implements CommandExecutor {
+public class IsoworldsCommandes implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -47,11 +47,11 @@ public class IworldsCommandes implements CommandExecutor {
                MeteoCommande.Meteo(sender, args);
                 return true;
             } else {
-                IworldsUtils.getHelp(sender);
+                IsoworldsUtils.getHelp(sender);
                 return true;
             }
         } else {
-            IworldsUtils.getHelp(sender);
+            IsoworldsUtils.getHelp(sender);
             return true;
         }
     }

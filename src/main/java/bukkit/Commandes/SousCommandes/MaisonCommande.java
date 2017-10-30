@@ -1,35 +1,31 @@
 package bukkit.Commandes.SousCommandes;
 
-import bukkit.IworldsBukkit;
-import bukkit.Utils.IworldsUtils;
+import bukkit.IsoworldsBukkit;
+import bukkit.Utils.IsoworldsUtils;
 import common.Msg;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  * Created by Edwin on 20/10/2017.
  */
 public class MaisonCommande {
 
-    public static IworldsBukkit instance;
+    public static IsoworldsBukkit instance;
 
     public static void Maison(CommandSender sender, String[] args) {
 
-        instance = IworldsBukkit.getInstance();
+        instance = IsoworldsBukkit.getInstance();
 
         // Variables
         String worldname = "";
         Player pPlayer = (Player) sender;
-        worldname = (pPlayer.getUniqueId() + "-iWorld");
+        worldname = (pPlayer.getUniqueId() + "-IsoWorld");
 
         // SELECT WORLD
-        if (!IworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
 
@@ -52,9 +48,9 @@ public class MaisonCommande {
 
         // Téléportation du joueur
         if (pPlayer.teleport(go)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
         } else {
-            pPlayer.sendMessage(ChatColor.GOLD + "[iWorlds]: " + ChatColor.AQUA + "Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.");
             ;
         }
         return;

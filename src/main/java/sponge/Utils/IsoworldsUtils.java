@@ -1,7 +1,6 @@
 package sponge.Utils;
 
 import common.Msg;
-import org.spongepowered.api.scheduler.Task;
 import sponge.IsoworldsSponge;
 
 import org.spongepowered.api.Sponge;
@@ -274,9 +273,7 @@ public class IsoworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
-                Task.builder().async().delayTicks(20).execute(c -> {
-                    Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
-                }).submit(plugin);
+                Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
                 return true;
             }
         } catch (Exception se){

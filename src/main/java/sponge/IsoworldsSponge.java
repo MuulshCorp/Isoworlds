@@ -81,7 +81,7 @@ public class IsoworldsSponge {
 
     private void unload() {
         Task.builder().execute(() -> {
-            IsoworldsUtils.cm("[IsoWorlds] Analyse des iWorls vides...");
+            IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             for(World world : Sponge.getServer().getWorlds()) {
                 if (world.isLoaded() & worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
                     if (world.getName().contains("-IsoWorld")) {
@@ -104,7 +104,7 @@ public class IsoworldsSponge {
                     }
                 }
             }
-            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 10 minutes viennent d'être déchargé");
+            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 1 minutes viennent d'être déchargé");
 
 
         }).async().name("Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé").submit(this);
@@ -117,11 +117,11 @@ public class IsoworldsSponge {
                 this.logger.info("Fichier de configuration non trouvé, création en cours...");
                 this.configuration.createNewFile();
                 this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).setValue("iworlds");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).setValue("isoworlds");
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_host"}).setValue("176.31.106.17");
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_port"}).setValue(3306);
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_database"}).setValue("iworlds");
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_username"}).setValue("iworlds");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_database"}).setValue("isoworlds");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_username"}).setValue("isoworlds");
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).setValue("806de245af712155c74dea135e6491d8");
                 this.configurationLoader.save(this.configurationNode);
             }
@@ -129,7 +129,7 @@ public class IsoworldsSponge {
             this.logger.info("Lecture de la configuration   ...");
             this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
             try {
-                this.servername = (String) this.configurationNode.getNode(new Object[]{"iWorlds", "id"}).getValue();
+                this.servername = (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).getValue();
             } catch (NullPointerException npe) {
                 npe.printStackTrace();
             }

@@ -1,4 +1,4 @@
-name: Iworlds
+name: Isoworlds
 version: @version@
 main: bukkit.IsoworldsBukkit
 authors: [Sythiel]
@@ -12,6 +12,6 @@ commands:
         aliases: [isoworlds, isoworld]
 
 permission:
-    iworlds.default:
+    isoworlds.default:
       description: Autoriser une utilisation des iworlds
       defaut: true

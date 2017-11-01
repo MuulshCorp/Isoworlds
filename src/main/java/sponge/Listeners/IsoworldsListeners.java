@@ -2,7 +2,6 @@ package sponge.Listeners;
 
 import common.Msg;
 import org.spongepowered.api.entity.Transform;
-import org.spongepowered.api.scheduler.Task;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
 import sponge.IsoworldsSponge;
@@ -50,9 +49,7 @@ public class IsoworldsListeners {
 
 
         String eventworld = event.getToTransform().getExtent().getName();
-        Task.builder().async().delayTicks(20).execute(c -> {
-            Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
-        }).submit(plugin);
+        Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
 
         if (eventworld.contains("-IsoWorld")) {
             try {

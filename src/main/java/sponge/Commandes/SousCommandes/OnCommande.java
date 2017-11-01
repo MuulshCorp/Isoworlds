@@ -30,7 +30,7 @@ public class OnCommande implements CommandExecutor {
         // Variables
         String worldname = "";
         Player pPlayer = (Player) source;
-        worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-iWorld");
+        worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
         Boolean check = false;
         ArrayList<String> worlds = new ArrayList<String>();
         IsoworldsUtils.cm("check");

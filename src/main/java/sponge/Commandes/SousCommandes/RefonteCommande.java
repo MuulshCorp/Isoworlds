@@ -117,7 +117,7 @@ public class RefonteCommande implements CommandExecutor {
     public static CommandSpec getCommand() {
         return CommandSpec.builder()
                 .description(Text.of("Commandes de refonte des iWorlds"))
-                .permission("iworlds.refonte")
+                    .permission("iworlds.refonte")
                 .executor(new RefonteCommande())
                 .build();
     }

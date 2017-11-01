@@ -107,7 +107,7 @@ public class IsoworldsUtils {
             Iuuid_p = pPlayer.getUniqueId().toString();
             insert.setString(1, Iuuid_p);
             // UUID_W
-            Iuuid_w = ((pPlayer.getUniqueId()) + "-iWorld");
+            Iuuid_w = ((pPlayer.getUniqueId()) + "-IsoWorld");
             insert.setString(2, Iuuid_w);
             // Date
             insert.setString(3, (timestamp.toString()));

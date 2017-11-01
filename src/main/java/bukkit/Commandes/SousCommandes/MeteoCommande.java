@@ -44,7 +44,7 @@ public class MeteoCommande {
                 pPlayer.sendMessage(ChatColor.AQUA + "Sijania indique que vous devez n'avez pas renseigné de minutes.");
                 return;
             }
-            World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-iWorld");
+            World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
             IsoworldsUtils.cm("Weather world: " + weather.getName());
             if (args[1].equals("pluie") || args[1].equals("rain")) {
                 weather.setStorm(true);

@@ -39,6 +39,7 @@ public class RefonteCommande {
 
         // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            IsoworldsUtils.cm("DEBUG 1");
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
@@ -87,6 +88,7 @@ public class RefonteCommande {
 
         // DELETE WORLD
         if (!IsoworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
+            IsoworldsUtils.cm("DEBUG 2");
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }

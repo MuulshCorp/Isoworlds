@@ -104,7 +104,7 @@ public class IsoworldsSponge {
                     }
                 }
             }
-            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 1 minutes viennent d'être déchargé");
+            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 10 minutes viennent d'être déchargé");
 
 
         }).async().name("Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé").submit(this);

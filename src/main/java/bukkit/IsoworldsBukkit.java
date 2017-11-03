@@ -81,9 +81,12 @@ public final class IsoworldsBukkit extends JavaPlugin {
                         continue;
                     }
                 } else {
-                    if (world.getPlayers().size() == 1) {
+                    if (world.getPlayers().size() != 0) {
                         worlds.remove(world.getName());
                         continue;
+                    }
+                    if (!worlds.containsKey(world.getName())) {
+                        worlds.put(world.getName(), 0);
                     }
                     worlds.put(world.getName(), worlds.get(world.getName().toString()) + 1);
                     if (world.getPlayers().size() == 0 & worlds.get(world.getName().toString()) == 10) {

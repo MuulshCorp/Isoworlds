@@ -9,7 +9,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+
 import common.Mysql;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -30,7 +32,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
         this.createConfig();
         this.servername = getConfig().getString("id");
 
-        Bukkit.getServer().getPluginManager().registerEvents(new IsoworldsListeners(),this);
+        Bukkit.getServer().getPluginManager().registerEvents(new IsoworldsListeners(), this);
 
         this.getCommand("iw").setExecutor(new IsoworldsCommandes());
 
@@ -74,27 +76,29 @@ public final class IsoworldsBukkit extends JavaPlugin {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);
             for (World world : Bukkit.getServer().getWorlds()) {
-                if (world != null & worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
+                // Si chargé et pas présent dans map et vide
+                if (worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
                     if (world.getName().contains("-IsoWorld")) {
                         worlds.put(world.getName(), 1);
                     } else {
                         continue;
                     }
-                } else {
+                    // Si tableau rempli
+                } else if (worlds.get(world.getName()) != null) {
+                    // Si de nouveau des joueurs on remove
                     if (world.getPlayers().size() != 0) {
                         worlds.remove(world.getName());
                         continue;
-                    }
-                    if (!worlds.containsKey(world.getName())) {
-                        worlds.put(world.getName(), 0);
-                    }
-                    worlds.put(world.getName(), worlds.get(world.getName().toString()) + 1);
-                    if (world.getPlayers().size() == 0 & worlds.get(world.getName().toString()) == 10) {
-                        IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
-                        Bukkit.getServer().unloadWorld(world, true);
-                        worlds.remove(world.getName());
+                        // Sinon on incrémente et on check si c'est à 10
                     } else {
-                        continue;
+                        worlds.put(world.getName(), worlds.get(world.getName().toString()) + 1);
+                        if (world.getPlayers().size() == 0 & worlds.get(world.getName().toString()) == 10) {
+                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
+                            Bukkit.getServer().unloadWorld(world, true);
+                            worlds.remove(world.getName());
+                        } else {
+                            continue;
+                        }
                     }
                 }
             }

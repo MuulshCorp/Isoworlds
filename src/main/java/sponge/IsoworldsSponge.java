@@ -82,28 +82,30 @@ public class IsoworldsSponge {
     private void unload() {
         Task.builder().execute(() -> {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
-            for(World world : Sponge.getServer().getWorlds()) {
-                if (world.isLoaded() & worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
+            for (World world : Sponge.getServer().getWorlds()) {
+                // Si chargé et pas présent dans map et vide
+                if (worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
                     if (world.getName().contains("-IsoWorld")) {
                         worlds.put(world.getName(), 1);
                     } else {
                         continue;
                     }
-                } else {
+                    // Si tableau rempli
+                } else if (worlds.get(world.getName()) != null) {
+                    // Si de nouveau des joueurs on remove
                     if (world.getPlayers().size() != 0) {
                         worlds.remove(world.getName());
                         continue;
-                    }
-                    if (!worlds.containsKey(world.getName())) {
-                        worlds.put(world.getName(), 0);
-                    }
-                    worlds.put(world.getName(), worlds.get(world.getName()) + 1);
-                    if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 10) {
-                        IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
-                        Sponge.getServer().unloadWorld(world);
-                        worlds.remove(world.getName());
+                        // Sinon on incrémente et on check si c'est à 10
                     } else {
-                        continue;
+                        worlds.put(world.getName(), worlds.get(world.getName()) + 1);
+                        if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 10) {
+                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
+                            Sponge.getServer().unloadWorld(world);
+                            worlds.remove(world.getName());
+                        } else {
+                            continue;
+                        }
                     }
                 }
             }

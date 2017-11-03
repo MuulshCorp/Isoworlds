@@ -2,16 +2,14 @@ package bukkit.Listeners;
 
 import bukkit.IsoworldsBukkit;
 import common.Msg;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -49,8 +47,11 @@ public class IsoworldsListeners implements Listener {
 
         String eventworld = worldTo.getWorld().getName();
 
-        if (eventworld == null) {
-            Bukkit.getServer().createWorld(new WorldCreator(eventworld));
+        File file = new File(Bukkit.getServer().getWorldContainer(), eventworld);
+        if (file.exists()) {
+            if (worldFrom.getWorld().getName() == null) {
+                Bukkit.getServer().createWorld(new WorldCreator(eventworld));
+            }
         }
 
         if (eventworld.contains("-IsoWorld")) {

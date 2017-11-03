@@ -43,13 +43,12 @@ public class ListeCommande {
             Player player = Bukkit.getServer().getPlayer(uuid);
             String pname;
             String status;
-            if (player.isOnline()) {
+            if (Bukkit.getPlayer(pPlayer.getUniqueId()) != null) {
                 pname = player.getName();
             } else {
                 pname = "OFF";
             }
-
-            if (player.isOnline()) {
+            if (Bukkit.getPlayer(pPlayer.getUniqueId()) != null) {
                 status = "ON";
             } else {
                 status = "OFF";

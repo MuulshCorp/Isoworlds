@@ -25,7 +25,7 @@ public class IsoworldsListeners implements Listener {
     public static void onRespawnPlayerEvent(PlayerRespawnEvent event) {
 
         Player p = event.getPlayer();
-        String worldname = (p.getUniqueId() + "-IsoWorld");
+        String worldname = (event.getPlayer().getWorld().getName());
         Integer maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
         Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
 
@@ -49,8 +49,11 @@ public class IsoworldsListeners implements Listener {
 
         File file = new File(Bukkit.getServer().getWorldContainer(), eventworld);
         if (file.exists()) {
-            if (worldFrom.getWorld().getName() == null) {
+            if (eventworld == null) {
                 Bukkit.getServer().createWorld(new WorldCreator(eventworld));
+            } else {
+                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA +Msg.keys.EXISTE_PAS_IWORLD);
+                return;
             }
         }
 

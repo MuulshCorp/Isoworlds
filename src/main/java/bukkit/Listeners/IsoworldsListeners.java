@@ -5,10 +5,10 @@ import common.Msg;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
+import bukkit.Utils.IsoworldsUtils;
 
 import java.io.File;
 import java.sql.PreparedStatement;
@@ -34,10 +34,11 @@ public class IsoworldsListeners implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onJoin(PlayerLoginEvent event) {
 
         String world = event.getPlayer().getWorld().getName();
         Player pPlayer = event.getPlayer();
+        IsoworldsUtils.cm("DEBUG: " + world);
 
         if (world == null) {
             pPlayer.getLocation().setWorld(Bukkit.getWorld("Isolonice"));
@@ -61,16 +62,6 @@ public class IsoworldsListeners implements Listener {
 
         String eventworld = worldTo.getWorld().getName();
 
-        File file = new File(Bukkit.getServer().getWorldContainer(), eventworld);
-        if (file.exists()) {
-            if (eventworld == null) {
-                Bukkit.getServer().createWorld(new WorldCreator(eventworld));
-            } else {
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA +Msg.keys.EXISTE_PAS_IWORLD);
-                return;
-            }
-        }
-
         if (eventworld.contains("-IsoWorld")) {
             try {
                 PreparedStatement check = instance.database.prepare(CHECK);
@@ -86,12 +77,12 @@ public class IsoworldsListeners implements Listener {
                     return;
                 }
 
-                if (rselect.isBeforeFirst() ) {
+                if (rselect.isBeforeFirst()) {
                     pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
                     return;
                     // Cas du untrust, pour ne pas rester bloquer
                 } else if (pPlayer.getWorld().getName() == eventworld) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA +Msg.keys.SUCCES_TELEPORTATION);
+                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
                     return;
                 } else {
                     event.setCancelled(true);

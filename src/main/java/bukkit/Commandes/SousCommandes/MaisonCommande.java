@@ -25,6 +25,7 @@ public class MaisonCommande {
 
         // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            IsoworldsUtils.cm("DEBUG 2: EXISTE PAS");
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }

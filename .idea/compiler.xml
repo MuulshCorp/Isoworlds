@@ -7,12 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="isoworlds" />
-        <module name="iworlds" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="isoworlds" target="1.8" />
-      <module name="iworlds" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

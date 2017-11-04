@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -30,6 +31,17 @@ public class IsoworldsListeners implements Listener {
         Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
 
         p.teleport(top);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+
+        String world = event.getPlayer().getWorld().getName();
+        Player pPlayer = event.getPlayer();
+
+        if (world == null) {
+            pPlayer.getLocation().setWorld(Bukkit.getWorld("Isolonice"));
+        }
     }
 
     @EventHandler

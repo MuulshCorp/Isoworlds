@@ -41,6 +41,8 @@ public class IsoworldsListeners implements Listener {
 
         if (world == null) {
             pPlayer.getLocation().setWorld(Bukkit.getWorld("Isolonice"));
+        } else {
+            Bukkit.getServer().createWorld(new WorldCreator(world));
         }
     }
 

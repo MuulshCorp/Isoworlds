@@ -74,9 +74,6 @@ public class MaisonCommande {
         // Téléportation du joueur
         if (pPlayer.teleport(go)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
-        } else {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.");
-            ;
         }
         return;
 

@@ -92,7 +92,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
                         // Sinon on incrémente et on check si c'est à 10
                     } else {
                         worlds.put(world.getName(), worlds.get(world.getName().toString()) + 1);
-                        if (world.getPlayers().size() == 0 & worlds.get(world.getName().toString()) == 10) {
+                        if (world.getPlayers().size() == 0 & worlds.get(world.getName().toString()) == 5) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
                             Bukkit.getServer().unloadWorld(world, true);
                             worlds.remove(world.getName());

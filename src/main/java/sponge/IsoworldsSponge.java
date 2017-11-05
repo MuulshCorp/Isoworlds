@@ -99,7 +99,7 @@ public class IsoworldsSponge {
                         // Sinon on incrémente et on check si c'est à 10
                     } else {
                         worlds.put(world.getName(), worlds.get(world.getName()) + 1);
-                        if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 2) {
+                        if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 5) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
                             Sponge.getServer().unloadWorld(world);
                             worlds.remove(world.getName());

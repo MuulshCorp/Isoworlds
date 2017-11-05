@@ -34,17 +34,17 @@ public class IsoworldsListeners implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerLoginEvent event) {
+    public void onJoin(PlayerJoinEvent event) {
 
         String world = event.getPlayer().getWorld().getName();
-        Player pPlayer = event.getPlayer();
-        IsoworldsUtils.cm("DEBUG: " + world);
+        IsoworldsUtils.cm("DEBUG1: " + world);
+    }
 
-        if (world == null) {
-            pPlayer.getLocation().setWorld(Bukkit.getWorld("Isolonice"));
-        } else {
-            Bukkit.getServer().createWorld(new WorldCreator(world));
-        }
+    @EventHandler
+    public void onLogin(PlayerLoginEvent event) {
+
+        String world = event.getPlayer().getWorld().getName();
+        IsoworldsUtils.cm("DEBUG2: " + world);
     }
 
     @EventHandler

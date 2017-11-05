@@ -37,7 +37,7 @@ public class RetirerConfianceCommande {
 
         try {
             // SELECT WORLD
-            if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 return;
             }

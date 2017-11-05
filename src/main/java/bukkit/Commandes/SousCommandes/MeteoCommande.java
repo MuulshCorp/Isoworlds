@@ -24,7 +24,7 @@ public class MeteoCommande {
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 
-        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }

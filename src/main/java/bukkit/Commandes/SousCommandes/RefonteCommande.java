@@ -38,7 +38,7 @@ public class RefonteCommande {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             IsoworldsUtils.cm("DEBUG 1");
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;

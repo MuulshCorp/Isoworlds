@@ -24,6 +24,8 @@ public class MaisonCommande {
         // Variables
         String worldname = "";
         Player pPlayer;
+        String uuid;
+        pPlayer = (Player) sender;
 
 
         // Check if home of trusted isoworld
@@ -34,21 +36,23 @@ public class MaisonCommande {
             if (owner == null) {
                 return;
             }
-            pPlayer = owner.getPlayer();
-            worldname = owner.getUniqueId().toString() + "IsoWorld";
+            uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
+            worldname = uuid + "-IsoWorld";
             IsoworldsUtils.cm("DEBUG OFF MAISON: " + worldname);
             // Si aucun joueur précisé
         } else {
-            pPlayer = (Player) sender;
+            uuid = pPlayer.getUniqueId().toString();
             worldname = (pPlayer.getUniqueId() + "-IsoWorld");
             IsoworldsUtils.cm("DEBUG ON MAISON: " + worldname);
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+
+        if (!IsoworldsUtils.iworldExists(uuid, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
+
 
         // Construction du point de respawn
         Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);

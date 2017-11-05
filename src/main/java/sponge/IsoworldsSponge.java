@@ -2,6 +2,7 @@ package sponge;
 
 import com.google.inject.Inject;
 
+import org.spongepowered.api.world.Chunk;
 import sponge.Listeners.IsoworldsListeners;
 import sponge.Utils.IsoworldsUtils;
 
@@ -102,6 +103,12 @@ public class IsoworldsSponge {
                         worlds.put(world.getName(), worlds.get(world.getName()) + 1);
                         if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 5) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
+                            Sponge.getServer().getWorld(world.getName()).get().getProperties().setLoadOnStartup(false);
+                            Sponge.getServer().getWorld(world.getName()).get().getProperties().setKeepSpawnLoaded(false);
+                            Iterable<Chunk> chunks = Sponge.getServer().getWorld(world.getName()).get().getLoadedChunks();
+                            for (Chunk chunk : chunks) {
+                                Sponge.getServer().getWorld(world.getName()).get().unloadChunk(chunk);
+                            }
                             Sponge.getServer().unloadWorld(world);
                             worlds.remove(world.getName());
                         } else {
@@ -160,6 +167,8 @@ public class IsoworldsSponge {
         }
         this.logger.info("IsoWorlds connecté avec succès à la base de données !");
         everyMinutes();
+
+
 
     }
 

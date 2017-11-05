@@ -100,7 +100,7 @@ public class IsoworldsSponge {
                     } else {
                         worlds.put(world.getName(), worlds.get(world.getName()) + 1);
                         if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 5) {
-                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
+                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
                             Sponge.getServer().unloadWorld(world);
                             worlds.remove(world.getName());
                         } else {
@@ -109,7 +109,7 @@ public class IsoworldsSponge {
                     }
                 }
             }
-            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 10 minutes viennent d'être déchargé");
+            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé");
 
 
         }).name("Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé").submit(this);

@@ -23,17 +23,25 @@ public class MaisonCommande {
 
         // Variables
         String worldname = "";
-        Player pPlayer = (Player) sender;
+        Player pPlayer;
 
 
         // Check if home of trusted isoworld
         IsoworldsUtils.cm("DEBUG MAISON: " + args.length);
-        if (args.length == 1) {
-            worldname = (pPlayer.getUniqueId() + "-IsoWorld");
-            // Si joueur après maison
-        } else if (args.length == 2) {
+        // Si joueur précisé
+        if (args.length == 2) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(args[1]);
+            if (owner == null) {
+                return;
+            }
+            pPlayer = owner.getPlayer();
             worldname = owner.getUniqueId().toString() + "IsoWorld";
+            IsoworldsUtils.cm("DEBUG OFF MAISON: " + worldname);
+            // Si aucun joueur précisé
+        } else {
+            pPlayer = (Player) sender;
+            worldname = (pPlayer.getUniqueId() + "-IsoWorld");
+            IsoworldsUtils.cm("DEBUG ON MAISON: " + worldname);
         }
 
         // SELECT WORLD

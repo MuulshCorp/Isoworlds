@@ -82,6 +82,7 @@ public class IsoworldsSponge {
     private void unload() {
         Task.builder().execute(() -> {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
+            IsoworldsUtils.cm("map: " + worlds);
             for (World world : Sponge.getServer().getWorlds()) {
                 // Si chargé et pas présent dans map et vide
                 if (worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {

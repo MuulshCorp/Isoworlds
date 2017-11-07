@@ -103,8 +103,8 @@ public class IsoworldsSponge {
                         worlds.put(world.getName(), worlds.get(world.getName()) + 1);
                         if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 5) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
-                            Sponge.getServer().getWorldProperties(world.getName()).get().setLoadOnStartup(false);
-                            Sponge.getServer().getWorldProperties(world.getName()).get().setKeepSpawnLoaded(false);
+                            Sponge.getServer().getWorldProperties(world.getUniqueId()).get().setLoadOnStartup(false);
+                            Sponge.getServer().getWorldProperties(world.getUniqueId()).get().setKeepSpawnLoaded(false);
                             Sponge.getServer().saveWorldProperties(Sponge.getServer().getWorldProperties(world.getName()).get());
                             Iterable<Chunk> chunks = Sponge.getServer().getWorld(world.getName()).get().getLoadedChunks();
                             for (Chunk chunk : chunks) {

@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
 
@@ -32,34 +33,39 @@ public class OnCommande implements CommandExecutor {
         Player pPlayer = (Player) source;
         worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
         Boolean check = false;
-        ArrayList<String> worlds = new ArrayList<String>();
+        ArrayList<WorldProperties> worlds = new ArrayList<WorldProperties>();
         IsoworldsUtils.cm("check");
 
         for (WorldProperties world : Sponge.getServer().getUnloadedWorlds()) {
             if (world.getWorldName().contains("-IsoWorld")) {
-                worlds.add(world.getWorldName());
-                IsoworldsUtils.cm("worlds: " + world.getWorldName());
+                worlds.add(world);
             }
         }
 
         // loop iworlds
-        for (String world : worlds) {
+        for (WorldProperties world : worlds) {
             // si iworld existe
-            if (world.equals(worldname)) {
+            if (world.getWorldName().equals(worldname.toString())) {
                 check = true;
-                if (check == true) {
-                    Sponge.getServer().loadWorld(worldname);
+                IsoworldsUtils.cm("check");
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("Sijania vient d'activer votre IsoWorld.").color(TextColors.AQUA))).build()));
+                // Si ça réussi
+                try {
+                    Sponge.getServer().loadWorld(worldname.toString());
+                    return CommandResult.success();
+                } catch (NullPointerException npe) {
+                    npe.printStackTrace();
+                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania n'est pas parvenue à charger votre IsoWorld.").color(TextColors.GOLD)
+                            .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                }
+
+                // si iworld n'existe pas
+                if (check == false) {
                     pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder("Sijania vient d'activer votre IsoWorld.").color(TextColors.AQUA))).build()));
+                            .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld à votre nom dans le Royaume Isolonice. Entrez /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
                     return CommandResult.success();
                 }
-            }
-
-            // si iworld n'existe pas
-            if (check == false) {
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld à votre nom dans le Royaume Isolonice. Entrez /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
-                return CommandResult.success();
             }
         }
         IsoworldsUtils.cm("finished");

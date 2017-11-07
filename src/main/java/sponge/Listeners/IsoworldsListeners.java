@@ -2,6 +2,9 @@ package sponge.Listeners;
 
 import common.Msg;
 import org.spongepowered.api.entity.Transform;
+import org.spongepowered.api.event.world.LoadWorldEvent;
+import org.spongepowered.api.event.world.UnloadWorldEvent;
+import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
 import sponge.IsoworldsSponge;
@@ -19,6 +22,7 @@ import org.spongepowered.api.world.World;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Optional;
 
 
 /**
@@ -39,6 +43,18 @@ public class IsoworldsListeners {
 
         Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), top.getPosition());
         event.setToTransform(t);
+    }
+
+    @Listener
+    public void onLoadWorld(LoadWorldEvent event) {
+        Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
+        IsoworldsUtils.cm("WorldPropeties: " + optionalWorld.get());
+    }
+
+    @Listener
+    public void onUnLoadWorld(UnloadWorldEvent event) {
+        Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
+        IsoworldsUtils.cm("WorldPropeties: " + optionalWorld.get());
     }
 
     @Listener

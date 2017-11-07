@@ -48,12 +48,17 @@ public class IsoworldsListeners {
     @Listener
     public void onLoadWorld(LoadWorldEvent event) {
         if (!event.getTargetWorld().getName().contains("-IsoWorld")) {
-            Optional<WorldProperties> optionalWorld1 = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
+            Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
             Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setKeepSpawnLoaded(false);
-            IsoworldsUtils.cm("KeepSpawnLoaded: " + optionalWorld1.get().doesKeepSpawnLoaded());
-            Optional<WorldProperties> optionalWorld2 = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
+            IsoworldsUtils.cm("KeepSpawnLoaded: " + optionalWorld.get().doesKeepSpawnLoaded());
+
             Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setLoadOnStartup(false);
-            IsoworldsUtils.cm("LoadOnStartup: " + optionalWorld2.get().loadOnStartup());
+            IsoworldsUtils.cm("LoadOnStartup: " + optionalWorld.get().loadOnStartup());
+
+            Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setGenerateSpawnOnLoad(false);
+            IsoworldsUtils.cm("KeepSpawnLoaded: " + optionalWorld.get().doesKeepSpawnLoaded());
+
+            Sponge.getServer().saveWorldProperties(event.getTargetWorld().getProperties());
         }
     }
 

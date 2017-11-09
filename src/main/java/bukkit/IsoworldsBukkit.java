@@ -96,6 +96,13 @@ public final class IsoworldsBukkit extends JavaPlugin {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
                             Bukkit.getServer().unloadWorld(world, true);
                             worlds.remove(world.getName());
+
+                            // Prepair for pushing to backup server
+                            //if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), world.getName() + "@PUSH")) {
+                            //    IsoworldsUtils.cm("PUSH OK");
+                            //} else {
+                            //    IsoworldsUtils.cm("PUSH ERREUR");
+                            //}
                         } else {
                             continue;
                         }

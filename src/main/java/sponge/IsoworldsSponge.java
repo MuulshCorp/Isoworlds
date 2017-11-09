@@ -2,6 +2,7 @@ package sponge;
 
 import com.google.inject.Inject;
 
+import common.ManageFiles;
 import org.spongepowered.api.world.Chunk;
 import sponge.Listeners.IsoworldsListeners;
 import sponge.Utils.IsoworldsUtils;
@@ -100,18 +101,18 @@ public class IsoworldsSponge {
                         continue;
                         // Sinon on incrémente et on check si c'est à 10
                     } else {
-                        worlds.put(world.getName(), worlds.get(world.getName()) + 5);
-                        if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 2) {
+                        worlds.put(world.getName(), worlds.get(world.getName()) + 1);
+                        if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 5) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
-                            Sponge.getServer().getWorldProperties(world.getUniqueId()).get().setLoadOnStartup(false);
-                            Sponge.getServer().getWorldProperties(world.getUniqueId()).get().setKeepSpawnLoaded(false);
-                            Sponge.getServer().saveWorldProperties(Sponge.getServer().getWorldProperties(world.getName()).get());
-                            Iterable<Chunk> chunks = Sponge.getServer().getWorld(world.getName()).get().getLoadedChunks();
-                            for (Chunk chunk : chunks) {
-                                Sponge.getServer().getWorld(world.getName()).get().unloadChunk(chunk);
-                            }
                             Sponge.getServer().unloadWorld(world);
                             worlds.remove(world.getName());
+
+                            // Prepair for pushing to backup server
+                            //if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), world.getName() + "@PUSH")) {
+                            //    IsoworldsUtils.cm("PUSH OK");
+                            //} else {
+                            //    IsoworldsUtils.cm("PUSH ERREUR");
+                            //}
                         } else {
                             continue;
                         }

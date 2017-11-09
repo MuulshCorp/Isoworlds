@@ -54,6 +54,16 @@ public class ManageFiles {
         }
     }
 
+    // Renommer dossier
+    public static Boolean rename(String path, String newname) {
+        File file = new File(path);
+        if (!file.isDirectory()) {
+            return false;
+        }
+        file.renameTo(new File(path + newname));
+        return true;
+    }
+
     public static void deleteDir(File file) {
         File[] contents = file.listFiles();
         if (contents != null) {

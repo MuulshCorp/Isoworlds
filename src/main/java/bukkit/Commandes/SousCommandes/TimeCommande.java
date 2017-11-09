@@ -13,12 +13,13 @@ import bukkit.Utils.IsoworldsUtils;
 /**
  * Created by Edwin on 24/10/2017.
  */
-public class MeteoCommande {
+public class TimeCommande {
 
     public static IsoworldsBukkit instance;
 
-    public static void Meteo(CommandSender sender, String[] args) {
+    public static void Time(CommandSender sender, String[] args) {
 
+        instance = IsoworldsBukkit.getInstance();
         instance = IsoworldsBukkit.getInstance();
         int num;
         Player pPlayer = (Player) sender;
@@ -29,31 +30,29 @@ public class MeteoCommande {
             return;
         }
 
-        if (len < 3) {
+        if (len < 2) {
             pPlayer.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "IsoWorlds " + ChatColor.GOLD + "] ---------------------");
             pPlayer.sendMessage(" ");
-            pPlayer.sendMessage(ChatColor.AQUA + "Sijania vous propose trois types de météo:");
-            pPlayer.sendMessage(ChatColor.GOLD + "- Pluie: " + ChatColor.AQUA + "/iw meteo " + ChatColor.GOLD + "[" + ChatColor.GREEN + "pluie"
-                    + ChatColor.GOLD + "/" + ChatColor.GREEN + "soleil" + ChatColor.GOLD + "] " + ChatColor.GREEN + "(durée en minute)");
+            pPlayer.sendMessage(ChatColor.AQUA + "Sijania vous propose deux temps:");
+            pPlayer.sendMessage(ChatColor.GOLD + "- Jour: " + ChatColor.AQUA + "/iw time " + ChatColor.GOLD + "[" + ChatColor.GREEN + "jour"
+                    + ChatColor.GOLD + "/" + ChatColor.GREEN + "nuit" + ChatColor.GOLD + "]");
             pPlayer.sendMessage(" ");
             return;
         } else {
             try{
-                num = Integer.parseInt(args[2]);
+                num = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
                 pPlayer.sendMessage(ChatColor.AQUA + "Sijania indique que vous n'avez pas renseigné de minutes.");
                 return;
             }
             World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
-            IsoworldsUtils.cm("Weather world: " + weather.getName());
-            if (args[1].equals("pluie") || args[1].equals("rain")) {
-                weather.setStorm(true);
-                weather.setWeatherDuration(num);
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre IsoWorld.");
+            IsoworldsUtils.cm("Time world: " + weather.getName());
+            if (args[1].equals("jour") || args[1].equals("day")) {
+                weather.setTime(0);
+                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer le temps de votre IsoWorld.");
                 return;
-            } else if (args[1].equals("soleil") || args[1].equals("sun")) {
-                weather.setStorm(false);
-                weather.setWeatherDuration(num);
+            } else if (args[1].equals("nuit") || args[1].equals("night")) {
+                weather.setTime(12000);
                 pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre IsoWorld.");
                 return;
             }

@@ -32,7 +32,6 @@ import java.util.Optional;
  * Created by Edwin on 08/10/2017.
  */
 public class IsoworldsListeners {
-    static ArrayList<String> firstload = new ArrayList<>();
     private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Listener
@@ -50,13 +49,6 @@ public class IsoworldsListeners {
 
     @Listener
     public void onLoadWorld(LoadWorldEvent event) {
-        // cancel first load
-        for (String world : firstload){
-            if (!(world == event.getTargetWorld().getName())) {
-                event.setCancelled(true);
-                firstload.add(world);
-            }
-        }
 
         if (!event.getTargetWorld().getName().contains("-IsoWorld")) {
             Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());

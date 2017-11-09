@@ -45,6 +45,7 @@ public class IsoworldsCommande implements CommandExecutor {
                 .child(new ConfianceCommande(), "confiance", "trust", "a")
                 .child(new RetirerConfianceCommande(), "retirer", "supprimer", "untrust", "remove")
                 .child(new MeteoCommande(), "meteo", "weather", "m", "météo")
+                .child(new TimeCommande(), "time", "temps", "t", "cycle")
                 .executor(new IsoworldsCommande())
                 .build();
     }

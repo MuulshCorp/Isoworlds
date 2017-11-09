@@ -46,6 +46,9 @@ public class IsoworldsCommandes implements CommandExecutor {
             } else if (arg.equals("météo") || arg.equals("meteo") || arg.equals("m")) {
                MeteoCommande.Meteo(sender, args);
                 return true;
+            } else if (arg.equals("time") || arg.equals("temps") || arg.equals("t") || arg.equals("cycle")) {
+                TimeCommande.Time(sender, args);
+                return true;
             } else {
                 IsoworldsUtils.getHelp(sender);
                 return true;

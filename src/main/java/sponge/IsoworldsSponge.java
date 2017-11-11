@@ -102,13 +102,13 @@ public class IsoworldsSponge {
                         // Sinon on incrémente et on check si c'est à 10
                     } else {
                         worlds.put(world.getName(), worlds.get(world.getName()) + 1);
-                        if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 5) {
+                        if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 2) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
                             Sponge.getServer().unloadWorld(world);
                             worlds.remove(world.getName());
 
                             // Prepair for pushing to backup server
-                            if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), world.getName() + "@PUSH")) {
+                            if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH")) {
                                 IsoworldsUtils.cm("PUSH OK");
                             } else {
                                 IsoworldsUtils.cm("PUSH ERREUR");

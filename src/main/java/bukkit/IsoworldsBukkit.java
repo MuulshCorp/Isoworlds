@@ -98,7 +98,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
                             worlds.remove(world.getName());
 
                             // Prepair for pushing to backup server
-                            //if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), world.getName() + "@PUSH")) {
+                            //if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH")) {
                             //    IsoworldsUtils.cm("PUSH OK");
                             //} else {
                             //    IsoworldsUtils.cm("PUSH ERREUR");

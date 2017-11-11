@@ -1,6 +1,7 @@
 package sponge.Listeners;
 
 import common.Msg;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.event.world.LoadWorldEvent;
@@ -46,6 +47,10 @@ public class IsoworldsListeners {
 
         Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), top.getPosition());
         event.setToTransform(t);
+    }
+
+    @Listener
+    public void onPlayerJoin(PlayerJoinEvent event) {
     }
 
     @Listener

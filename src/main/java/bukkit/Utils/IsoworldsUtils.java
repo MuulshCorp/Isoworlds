@@ -96,7 +96,7 @@ public class IsoworldsUtils {
     public static Boolean insertCreation(Player pPlayer, String messageErreur) {
         IsoworldsBukkit instance;
         instance = IsoworldsBukkit.getInstance();
-        String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
+        String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`) VALUES (?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -112,6 +112,8 @@ public class IsoworldsUtils {
             insert.setString(3, (timestamp.toString()));
             // Serveur_id
             insert.setString(4, instance.servername);
+            // STATUS
+            insert.setInt(5, 0);
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -126,7 +128,7 @@ public class IsoworldsUtils {
     public static Boolean insertTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
         IsoworldsBukkit instance;
         instance = IsoworldsBukkit.getInstance();
-        String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
+        String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`) VALUES (?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -142,6 +144,8 @@ public class IsoworldsUtils {
             insert.setString(3, (timestamp.toString()));
             // Serveur_id
             insert.setString(4, instance.servername);
+            // STATUS
+            insert.setInt(5, 0);
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();

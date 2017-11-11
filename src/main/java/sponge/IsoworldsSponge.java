@@ -108,11 +108,11 @@ public class IsoworldsSponge {
                             worlds.remove(world.getName());
 
                             // Prepair for pushing to backup server
-                            if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH")) {
-                                IsoworldsUtils.cm("PUSH OK");
-                            } else {
-                                IsoworldsUtils.cm("PUSH ERREUR");
-                            }
+                            //if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH")) {
+                            //    IsoworldsUtils.cm("PUSH OK");
+                            //} else {
+                            //    IsoworldsUtils.cm("PUSH ERREUR");
+                            //}
                             //Sponge.getServer().deleteWorld(Sponge.getServer().getWorldProperties(world.getName()).get());
                         } else {
                             continue;

@@ -286,6 +286,44 @@ public class IsoworldsUtils {
         return false;
     }
 
+    // check if status is push or pull exists
+    // true si présent, false si envoyé ou à envoyer
+    public static Boolean iworldStatus(Player pPlayer, String messageErreur) {
+        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        IsoworldsSponge plugin = IsoworldsSponge.instance;
+        String check_w;
+        String check_p;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // UUID _P
+            check_p = IsoworldsUtils.PlayerToUUID(pPlayer).toString();
+            check.setString(1, check_p);
+            // UUID_W
+            check_w = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
+            check.setString(2, check_w);
+            // SERVEUR_ID
+            check.setString(3, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            while (rselect.next()) {
+                if (rselect.getInt(1) == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        } catch (Exception se){
+            se.printStackTrace();
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return false;
+        }
+        return false;
+    }
+
     // Check autorisation trust
     public static Boolean trustExists(Player pPlayer, UUID uuidcible, String messageErreur) {
         IsoworldsSponge plugin = IsoworldsSponge.instance;

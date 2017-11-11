@@ -1,6 +1,7 @@
 package sponge.Listeners;
 
 import common.Msg;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
@@ -73,6 +74,8 @@ public class IsoworldsListeners {
 
 
         String eventworld = event.getToTransform().getExtent().getName();
+        // Check if world status is 0
+
         Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
 
         if (eventworld.contains("-IsoWorld")) {

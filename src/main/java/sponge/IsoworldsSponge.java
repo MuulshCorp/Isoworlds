@@ -113,6 +113,7 @@ public class IsoworldsSponge {
                             } else {
                                 IsoworldsUtils.cm("PUSH ERREUR");
                             }
+                            //Sponge.getServer().deleteWorld(Sponge.getServer().getWorldProperties(world.getName()).get());
                         } else {
                             continue;
                         }

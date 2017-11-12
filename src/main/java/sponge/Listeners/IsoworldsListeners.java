@@ -1,5 +1,6 @@
 package sponge.Listeners;
 
+import common.ManageFiles;
 import common.Msg;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -22,6 +23,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -50,11 +52,19 @@ public class IsoworldsListeners {
     }
 
     @Listener
-    public void onPlayerJoin(PlayerJoinEvent event) {
-    }
-
-    @Listener
     public void onLoadWorld(LoadWorldEvent event) {
+
+        if (IsoworldsUtils.iworldPushed(event.getTargetWorld(), Msg.keys.SQL)) {
+            // Prepair for pushing to backup server
+            File check = new File(ManageFiles.getPath() + event.getTargetWorld().getName() + "PULL");
+            File check2 = new File(ManageFiles.getPath() + event.getTargetWorld().getName());
+            if (check2.exists()) {
+                IsoworldsUtils.iworldSetStatus(event.getTargetWorld(), 0, Msg.keys.SQL);
+            } else if (check.exists()) {
+                ManageFiles.rename(ManageFiles.getPath() + event.getTargetWorld().getName() + "@PUSH", "@PULL");
+                IsoworldsUtils.cm("PULL OK");
+            }
+        }
 
         if (!event.getTargetWorld().getName().contains("-IsoWorld")) {
             Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
@@ -100,7 +110,7 @@ public class IsoworldsListeners {
                     return;
                 }
 
-                if (rselect.isBeforeFirst() ) {
+                if (rselect.isBeforeFirst()) {
                     pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                             .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION).color(TextColors.AQUA))).build()));
                     // Cas du untrust, pour ne pas rester bloquer

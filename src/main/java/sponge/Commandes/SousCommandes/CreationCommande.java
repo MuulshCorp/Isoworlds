@@ -27,8 +27,6 @@ import java.util.NoSuchElementException;
  */
 
 public class CreationCommande implements CommandExecutor {
-    static final String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
-    static final String INSERT_TRUST = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`) VALUES (?, ?, ?)";
     private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Override

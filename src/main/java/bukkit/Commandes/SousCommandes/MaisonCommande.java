@@ -68,6 +68,7 @@ public class MaisonCommande {
                 go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
             }
         } catch (NullPointerException npe) {
+            //
             Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
         }
 

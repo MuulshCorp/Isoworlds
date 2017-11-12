@@ -1,6 +1,7 @@
 package sponge.Utils;
 
 import common.Msg;
+import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
 
 import org.spongepowered.api.Sponge;
@@ -288,22 +289,18 @@ public class IsoworldsUtils {
 
     // check if status is push or pull exists
     // true si présent, false si envoyé ou à envoyer
-    public static Boolean iworldStatus(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+    public static Boolean iworldPushed(World world, String messageErreur) {
+        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
         IsoworldsSponge plugin = IsoworldsSponge.instance;
         String check_w;
-        String check_p;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
-            // UUID _P
-            check_p = IsoworldsUtils.PlayerToUUID(pPlayer).toString();
-            check.setString(1, check_p);
             // UUID_W
-            check_w = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
-            check.setString(2, check_w);
+            check_w = (world.getName() + "-IsoWorld");
+            check.setString(1, check_w);
             // SERVEUR_ID
-            check.setString(3, plugin.servername);
+            check.setString(2, plugin.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
             while (rselect.next()) {
@@ -316,9 +313,33 @@ public class IsoworldsUtils {
             }
         } catch (Exception se){
             se.printStackTrace();
-            IsoworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            IsoworldsUtils.cm(messageErreur);
+            return false;
+        }
+        return false;
+    }
+
+    // set status
+    // true si pushed, false si envoyé ou à envoyer
+    public static Boolean iworldSetStatus(World world, Integer status, String messageErreur) {
+        String CHECK = "UPDATE `isoworlds` SET `STATUS` = ? WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        IsoworldsSponge plugin = IsoworldsSponge.instance;
+        String check_w;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // STATUS
+            check.setInt(1, status);
+            // UUID_W
+            check_w = (world.getName() + "-IsoWorld");
+            check.setString(2, check_w);
+            // SERVEUR_ID
+            check.setString(3, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+        } catch (Exception se){
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
             return false;
         }
         return false;
@@ -390,7 +411,7 @@ public class IsoworldsUtils {
     // insert trust
     public static Boolean insertTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
         IsoworldsSponge plugin = IsoworldsSponge.instance;
-        String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`) VALUES (?, ?, ?, ?, ?)";
+        String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -406,8 +427,6 @@ public class IsoworldsUtils {
             insert.setString(3, (timestamp.toString()));
             // Serveur_id
             insert.setString(4, plugin.servername);
-            // STATUS
-            insert.setInt(5, 0);
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();

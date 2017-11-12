@@ -1,6 +1,8 @@
 package sponge.Utils;
 
+import common.ManageFiles;
 import common.Msg;
+import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
 
@@ -13,6 +15,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 import org.spongepowered.api.world.Location;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -324,9 +327,39 @@ public class IsoworldsUtils {
         return false;
     }
 
+
+    public static Boolean ieWorld(Player pPlayer, String worldname) {
+        if (IsoworldsUtils.iworldPushed(worldname, Msg.keys.SQL)) {
+            IsoworldsUtils.cm("Debug 6");
+            // Création des chemins pour vérification
+            File file = new File(ManageFiles.getPath() + worldname);
+            File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
+            File file3 = new File(ManageFiles.getPath() + worldname + "@PUSHED@PULL");
+            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
+            if (file.exists()) {
+                IsoworldsUtils.cm("Debug 7");
+                IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
+                // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
+                // Le script check ensutie
+                return true;
+            } else if (file2.exists()) {
+                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
+                IsoworldsUtils.cm("PULL OK");
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                return false;
+            } else if (file3.exists()) {
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                return false;
+            }
+        }
+    }
+
+
     // set status
     // true si pushed, false si envoyé ou à envoyer
-    public static Boolean iworldSetStatus(World world, Integer status, String messageErreur) {
+    public static Boolean iworldSetStatus(String world, Integer status, String messageErreur) {
         String CHECK = "UPDATE `isoworlds` SET `STATUS` = ? WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
         IsoworldsSponge plugin = IsoworldsSponge.instance;
         String check_w;
@@ -336,7 +369,7 @@ public class IsoworldsUtils {
             // STATUS
             check.setInt(1, status);
             // UUID_W
-            check_w = (world.getName());
+            check_w = (world);
             check.setString(2, check_w);
             // SERVEUR_ID
             check.setString(3, plugin.servername);

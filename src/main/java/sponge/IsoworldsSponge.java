@@ -114,10 +114,9 @@ public class IsoworldsSponge {
                                 File check = new File(ManageFiles.getPath() + world.getName());
                                 if (check.exists()) {
                                     IsoworldsUtils.cm("debug 2");
-                                    IsoworldsUtils.iworldSetStatus(world, 1, Msg.keys.SQL);
+                                    IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
                                     IsoworldsUtils.cm("PUSH OK");
-                                    Sponge.getServer().deleteWorld(world.getProperties());
                                 }
                             }
                             //Sponge.getServer().deleteWorld(Sponge.getServer().getWorldProperties(world.getName()).get());

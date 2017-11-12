@@ -73,7 +73,7 @@ public class IsoworldsListeners {
             File check2 = new File(ManageFiles.getPath() + event.getTargetWorld().getName());
             if (check2.exists()) {
                 IsoworldsUtils.cm("Debug 5");
-                IsoworldsUtils.iworldSetStatus(event.getTargetWorld(), 0, Msg.keys.SQL);
+                IsoworldsUtils.iworldSetStatus(event.getTargetWorld().getName(), 0, Msg.keys.SQL);
             } else if (check.exists()) {
                 ManageFiles.rename(ManageFiles.getPath() + event.getTargetWorld().getName() + "@PUSH", "@PULL");
                 IsoworldsUtils.cm("PULL OK");

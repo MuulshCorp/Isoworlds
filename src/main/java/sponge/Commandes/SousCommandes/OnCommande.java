@@ -1,5 +1,7 @@
 package sponge.Commandes.SousCommandes;
 
+import common.ManageFiles;
+import common.Msg;
 import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
@@ -16,6 +18,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.storage.WorldProperties;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -46,6 +49,27 @@ public class OnCommande implements CommandExecutor {
         for (WorldProperties world : worlds) {
             // si iworld existe
             if (world.getWorldName().equals(worldname.toString())) {
+                // Si statut isoworld non présent (1)
+                if (IsoworldsUtils.iworldPushed(worldname, Msg.keys.SQL)) {
+                    IsoworldsUtils.cm("Debug 6");
+                    // Création des chemins pour vérification
+                    File file = new File(ManageFiles.getPath() + worldname);
+                    File file2 = new File(ManageFiles.getPath() + worldname + "@PULL");
+                    // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
+                    if (file.exists()) {
+                        IsoworldsUtils.cm("Debug 7");
+                        IsoworldsUtils.iworldSetStatus(Sponge.getServer().getWorld(worldname).get(), 0, Msg.keys.SQL);
+                        // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
+                        // Le script check ensutie
+                    } else if (file2.exists()) {
+                        ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSH", "@PULL");
+                        IsoworldsUtils.cm("PULL OK");
+                        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                                .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                        return CommandResult.success();
+                    }
+                }
+
                 check = true;
                 IsoworldsUtils.cm("check");
                 pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)

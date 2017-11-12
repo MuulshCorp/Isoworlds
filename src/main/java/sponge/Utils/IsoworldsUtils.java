@@ -316,7 +316,7 @@ public class IsoworldsUtils {
                 }
 
             }
-        } catch (Exception se){
+        } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(messageErreur);
             return false;

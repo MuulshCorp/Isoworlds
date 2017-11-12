@@ -6,6 +6,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
@@ -30,10 +31,7 @@ import org.spongepowered.api.world.World;
 import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -55,37 +53,19 @@ public class IsoworldsListeners {
         event.setToTransform(t);
     }
 
+    // Logout event, tp spawn
     @Listener
-    public void onLogin(ClientConnectionEvent.Login event) {
-        World from = event.getFromTransform().getExtent();
-        IsoworldsUtils.cm("debug connexion");
-        if (IsoworldsUtils.iworldPushed(from.getName(), Msg.keys.SQL)) {
-            IsoworldsUtils.cm("Debug 6");
-            // Prepair for pushing to backup server
-            File check = new File(ManageFiles.getPath() + from.getName() + "PULL");
-            File check2 = new File(ManageFiles.getPath() + from.getName());
-            if (check2.exists()) {
-                IsoworldsUtils.cm("Debug 7");
-                IsoworldsUtils.iworldSetStatus(from, 0, Msg.keys.SQL);
-            } else if (check.exists()) {
-                ManageFiles.rename(ManageFiles.getPath() + from.getName() + "@PUSH", "@PULL");
-                IsoworldsUtils.cm("PULL OK");
-
-                String worldname = ("Isolonice");
-                Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-                Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-                Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
-
-                Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), top.getPosition());
-                event.setToTransform(t);
-                return;
-            }
-        }
+    public void onLogout(ClientConnectionEvent.Disconnect event) {
+        String worldname = ("Isolonice");
+        Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
+        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+        event.getTargetEntity().setLocationSafely(top);
+        IsoworldsUtils.cm("Joueur téléporté au spawn");
     }
 
     @Listener
     public void onLoadWorld(LoadWorldEvent event) {
-        IsoworldsUtils.cm("LOAD EVENT");
         if (IsoworldsUtils.iworldPushed(event.getTargetWorld().getName(), Msg.keys.SQL)) {
             IsoworldsUtils.cm("Debug 4");
             // Prepair for pushing to backup server

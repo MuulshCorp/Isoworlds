@@ -7,6 +7,8 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
+import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
@@ -145,5 +147,16 @@ public class IsoworldsListeners {
             }
 
         }
+    }
+
+    @Listener
+    public void onInteractSpawn(HandInteractEvent event, @First Player p) {
+        if (!event.getInteractionPoint().isPresent()) {
+            return;
+        }
+        if (p.getWorld().getName().equals("Isolonice")) {
+            event.setCancelled(true);
+        }
+
     }
 }

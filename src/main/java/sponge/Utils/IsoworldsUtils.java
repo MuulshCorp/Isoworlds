@@ -75,14 +75,15 @@ public class IsoworldsUtils {
     public static Title titleSubtitle(String title, String subtitle) {
         Text Titre = Text.of(Text.builder(title).color(TextColors.GOLD).build());
         Text SousTitre = Text.of(Text.builder(subtitle).color(TextColors.AQUA).build());
-        Title ready =(Title) Title.of(Titre, SousTitre);
+        Title ready = (Title) Title.of(Titre, SousTitre);
         return ready;
     }
 
     // TPS
     private static final DecimalFormat tpsFormat = new DecimalFormat("#0.00");
+
     // TPS
-    public static Text getTPS(double currentTps){
+    public static Text getTPS(double currentTps) {
         TextColor colour;
 
         if (currentTps > 18) {
@@ -95,7 +96,7 @@ public class IsoworldsUtils {
         return Text.of(colour, tpsFormat.format(currentTps));
     }
 
-    public static void coloredMessage(Player pPlayer, String message){
+    public static void coloredMessage(Player pPlayer, String message) {
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(message).color(TextColors.AQUA))).build()));
     }
@@ -276,11 +277,11 @@ public class IsoworldsUtils {
             check.setString(3, plugin.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
-            if (rselect.isBeforeFirst() ) {
+            if (rselect.isBeforeFirst()) {
                 Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
                 return true;
             }
-        } catch (Exception se){
+        } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
@@ -327,7 +328,7 @@ public class IsoworldsUtils {
         return false;
     }
 
-
+    // Import Export
     public static Boolean ieWorld(Player pPlayer, String worldname) {
         if (IsoworldsUtils.iworldPushed(worldname, Msg.keys.SQL)) {
             IsoworldsUtils.cm("Debug 6");
@@ -339,6 +340,8 @@ public class IsoworldsUtils {
             if (file.exists()) {
                 IsoworldsUtils.cm("Debug 7");
                 IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
                 // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
                 // Le script check ensutie
                 return true;
@@ -354,6 +357,7 @@ public class IsoworldsUtils {
                 return false;
             }
         }
+        return true;
     }
 
 
@@ -376,7 +380,7 @@ public class IsoworldsUtils {
             // Requête
             IsoworldsUtils.cm("Debug 3: " + check.toString());
             ResultSet rselect = check.executeQuery();
-        } catch (Exception se){
+        } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(messageErreur);
             return false;
@@ -402,7 +406,7 @@ public class IsoworldsUtils {
             check.setString(3, plugin.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
-            if (rselect.isBeforeFirst() ) {
+            if (rselect.isBeforeFirst()) {
                 return true;
             }
         } catch (Exception se) {

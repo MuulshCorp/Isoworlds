@@ -42,6 +42,11 @@ public class MaisonCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
+        // Import / Export
+        if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+            return CommandResult.success();
+        }
+
         // Construction du point de respawn
         try {
             spawn = plugin.getGame().getServer().getWorld(worldname).get().getSpawnLocation();

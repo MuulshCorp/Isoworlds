@@ -3,6 +3,7 @@ package sponge;
 import com.google.inject.Inject;
 
 import common.ManageFiles;
+import common.Msg;
 import org.spongepowered.api.world.Chunk;
 import sponge.Listeners.IsoworldsListeners;
 import sponge.Utils.IsoworldsUtils;
@@ -107,11 +108,14 @@ public class IsoworldsSponge {
                             Sponge.getServer().unloadWorld(world);
                             worlds.remove(world.getName());
 
-                            // Prepair for pushing to backup server
-                            if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH")) {
-                                IsoworldsUtils.cm("PUSH OK");
-                            } else {
-                                IsoworldsUtils.cm("PUSH ERREUR");
+                            if (!IsoworldsUtils.iworldPushed(world, Msg.keys.SQL)) {
+                                // Prepair for pushing to backup server
+                                File check = new File(ManageFiles.getPath() + world.getName());
+                                if (check.exists()) {
+                                    IsoworldsUtils.iworldSetStatus(world, 0, Msg.keys.SQL);
+                                    ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                    IsoworldsUtils.cm("PUSH OK");
+                                }
                             }
                             //Sponge.getServer().deleteWorld(Sponge.getServer().getWorldProperties(world.getName()).get());
                         } else {

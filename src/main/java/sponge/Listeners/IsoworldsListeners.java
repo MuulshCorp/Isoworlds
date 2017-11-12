@@ -63,6 +63,8 @@ public class IsoworldsListeners {
             } else if (check.exists()) {
                 ManageFiles.rename(ManageFiles.getPath() + event.getTargetWorld().getName() + "@PUSH", "@PULL");
                 IsoworldsUtils.cm("PULL OK");
+                event.setCancelled(true);
+                return;
             }
         }
 

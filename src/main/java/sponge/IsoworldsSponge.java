@@ -108,7 +108,7 @@ public class IsoworldsSponge {
                             Sponge.getServer().unloadWorld(world);
                             worlds.remove(world.getName());
 
-                            if (!IsoworldsUtils.iworldPushed(world, Msg.keys.SQL)) {
+                            if (!IsoworldsUtils.iworldPushed(world.getName(), Msg.keys.SQL)) {
                                 IsoworldsUtils.cm("debug 1");
                                 // Prepair for pushing to backup server
                                 File check = new File(ManageFiles.getPath() + world.getName());
@@ -117,6 +117,7 @@ public class IsoworldsSponge {
                                     IsoworldsUtils.iworldSetStatus(world, 1, Msg.keys.SQL);
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
                                     IsoworldsUtils.cm("PUSH OK");
+                                    Sponge.getServer().deleteWorld(world.getProperties());
                                 }
                             }
                             //Sponge.getServer().deleteWorld(Sponge.getServer().getWorldProperties(world.getName()).get());

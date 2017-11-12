@@ -289,7 +289,7 @@ public class IsoworldsUtils {
 
     // check if status is push or pull exists
     // true si présent, false si envoyé ou à envoyer
-    public static Boolean iworldPushed(World world, String messageErreur) {
+    public static Boolean iworldPushed(String world, String messageErreur) {
         String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
         IsoworldsSponge plugin = IsoworldsSponge.instance;
         String check_w;
@@ -297,14 +297,19 @@ public class IsoworldsUtils {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
             // UUID_W
-            check_w = (world.getName() + "-IsoWorld");
+            check_w = world;
             check.setString(1, check_w);
             // SERVEUR_ID
             check.setString(2, plugin.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
+            IsoworldsUtils.cm(check.toString());
+            IsoworldsUtils.cm("Debug 8");
             while (rselect.next()) {
-                if (rselect.getInt(1) == 0) {
+                IsoworldsUtils.cm(rselect.toString());
+                IsoworldsUtils.cm("Debug 9");
+                if (rselect.getInt(1) == 1) {
+                    IsoworldsUtils.cm("Debug 10");
                     return true;
                 } else {
                     return false;

@@ -55,10 +55,12 @@ public class IsoworldsListeners {
     public void onLoadWorld(LoadWorldEvent event) {
 
         if (IsoworldsUtils.iworldPushed(event.getTargetWorld(), Msg.keys.SQL)) {
+            IsoworldsUtils.cm("Debug 4");
             // Prepair for pushing to backup server
             File check = new File(ManageFiles.getPath() + event.getTargetWorld().getName() + "PULL");
             File check2 = new File(ManageFiles.getPath() + event.getTargetWorld().getName());
             if (check2.exists()) {
+                IsoworldsUtils.cm("Debug 5");
                 IsoworldsUtils.iworldSetStatus(event.getTargetWorld(), 0, Msg.keys.SQL);
             } else if (check.exists()) {
                 ManageFiles.rename(ManageFiles.getPath() + event.getTargetWorld().getName() + "@PUSH", "@PULL");

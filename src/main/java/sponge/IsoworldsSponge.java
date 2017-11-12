@@ -109,10 +109,12 @@ public class IsoworldsSponge {
                             worlds.remove(world.getName());
 
                             if (!IsoworldsUtils.iworldPushed(world, Msg.keys.SQL)) {
+                                IsoworldsUtils.cm("debug 1");
                                 // Prepair for pushing to backup server
                                 File check = new File(ManageFiles.getPath() + world.getName());
                                 if (check.exists()) {
-                                    IsoworldsUtils.iworldSetStatus(world, 0, Msg.keys.SQL);
+                                    IsoworldsUtils.cm("debug 2");
+                                    IsoworldsUtils.iworldSetStatus(world, 1, Msg.keys.SQL);
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
                                     IsoworldsUtils.cm("PUSH OK");
                                 }

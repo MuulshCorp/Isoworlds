@@ -331,11 +331,12 @@ public class IsoworldsUtils {
             // STATUS
             check.setInt(1, status);
             // UUID_W
-            check_w = (world.getName() + "-IsoWorld");
+            check_w = (world.getName());
             check.setString(2, check_w);
             // SERVEUR_ID
             check.setString(3, plugin.servername);
             // Requête
+            IsoworldsUtils.cm("Debug 3: " + check.toString());
             ResultSet rselect = check.executeQuery();
         } catch (Exception se){
             se.printStackTrace();

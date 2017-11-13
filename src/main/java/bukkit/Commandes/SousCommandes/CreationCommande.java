@@ -13,6 +13,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.spongepowered.api.world.gamerule.DefaultGameRules;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,6 +90,7 @@ public class CreationCommande {
         IsoworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
         Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
         Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
+        Bukkit.getServer().getWorld(worldname).setGameRuleValue(DefaultGameRules.MOB_GRIEFING, "false");
         IsoworldsLocations.teleport(pPlayer, worldname);
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
         return;

@@ -1,6 +1,7 @@
 package sponge.Commandes.SousCommandes;
 
 import common.Msg;
+import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import sponge.IsoworldsSponge;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
@@ -71,6 +72,7 @@ public class CreationCommande implements CommandExecutor {
             Sponge.getServer().getWorldProperties(worldname).get().setLoadOnStartup(false);
             Sponge.getServer().getWorldProperties(worldname).get().getDimensionType().getId();
             Sponge.getServer().getWorldProperties(worldname).get().setGenerateSpawnOnLoad(false);
+            Sponge.getServer().getWorldProperties(worldname).get().setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
             Sponge.getServer().saveWorldProperties(worldProperties);
 
 

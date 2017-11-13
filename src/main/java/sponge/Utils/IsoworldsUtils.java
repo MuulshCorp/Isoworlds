@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 public class IsoworldsUtils {
 
-    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
+    private static final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     public static boolean isSolid(Location blockLoc) {
         if (blockLoc.getProperty(SolidCubeProperty.class).isPresent()) {
@@ -328,8 +328,20 @@ public class IsoworldsUtils {
         return false;
     }
 
+    // Cooldown
+    public static Boolean cooldown(Player pPlayer, String command) {
+        // Si le tableau est null alors cooldown 0 sinon cooldown 1
+        if (plugin.cooldown.get(pPlayer.getUniqueId().toString()) == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
     // Import Export
     public static Boolean ieWorld(Player pPlayer, String worldname) {
+        plugin.cooldown.get(pPlayer)
         if (IsoworldsUtils.iworldPushed(worldname, Msg.keys.SQL)) {
             IsoworldsUtils.cm("Debug 6");
             // Création des chemins pour vérification

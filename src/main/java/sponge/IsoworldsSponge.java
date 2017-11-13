@@ -47,6 +47,7 @@ public class IsoworldsSponge {
     private Game game;
     public String servername;
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
+    public static Map<String, Integer> cooldown = new HashMap<String, Integer>();
 
     @Inject
     @DefaultConfig(sharedRoot = true)
@@ -68,11 +69,9 @@ public class IsoworldsSponge {
     public void onPreInit(GamePreInitializationEvent event) {
 
         registerEvents();
-
         logger.info("Chargement des IsoWorlds...");
 
         Sponge.getCommandManager().register(this, IsoworldsCommande.getCommand(), "iw", "isoworld", "isoworlds");
-
         logger.info("Les IsoWorlds sont chargés et opérationnels !");
     }
 
@@ -147,7 +146,6 @@ public class IsoworldsSponge {
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).setValue("806de245af712155c74dea135e6491d8");
                 this.configurationLoader.save(this.configurationNode);
             }
-
             this.logger.info("Lecture de la configuration   ...");
             this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
             try {

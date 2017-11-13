@@ -3,6 +3,7 @@ package sponge.Utils;
 import common.ManageFiles;
 import common.Msg;
 import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
 
@@ -349,32 +350,39 @@ public class IsoworldsUtils {
         }
         // On set cooldown
         plugin.cooldown.put(pPlayer.getUniqueId().toString() + "ieWorld", 1);
+        // Vérification si monde en statut pushed
         if (IsoworldsUtils.iworldPushed(worldname, Msg.keys.SQL)) {
             IsoworldsUtils.cm("Debug 6");
             // Création des chemins pour vérification
             File file = new File(ManageFiles.getPath() + worldname);
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
             File file3 = new File(ManageFiles.getPath() + worldname + "@PUSHED@PULL");
-            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
-            if (file.exists()) {
-                IsoworldsUtils.cm("Debug 7");
-                IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
-                // Le script check ensutie
-                return true;
-            } else if (file2.exists()) {
-                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
-                IsoworldsUtils.cm("PULL OK");
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                return false;
-            } else if (file3.exists()) {
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                return false;
-            }
+
+            Task.builder().delayTicks(20).execute(() -> {
+
+
+
+                // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
+                if (file.exists()) {
+                    IsoworldsUtils.cm("Debug 7");
+                    IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
+                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
+                            .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                    // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
+                    // Le script check ensutie
+                    return true;
+                } else if (file2.exists()) {
+                    ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
+                    IsoworldsUtils.cm("PULL OK");
+                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                            .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                    return false;
+                } else if (file3.exists()) {
+                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                            .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                    return false;
+                }
+            }).submit(plugin);
         }
         return true;
     }

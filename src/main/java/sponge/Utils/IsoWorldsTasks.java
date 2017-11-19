@@ -4,7 +4,6 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.Locations.IsoworldsLocations;
 
 import java.io.File;
 import java.util.function.Consumer;

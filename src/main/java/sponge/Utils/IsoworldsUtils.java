@@ -373,13 +373,6 @@ public class IsoworldsUtils {
                 // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
                 // Le script check ensutie
                 return true;
-            } else if (file2.exists()) {
-                IsoworldsUtils.cm("TEST 0");
-                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
-                IsoworldsUtils.cm("PULL OK");
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                return false;
             } else {
                 Task task = Task.builder()
                         .execute(new IsoWorldsTasks(pPlayer, file))
@@ -387,6 +380,15 @@ public class IsoworldsUtils {
                         .interval(1, TimeUnit.SECONDS)
                         .name("Self-Cancelling Timer Task")
                         .submit(plugin);
+            }
+            if (file2.exists()) {
+                IsoworldsUtils.cm("TEST 0");
+                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
+                IsoworldsUtils.cm("PULL OK");
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+
+                return false;
             }
             return false;
         }

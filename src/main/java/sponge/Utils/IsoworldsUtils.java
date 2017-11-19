@@ -3,6 +3,7 @@ package sponge.Utils;
 import common.ManageFiles;
 import common.Msg;
 import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.scheduler.SynchronousExecutor;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
@@ -363,6 +364,7 @@ public class IsoworldsUtils {
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
             File file3 = new File(ManageFiles.getPath() + worldname + "@PUSHED@PULL");
             // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
+
             if (file.exists()) {
                 IsoworldsUtils.cm("Debug 7");
                 IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
@@ -378,14 +380,16 @@ public class IsoworldsUtils {
                 pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
                         .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
                 return false;
-            } else if (file3.exists()) {
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                return false;
+            } else {
+                Task task = Task.builder()
+                        .execute(new IsoWorldsTasks(pPlayer, file))
+                        .async()
+                        .interval(1, TimeUnit.SECONDS)
+                        .name("Self-Cancelling Timer Task")
+                        .submit(plugin);
             }
-            return true;
         }
-        return true;
+        return false;
     }
 
 

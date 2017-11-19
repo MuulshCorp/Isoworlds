@@ -16,11 +16,14 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 import org.spongepowered.api.world.Location;
 
+import javax.print.attribute.standard.MediaSize;
 import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -331,7 +334,7 @@ public class IsoworldsUtils {
         return false;
     }
 
-    // Cooldown
+    // Cooldown modèle: uuid;commande
     public static Boolean isCooldown(String pPlayer, String command) {
         // Si le tableau est null alors cooldown 0 sinon cooldown 1
         if (plugin.cooldown.get(pPlayer + ";" + command) == null) {
@@ -343,7 +346,6 @@ public class IsoworldsUtils {
 
     // Import Export
     public static Boolean ieWorld(Player pPlayer, String worldname) {
-        Boolean check = true;
         Integer limit = 0;
         // Si le cooldown est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
         if (isCooldown(pPlayer.getUniqueId().toString(), "ieWorld")) {
@@ -360,41 +362,26 @@ public class IsoworldsUtils {
             File file = new File(ManageFiles.getPath() + worldname);
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
             File file3 = new File(ManageFiles.getPath() + worldname + "@PUSHED@PULL");
-
-            while (limit < 1) {
-                IsoworldsUtils.cm("WAITING: 0");
-                Task.builder().interval(1, TimeUnit.SECONDS).execute((taskToExecute) -> {
-                    // wait 1 second
-                    IsoworldsUtils.cm("WAITING: 1");
-                }).submit(plugin);
-                IsoworldsUtils.cm("WAITING: 2");
-                if (file.exists()) {
-                    IsoworldsUtils.cm("Debug 7");
-                    IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
-                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                    return true;
-                }
-                // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
-                if (file.exists()) {
-                    IsoworldsUtils.cm("Debug 7");
-                    IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
-                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                    // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
-                    // Le script check ensutie
-                    return false;
-                } else if (file2.exists()) {
-                    ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
-                    IsoworldsUtils.cm("PULL OK");
-                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                    return false;
-                } else if (file3.exists()) {
-                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                    return false;
-                }
+            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
+            if (file.exists()) {
+                IsoworldsUtils.cm("Debug 7");
+                IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
+                // Le script check ensutie
+                return true;
+            } else if (file2.exists()) {
+                IsoworldsUtils.cm("TEST 0");
+                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
+                IsoworldsUtils.cm("PULL OK");
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                return false;
+            } else if (file3.exists()) {
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+                return false;
             }
             return true;
         }

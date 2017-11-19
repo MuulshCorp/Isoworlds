@@ -388,8 +388,9 @@ public class IsoworldsUtils {
                         .name("Self-Cancelling Timer Task")
                         .submit(plugin);
             }
+            return false;
         }
-        return false;
+        return true;
     }
 
 

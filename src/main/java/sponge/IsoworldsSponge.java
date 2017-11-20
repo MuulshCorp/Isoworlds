@@ -106,6 +106,12 @@ public class IsoworldsSponge {
                         if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 1) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
                             Sponge.getServer().unloadWorld(world);
+                            try {
+                                Sponge.getServer().getWorld(world.getName()).get().save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                continue;
+                            }
                             worlds.remove(world.getName());
 
                             if (!IsoworldsUtils.iworldPushed(world.getName(), Msg.keys.SQL)) {

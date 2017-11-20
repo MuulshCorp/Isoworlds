@@ -53,5 +53,4 @@ public class OnCommande {
         instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
     }
-    }
 }

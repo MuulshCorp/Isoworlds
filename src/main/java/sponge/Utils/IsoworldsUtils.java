@@ -345,7 +345,22 @@ public class IsoworldsUtils {
         }
     }
 
-    // Import Export
+    // Vérifie si le cooldown est présent et renvoi vrai, sinon défini le cooldown et renvoi false
+    public static Boolean isSetCooldown(Player pPlayer, String className) {
+        // Si le cooldown est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
+        if (isCooldown(pPlayer.getUniqueId().toString(), String.class.getName())) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+            return true;
+        } else {
+            // On set cooldown
+            plugin.cooldown.put(pPlayer.getUniqueId().toString() + ";" + className, 1);
+            return false;
+        }
+    }
+
+        // Import Export
+
     public static Boolean ieWorld(Player pPlayer, String worldname) {
         Integer limit = 0;
         // Vérification si monde en statut pushed

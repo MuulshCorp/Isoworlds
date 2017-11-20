@@ -46,12 +46,11 @@ public class OffCommande {
         // Si le monde n'est pas chargé alors on le fait et on le save avant
         if (Bukkit.getServer().getWorld(worldname) != null) {
             Bukkit.getServer().unloadWorld(worldname, true);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: Sijania vient d'activer votre IsoWorld." + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: Sijania vient de désactiver votre IsoWorld." + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
         }
 
         IsoworldsUtils.cm("finished");
         instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
-    }
     }
 }

@@ -1,13 +1,18 @@
 package bukkit.Listeners;
 
 import bukkit.IsoworldsBukkit;
+import common.ManageFiles;
 import common.Msg;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import bukkit.Utils.IsoworldsUtils;
+import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.spongepowered.api.world.gamerule.DefaultGameRules;
 
 import java.io.File;
 import java.sql.PreparedStatement;
@@ -60,6 +65,19 @@ public class IsoworldsListeners implements Listener {
             event.setCancelled(true);
         }
 
+    }
+
+    // Used to redefine rules of the world
+    public void onLoadWorld(WorldLoadEvent event) {
+
+        if (event.getWorld().getName().contains("-IsoWorld")) {
+            String worldname = event.getWorld().getName();
+            Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
+            IsoworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
+            Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
+            Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
+            Bukkit.getServer().getWorld(worldname).setGameRuleValue(DefaultGameRules.MOB_GRIEFING, "false");
+        }
     }
 
     @EventHandler

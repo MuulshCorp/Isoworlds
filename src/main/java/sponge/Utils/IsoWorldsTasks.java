@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  */
 public class IsoWorldsTasks implements Consumer<Task> {
 
-    private int check = 15;
+    private int check = 20;
     private Player pPlayer;
     private File file;
 
@@ -27,7 +27,7 @@ public class IsoWorldsTasks implements Consumer<Task> {
     @Override
     public void accept(Task task) {
         // Message de démarrage process
-        if (check == 15) {
+        if (check == 20) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
         }

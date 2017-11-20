@@ -11,7 +11,7 @@ import java.io.File;
  */
 
 public class IsoWorldsTasks extends BukkitRunnable {
-    private int check = 15;
+    private int check = 20;
     private Player pPlayer;
     private File file;
 
@@ -22,7 +22,7 @@ public class IsoWorldsTasks extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (check == 15) {
+        if (check == 20) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...");
         }
         check --;

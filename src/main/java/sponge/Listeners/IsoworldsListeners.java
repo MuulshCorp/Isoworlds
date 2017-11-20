@@ -14,6 +14,7 @@ import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
 import org.spongepowered.api.network.PlayerConnection;
 import org.spongepowered.api.service.user.UserStorageService;
+import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
@@ -84,13 +85,16 @@ public class IsoworldsListeners {
             }
         }
 
-        if (!event.getTargetWorld().getName().contains("-IsoWorld")) {
+        if (event.getTargetWorld().getName().contains("-IsoWorld")) {
             Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
             Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setKeepSpawnLoaded(false);
             IsoworldsUtils.cm("KeepSpawnLoaded: " + optionalWorld.get().doesKeepSpawnLoaded());
 
             Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setLoadOnStartup(false);
             IsoworldsUtils.cm("LoadOnStartup: " + optionalWorld.get().loadOnStartup());
+
+            Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
+            IsoworldsUtils.cm("Mob Griefing: " + optionalWorld.get().getGameRules());
 
             Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setGenerateSpawnOnLoad(false);
             IsoworldsUtils.cm("KeepSpawnLoaded: " + optionalWorld.get().doesKeepSpawnLoaded());

@@ -40,12 +40,19 @@ public class IsoworldsListeners implements Listener {
         IsoworldsUtils.cm("DEBUG1: " + world);
     }
 
+    // Logout event, tp spawn
     @EventHandler
-    public void onLogin(PlayerLoginEvent event) {
+    public void onLogout(PlayerQuitEvent event) {
 
-        String world = event.getPlayer().getWorld().getName();
-        IsoworldsUtils.cm("DEBUG2: " + world);
+        Player p = event.getPlayer();
+        String worldname = ("Isolonice");
+        Integer maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+        Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
+
+        p.teleport(top);
+        IsoworldsUtils.cm("Joueur téléporté au spawn");
     }
+
 
     @EventHandler
     public void onPlayerChangeWorld(PlayerTeleportEvent event) {

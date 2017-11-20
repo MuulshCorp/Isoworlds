@@ -119,7 +119,6 @@ public class IsoworldsSponge {
                                     IsoworldsUtils.cm("PUSH OK");
                                 }
                             }
-                            //Sponge.getServer().deleteWorld(Sponge.getServer().getWorldProperties(world.getName()).get());
                         } else {
                             continue;
                         }

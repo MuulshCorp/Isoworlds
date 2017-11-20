@@ -47,6 +47,13 @@ public class OnCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
+        // Import / Export
+        if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+            // Suppression cooldown
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
+
         for (WorldProperties world : Sponge.getServer().getUnloadedWorlds()) {
             if (world.getWorldName().contains("-IsoWorld")) {
                 worlds.add(world);

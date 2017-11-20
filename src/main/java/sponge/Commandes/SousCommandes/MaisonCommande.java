@@ -39,15 +39,15 @@ public class MaisonCommande implements CommandExecutor {
         Player pPlayer = (Player) source;
         worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return CommandResult.success();
+        }
+
         // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-            return CommandResult.success();
-        }
-
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
 

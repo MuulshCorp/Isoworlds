@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 
 import javax.print.attribute.standard.MediaSize;
 
+import static bukkit.Utils.IsoworldsUtils.isSetCooldown;
+
 /**
  * Created by Edwin on 20/10/2017.
  */
@@ -27,6 +29,10 @@ public class MaisonCommande {
         String uuid;
         pPlayer = (Player) sender;
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return;
+        }
 
         // Check if home of trusted isoworld
         IsoworldsUtils.cm("DEBUG MAISON: " + args.length);
@@ -34,6 +40,7 @@ public class MaisonCommande {
         if (args.length == 2) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(args[1]);
             if (owner == null) {
+                instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;
             }
             uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
@@ -50,6 +57,7 @@ public class MaisonCommande {
 
         if (!IsoworldsUtils.iworldExists(uuid, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -76,6 +84,7 @@ public class MaisonCommande {
         if (pPlayer.teleport(go)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
         }
+        instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
 
     }

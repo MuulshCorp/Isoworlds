@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static bukkit.Utils.IsoworldsUtils.isSetCooldown;
+
 /**
  * Created by Edwin on 20/10/2017.
  */
@@ -37,10 +39,16 @@ public class RefonteCommande {
         instance = IsoworldsBukkit.getInstance();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return;
+        }
+
         // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             IsoworldsUtils.cm("DEBUG 1");
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -48,6 +56,7 @@ public class RefonteCommande {
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.CONFIRMATION);
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         } else {
             long millis = timestamp.getTime() - (confirm.get(pPlayer.getUniqueId().toString()).getTime());
@@ -55,6 +64,7 @@ public class RefonteCommande {
             if (minutes >= 1) {
                 confirm.remove(pPlayer.getUniqueId().toString());
                 pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.CONFIRMATION);
+                instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;
             }
         }
@@ -68,6 +78,7 @@ public class RefonteCommande {
         destDir.mkdir();
         if (Bukkit.getServer().getWorld(worldname) == null) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
         if (Bukkit.getServer().getWorld(worldname) != null) {
@@ -90,12 +101,14 @@ public class RefonteCommande {
         if (!IsoworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
             IsoworldsUtils.cm("DEBUG 2");
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
         CommandSender newSender = pPlayer.getPlayer();
         CreationCommande.Creation(newSender, args);
+        instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
 
     }

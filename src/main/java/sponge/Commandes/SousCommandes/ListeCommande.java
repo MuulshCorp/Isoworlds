@@ -38,6 +38,12 @@ public class ListeCommande implements CommandExecutor {
         Player pPlayer = (Player) source;
         ArrayList<World> worlds = new ArrayList<World>();
         Boolean check = false;
+
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return CommandResult.success();
+        }
+
         for(World world : Sponge.getServer().getWorlds()) {
             if (world.isLoaded()) {
                 if (world.getName().contains("-IsoWorld")) {
@@ -50,11 +56,6 @@ public class ListeCommande implements CommandExecutor {
         if (check == true) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld dans le Royaume Isolonice").color(TextColors.AQUA))).build()));
-            return CommandResult.success();
-        }
-
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
 

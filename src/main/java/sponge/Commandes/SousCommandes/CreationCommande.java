@@ -46,7 +46,6 @@ public class CreationCommande implements CommandExecutor {
 
         // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
         if (isSetCooldown(pPlayer, String.class.getName())) {
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 

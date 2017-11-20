@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+import static bukkit.Utils.IsoworldsUtils.isSetCooldown;
+
 /**
  * Created by Edwin on 20/10/2017.
  */
@@ -23,14 +25,21 @@ public class ConfianceCommande {
         UUID uuidcible;
         Integer len = args.length;
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return;
+        }
+
         // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         if (len > 2 || len < 2) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -44,16 +53,19 @@ public class ConfianceCommande {
         // CHECK AUTORISATIONS
         if (IsoworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // INSERT
         if (!IsoworldsUtils.insertTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TRUST);
+        instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
     }
 }

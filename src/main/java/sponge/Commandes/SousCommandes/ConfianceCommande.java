@@ -26,6 +26,8 @@ import org.spongepowered.api.world.World;
 import javax.annotation.Nullable;
 import java.util.*;
 
+import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+
 public class ConfianceCommande implements CommandCallable {
 
     private final IsoworldsSponge plugin = IsoworldsSponge.instance;
@@ -37,6 +39,12 @@ public class ConfianceCommande implements CommandCallable {
         Player pPlayer = (Player) source;
         String[] arg = args.split(" ");
         int size = arg.length;
+
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
 
         if (size > 1) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)

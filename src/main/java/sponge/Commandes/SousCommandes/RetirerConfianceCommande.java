@@ -27,6 +27,8 @@ import javax.annotation.Nullable;
 
 import java.util.*;
 
+import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+
 public class RetirerConfianceCommande implements CommandCallable {
 
     private final IsoworldsSponge plugin = IsoworldsSponge.instance;
@@ -40,9 +42,15 @@ public class RetirerConfianceCommande implements CommandCallable {
         int size = arg.length;
         Optional<User> player;
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return CommandResult.success();
+        }
+
         if (size > 1) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -50,6 +58,7 @@ public class RetirerConfianceCommande implements CommandCallable {
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -62,17 +71,20 @@ public class RetirerConfianceCommande implements CommandCallable {
                 e.printStackTrace();
                 pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
+                plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return CommandResult.success();
             }
 
             if (uuidcible.toString().isEmpty() || (size > 1)) {
                 IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.INVALIDE_JOUEUR);
+                plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
             i.printStackTrace();
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -80,6 +92,7 @@ public class RetirerConfianceCommande implements CommandCallable {
         if (!IsoworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_TRUST_2).color(TextColors.AQUA))).build()));
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -87,6 +100,7 @@ public class RetirerConfianceCommande implements CommandCallable {
         if (!IsoworldsUtils.deleteTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -107,6 +121,7 @@ public class RetirerConfianceCommande implements CommandCallable {
 
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_RETIRER_CONFIANCE).color(TextColors.AQUA))).build()));
+        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

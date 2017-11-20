@@ -20,6 +20,7 @@ import javax.print.attribute.standard.MediaSize;
 import java.util.NoSuchElementException;
 
 import static sponge.Utils.IsoworldsUtils.isCooldown;
+import static sponge.Utils.IsoworldsUtils.isSetCooldown;
 
 /**
  * Created by Edwin on 10/10/2017.
@@ -45,15 +46,10 @@ public class MaisonCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
-        // Si le cooldown est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
-        if (isCooldown(pPlayer.getUniqueId().toString(), String.class.getName())) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
-
-        // On set cooldown
-        plugin.cooldown.put(pPlayer.getUniqueId().toString() + ";" + String.class.getName(), 1);
 
         // Import / Export
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {

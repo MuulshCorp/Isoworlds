@@ -25,6 +25,7 @@ import java.util.*;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
+import static sponge.Utils.IsoworldsUtils.isSetCooldown;
 
 public class TimeCommande implements CommandCallable {
 
@@ -39,9 +40,15 @@ public class TimeCommande implements CommandCallable {
         String[] arg = args.split(" ");
         int size = arg.length;
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return CommandResult.success();
+        }
+
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -76,7 +83,7 @@ public class TimeCommande implements CommandCallable {
             pPlayer.sendMessage(night);
 
             pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
-
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
 
         } else if (size == 2) {
@@ -86,8 +93,10 @@ public class TimeCommande implements CommandCallable {
                 Sponge.getServer().getWorld(arg[1]).get().getProperties().setWorldTime(12000);
             }
         } else {
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
+        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

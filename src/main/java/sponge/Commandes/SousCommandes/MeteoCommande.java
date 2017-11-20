@@ -25,6 +25,7 @@ import java.util.*;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
+import static sponge.Utils.IsoworldsUtils.isSetCooldown;
 
 public class MeteoCommande implements CommandCallable {
 
@@ -39,11 +40,18 @@ public class MeteoCommande implements CommandCallable {
         String[] arg = args.split(" ");
         int size = arg.length;
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return CommandResult.success();
+        }
+
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
+
 
         if (size == 1) {
             pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
@@ -171,6 +179,7 @@ public class MeteoCommande implements CommandCallable {
 
             pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
 
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
 
         } else if (size == 3) {
@@ -182,8 +191,10 @@ public class MeteoCommande implements CommandCallable {
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.THUNDER_STORM, parseInt(arg[1]));
             }
         } else {
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
+        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

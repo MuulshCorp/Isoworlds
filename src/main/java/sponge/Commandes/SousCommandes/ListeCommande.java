@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+
 /**
  * Created by Edwin on 10/10/2017.
  */
@@ -44,11 +46,19 @@ public class ListeCommande implements CommandExecutor {
             }
         }
 
+        // Check si isoworld existe
         if (check == true) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld dans le Royaume Isolonice").color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
+
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return CommandResult.success();
+        }
+
+        // Construction des textes en fonction des isoworlds loadés
         Text title = Text.of(Text.builder("[Liste des IsoWorlds (cliquables)]").color(TextColors.GOLD).build());
         pPlayer.sendMessage(title);
         for(World w : worlds ) {
@@ -82,6 +92,7 @@ public class ListeCommande implements CommandExecutor {
                     .onHover(TextActions.showText(Text.of(worldname))).build());
             pPlayer.sendMessage(name);
         }
+        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

@@ -23,6 +23,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
+import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+
 public class TeleportCommande implements CommandCallable {
 
     private final IsoworldsSponge plugin = IsoworldsSponge.instance;
@@ -35,12 +37,18 @@ public class TeleportCommande implements CommandCallable {
         String[] arg = args.split(" ");
         length = arg.length;
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return CommandResult.success();
+        }
+
         IsoworldsUtils.cm("Total arguments" + length);
         IsoworldsUtils.cm("Total arguments2" + args);
         IsoworldsUtils.cm("Total arguments3" + arg);
         if (length != 2) {
             Text message = Text.of(Msg.keys.INVALIDE_JOUEUR);
             pPlayer.sendMessage(message);
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -49,11 +57,13 @@ public class TeleportCommande implements CommandCallable {
         if (!target.isPresent()) {
             Text message = Text.of("Le joueur indiqué n'est pas connecté, ou vous avez mal entré son pseudonyme.");
             pPlayer.sendMessage(message);
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         } else {
             player = target.get().getPlayer().get();
             IsoworldsLocations.teleport(player, arg[1]);
         }
+        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

@@ -22,6 +22,8 @@ import javax.print.attribute.standard.MediaSize;
 import java.io.File;
 import java.util.ArrayList;
 
+import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+
 /**
  * Created by Edwin on 15/10/2017.
  */
@@ -40,6 +42,11 @@ public class OnCommande implements CommandExecutor {
         ArrayList<WorldProperties> worlds = new ArrayList<WorldProperties>();
         IsoworldsUtils.cm("check");
 
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+        if (isSetCooldown(pPlayer, String.class.getName())) {
+            return CommandResult.success();
+        }
+
         for (WorldProperties world : Sponge.getServer().getUnloadedWorlds()) {
             if (world.getWorldName().contains("-IsoWorld")) {
                 worlds.add(world);
@@ -51,6 +58,7 @@ public class OnCommande implements CommandExecutor {
             // si iworld existe
             if (world.getWorldName().equals(worldname.toString())) {
                 if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+                    plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                 }
 
@@ -61,6 +69,7 @@ public class OnCommande implements CommandExecutor {
                 // Si ça réussi
                 try {
                     Sponge.getServer().loadWorld(worldname.toString());
+                    plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                 } catch (NullPointerException npe) {
                     npe.printStackTrace();
@@ -72,11 +81,13 @@ public class OnCommande implements CommandExecutor {
                 if (check == false) {
                     pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                             .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld à votre nom dans le Royaume Isolonice. Entrez /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
+                    plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                 }
             }
         }
         IsoworldsUtils.cm("finished");
+        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

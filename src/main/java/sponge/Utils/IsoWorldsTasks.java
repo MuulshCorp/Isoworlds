@@ -26,6 +26,11 @@ public class IsoWorldsTasks implements Consumer<Task> {
 
     @Override
     public void accept(Task task) {
+        // Message de démarrage process
+        if (check == 15) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+        }
         check --;
         if (check < 1) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania ne parvient pas à charger votre monde, veuillez re tenter ou contacter l'équipe Isolonice.").color(TextColors.GOLD)

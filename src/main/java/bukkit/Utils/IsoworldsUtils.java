@@ -137,7 +137,6 @@ public class IsoworldsUtils {
             // Création des chemins pour vérification
             File file = new File(ManageFiles.getPath() + worldname);
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
-            File file3 = new File(ManageFiles.getPath() + worldname + "@PUSHED@PULL");
             // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
 
             if (file.exists()) {
@@ -156,7 +155,6 @@ public class IsoworldsUtils {
                 IsoworldsUtils.cm("TEST 0");
                 ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
                 IsoworldsUtils.cm("PULL OK");
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...");
                 return false;
             }
             return false;

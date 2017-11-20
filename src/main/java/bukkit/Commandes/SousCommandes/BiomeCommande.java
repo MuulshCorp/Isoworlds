@@ -55,7 +55,7 @@ public class BiomeCommande {
                         }
                     }
                 }
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
                 instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;
             }

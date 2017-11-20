@@ -63,7 +63,6 @@ public class ConfianceCommande {
             return;
         }
 
-
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TRUST);
         instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;

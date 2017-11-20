@@ -1,6 +1,8 @@
 package sponge.Commandes.SousCommandes;
 
+import bukkit.IsoworldsBukkit;
 import sponge.IsoworldsSponge;
+import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
 
 import org.spongepowered.api.Sponge;
@@ -61,6 +63,12 @@ public class OffCommande implements CommandExecutor {
                 if (world.isLoaded()) {
                     pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                             .append(Text.of(Text.builder("Sijania vient de désactiver votre IsoWorld.").color(TextColors.AQUA))).build()));
+                    Sponge.getServer().getWorld(worldname).get().getPlayers();
+                    // Kick des joueurs présents dans le monde
+                    for (Player p : Sponge.getServer().getWorld(worldname).get().getPlayers()) {
+                        IsoworldsLocations.teleport(p, "Isolonice");
+                    }
+                    // Unload
                     Sponge.getServer().unloadWorld(world);
                     plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();

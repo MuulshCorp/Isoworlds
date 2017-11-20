@@ -12,6 +12,7 @@ import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
+import org.spongepowered.api.event.world.chunk.LoadChunkEvent;
 import org.spongepowered.api.network.PlayerConnection;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;

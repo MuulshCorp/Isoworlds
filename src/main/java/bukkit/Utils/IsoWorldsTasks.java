@@ -23,7 +23,7 @@ public class IsoWorldsTasks extends BukkitRunnable {
     @Override
     public void run() {
         if (check == 20) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...");
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter... (Temps estimé: 20 secondes)");
         }
         check --;
         if (check < 1) {

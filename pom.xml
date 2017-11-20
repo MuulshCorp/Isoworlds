@@ -42,7 +42,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>test</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

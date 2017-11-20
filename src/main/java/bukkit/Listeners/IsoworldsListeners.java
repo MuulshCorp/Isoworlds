@@ -5,7 +5,6 @@ import common.Msg;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import bukkit.Utils.IsoworldsUtils;
@@ -53,6 +52,15 @@ public class IsoworldsListeners implements Listener {
         IsoworldsUtils.cm("Joueur téléporté au spawn");
     }
 
+    @EventHandler
+    // Anti grief spawn
+    public void onInteractSpawn(PlayerInteractEvent event) {
+        Player p = event.getPlayer();
+        if (p.getLocation().getWorld().equals("Isolonice") {
+            event.setCancelled(true);
+        }
+
+    }
 
     @EventHandler
     public void onPlayerChangeWorld(PlayerTeleportEvent event) {

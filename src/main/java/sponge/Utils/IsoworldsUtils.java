@@ -348,14 +348,6 @@ public class IsoworldsUtils {
     // Import Export
     public static Boolean ieWorld(Player pPlayer, String worldname) {
         Integer limit = 0;
-        // Si le cooldown est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
-        if (isCooldown(pPlayer.getUniqueId().toString(), "ieWorld")) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania canalise son pouvoir et ramène votre IsoWorld, veuillez patienter...").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-            return false;
-        }
-        // On set cooldown
-        plugin.cooldown.put(pPlayer.getUniqueId().toString() + "ieWorld", 1);
         // Vérification si monde en statut pushed
         if (IsoworldsUtils.iworldPushed(worldname, Msg.keys.SQL)) {
             IsoworldsUtils.cm("Debug 6");

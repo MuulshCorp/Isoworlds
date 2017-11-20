@@ -19,6 +19,8 @@ import org.spongepowered.api.world.*;
 import javax.print.attribute.standard.MediaSize;
 import java.util.NoSuchElementException;
 
+import static sponge.Utils.IsoworldsUtils.isCooldown;
+
 /**
  * Created by Edwin on 10/10/2017.
  */
@@ -30,6 +32,7 @@ public class MaisonCommande implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
         // Variables
+        String cmdname = "maison";
         String worldname = "";
         Location<World> spawn;
         Player pPlayer = (Player) source;
@@ -42,8 +45,20 @@ public class MaisonCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
+        // Si le cooldown est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
+        if (isCooldown(pPlayer.getUniqueId().toString(), String.class.getName())) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+            return CommandResult.success();
+        }
+
+        // On set cooldown
+        plugin.cooldown.put(pPlayer.getUniqueId().toString() + ";" + String.class.getName(), 1);
+
         // Import / Export
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+            // Suppression cooldown
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -54,6 +69,8 @@ public class MaisonCommande implements CommandExecutor {
             e.printStackTrace();
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.DATA).color(TextColors.AQUA))).build()));
+            // Suppression cooldown
+            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -68,6 +85,8 @@ public class MaisonCommande implements CommandExecutor {
                     .append(Text.of(Text.builder("Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.").color(TextColors.AQUA))).build()));
         }
 
+        // Suppression cooldown
+        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

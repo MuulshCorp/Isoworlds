@@ -3,6 +3,8 @@ package bukkit;
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
 import bukkit.Utils.IsoworldsUtils;
+import common.ManageFiles;
+import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -96,17 +98,22 @@ public final class IsoworldsBukkit extends JavaPlugin {
                         continue;
                         // Sinon on incrémente et on check si c'est à 10
                     } else {
-                        worlds.put(world.getName(), worlds.get(world.getName().toString()) + 1);
-                        if (world.getPlayers().size() == 0 & worlds.get(world.getName().toString()) == 5) {
+                        //worlds.put(world.getName(), worlds.get(world.getName().toString()) + 1);
+                        if (world.getPlayers().size() == 0 & worlds.get(world.getName().toString()) == 1) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
                             Bukkit.getServer().unloadWorld(world, true);
                             worlds.remove(world.getName());
-                            // Prepair for pushing to backup server
-                            //if (ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH")) {
-                            //    IsoworldsUtils.cm("PUSH OK");
-                            //} else {
-                            //    IsoworldsUtils.cm("PUSH ERREUR");
-                            //}
+                            if (!IsoworldsUtils.iworldPushed(world.getName(), Msg.keys.SQL)) {
+                                IsoworldsUtils.cm("debug 1");
+                                // Prepair for pushing to backup server
+                                File check = new File(ManageFiles.getPath() + world.getName());
+                                if (check.exists()) {
+                                    IsoworldsUtils.cm("debug 2");
+                                    IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
+                                    ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                    IsoworldsUtils.cm("PUSH OK");
+                                }
+                            }
                         } else {
                             continue;
                         }

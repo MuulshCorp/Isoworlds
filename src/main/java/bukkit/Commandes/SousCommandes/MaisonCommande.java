@@ -53,8 +53,14 @@ public class MaisonCommande {
             IsoworldsUtils.cm("DEBUG ON MAISON: " + worldname);
         }
 
-        // SELECT WORLD
+        // Import / Export
+        if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+            // Suppression cooldown
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return;
+        }
 
+        // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(uuid, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());

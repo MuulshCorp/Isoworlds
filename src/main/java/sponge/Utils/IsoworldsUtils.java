@@ -419,7 +419,7 @@ public class IsoworldsUtils {
             check.setString(3, plugin.servername);
             // Requête
             IsoworldsUtils.cm("Debug 3: " + check.toString());
-            ResultSet rselect = check.executeQuery();
+            check.executeUpdate();
         } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(messageErreur);

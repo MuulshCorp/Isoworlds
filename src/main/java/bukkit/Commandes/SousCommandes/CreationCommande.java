@@ -102,6 +102,7 @@ public class CreationCommande {
         Bukkit.getServer().getWorld(worldname).setGameRuleValue(DefaultGameRules.MOB_GRIEFING, "false");
         IsoworldsLocations.teleport(pPlayer, worldname);
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
+        instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
     }
 }

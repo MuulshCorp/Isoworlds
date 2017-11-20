@@ -149,7 +149,7 @@ public class IsoworldsUtils {
                 return true;
             } else {
                 // Lance la task import/export
-                BukkitTask task = new IsoWorldsTasks(pPlayer, file).runTaskLater(instance, 20);
+                BukkitTask task = new IsoWorldsTasks(pPlayer, file).runTaskTimer(instance, 20, 20);
             }
 
             if (file2.exists()) {
@@ -182,7 +182,7 @@ public class IsoworldsUtils {
             check.setString(3, instance.servername);
             // Requête
             IsoworldsUtils.cm("Debug 3: " + check.toString());
-            ResultSet rselect = check.executeQuery();
+            check.executeUpdate();
         } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(messageErreur);

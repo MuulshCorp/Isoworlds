@@ -59,15 +59,14 @@ public class MeteoCommande {
             if (args[1].equals("pluie") || args[1].equals("rain")) {
                 weather.setStorm(true);
                 weather.setWeatherDuration(num);
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre IsoWorld.");
-                instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-                return;
             } else if (args[1].equals("soleil") || args[1].equals("sun")) {
                 weather.setStorm(false);
                 weather.setWeatherDuration(num);
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre IsoWorld.");
-                instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-                return;
+                // Message pour tous les joueurs
+                for (Player p : Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString()).getPlayers()) {
+                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]Sijania indique que " + pPlayer.getName()
+                            + " vient de changer la météo à: " + args[1] + " pendant: " + num + " ticks." + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+                }
             }
             instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;

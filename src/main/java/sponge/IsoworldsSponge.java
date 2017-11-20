@@ -85,7 +85,6 @@ public class IsoworldsSponge {
                 .name("Analyse des IsoWorlds vides...").submit(this.instance);
     }
 
-
     private void unload() {
         Task.builder().execute(() -> {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");

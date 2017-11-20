@@ -23,6 +23,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
     public String servername;
     FileConfiguration config = getConfig();
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
+    public static Map<String, Integer> cooldown = new HashMap<String, Integer>();
 
     @Override
     public void onEnable() {

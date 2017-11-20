@@ -56,7 +56,7 @@ public class IsoworldsListeners implements Listener {
     // Anti grief spawn
     public void onInteractSpawn(PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        if (p.getLocation().getWorld().equals("Isolonice") {
+        if (p.getLocation().getWorld().equals("Isolonice")) {
             event.setCancelled(true);
         }
 

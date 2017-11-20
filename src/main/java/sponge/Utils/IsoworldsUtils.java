@@ -268,7 +268,6 @@ public class IsoworldsUtils {
     // check if iworld exists
     public static Boolean iworldExists(Player pPlayer, String messageErreur) {
         String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String check_w;
         String check_p;
         try {
@@ -302,7 +301,6 @@ public class IsoworldsUtils {
     // true si présent, false si envoyé ou à envoyer
     public static Boolean iworldPushed(String world, String messageErreur) {
         String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String check_w;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
@@ -408,7 +406,6 @@ public class IsoworldsUtils {
 
     public static Boolean iworldSetStatus(String world, Integer status, String messageErreur) {
         String CHECK = "UPDATE `isoworlds` SET `STATUS` = ? WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String check_w;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
@@ -433,7 +430,7 @@ public class IsoworldsUtils {
 
     // Check autorisation trust
     public static Boolean trustExists(Player pPlayer, UUID uuidcible, String messageErreur) {
-        IsoworldsSponge plugin = IsoworldsSponge.instance;
+
         String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
         String check_p;
@@ -464,7 +461,6 @@ public class IsoworldsUtils {
 
     // insert trust
     public static Boolean insertCreation(Player pPlayer, String messageErreur) {
-        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`) VALUES (?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
@@ -496,7 +492,6 @@ public class IsoworldsUtils {
 
     // insert trust
     public static Boolean insertTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
-        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
@@ -526,7 +521,6 @@ public class IsoworldsUtils {
 
     // delete iworld
     public static Boolean deleteIworld(Player pPlayer, String messageErreur) {
-        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
@@ -561,7 +555,6 @@ public class IsoworldsUtils {
 
     // Delete trust
     public static Boolean deleteTrust(Player pPlayer, UUID uuid, String messageErreur) {
-        IsoworldsSponge plugin = IsoworldsSponge.instance;
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";

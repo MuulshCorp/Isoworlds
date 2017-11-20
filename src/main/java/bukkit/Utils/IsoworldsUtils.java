@@ -1,22 +1,30 @@
 package bukkit.Utils;
 
 import bukkit.IsoworldsBukkit;
+import common.ManageFiles;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Edwin on 20/10/2017.
  */
 public class IsoworldsUtils {
+
+    private static final IsoworldsBukkit instance = IsoworldsBukkit.getInstance();
 
     // Console message
     public static void cm(String message){
@@ -63,36 +71,121 @@ public class IsoworldsUtils {
 
     // check if status is push or pull exists
     // true si présent, false si envoyé ou à envoyer
-    public static Boolean iworldStatus(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        IsoworldsBukkit instance;
-        instance = IsoworldsBukkit.getInstance();
+    public static Boolean iworldPushed(String world, String messageErreur) {
+        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
-        String check_p;
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
 
-            // UUID _P
-            check_p = pPlayer.getUniqueId().toString();
-            check.setString(1, check_p);
             // UUID_W
-            check_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
-            check.setString(2, check_w);
+            check_w = world;
+            check.setString(1, check_w);
             // SERVEUR_ID
-            check.setString(3, instance.servername);
+            check.setString(2, instance.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
+            IsoworldsUtils.cm(check.toString());
+            IsoworldsUtils.cm("Debug 8");
             while (rselect.next()) {
-                if (rselect.getInt(1) == 0) {
+                IsoworldsUtils.cm(rselect.toString());
+                IsoworldsUtils.cm("Debug 9");
+                if (rselect.getInt(1) == 1) {
+                    IsoworldsUtils.cm("Debug 10");
                     return true;
                 } else {
                     return false;
                 }
 
             }
-        } catch (Exception se){
+        } catch (Exception se) {
             se.printStackTrace();
-            IsoworldsUtils.cm(Msg.keys.SQL);
+            IsoworldsUtils.cm(messageErreur);
+            return false;
+        }
+        return false;
+    }
+
+    // Cooldown modèle: uuid;commande
+    public static Boolean isCooldown(String pPlayer, String command) {
+        // Si le tableau est null alors cooldown 0 sinon cooldown 1
+        if (instance.cooldown.get(pPlayer + ";" + command) == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // Vérifie si le cooldown est présent et renvoi vrai, sinon défini le cooldown et renvoi false
+    public static Boolean isSetCooldown(Player pPlayer, String className) {
+        // Si le cooldown est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
+        if (isCooldown(pPlayer.getUniqueId().toString(), String.class.getName())) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.");
+            return true;
+        } else {
+            // On set cooldown
+            instance.cooldown.put(pPlayer.getUniqueId().toString() + ";" + className, 1);
+            return false;
+        }
+    }
+
+    // Import Export
+
+    public static Boolean ieWorld(Player pPlayer, String worldname) {
+        // Vérification si monde en statut pushed
+        if (IsoworldsUtils.iworldPushed(worldname, Msg.keys.SQL)) {
+            IsoworldsUtils.cm("Debug 6");
+            // Création des chemins pour vérification
+            File file = new File(ManageFiles.getPath() + worldname);
+            File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
+            File file3 = new File(ManageFiles.getPath() + worldname + "@PUSHED@PULL");
+            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
+
+            if (file.exists()) {
+                IsoworldsUtils.cm("Debug 7");
+                IsoworldsUtils.iworldSetStatus(worldname, 0, Msg.keys.SQL);
+                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de terminer son travail, l'IsoWorld est disponible !");
+                // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
+                // Le script check ensutie
+                return true;
+            } else {
+                // Lance la task import/export
+                BukkitTask task = new IsoWorldsTasks(pPlayer, file).runTaskLater(instance, 20);
+            }
+
+            if (file2.exists()) {
+                IsoworldsUtils.cm("TEST 0");
+                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
+                IsoworldsUtils.cm("PULL OK");
+                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter...");
+                return false;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    // set status
+    // true si pushed, false si envoyé ou à envoyer
+
+    public static Boolean iworldSetStatus(String world, Integer status, String messageErreur) {
+        String CHECK = "UPDATE `isoworlds` SET `STATUS` = ? WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String check_w;
+        try {
+            PreparedStatement check = instance.database.prepare(CHECK);
+
+            // STATUS
+            check.setInt(1, status);
+            // UUID_W
+            check_w = (world);
+            check.setString(2, check_w);
+            // SERVEUR_ID
+            check.setString(3, instance.servername);
+            // Requête
+            IsoworldsUtils.cm("Debug 3: " + check.toString());
+            ResultSet rselect = check.executeQuery();
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
             return false;
         }
         return false;
@@ -100,8 +193,6 @@ public class IsoworldsUtils {
 
     // Check autorisation trust
     public static Boolean trustExists(Player pPlayer, UUID uuidcible, String messageErreur) {
-        IsoworldsBukkit instance;
-        instance = IsoworldsBukkit.getInstance();
         String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
         String check_p;
@@ -131,8 +222,6 @@ public class IsoworldsUtils {
 
     // insert trust
     public static Boolean insertCreation(Player pPlayer, String messageErreur) {
-        IsoworldsBukkit instance;
-        instance = IsoworldsBukkit.getInstance();
         String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`) VALUES (?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
@@ -163,8 +252,6 @@ public class IsoworldsUtils {
 
     // insert trust
     public static Boolean insertTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
-        IsoworldsBukkit instance;
-        instance = IsoworldsBukkit.getInstance();
         String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
@@ -193,8 +280,6 @@ public class IsoworldsUtils {
 
     // delete iworld
     public static Boolean deleteIworld(Player pPlayer, String messageErreur) {
-        IsoworldsBukkit instance;
-        instance = IsoworldsBukkit.getInstance();
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
@@ -228,8 +313,6 @@ public class IsoworldsUtils {
 
     // Delete trust
     public static Boolean deleteTrust(Player pPlayer, String messageErreur) {
-        IsoworldsBukkit instance;
-        instance = IsoworldsBukkit.getInstance();
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";

@@ -33,6 +33,10 @@ public final class IsoworldsBukkit extends JavaPlugin {
         this.createConfig();
         this.servername = getConfig().getString("id");
 
+        // Purge map
+        worlds.clear();
+        cooldown.clear();
+
         Bukkit.getServer().getPluginManager().registerEvents(new IsoworldsListeners(), this);
 
         this.getCommand("iw").setExecutor(new IsoworldsCommandes());

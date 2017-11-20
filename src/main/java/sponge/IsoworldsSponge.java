@@ -73,6 +73,10 @@ public class IsoworldsSponge {
 
         Sponge.getCommandManager().register(this, IsoworldsCommande.getCommand(), "iw", "isoworld", "isoworlds");
         logger.info("Les IsoWorlds sont chargés et opérationnels !");
+
+        // Purge map
+        worlds.clear();
+        cooldown.clear();
     }
 
     private void everyMinutes() {

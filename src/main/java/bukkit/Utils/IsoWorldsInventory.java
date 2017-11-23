@@ -4,29 +4,36 @@ package bukkit.Utils;
  * Created by Edwin on 23/11/2017.
  */
 
+import bukkit.Commandes.SousCommandes.BiomeCommande;
 import org.bukkit.Bukkit;
-
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import java.util.Arrays;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
+import static bukkit.IsoworldsBukkit.instance;
+
+
 public class IsoWorldsInventory implements Listener {
 
-    private String name;
-    private int size;
-    private OptionClickEventHandler handler;
-    private Plugin plugin;
+    private static String name;
+    private static int size;
+    private static OptionClickEventHandler handler;
+    private static Plugin plugin;
 
-    private String[] optionNames;
-    private ItemStack[] optionIcons;
+    private static String[] optionNames;
+    private static ItemStack[] optionIcons;
 
     public IsoWorldsInventory(String name, int size, OptionClickEventHandler handler, Plugin plugin) {
         this.name = name;
@@ -44,7 +51,7 @@ public class IsoWorldsInventory implements Listener {
         return this;
     }
 
-    public void open(Player player) {
+    public static void open(Player player) {
         Inventory inventory = Bukkit.createInventory(player, size, name);
         for (int i = 0; i < optionIcons.length; i++) {
             if (optionIcons[i] != null) {
@@ -66,6 +73,7 @@ public class IsoWorldsInventory implements Listener {
     void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(name)) {
             event.setCancelled(true);
+            ItemStack clicked = event.getCurrentItem();
             int slot = event.getRawSlot();
             if (slot >= 0 && slot < size && optionNames[slot] != null) {
                 Plugin plugin = this.plugin;
@@ -76,6 +84,11 @@ public class IsoWorldsInventory implements Listener {
                     Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                         public void run() {
                             p.closeInventory();
+                            //sponge.Utils.IsoworldsUtils.cm("NAME MENU: " + clicked.getItemMeta().toString());
+                            sponge.Utils.IsoworldsUtils.cm("PLAYER MENU: " + p.getName());
+                            //if (clicked.getItemMeta().getDisplayName().equals("IsoWorlds")) {
+                            BiomeCommande.menuBiome.open(p);
+                            //}
                         }
                     }, 1);
                 }
@@ -142,105 +155,35 @@ public class IsoWorldsInventory implements Listener {
         return item;
     }
 
-}
+//    // BIOME
+//    public static IsoWorldsInventory menuBiome = new IsoWorldsInventory( IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Biome"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+//        @Override
+//        public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+//            event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+//            event.setWillClose(true);
+//        }
+//    }, instance)
+//            .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Plaines", "Un biome relativement plat avec des collines || vallonnées et une grande quantité de fleurs")
+//            .setOption(1, new ItemStack(Material.SAND, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.");
 
-//    // Inventaire principal, affiche toutes les commandes disponibles
-//    public static Inventory mainInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds -");
-//    // The first parameter, is the inventory owner. I make it null to let everyone use it.
-//    //The second parameter, is the slots in a inventory. Must be a multiple of 9. Can be up to 54.
-//    //The third parameter, is the inventory name. This will accept chat colors.
-//
-//    static {
-//        createDisplay(Material.CLAY, mainInventory, 0, ChatColor.GOLD + "Biome", "Gérez le biome des vos chunks", (byte) 1);
-//        createDisplay(Material.CLAY, mainInventory, 1, ChatColor.GREEN + "Confiance", "Gérez qui peut avoir accès à votre IsoWorld", (byte) 13);
-//        createDisplay(Material.CLAY, mainInventory, 2, ChatColor.GRAY + "Création/Refonte", "Créez, reformez votre IsoWorld", (byte) 7);
-//        createDisplay(Material.CLAY, mainInventory, 3, ChatColor.BLUE + "Maison", "Rendez-vous sur votre IsoWorld", (byte) 11);
-//        createDisplay(Material.CLAY, mainInventory, 3, ChatColor.YELLOW + "Météo", "Gérez la pluie et le beau temps de votre IsoWorld", (byte) 4);
-//        createDisplay(Material.CLAY, mainInventory, 4, ChatColor.RED + "Activation", "Chargez-Déchargez votre IsoWorld", (byte) 14);
-//        createDisplay(Material.CLAY, mainInventory, 5, ChatColor.LIGHT_PURPLE + "Téléportation", "Téléportez vous sur un IsoWorld [STAFF]", (byte) 10);
-//        createDisplay(Material.CLAY, mainInventory, 6, "Temps", "Gérez la le temps de votre IsoWorld", (byte) 0);
-//        //The first parameter, is the slot that is assigned to. Starts counting at 0
-//    }
-//
-//    /*// BIOME
-//    public static Inventory biomeInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GOLD + "Biome"); {
-//
-//        createDisplay(Material.DIRT, biomeInventory, 0, ChatColor.GOLD + "Biome", "Gérez le biome des vos chunks", (byte) 1);
-//    }
-//
-//    // CONFIANCE
-//    public static Inventory confianceInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GREEN + "Confiance");
-//
-//    static {
-//
-//        createDisplay(Material.DIRT, confianceInventory, 0, ChatColor.GOLD + "Confiance", "Gérez le biome des vos chunks", (byte) 13);
-//    }*/
-//
-//    // CREATION/REFONTE
-//    public static Inventory creationInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GRAY + "Creation");
-//
-//    static {
-//
-//        createDisplay(Material.DIRT, creationInventory, 0, ChatColor.GOLD + "Creation", "Gérez le biome des vos chunks", (byte) 7);
-//    }/*
-//
-//    // MAISON
-//    public static Inventory maisonInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.BLUE + "Maison");
-//
-//    static {
-//
-//        createDisplay(Material.DIRT, maisonInventory, 0, ChatColor.GOLD + "Maison", "Gérez le biome des vos chunks", (byte) 11);
-//    }
-//
-//    // METEO
-//    public static Inventory meteoInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + "Météo");
-//
-//    static {
-//
-//        createDisplay(Material.DIRT, meteoInventory, 0, ChatColor.GOLD + "Météo", "Gérez le biome des vos chunks", (byte) 11);
-//    }
-//
-//    // ACTIVATION
-//    public static Inventory activationInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.RED + "Activation");
-//
-//    static {
-//
-//        createDisplay(Material.DIRT, activationInventory, 0, ChatColor.GOLD + "Activation", "Gérez le biome des vos chunks", (byte) 14);
-//    }
-//
-//    // TELEPORTATION
-//    public static Inventory teleportationInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.LIGHT_PURPLE + "Téléporation");
-//
-//    static {
-//
-//        createDisplay(Material.DIRT, teleportationInventory, 0, ChatColor.GOLD + "Téléporation", "Gérez le biome des vos chunks", (byte) 10);
-//    }
-//
-//    // TEMPS
-//    public static Inventory tempsInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.YELLOW + "Temps");
-//
-//    static {
-//
-//        createDisplay(Material.DIRT, tempsInventory, 0, ChatColor.GOLD + "Temps", "Gérez le biome des vos chunks", (byte) 4);
-//    }*/
-//
-//    // Permet de récupérer les informations dans les invententaires
-//    public void onInventoryClick(InventoryClickEvent event) {
-//        Player player = (Player) event.getWhoClicked(); // The player that clicked the item
-//        ItemStack clicked = event.getCurrentItem(); // The item that was clicked
-//        Inventory inventory = event.getInventory(); // The inventory that was clicked in
-//    }
-//
-//    // Méthode permettant de créer un item stack avec un nom/lore et l'ajouter dans l'inventaire
-//    public static void createDisplay(Material material, Inventory inv, int Slot, String name, String lore, byte b) {
-//        ItemStack item = new ItemStack(material, 1, b);
-//        ItemMeta meta = item.getItemMeta();
-//        meta.setDisplayName(name);
-//        ArrayList<String> Lore = new ArrayList<String>();
-//        Lore.add(lore);
-//        meta.setLore(Lore);
-//        item.setItemMeta(meta);
-//
-//        inv.setItem(Slot, item);
-//
-//    }
+
+
+    public static IsoWorldsInventory getMenuPrincipal() {
+        //MENU PRINCIPAL
+        IsoWorldsInventory menuPrincipal = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance)
+                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Biome", "Gérez le biome des vos chunks")
+                .setOption(1, new ItemStack(Material.EMERALD, 1), ChatColor.GREEN + "Confiance", "Gérez qui peut avoir accès à votre IsoWorld")
+                .setOption(2, new ItemStack(Material.BRICK, 1), ChatColor.GRAY + "Construction", "Créez ou refondez votre IsoWorld")
+                .setOption(3, new ItemStack(Material.BED, 1), ChatColor.BLUE + "Maison", "Rendez-vous sur votre IsoWorld")
+                .setOption(4, new ItemStack(Material.DOUBLE_PLANT, 1), ChatColor.YELLOW + "Météo", "Gérez la pluie et le beau temps de votre IsoWorld")
+                .setOption(5, new ItemStack(Material.LEVER, 1), ChatColor.RED + "Activation", "Chargez-Déchargez votre IsoWorld")
+                .setOption(6, new ItemStack(Material.DIAMOND_BOOTS, 1), ChatColor.LIGHT_PURPLE + "Téléportation", "Téléportez vous sur un IsoWorld [STAFF]");
+        return menuPrincipal;
+    }
+}

@@ -43,6 +43,11 @@
             <version>6.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.codeHusky</groupId>
+            <artifactId>HuskyUI-Plugin</artifactId>
+            <version>v0.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -362,4 +362,12 @@ public class IsoworldsUtils {
         s.sendMessage(" ");
     }
 
+    public static String centerTitle(String title) {
+        String spacer = "";
+        int spaces = 27 - ChatColor.stripColor(title).length();
+        for (int i = 0; i < spaces; i++) {
+            spacer += " ";
+        }
+        return spacer + title;
+    }
 }

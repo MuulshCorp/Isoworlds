@@ -139,8 +139,39 @@ public class IsoworldsListeners implements Listener {
         Player player = (Player) event.getWhoClicked(); // The player that clicked the item
         ItemStack clicked = event.getCurrentItem(); // The item that was clicked
         Inventory inventory = event.getInventory(); // The inventory that was clicked in
-        if (inventory.getName().equals(IsoWorldsInventory.inventory.getName())) {
-
+        if (inventory.getName().equals(IsoWorldsInventory.mainInventory.getName())) {
+            // Si inventaire biome
+            if (clicked.getItemMeta().getDisplayName().equals("Biome")) {
+                player.openInventory(IsoWorldsInventory.biomeInventory);
+            }
+            // Si inventaire confiance
+            if (clicked.getItemMeta().getDisplayName().equals("Confiance")) {
+                player.openInventory(IsoWorldsInventory.confianceInventory);
+            }
+            // Si inventaire création
+            if (clicked.getItemMeta().getDisplayName().equals("Création/Refonte")) {
+                player.openInventory(IsoWorldsInventory.creationInventory);
+            }
+            // Si inventaire Maison
+            if (clicked.getItemMeta().getDisplayName().equals("Maison")) {
+                player.openInventory(IsoWorldsInventory.maisonInventory);
+            }
+            // Si inventaire météo
+            if (clicked.getItemMeta().getDisplayName().equals("Météo")) {
+                player.openInventory(IsoWorldsInventory.meteoInventory);
+            }
+            // Si inventaire activation
+            if (clicked.getItemMeta().getDisplayName().equals("Activation")) {
+                player.openInventory(IsoWorldsInventory.activationInventory);
+            }
+            // Si inventaire téléporation
+            if (clicked.getItemMeta().getDisplayName().equals("Téléportation")) {
+                player.openInventory(IsoWorldsInventory.teleportationInventory);
+            }
+            // Si inventaire temps
+            if (clicked.getItemMeta().getDisplayName().equals("Temps")) {
+                player.openInventory(IsoWorldsInventory.tempsInventory);
+            }
         }
     }
 }

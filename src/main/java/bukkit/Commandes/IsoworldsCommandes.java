@@ -60,7 +60,7 @@ public class IsoworldsCommandes implements CommandExecutor {
                 return true;
             }
         } else {
-            pPlayer.openInventory(IsoWorldsInventory.inventory);
+            pPlayer.openInventory(IsoWorldsInventory.mainInventory);
             //IsoworldsUtils.getHelp(sender);
             return true;
         }

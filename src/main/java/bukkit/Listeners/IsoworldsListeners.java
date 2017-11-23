@@ -1,6 +1,7 @@
 package bukkit.Listeners;
 
 import bukkit.IsoworldsBukkit;
+import bukkit.Utils.IsoWorldsInventory;
 import common.ManageFiles;
 import common.Msg;
 import org.bukkit.*;
@@ -8,10 +9,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import bukkit.Utils.IsoworldsUtils;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 
 import java.io.File;
@@ -126,6 +130,16 @@ public class IsoworldsListeners implements Listener {
             } catch (Exception se) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             }
+
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked(); // The player that clicked the item
+        ItemStack clicked = event.getCurrentItem(); // The item that was clicked
+        Inventory inventory = event.getInventory(); // The inventory that was clicked in
+        if (inventory.getName().equals(IsoWorldsInventory.inventory.getName())) {
 
         }
     }

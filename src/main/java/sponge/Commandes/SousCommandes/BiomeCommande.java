@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import common.Msg;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -8,9 +9,14 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.world.Chunk;
+import org.spongepowered.api.world.biome.BiomeType;
+import org.spongepowered.api.world.biome.BiomeTypes;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
 
+import static sponge.IsoworldsSponge.instance;
 import static sponge.Utils.IsoworldsUtils.isSetCooldown;
 
 /**
@@ -18,28 +24,12 @@ import static sponge.Utils.IsoworldsUtils.isSetCooldown;
  */
 public class BiomeCommande implements CommandExecutor {
 
-    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
+    private final IsoworldsSponge plugin = instance;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-
-        // Variables
-        String worldname = "";
-        Player pPlayer = (Player) source;
-        worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
-
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
-            return CommandResult.success();
-        }
-
-
-
-        IsoworldsUtils.cm("finished");
-        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
-
 
     // Constructeurs
     public static CommandSpec getCommand() {

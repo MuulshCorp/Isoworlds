@@ -1,10 +1,12 @@
 package bukkit.Commandes;
 
 import bukkit.Commandes.SousCommandes.*;
+import bukkit.Utils.IsoWorldsInventory;
 import bukkit.Utils.IsoworldsUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -13,6 +15,7 @@ public class IsoworldsCommandes implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        Player pPlayer = (Player) sender;
 
         if (args.length > 0) {
             String arg = args[0].toLowerCase();
@@ -49,12 +52,16 @@ public class IsoworldsCommandes implements CommandExecutor {
             } else if (arg.equals("time") || arg.equals("temps") || arg.equals("t") || arg.equals("cycle")) {
                 TimeCommande.Time(sender, args);
                 return true;
+            } else if (arg.equals("biome") || arg.equals("biomes") || arg.equals("b")) {
+                BiomeCommande.Biome(sender, args);
+                return true;
             } else {
                 IsoworldsUtils.getHelp(sender);
                 return true;
             }
         } else {
-            IsoworldsUtils.getHelp(sender);
+            pPlayer.openInventory(IsoWorldsInventory.inventory);
+            //IsoworldsUtils.getHelp(sender);
             return true;
         }
     }

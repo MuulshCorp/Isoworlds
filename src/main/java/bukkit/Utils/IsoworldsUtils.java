@@ -357,6 +357,8 @@ public class IsoworldsUtils {
                 + ChatColor.GOLD + "][" + ChatColor.GREEN + "meteo" + ChatColor.GOLD + "][" + ChatColor.GREEN + "weather" + ChatColor.GOLD + "][" + ChatColor.GREEN + "m" + ChatColor.GOLD + "]");
         s.sendMessage(ChatColor.GOLD + "- Maison: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "[" + ChatColor.GREEN + "maison"
                 + ChatColor.GOLD + "][" + ChatColor.GREEN + "home" + ChatColor.GOLD + "][" + ChatColor.GREEN + "h" + ChatColor.GOLD + "]");
+        s.sendMessage(ChatColor.GOLD + "- Biomes: " + ChatColor.AQUA + "/iw " + ChatColor.GOLD + "[" + ChatColor.GREEN + "biome"
+                + ChatColor.GOLD + "][" + ChatColor.GREEN + "biomes" + ChatColor.GOLD + "][" + ChatColor.GREEN + "b" + ChatColor.GOLD + "]");
         s.sendMessage(" ");
     }
 

@@ -29,7 +29,7 @@ public class BiomeCommande {
         Player pPlayer = (Player) sender;
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         IsoworldsUtils.cm("check");
-        Biome biome;
+        Integer len = args.length;
 
         // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
         if (isSetCooldown(pPlayer, String.class.getName())) {
@@ -42,9 +42,15 @@ public class BiomeCommande {
             return;
         }
 
+        // Vérification taille args et retour si biome non indiqué
+        if (len < 1) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vous requiert un nom de biome dans votre commande.");
+            return;
+        }
         // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
         // si le biome indiqué existe et on l'applique
         Chunk chunk = pPlayer.getLocation().getChunk();
+        IsoworldsUtils.cm("Biomes" + Biome.values().toString());
         for (Biome b : Biome.values()) {
             if (b.name().contains(args[1])) {
                 for (int x = 0; x < 16; x++) {

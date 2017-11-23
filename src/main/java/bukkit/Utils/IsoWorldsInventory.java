@@ -16,14 +16,12 @@ import java.util.ArrayList;
  */
 public class IsoWorldsInventory {
     // Inventaire principal, affiche toutes les commandes disponibles
-    public static Inventory mainInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds -"));
+    public static Inventory mainInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds -");
     // The first parameter, is the inventory owner. I make it null to let everyone use it.
     //The second parameter, is the slots in a inventory. Must be a multiple of 9. Can be up to 54.
     //The third parameter, is the inventory name. This will accept chat colors.
 
     static {
-        //inventory.setItem(0, new ItemStack(Material.DIRT, 1));
-        //inventory.setItem(8, new ItemStack(Material.GOLD_BLOCK, 1));
         createDisplay(Material.DIRT, mainInventory, 0, ChatColor.GOLD + "Biome", "Gérez le biome des vos chunks", (byte) 1);
         createDisplay(Material.DIRT, mainInventory, 1, ChatColor.GREEN + "Confiance", "Gérez qui peut avoir accès à votre IsoWorld", (byte) 13);
         createDisplay(Material.DIRT, mainInventory, 2, ChatColor.GRAY + "Création/Refonte", "Créez, reformez votre IsoWorld", (byte) 7);
@@ -35,32 +33,30 @@ public class IsoWorldsInventory {
         //The first parameter, is the slot that is assigned to. Starts counting at 0
     }
 
-    // BIOME
-    public static Inventory biomeInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GOLD + "Biome"));
-
-    static {
+    /*// BIOME
+    public static Inventory biomeInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GOLD + "Biome"); {
 
         createDisplay(Material.DIRT, biomeInventory, 0, ChatColor.GOLD + "Biome", "Gérez le biome des vos chunks", (byte) 1);
     }
 
     // CONFIANCE
-    public static Inventory confianceInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GREEN + "Confiance"));
+    public static Inventory confianceInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GREEN + "Confiance");
 
     static {
 
         createDisplay(Material.DIRT, confianceInventory, 0, ChatColor.GOLD + "Confiance", "Gérez le biome des vos chunks", (byte) 13);
-    }
+    }*/
 
     // CREATION/REFONTE
-    public static Inventory creationInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GRAY + "Création/Refonte"));
+    public static Inventory creationInventory = Bukkit.createInventory(null, 9, (ChatColor.GOLD + "- IsoWorlds: " + ChatColor.GRAY + "Creation/Refonte"));
 
     static {
 
-        createDisplay(Material.DIRT, creationInventory, 0, ChatColor.GOLD + "Création/refonte", "Gérez le biome des vos chunks", (byte) 7);
-    }
+        createDisplay(Material.DIRT, creationInventory, 0, ChatColor.GOLD + "Creation", "Gérez le biome des vos chunks", (byte) 7);
+    }/*
 
     // MAISON
-    public static Inventory maisonInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds: " + ChatColor.BLUE + "Maison"));
+    public static Inventory maisonInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.BLUE + "Maison");
 
     static {
 
@@ -68,7 +64,7 @@ public class IsoWorldsInventory {
     }
 
     // METEO
-    public static Inventory meteoInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds: " + "Météo"));
+    public static Inventory meteoInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + "Météo");
 
     static {
 
@@ -76,7 +72,7 @@ public class IsoWorldsInventory {
     }
 
     // ACTIVATION
-    public static Inventory activationInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds: " + ChatColor.RED + "Activation"));
+    public static Inventory activationInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.RED + "Activation");
 
     static {
 
@@ -84,7 +80,7 @@ public class IsoWorldsInventory {
     }
 
     // TELEPORTATION
-    public static Inventory teleportationInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds: " + ChatColor.LIGHT_PURPLE + "Téléporation"));
+    public static Inventory teleportationInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.LIGHT_PURPLE + "Téléporation");
 
     static {
 
@@ -92,12 +88,12 @@ public class IsoWorldsInventory {
     }
 
     // TEMPS
-    public static Inventory tempsInventory = Bukkit.createInventory(null, 9, IsoworldsUtils.centerTitle(ChatColor.GOLD + "- IsoWorlds: " + ChatColor.YELLOW + "Temps"));
+    public static Inventory tempsInventory = Bukkit.createInventory(null, 9, ChatColor.GOLD + "- IsoWorlds: " + ChatColor.YELLOW + "Temps");
 
     static {
 
         createDisplay(Material.DIRT, tempsInventory, 0, ChatColor.GOLD + "Temps", "Gérez le biome des vos chunks", (byte) 4);
-    }
+    }*/
 
     // Permet de récupérer les informations dans les invententaires
     public void onInventoryClick(InventoryClickEvent event) {

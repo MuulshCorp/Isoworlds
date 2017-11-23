@@ -139,19 +139,23 @@ public class IsoworldsListeners implements Listener {
         Player player = (Player) event.getWhoClicked(); // The player that clicked the item
         ItemStack clicked = event.getCurrentItem(); // The item that was clicked
         Inventory inventory = event.getInventory(); // The inventory that was clicked in
+        IsoworldsUtils.cm("DISPLAYNAME = " + clicked.getItemMeta().getDisplayName());
         if (inventory.getName().equals(IsoWorldsInventory.mainInventory.getName())) {
+            event.setCancelled(true);
+            player.closeInventory();
             // Si inventaire biome
-            if (clicked.getItemMeta().getDisplayName().equals("Biome")) {
+            /*if (clicked.getItemMeta().getDisplayName().equals("Biome")) {
+                IsoworldsUtils.cm("INV OK");
                 player.openInventory(IsoWorldsInventory.biomeInventory);
             }
             // Si inventaire confiance
             if (clicked.getItemMeta().getDisplayName().equals("Confiance")) {
                 player.openInventory(IsoWorldsInventory.confianceInventory);
-            }
+            }*/
             // Si inventaire création
-            if (clicked.getItemMeta().getDisplayName().equals("Création/Refonte")) {
+            if (clicked.getItemMeta().getDisplayName().equals("Creation")) {
                 player.openInventory(IsoWorldsInventory.creationInventory);
-            }
+            }/*
             // Si inventaire Maison
             if (clicked.getItemMeta().getDisplayName().equals("Maison")) {
                 player.openInventory(IsoWorldsInventory.maisonInventory);
@@ -171,7 +175,7 @@ public class IsoworldsListeners implements Listener {
             // Si inventaire temps
             if (clicked.getItemMeta().getDisplayName().equals("Temps")) {
                 player.openInventory(IsoWorldsInventory.tempsInventory);
-            }
+            }*/
         }
     }
 }

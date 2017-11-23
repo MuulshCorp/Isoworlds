@@ -2,6 +2,7 @@ package bukkit;
 
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
+import bukkit.Utils.IsoWorldsInventory;
 import bukkit.Utils.IsoworldsUtils;
 import common.ManageFiles;
 import common.Msg;

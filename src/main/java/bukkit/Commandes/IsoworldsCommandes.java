@@ -3,15 +3,11 @@ package bukkit.Commandes;
 import bukkit.Commandes.SousCommandes.*;
 import bukkit.Utils.IsoWorldsInventory;
 import bukkit.Utils.IsoworldsUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import static bukkit.IsoworldsBukkit.instance;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -65,23 +61,7 @@ public class IsoworldsCommandes implements CommandExecutor {
                 return true;
             }
         } else {
-
-            //MENU PRINCIPAL
-            IsoWorldsInventory menuPrincipal = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
-                @Override
-                public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
-                    event.setWillClose(true);
-                }
-            }, instance)
-                    .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Biome", "Gérez le biome des vos chunks")
-                    .setOption(1, new ItemStack(Material.EMERALD, 1), ChatColor.GREEN + "Confiance", "Gérez qui peut avoir accès à votre IsoWorld")
-                    .setOption(2, new ItemStack(Material.BRICK, 1), ChatColor.GRAY + "Construction", "Créez ou refondez votre IsoWorld")
-                    .setOption(3, new ItemStack(Material.BED, 1), ChatColor.BLUE + "Maison", "Rendez-vous sur votre IsoWorld")
-                    .setOption(4, new ItemStack(Material.DOUBLE_PLANT, 1), ChatColor.YELLOW + "Météo", "Gérez la pluie et le beau temps de votre IsoWorld")
-                    .setOption(5, new ItemStack(Material.LEVER, 1), ChatColor.RED + "Activation", "Chargez-Déchargez votre IsoWorld")
-                    .setOption(6, new ItemStack(Material.DIAMOND_BOOTS, 1), ChatColor.LIGHT_PURPLE + "Téléportation", "Téléportez vous sur un IsoWorld [STAFF]");
-            menuPrincipal.open(pPlayer);
+            IsoWorldsInventory.getMenuPrincipal().open(pPlayer);
             //IsoworldsUtils.getHelp(sender);
             return true;
         }

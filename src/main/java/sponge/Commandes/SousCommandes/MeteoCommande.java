@@ -192,8 +192,8 @@ public class MeteoCommande implements CommandCallable {
             }
             // Message pour tous les joueurs
             for (Player p : Sponge.getServer().getWorld(arg[2]).get().getPlayers()) {
-                p.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que " + pPlayer.getName() + " vient de changer la météo à: " + arg[0] + " pendant: " + arg[1] + " ticks.").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+                p.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que " + pPlayer.getName() + " vient de changer la météo à: " + arg[0] + " pendant: " + arg[1] + " ticks.")
+                        .color(TextColors.GOLD).build()));
             }
         } else {
             plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());

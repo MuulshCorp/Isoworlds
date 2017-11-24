@@ -47,7 +47,7 @@ public class MeteoCommande {
             instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         } else {
-            try{
+            try {
                 num = Integer.parseInt(args[2]);
             } catch (NumberFormatException e) {
                 pPlayer.sendMessage(ChatColor.AQUA + "Sijania indique que vous n'avez pas renseigné de minutes.");
@@ -63,13 +63,13 @@ public class MeteoCommande {
                 weather.setStorm(false);
                 weather.setWeatherDuration(num);
                 // Message pour tous les joueurs
-                for (Player p : Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString()).getPlayers()) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]Sijania indique que " + pPlayer.getName()
-                            + " vient de changer la météo à: " + args[1] + " pendant: " + num + " ticks." + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-                }
             }
-            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-            return;
+            for (Player p : Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").getPlayers()) {
+                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds] Sijania indique que " + pPlayer.getName()
+                        + " vient de changer la météo à: " + args[1] + " pendant: " + num + " ticks.");
+            }
         }
+        instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        return;
     }
 }

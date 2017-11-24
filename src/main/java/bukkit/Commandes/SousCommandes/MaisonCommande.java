@@ -84,6 +84,7 @@ public class MaisonCommande {
         } catch (NullPointerException npe) {
             //
             Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
+            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         }
 
         // Téléportation du joueur

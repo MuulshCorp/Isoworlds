@@ -51,7 +51,7 @@ public class OffCommande {
                 IsoworldsLocations.teleport(p, "Isolonice");
             }
             Bukkit.getServer().unloadWorld(worldname, true);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: Sijania vient de désactiver votre IsoWorld." + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: Sijania vient de désactiver votre IsoWorld.");
         }
 
         IsoworldsUtils.cm("finished");

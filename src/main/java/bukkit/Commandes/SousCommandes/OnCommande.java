@@ -46,7 +46,7 @@ public class OnCommande {
         // Si le monde n'est pas chargé alors on le fait
         if (Bukkit.getServer().getWorld(worldname) == null) {
             Bukkit.getServer().createWorld(new WorldCreator(worldname));
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: Sijania vient d'activer votre IsoWorld." + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: Sijania vient d'activer votre IsoWorld.");
         }
 
         IsoworldsUtils.cm("finished");

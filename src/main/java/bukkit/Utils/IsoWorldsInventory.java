@@ -4,10 +4,10 @@ package bukkit.Utils;
  * Created by Edwin on 23/11/2017.
  */
 
-import bukkit.Commandes.SousCommandes.BiomeCommande;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -72,6 +73,7 @@ public class IsoWorldsInventory implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(name)) {
+            IsoworldsUtils.cm("PLAYER MENU 1:" + event.getWhoClicked().getName());
             event.setCancelled(true);
             ItemStack clicked = event.getCurrentItem();
             int slot = event.getRawSlot();
@@ -84,11 +86,101 @@ public class IsoWorldsInventory implements Listener {
                     Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                         public void run() {
                             p.closeInventory();
-                            //sponge.Utils.IsoworldsUtils.cm("NAME MENU: " + clicked.getItemMeta().toString());
-                            sponge.Utils.IsoworldsUtils.cm("PLAYER MENU: " + p.getName());
-                            //if (clicked.getItemMeta().getDisplayName().equals("IsoWorlds")) {
-                            BiomeCommande.menuBiome.open(p);
-                            //}
+                            IsoworldsUtils.cm("PLAYER MENU 2: " + clicked.getItemMeta().getDisplayName());
+
+                            // MENU PRINCIPAL //
+                            // BIOME
+                            if (clicked.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Biome")) {
+                                IsoworldsUtils.cm("PLAYER MENU 3");
+                                getMenuBiome().open(p);
+                                // CONFIANCE
+                            } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Confiance")) {
+                                IsoworldsUtils.cm("PLAYER MENU 3");
+                                getMenuConfiance().open(p);
+                                // CONSTRUCTION
+                            } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Construction")) {
+                                IsoworldsUtils.cm("PLAYER MENU 3");
+                                getMenuConstruction().open(p);
+                                // MAISON
+                            } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.BLUE + "Maison")) {
+                                IsoworldsUtils.cm("PLAYER MENU 3");
+                                getMenuMaison().open(p);
+                                // METEO
+                            } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.YELLOW + "Météo")) {
+                                IsoworldsUtils.cm("PLAYER MENU 3");
+                                getMenuMeteo().open(p);
+                                // ACTIVATION
+                            } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.RED + "Activation")) {
+                                IsoworldsUtils.cm("PLAYER MENU 3");
+                                getMenuActivation().open(p);
+                                // TELEPORTATION
+                            } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Téléportation")) {
+                                IsoworldsUtils.cm("PLAYER MENU 3");
+                                getMenuTeleportation().open(p);
+                            } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.RED + "Menu principal")) {
+                                IsoworldsUtils.cm("PLAYER MENU 3");
+                                getMenuPrincipal().open(p);
+                            }
+
+                            // SOUS-MENU //
+                            // BIOMES
+                            else if (event.getInventory().getName().contains("Biome")) {
+                                if (clicked.getItemMeta().getDisplayName().contains("Plaines")) {
+                                    p.performCommand("iw biome plaines");
+                                } else if (clicked.getItemMeta().getDisplayName().contains("Désert")) {
+                                    p.performCommand("iw biome desert");
+                                }
+                                // CONFIANCE
+                            } else if (event.getInventory().getName().contains("Confiance")) {
+
+                                // CONSTRUCTION
+                            } else if (event.getInventory().getName().contains("Construction")) {
+                                if (clicked.getItemMeta().getDisplayName().contains("Création")) {
+                                    p.performCommand("iw c");
+                                } else if (clicked.getItemMeta().getDisplayName().contains("Refonte")) {
+                                    p.performCommand("iw r");
+                                }
+                                // MAISON
+                            } else if (event.getInventory().getName().contains("Maison")) {
+                                if (clicked.getItemMeta().getDisplayName().contains("Maison")) {
+                                    p.performCommand("iw h");
+                                }
+                                // METEO
+                            } else if (event.getInventory().getName().contains("Météo")) {
+
+                                //type
+                                String mtype = "";
+                                if (clicked.getItemMeta().getDisplayName().contains("Soleil")) {
+                                    mtype = "soleil";
+                                } else if (clicked.getItemMeta().getDisplayName().contains("Pluie")) {
+                                    mtype = "pluie";
+                                }
+                                //temps
+                                // 10 MINUTES
+                                if (clicked.getItemMeta().getDisplayName().contains("10 minutes")) {
+                                    p.performCommand("iw meteo " + mtype + " 12000");
+                                    // 30 MINUTES
+                                } else if (clicked.getItemMeta().getDisplayName().contains("30 minutes")) {
+                                    p.performCommand("iw meteo " + mtype + " 36000");
+                                    // 1 HEURE
+                                } else if (clicked.getItemMeta().getDisplayName().contains("1 heure")) {
+                                    p.performCommand("iw meteo " + mtype + " 72000");
+                                }
+                                // ACTIVATION
+                            } else if (event.getInventory().getName().contains("Activation")) {
+                                if (clicked.getItemMeta().getDisplayName().contains("Activer")) {
+                                    p.performCommand("iw on");
+                                } else if (clicked.getItemMeta().getDisplayName().contains("Désactiver")) {
+                                    p.performCommand("iw off");
+                                }
+                                // TELEPORTATION
+                            } else if (event.getInventory().getName().contains("Téléportation")) {
+                                if (clicked.getItemMeta().getDisplayName().contains("-IsoWorld")) {
+                                    p.performCommand("iw teleport " + clicked.getItemMeta().getDisplayName());
+                                }
+                            }
+
+
                         }
                     }, 1);
                 }
@@ -115,7 +207,7 @@ public class IsoWorldsInventory implements Listener {
             this.position = position;
             this.name = name;
             this.close = true;
-            this.destroy = false;
+            this.destroy = true;
         }
 
         public Player getPlayer() {
@@ -155,22 +247,9 @@ public class IsoWorldsInventory implements Listener {
         return item;
     }
 
-//    // BIOME
-//    public static IsoWorldsInventory menuBiome = new IsoWorldsInventory( IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Biome"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
-//        @Override
-//        public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
-//            event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
-//            event.setWillClose(true);
-//        }
-//    }, instance)
-//            .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Plaines", "Un biome relativement plat avec des collines || vallonnées et une grande quantité de fleurs")
-//            .setOption(1, new ItemStack(Material.SAND, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.");
-
-
-
+    //MENU PRINCIPAL
     public static IsoWorldsInventory getMenuPrincipal() {
-        //MENU PRINCIPAL
-        IsoWorldsInventory menuPrincipal = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuPrincipal = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.GOLD + "IsoWorlds: Menu principal"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -186,4 +265,138 @@ public class IsoWorldsInventory implements Listener {
                 .setOption(6, new ItemStack(Material.DIAMOND_BOOTS, 1), ChatColor.LIGHT_PURPLE + "Téléportation", "Téléportez vous sur un IsoWorld [STAFF]");
         return menuPrincipal;
     }
+
+    // BIOME
+    public static IsoWorldsInventory getMenuBiome() {
+        IsoWorldsInventory menuBiome = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Biome"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance)
+                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Plaines", "Un biome relativement plat avec des collines || vallonnées et une grande quantité de fleurs")
+                .setOption(1, new ItemStack(Material.SAND, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.")
+
+                // RETOUR
+                .setOption(8, new ItemStack(Material.SAND, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        return menuBiome;
+    }
+
+    // CONFIANCE
+    public static IsoWorldsInventory getMenuConfiance() {
+        IsoWorldsInventory menuConfiance = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Confiance"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance)
+                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GREEN + "Ajouter", "Autoriser l'accès à votre IsoWorld.")
+                .setOption(1, new ItemStack(Material.SAND, 1), ChatColor.RED + "Retirer", "Retirer l'accès à votre IsoWorld.")
+
+                // RETOUR
+                .setOption(8, new ItemStack(Material.SAND, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        return menuConfiance;
+    }
+
+    // CONSTRUCTION
+    public static IsoWorldsInventory getMenuConstruction() {
+        IsoWorldsInventory menuConstruction = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Construction"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance)
+                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Création", "Créer votre IsoWorld.")
+                .setOption(1, new ItemStack(Material.SAND, 1), ChatColor.GREEN + "Refonte", "Réinitialiser votre IsoWorld.")
+
+                // RETOUR
+                .setOption(8, new ItemStack(Material.SAND, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        return menuConstruction;
+    }
+
+    // MAISON
+    public static IsoWorldsInventory getMenuMaison() {
+        IsoWorldsInventory menuMaison = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Maison"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance)
+                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Maison", "Vous rendre sur votre IsoWorld.")
+
+                // RETOUR
+                .setOption(8, new ItemStack(Material.SAND, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        return menuMaison;
+    }
+
+    // METEO
+    public static IsoWorldsInventory getMenuMeteo() {
+        IsoWorldsInventory menuMeteo = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Météo"), 18, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance)
+                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.YELLOW + "Soleil [10 minutes]", "Le temps devient paisible et ensoleillé.")
+                .setOption(1, new ItemStack(Material.GRASS, 1), ChatColor.YELLOW + "Soleil [30 minutes]", "Le temps devient paisible et ensoleillé.")
+                .setOption(2, new ItemStack(Material.GRASS, 1), ChatColor.YELLOW + "Soleil [1 heure]", "Le temps devient paisible et ensoleillé.")
+
+                .setOption(9, new ItemStack(Material.SAND, 1), ChatColor.BLUE + "Pluie [10 minutes]", "Vos terres boivent l'eau de pluie.")
+                .setOption(10, new ItemStack(Material.SAND, 1), ChatColor.BLUE + "Pluie [30 minutes]", "Vos terres boivent l'eau de pluie.")
+                .setOption(11, new ItemStack(Material.SAND, 1), ChatColor.BLUE + "Pluie [1 heure]", "Vos terres boivent l'eau de pluie.")
+
+                // RETOUR
+                .setOption(17, new ItemStack(Material.GOLD_BLOCK, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        return menuMeteo;
+    }
+
+    // ACTIVATION
+    public static IsoWorldsInventory getMenuActivation() {
+        IsoWorldsInventory menuActivation = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Activation"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance)
+                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GREEN + "Activer", "Charge votre IsoWorld.")
+                .setOption(1, new ItemStack(Material.SAND, 1), ChatColor.RED + "Désactiver", "Décharge votre IsoWorld.")
+
+                // RETOUR
+                .setOption(8, new ItemStack(Material.GOLD_BLOCK, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        return menuActivation;
+    }
+
+    // TELEPORTATION
+    public static IsoWorldsInventory getMenuTeleportation() {
+        IsoWorldsInventory menuTeleportation = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Téléportation"), 27, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance);
+        // Boucle pour afficher le nom réel + nom pseudo du monde
+        int i = 0;
+        for (World w : Bukkit.getWorlds()) {
+            if (w.getName().contains("-IsoWorld")) {
+                String[] split = w.getName().split("-IsoWorld");
+                UUID uuid = UUID.fromString(split[0]);
+                String name = Bukkit.getServer().getOfflinePlayer(uuid).getName();
+                menuTeleportation.setOption(i, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + w.getName(), name);
+                i++;
+            }
+        }
+
+        // RETOUR
+        menuTeleportation.setOption(26, new ItemStack(Material.GOLD_BLOCK, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+
+        return menuTeleportation;
+    }
+
 }

@@ -45,7 +45,7 @@ public class OnCommande implements CommandExecutor {
         // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
         if (isSetCooldown(pPlayer, String.class.getName())) {
             return CommandResult.success();
-        }
+        }8
 
         // Import / Export
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {

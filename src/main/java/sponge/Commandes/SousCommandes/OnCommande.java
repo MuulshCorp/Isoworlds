@@ -34,9 +34,6 @@ public class OnCommande implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
-        // TEST 1
-
-
         // Variables
         String worldname = "";
         Player pPlayer = (Player) source;

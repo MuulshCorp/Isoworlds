@@ -23,10 +23,6 @@
             <id>bukkit-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -42,11 +38,6 @@
             <artifactId>spongeapi</artifactId>
             <version>6.0.0</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.codeHusky</groupId>
-            <artifactId>HuskyUI-Plugin</artifactId>
-            <version>v0.1.0</version>
         </dependency>
     </dependencies>
 

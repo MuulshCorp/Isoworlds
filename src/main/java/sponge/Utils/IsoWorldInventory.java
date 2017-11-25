@@ -40,4 +40,44 @@ public class IsoWorldInventory {
 
         return menu;
     }
+
+    // BIOME
+    public static Inventory menuBiome(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    clickInventoryEvent.setCancelled(true);
+                    IsoworldsUtils.cm("test");
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of("IsoWorlds")))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
+                .build(instance);
+
+        ItemStack item = ItemStack.builder().itemType(ItemTypes.COAL).add(Keys.DISPLAY_NAME, Text.of("Test")).quantity(1).build();
+        menu.query(SlotPos.of(4,0)).set(item);
+
+        return menu;
+    }
+
+    // CONFIANCE
+    public static Inventory menuConfiance(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    clickInventoryEvent.setCancelled(true);
+                    IsoworldsUtils.cm("test");
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of("IsoWorlds")))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
+                .build(instance);
+
+        ItemStack item = ItemStack.builder().itemType(ItemTypes.COAL).add(Keys.DISPLAY_NAME, Text.of("Test")).quantity(1).build();
+        menu.query(SlotPos.of(4,0)).set(item);
+
+        return menu;
+    }
 }

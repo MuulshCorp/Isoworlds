@@ -33,7 +33,43 @@ public class IsoWorldInventory {
                 .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
                     // Code event
                     clickInventoryEvent.setCancelled(true);
-                    IsoworldsUtils.cm("test");
+                    IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
+
+                    String menuName = String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
+                    // MENU PRINCIPAL //
+                    // BIOME
+                    if (menuName.equals("Biome")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuBiome(pPlayer);
+                        // CONFIANCE
+                    } else if (menuName.equals("Confiance")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuConfiance(pPlayer);
+                        // CONSTRUCTION
+                    } else if (menuName.equals("Construction")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuConstruction(pPlayer);
+                        // MAISON
+                    } else if (menuName.equals("Maison")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuMaison(pPlayer);
+                        // METEO
+                    } else if (menuName.equals("Météo")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuMeteo(pPlayer);
+                        // ACTIVATION
+                    } else if (menuName.equals("Activation")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuActivation(pPlayer);
+                        // TELEPORTATION
+                    } else if (menuName.equals("Téléportation")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuTeleportation(pPlayer);
+                    } else if (menuName.equals("Temps")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuTemps(pPlayer);
+                    }
+
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of("IsoWorlds")))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
@@ -58,13 +94,13 @@ public class IsoWorldInventory {
         list8.add(Text.of("Gérez l'heure de votre IsoWorld"));
 
         ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome").color(TextColors.GOLD).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.EMERALD).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance").color(TextColors.GREEN).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.BRICK).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Construction").color(TextColors.GRAY).build())).quantity(1).build();
-        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison").color(TextColors.BLUE).build())).quantity(1).build();
-        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Météo").color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item6 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation").color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.DIAMOND_BOOTS).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Téléportation").color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
-        ItemStack item8 = ItemStack.builder().itemType(ItemTypes.CLOCK).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Temps").color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.EMERALD).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance").color(TextColors.GREEN).build())).quantity(1).build();
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.BRICK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Construction").color(TextColors.GRAY).build())).quantity(1).build();
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison").color(TextColors.BLUE).build())).quantity(1).build();
+        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Météo").color(TextColors.YELLOW).build())).quantity(1).build();
+        ItemStack item6 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation").color(TextColors.RED).build())).quantity(1).build();
+        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.DIAMOND_BOOTS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Téléportation").color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
+        ItemStack item8 = ItemStack.builder().itemType(ItemTypes.CLOCK).add(Keys.ITEM_LORE, list8).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Temps").color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
 
         // Placement item dans le menu
         menu.query(SlotPos.of(0,0)).set(item1);
@@ -80,50 +116,15 @@ public class IsoWorldInventory {
     }
 
     // BIOME
-    public static Inventory menuBiome(Player pPlayer) {
+    public static Inventory getMenuBiome(Player pPlayer) {
 
         Inventory menu = Inventory.builder()
                 .of(InventoryArchetypes.CHEST)
                 .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
                     // Code event
                     clickInventoryEvent.setCancelled(true);
-                    // MENU PRINCIPAL //
-                    // BIOME
-
-                    // FAIRE ICI
-                    if (clickInventoryEvent. .getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Biome")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuBiome().open(p);
-                        // CONFIANCE
-                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Confiance")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuConfiance().open(p);
-                        // CONSTRUCTION
-                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Construction")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuConstruction().open(p);
-                        // MAISON
-                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.BLUE + "Maison")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuMaison().open(p);
-                        // METEO
-                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.YELLOW + "Météo")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuMeteo().open(p);
-                        // ACTIVATION
-                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.RED + "Activation")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuActivation().open(p);
-                        // TELEPORTATION
-                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Téléportation")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuTeleportation().open(p);
-                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.RED + "Menu principal")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuPrincipal().open(p);
-                    }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Menu principal").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Biome").color(TextColors.GOLD).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
                 .build(instance);
 
@@ -134,7 +135,7 @@ public class IsoWorldInventory {
     }
 
     // CONFIANCE
-    public static Inventory menuConfiance(Player pPlayer) {
+    public static Inventory getMenuConfiance(Player pPlayer) {
 
         Inventory menu = Inventory.builder()
                 .of(InventoryArchetypes.CHEST)
@@ -144,6 +145,126 @@ public class IsoWorldInventory {
                     IsoworldsUtils.cm("test");
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance").color(TextColors.GOLD).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
+                .build(instance);
+
+        ItemStack item = ItemStack.builder().itemType(ItemTypes.COAL).add(Keys.DISPLAY_NAME, Text.of("Test")).quantity(1).build();
+        menu.query(SlotPos.of(4,0)).set(item);
+
+        return menu;
+    }
+
+    // CONSTRUCTION
+    public static Inventory getMenuConstruction(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    clickInventoryEvent.setCancelled(true);
+                    IsoworldsUtils.cm("test");
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Construction").color(TextColors.GOLD).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
+                .build(instance);
+
+        ItemStack item = ItemStack.builder().itemType(ItemTypes.COAL).add(Keys.DISPLAY_NAME, Text.of("Test")).quantity(1).build();
+        menu.query(SlotPos.of(4,0)).set(item);
+
+        return menu;
+    }
+
+    // MAISON
+    public static Inventory getMenuMaison(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    clickInventoryEvent.setCancelled(true);
+                    IsoworldsUtils.cm("test");
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Maison").color(TextColors.GOLD).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
+                .build(instance);
+
+        ItemStack item = ItemStack.builder().itemType(ItemTypes.COAL).add(Keys.DISPLAY_NAME, Text.of("Test")).quantity(1).build();
+        menu.query(SlotPos.of(4,0)).set(item);
+
+        return menu;
+    }
+
+    // METEO
+    public static Inventory getMenuMeteo(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    clickInventoryEvent.setCancelled(true);
+                    IsoworldsUtils.cm("test");
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Météo").color(TextColors.GOLD).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
+                .build(instance);
+
+        ItemStack item = ItemStack.builder().itemType(ItemTypes.COAL).add(Keys.DISPLAY_NAME, Text.of("Test")).quantity(1).build();
+        menu.query(SlotPos.of(4,0)).set(item);
+
+        return menu;
+    }
+
+    // ACTIVATION
+    public static Inventory getMenuActivation(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    clickInventoryEvent.setCancelled(true);
+                    IsoworldsUtils.cm("test");
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Activation").color(TextColors.GOLD).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
+                .build(instance);
+
+        ItemStack item = ItemStack.builder().itemType(ItemTypes.COAL).add(Keys.DISPLAY_NAME, Text.of("Test")).quantity(1).build();
+        menu.query(SlotPos.of(4,0)).set(item);
+
+        return menu;
+    }
+
+    // TELEPORTATION
+    public static Inventory getMenuTeleportation(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    clickInventoryEvent.setCancelled(true);
+                    IsoworldsUtils.cm("test");
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Téléporation").color(TextColors.GOLD).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
+                .build(instance);
+
+        ItemStack item = ItemStack.builder().itemType(ItemTypes.COAL).add(Keys.DISPLAY_NAME, Text.of("Test")).quantity(1).build();
+        menu.query(SlotPos.of(4,0)).set(item);
+
+        return menu;
+    }
+
+    // TEMPS
+    public static Inventory getMenuTemps(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    clickInventoryEvent.setCancelled(true);
+                    IsoworldsUtils.cm("test");
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Temps").color(TextColors.GOLD).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
                 .build(instance);
 

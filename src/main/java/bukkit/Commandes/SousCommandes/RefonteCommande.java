@@ -1,5 +1,6 @@
 package bukkit.Commandes.SousCommandes;
 
+import common.Cooldown;
 import common.ManageFiles;
 import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoworldsUtils;
@@ -31,7 +32,6 @@ public class RefonteCommande {
     public static void Refonte(CommandSender sender, String[] args) {
 
 
-
         // Variables
         String fullpath = "";
         String worldname = "";
@@ -39,10 +39,15 @@ public class RefonteCommande {
         instance = IsoworldsBukkit.getInstance();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
+        //If the method return true then the command is in cooldown
+        if (Cooldown.isPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY)) {
             return;
         }
+
+        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
+//        if (isSetCooldown(pPlayer, String.class.getName())) {
+//            return;
+//        }
 
         // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {

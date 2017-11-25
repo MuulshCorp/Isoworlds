@@ -8,13 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
-public class Cooldown {
+public class Cooldown implements CooldownType {
     private static final IsoworldsBukkit instance = IsoworldsBukkit.getInstance();
 
-    //24h in seconds to substract to the current timestamp to get the cooldown limit
-    private static final int limit = 86400;
-
-    public static boolean isPlayerCooldownRefonte(Player pPlayer) {
+    public static boolean isPlayerCooldown(Player pPlayer, String type, int delay) {
         String query = "SELECT * FROM `player_cooldown` WHERE `UUID_P` = ? AND WHERE date > ? AND WHERE type = ?";
 
         try {
@@ -25,9 +22,11 @@ public class Cooldown {
             check.setString(1, check_p);
 
             //Date
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis() - limit);
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis() - delay);
             check.setTimestamp(2, timestamp);
 
+            //Type
+            check.setString(3, type);
 
             ResultSet resultSet = check.executeQuery();
 
@@ -40,7 +39,7 @@ public class Cooldown {
         }
     }
 
-    public static boolean addPlayerCooldownRefonte(Player pPlayer) {
+    public static boolean addPlayerCooldown(Player pPlayer, String type) {
         String query = "INSERT INTO `player_cooldown` (`UUID_P`, `date`, `type`) VALUES (?, ?, ?)";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try {
@@ -54,7 +53,7 @@ public class Cooldown {
             insert.setString(2, (timestamp.toString()));
 
             // Type
-            insert.setString(3, "refonte");
+            insert.setString(3, type);
 
             insert.executeUpdate();
         } catch (Exception ex) {
@@ -65,5 +64,6 @@ public class Cooldown {
         }
 
         return true;
+
     }
 }

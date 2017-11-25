@@ -59,14 +59,14 @@ public class IsoWorldInventory {
         List<Text> list8 = new ArrayList<Text>();
         list8.add(Text.of("Gérez l'heure de votre IsoWorld"));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.EMERALD).add(Keys.DISPLAY_NAME, Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GREEN).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.BRICK).add(Keys.DISPLAY_NAME, Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GRAY).build())).quantity(1).build();
-        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.DISPLAY_NAME, Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.BLUE).build())).quantity(1).build();
-        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.DISPLAY_NAME, Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item6 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.DISPLAY_NAME, Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.DIAMOND_BOOTS).add(Keys.DISPLAY_NAME, Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
-        ItemStack item8 = ItemStack.builder().itemType(ItemTypes.CLOCK).add(Keys.DISPLAY_NAME, Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome").color(TextColors.GOLD).build())).quantity(1).build();
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.EMERALD).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance").color(TextColors.GREEN).build())).quantity(1).build();
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.BRICK).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Construction").color(TextColors.GRAY).build())).quantity(1).build();
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison").color(TextColors.BLUE).build())).quantity(1).build();
+        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Météo").color(TextColors.YELLOW).build())).quantity(1).build();
+        ItemStack item6 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation").color(TextColors.RED).build())).quantity(1).build();
+        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.DIAMOND_BOOTS).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Téléportation").color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
+        ItemStack item8 = ItemStack.builder().itemType(ItemTypes.CLOCK).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Temps").color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
 
         // Placement item dans le menu
         menu.query(SlotPos.of(0,0)).set(item1);
@@ -89,9 +89,43 @@ public class IsoWorldInventory {
                 .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
                     // Code event
                     clickInventoryEvent.setCancelled(true);
-                    IsoworldsUtils.cm("test");
+                    // MENU PRINCIPAL //
+                    // BIOME
+
+                    // FAIRE ICI
+                    if (clickInventoryEvent. .getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Biome")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuBiome().open(p);
+                        // CONFIANCE
+                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Confiance")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuConfiance().open(p);
+                        // CONSTRUCTION
+                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Construction")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuConstruction().open(p);
+                        // MAISON
+                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.BLUE + "Maison")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuMaison().open(p);
+                        // METEO
+                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.YELLOW + "Météo")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuMeteo().open(p);
+                        // ACTIVATION
+                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.RED + "Activation")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuActivation().open(p);
+                        // TELEPORTATION
+                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Téléportation")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuTeleportation().open(p);
+                    } else if (clicked.getItemMeta().getDisplayName().equals(ChatColor.RED + "Menu principal")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuPrincipal().open(p);
+                    }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of("IsoWorlds")))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Menu principal").color(TextColors.GOLD).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
                 .build(instance);
 
@@ -111,7 +145,7 @@ public class IsoWorldInventory {
                     clickInventoryEvent.setCancelled(true);
                     IsoworldsUtils.cm("test");
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of("IsoWorlds")))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance").color(TextColors.GOLD).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9,1))
                 .build(instance);
 

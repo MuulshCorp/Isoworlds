@@ -178,6 +178,15 @@ public class IsoWorldsInventory implements Listener {
                                 if (clicked.getItemMeta().getDisplayName().contains("-IsoWorld")) {
                                     p.performCommand("iw teleport " + clicked.getItemMeta().getDisplayName());
                                 }
+                                // TIME
+                            } else if (event.getInventory().getName().contains("Temps")) {
+                                    //Jour
+                                if (clicked.getItemMeta().getDisplayName().contains("Jour")) {
+                                    p.performCommand("iw t " + clicked.getItemMeta().getDisplayName());
+                                    //Nuit
+                                } else if (clicked.getItemMeta().getDisplayName().contains("Nuit")) {
+                                    p.performCommand("iw t " + clicked.getItemMeta().getDisplayName());
+                                }
                             }
 
 
@@ -262,7 +271,8 @@ public class IsoWorldsInventory implements Listener {
                 .setOption(3, new ItemStack(Material.BED, 1), ChatColor.BLUE + "Maison", "Rendez-vous sur votre IsoWorld")
                 .setOption(4, new ItemStack(Material.DOUBLE_PLANT, 1), ChatColor.YELLOW + "Météo", "Gérez la pluie et le beau temps de votre IsoWorld")
                 .setOption(5, new ItemStack(Material.LEVER, 1), ChatColor.RED + "Activation", "Chargez-Déchargez votre IsoWorld")
-                .setOption(6, new ItemStack(Material.DIAMOND_BOOTS, 1), ChatColor.LIGHT_PURPLE + "Téléportation", "Téléportez vous sur un IsoWorld [STAFF]");
+                .setOption(6, new ItemStack(Material.DIAMOND_BOOTS, 1), ChatColor.LIGHT_PURPLE + "Téléportation", "Téléportez vous sur un IsoWorld [STAFF]")
+                .setOption(7, new ItemStack(Material.WATCH, 1), ChatColor.LIGHT_PURPLE + "Temps", "Gérez l'heure de votre IsoWorld");
         return menuPrincipal;
     }
 
@@ -279,7 +289,7 @@ public class IsoWorldsInventory implements Listener {
                 .setOption(1, new ItemStack(Material.SAND, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.")
 
                 // RETOUR
-                .setOption(8, new ItemStack(Material.SAND, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+                .setOption(8, new ItemStack(Material.GOLD_BLOCK, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
         return menuBiome;
     }
 
@@ -397,6 +407,24 @@ public class IsoWorldsInventory implements Listener {
         menuTeleportation.setOption(26, new ItemStack(Material.GOLD_BLOCK, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
 
         return menuTeleportation;
+    }
+
+    // TIME
+    public static IsoWorldsInventory getMenuTime() {
+        IsoWorldsInventory menuTime = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Temps"), 18, new IsoWorldsInventory.OptionClickEventHandler() {
+            @Override
+            public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
+                event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                event.setWillClose(true);
+            }
+        }, instance)
+                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.YELLOW + "Jour", "Le jour se lève")
+
+                .setOption(9, new ItemStack(Material.SAND, 1), ChatColor.BLUE + "Nuit", "La nuit tombe")
+
+                // RETOUR
+                .setOption(17, new ItemStack(Material.GOLD_BLOCK, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        return menuTime;
     }
 
 }

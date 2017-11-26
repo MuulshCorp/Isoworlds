@@ -327,13 +327,13 @@ public class IsoWorldInventory {
                     }
 
                     if (menuName.contains("10 minutes")) {
-                        commandMenu(pPlayer, "iw meteo " + mtype + "12000");
+                        commandMenu(pPlayer, "iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                         closeMenu(pPlayer);
                     } else if (menuName.contains("30 minutes")) {
-                        commandMenu(pPlayer, "iw meteo " + mtype + "36000");
+                        commandMenu(pPlayer, "iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                         closeMenu(pPlayer);
                     } else if (menuName.contains("1 heure")) {
-                        commandMenu(pPlayer, "iw meteo " + mtype + "72000");
+                        commandMenu(pPlayer, "iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                         closeMenu(pPlayer);
                     }
 
@@ -494,10 +494,10 @@ public class IsoWorldInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Jour")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw temps jour");
+                        Sponge.getCommandManager().process(pPlayer, "iw temps jour " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                         pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                     } else if (menuName.contains("Nuit")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw temps nuit");
+                        Sponge.getCommandManager().process(pPlayer, "iw temps nuit " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                         pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                     }
                 })

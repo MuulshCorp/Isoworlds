@@ -19,6 +19,7 @@ public class ConfianceCommande {
 
     public static IsoworldsBukkit instance;
 
+    @SuppressWarnings("deprecation")
     public static void Confiance(CommandSender sender, String[] args) {
 
         Player pPlayer = (Player) sender;

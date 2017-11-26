@@ -23,6 +23,7 @@ public class RetirerConfianceCommande {
 
     public static IsoworldsBukkit instance;
 
+    @SuppressWarnings("deprecation")
     public static void RetirerConfiance(CommandSender sender, String[] args) {
 
         instance = IsoworldsBukkit.getInstance();

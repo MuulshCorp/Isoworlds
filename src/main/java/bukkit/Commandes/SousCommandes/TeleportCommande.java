@@ -16,6 +16,7 @@ public class TeleportCommande {
 
     public static IsoworldsBukkit instance;
 
+    @SuppressWarnings("deprecation")
     public static void Teleport(CommandSender sender, String[] args) {
 
         Player pPlayer = (Player) sender;

@@ -17,10 +17,12 @@ import org.spongepowered.api.item.inventory.property.SlotPos;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static sponge.IsoworldsSponge.instance;
@@ -76,7 +78,8 @@ public class IsoWorldInventory {
                     }
 
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of("IsoWorlds")))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds")
+                        .color(TextColors.GOLD).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
@@ -139,11 +142,11 @@ public class IsoWorldInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Plaines")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw biome plaines");
-                        pPlayer.closeInventory();
+                        //Sponge.getCommandManager().process(pPlayer, "iw biome plaines");
+                        closeMenu(pPlayer);;
                     } else if (menuName.contains("Désert")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw biome desert");
-                        pPlayer.closeInventory();
+                        //Sponge.getCommandManager().process(pPlayer, "iw biome desert");
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -184,6 +187,7 @@ public class IsoWorldInventory {
                     // Code event
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
+                    IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Confiance")) {
                         IsoworldsUtils.cm("test");
@@ -227,11 +231,11 @@ public class IsoWorldInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Création")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw c");
-                        pPlayer.closeInventory();
+                        commandMenu(pPlayer, "iw c");
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("Refonte")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw r");
-                        pPlayer.closeInventory();
+                        commandMenu(pPlayer, "iw r");
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -273,8 +277,8 @@ public class IsoWorldInventory {
                     clickInventoryEvent.setCancelled(true);
 
                     if (menuName.contains("Maison")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw h");
-                        pPlayer.closeInventory();
+                        commandMenu(pPlayer, "iw h");
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -323,14 +327,14 @@ public class IsoWorldInventory {
                     }
 
                     if (menuName.contains("10 minutes")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw meteo " + mtype + "12000");
-                        pPlayer.closeInventory();
+                        commandMenu(pPlayer, "iw meteo " + mtype + "12000");
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("30 minutes")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw meteo " + mtype + "36000");
-                        pPlayer.closeInventory();
+                        commandMenu(pPlayer, "iw meteo " + mtype + "36000");
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("1 heure")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw meteo " + mtype + "72000");
-                        pPlayer.closeInventory();
+                        commandMenu(pPlayer, "iw meteo " + mtype + "72000");
+                        closeMenu(pPlayer);
                     }
 
                 })
@@ -400,9 +404,13 @@ public class IsoWorldInventory {
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
-                    Sponge.getCommandManager().process(pPlayer, "iw on");
-
-                    pPlayer.closeInventory();
+                    if (menuName.contains("Activer")) {
+                        commandMenu(pPlayer, "iw on");
+                        closeMenu(pPlayer);
+                    } else if (menuName.contains("Désactiver")) {
+                        commandMenu(pPlayer, "iw off");
+                        closeMenu(pPlayer);
+                    }
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Activation").color(TextColors.GOLD).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
@@ -439,30 +447,38 @@ public class IsoWorldInventory {
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
-                    if (menuName.contains("Activer")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw on");
-                        pPlayer.closeInventory();
-                    } else if (menuName.contains("Désactiver")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw off");
-                        pPlayer.closeInventory();
-                    }
+                    commandMenu(pPlayer, "iw off");
+                    closeMenu(pPlayer);
 
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Téléporation").color(TextColors.GOLD).build())))
-                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(27, 1))
                 .build(instance);
 
-        List<Text> list1 = new ArrayList<Text>();
-        list1.add(Text.of("Gérez l'heure de votre IsoWorld"));
+        int i = 0;
+        int j = 0;
+        for (World w : Sponge.getServer().getWorlds()) {
+            if (w.getName().contains("-IsoWorld")) {
+                String[] split = w.getName().split("-IsoWorld");
+                UUID uuid = UUID.fromString(split[0]);
+                String name = Sponge.getServer().getPlayer(uuid).get().getName();
+                List<Text> list1 = new ArrayList<Text>();
+                list1.add(Text.of(w.getName()));
+                ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome")
+                        .color(TextColors.GOLD).build())).quantity(1).build();
+                if (i >= 8) {
+                    j = j++;
+                }
+                menu.query(SlotPos.of(i, j)).set(item1);
+            }
+        }
+
         List<Text> list2 = new ArrayList<Text>();
         list2.add(Text.of("Gérez l'heure de votre IsoWorld"));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome")
-                .color(TextColors.GOLD).build())).quantity(1).build();
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
-        menu.query(SlotPos.of(0, 0)).set(item1);
-        menu.query(SlotPos.of(8, 0)).set(item2);
+        menu.query(SlotPos.of(26, 3)).set(item2);
 
         return menu;
     }
@@ -518,6 +534,28 @@ public class IsoWorldInventory {
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)
+                .name("Ferme l'inventaire d'un joueur et en ouvre un autre.").submit(instance);
+    }
+
+    private static void closeMenu(Player pPlayer) {
+        Task.builder().execute(new Runnable() {
+            @Override
+            public void run() {
+                pPlayer.closeInventory();
+            }
+        })
+                .delay(10, TimeUnit.MILLISECONDS)
                 .name("Ferme l'inventaire d'un joueur.").submit(instance);
+    }
+
+    private static void commandMenu(Player pPlayer, String cmd) {
+        Task.builder().execute(new Runnable() {
+            @Override
+            public void run() {
+                Sponge.getCommandManager().process(pPlayer, cmd);
+            }
+        })
+                .delay(10, TimeUnit.MILLISECONDS)
+                .name("Execute une commande pour le joueur.").submit(instance);
     }
 }

@@ -2,7 +2,7 @@ package common;
 
 import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoworldsUtils;
-import org.bukkit.entity.Player;
+import org.spongepowered.api.entity.living.player.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,16 +11,34 @@ import java.sql.Timestamp;
 public class Cooldown implements CooldownType {
     private static final IsoworldsBukkit instance = IsoworldsBukkit.getInstance();
 
+
+    /**
+     * Sponge method
+     */
+    public static Timestamp getPlayerLastCooldown(Player pPlayer, String type) {
+        String uuid_p = sponge.Utils.IsoworldsUtils.PlayerToUUID(pPlayer).toString();
+
+        return getPlayerLastCooldown(uuid_p, type);
+    }
+
+    /**
+     * Bukkit method
+     */
+    public static Timestamp getPlayerLastCooldown(org.bukkit.entity.Player pPlayer, String type) {
+        String uuid_p = pPlayer.getUniqueId().toString();
+
+        return getPlayerLastCooldown(uuid_p, type);
+    }
+
     /**
      * Return all the occurences for a given player, type (ex: refonte) with date greater than now
      */
-    public static Timestamp getPlayerLastCooldown(Player pPlayer, String type) {
+    private static Timestamp getPlayerLastCooldown(String uuid_p, String type) {
         String query = "SELECT * FROM `player_cooldown` WHERE `UUID_P` = ? AND `type` = ? AND `date` > ? AND `server_id` = ?";
         try {
             PreparedStatement check = instance.database.prepare(query);
 
             // UUID _P
-            String uuid_p = pPlayer.getUniqueId().toString();
             check.setString(1, uuid_p);
 
             //Type
@@ -46,15 +64,33 @@ public class Cooldown implements CooldownType {
         return null;
     }
 
+
+    /**
+     * Sponge method
+     */
     public static boolean addPlayerCooldown(Player pPlayer, String type, int delay) {
+        String uuid_p = sponge.Utils.IsoworldsUtils.PlayerToUUID(pPlayer).toString();
+
+        return addPlayerCooldown(uuid_p, type, delay);
+    }
+
+    /**
+     * Bukkit method
+     */
+    public static boolean addPlayerCooldown(org.bukkit.entity.Player pPlayer, String type, int delay) {
+        String uuid_p = pPlayer.getUniqueId().toString();
+
+        return addPlayerCooldown(uuid_p, type, delay);
+    }
+
+    private static boolean addPlayerCooldown(String uuid_p, String type, int delay) {
         String query = "INSERT INTO `player_cooldown` (`UUID_P`, `date`, `type`, `server_id`) VALUES (?, ?, ?, ?)";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() + (delay * 1000));
         try {
             PreparedStatement insert = instance.database.prepare(query);
 
             // UUID_P
-            String Iuuid_p = pPlayer.getUniqueId().toString();
-            insert.setString(1, Iuuid_p);
+            insert.setString(1, uuid_p);
 
             // Date
             insert.setString(2, (timestamp.toString()));
@@ -75,6 +111,7 @@ public class Cooldown implements CooldownType {
 
         return true;
     }
+
 
     public static String getCooldownTimer(Timestamp timestamp) {
         Timestamp now = new Timestamp(System.currentTimeMillis());

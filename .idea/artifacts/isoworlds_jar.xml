@@ -2,7 +2,7 @@
   <artifact type="jar" name="isoworlds:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/isoworlds_jar</output-path>
     <root id="archive" name="isoworlds.jar">
-      <element id="module-output" name="Isolonice-iWorlds" />
+      <element id="module-output" name="isoworlds" />
     </root>
   </artifact>
 </component>

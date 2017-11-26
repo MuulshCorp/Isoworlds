@@ -29,6 +29,7 @@ public class IsoworldsUtils {
 
     private static final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
+
     public static boolean isSolid(Location blockLoc) {
         if (blockLoc.getProperty(SolidCubeProperty.class).isPresent()) {
             SolidCubeProperty property = (SolidCubeProperty) blockLoc.getProperty(SolidCubeProperty.class).get();

@@ -16,6 +16,7 @@ public class MaisonCommande {
 
     public static IsoworldsBukkit instance;
 
+    @SuppressWarnings("deprecation")
     public static void Maison(CommandSender sender, String[] args) {
 
         instance = IsoworldsBukkit.getInstance();

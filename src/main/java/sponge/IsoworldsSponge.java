@@ -2,6 +2,7 @@ package sponge;
 
 import com.google.inject.Inject;
 
+import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
 import sponge.Listeners.IsoworldsListeners;
@@ -47,6 +48,7 @@ public class IsoworldsSponge {
     public String servername;
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
     public static Map<String, Integer> lock = new HashMap<String, Integer>();
+    public Cooldown cooldown;
 
     @Inject
     @DefaultConfig(sharedRoot = true)
@@ -181,6 +183,7 @@ public class IsoworldsSponge {
             return;
         }
         this.logger.info("IsoWorlds connecté avec succès à la base de données !");
+        this.cooldown = new Cooldown(this.database, this.servername);
         everyMinutes();
 
 

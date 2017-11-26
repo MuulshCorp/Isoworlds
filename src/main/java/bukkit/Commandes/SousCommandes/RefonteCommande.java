@@ -39,9 +39,9 @@ public class RefonteCommande {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         //If the method return true then the command is in lock
-        Timestamp cooldown = Cooldown.getPlayerLastCooldown(pPlayer, Cooldown.REFONTE);
+        Timestamp cooldown = instance.cooldown.getPlayerLastCooldown(pPlayer, Cooldown.REFONTE);
         if (cooldown != null) {
-            String timerMessage = Cooldown.getCooldownTimer(cooldown);
+            String timerMessage = instance.cooldown.getCooldownTimer(cooldown);
             pPlayer.sendMessage(Msg.keys.BASE_MESSAGE + Msg.keys.UNAVAILABLE_COMMAND + timerMessage);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
@@ -118,7 +118,7 @@ public class RefonteCommande {
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
         CommandSender newSender = pPlayer.getPlayer();
         //Start the lock for this command
-        if (!Cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY)) {
+        if (!instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY)) {
             IsoworldsUtils.cm(Msg.keys.SQL);
         }
         CreationCommande.Creation(newSender, args);

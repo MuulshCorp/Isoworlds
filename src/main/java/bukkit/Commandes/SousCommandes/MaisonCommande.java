@@ -2,15 +2,12 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoworldsUtils;
-import com.sun.org.apache.xml.internal.serializer.utils.MsgKey;
 import common.Msg;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import javax.print.attribute.standard.MediaSize;
-
-import static bukkit.Utils.IsoworldsUtils.isSetCooldown;
+import static bukkit.Utils.IsoworldsUtils.isLocked;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -29,8 +26,8 @@ public class MaisonCommande {
         String uuid;
         pPlayer = (Player) sender;
 
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        if (isLocked(pPlayer, String.class.getName())) {
             return;
         }
 
@@ -40,7 +37,7 @@ public class MaisonCommande {
         if (args.length == 2) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(args[1]);
             if (owner == null) {
-                instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+                instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;
             }
             uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
@@ -55,15 +52,15 @@ public class MaisonCommande {
 
         // Import / Export
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
-            // Suppression cooldown
-            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            // Suppression lock
+            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(uuid, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -84,14 +81,14 @@ public class MaisonCommande {
         } catch (NullPointerException npe) {
             //
             Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
-            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         }
 
         // Téléportation du joueur
         if (pPlayer.teleport(go)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
         }
-        instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
 
     }

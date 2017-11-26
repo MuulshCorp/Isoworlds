@@ -1,6 +1,5 @@
 package sponge.Commandes.SousCommandes;
 
-import bukkit.IsoworldsBukkit;
 import sponge.IsoworldsSponge;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
@@ -19,7 +18,7 @@ import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
 
-import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+import static sponge.Utils.IsoworldsUtils.isLocked;
 
 
 /**
@@ -40,8 +39,8 @@ public class OffCommande implements CommandExecutor {
         ArrayList<World> worlds = new ArrayList<World>();
         IsoworldsUtils.cm("check");
 
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        if (isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
 
@@ -70,14 +69,14 @@ public class OffCommande implements CommandExecutor {
                     }
                     // Unload
                     Sponge.getServer().unloadWorld(world);
-                    plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+                    plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                     // si iworld déjà déchargé
                 } else {
                     Sponge.getServer().loadWorld(worldname);
                     pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que votre IsoWorld est déjà déchargé, entrez /iw maison pour y entrer.").color(TextColors.GOLD)
                             .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-                    plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+                    plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                 }
             }
@@ -86,12 +85,12 @@ public class OffCommande implements CommandExecutor {
             if (check == false) {
                 pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld à votre nom dans le Royaume Isolonice. Entrez /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
-                plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+                plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return CommandResult.success();
             }
         }
         IsoworldsUtils.cm("finished");
-        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

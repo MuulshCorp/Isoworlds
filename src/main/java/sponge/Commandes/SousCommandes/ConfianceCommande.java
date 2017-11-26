@@ -26,7 +26,7 @@ import org.spongepowered.api.world.World;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+import static sponge.Utils.IsoworldsUtils.isLocked;
 
 public class ConfianceCommande implements CommandCallable {
 
@@ -40,16 +40,16 @@ public class ConfianceCommande implements CommandCallable {
         String[] arg = args.split(" ");
         int size = arg.length;
 
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        if (isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
 
         if (size > 1) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
-            // Suppression cooldown
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            // Suppression lock
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -57,8 +57,8 @@ public class ConfianceCommande implements CommandCallable {
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-            // Suppression cooldown
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            // Suppression lock
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -71,22 +71,22 @@ public class ConfianceCommande implements CommandCallable {
                 e.printStackTrace();
                 pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
-                // Suppression cooldown
-                plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+                // Suppression lock
+                plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return CommandResult.success();
             }
 
             if (uuidcible.toString().isEmpty() || (size > 1)) {
                 IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.INVALIDE_JOUEUR);
-                // Suppression cooldown
-                plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+                // Suppression lock
+                plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
             i.printStackTrace();
             IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.DATA);
-            // Suppression cooldown
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            // Suppression lock
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -94,22 +94,22 @@ public class ConfianceCommande implements CommandCallable {
         if (IsoworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_TRUST).color(TextColors.AQUA))).build()));
-            // Suppression cooldown
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            // Suppression lock
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
         // INSERT
         if (!IsoworldsUtils.insertTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
-            // Suppression cooldown
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            // Suppression lock
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_TRUST).color(TextColors.AQUA))).build()));
-        // Suppression cooldown
-        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        // Suppression lock
+        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

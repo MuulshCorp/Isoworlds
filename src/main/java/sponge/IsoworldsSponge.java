@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 
 import common.ManageFiles;
 import common.Msg;
-import org.spongepowered.api.world.Chunk;
 import sponge.Listeners.IsoworldsListeners;
 import sponge.Utils.IsoworldsUtils;
 
@@ -47,7 +46,7 @@ public class IsoworldsSponge {
     private Game game;
     public String servername;
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
-    public static Map<String, Integer> cooldown = new HashMap<String, Integer>();
+    public static Map<String, Integer> lock = new HashMap<String, Integer>();
 
     @Inject
     @DefaultConfig(sharedRoot = true)
@@ -76,7 +75,7 @@ public class IsoworldsSponge {
 
         // Purge map
         worlds.clear();
-        cooldown.clear();
+        lock.clear();
     }
 
     private void everyMinutes() {

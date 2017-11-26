@@ -8,8 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -17,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -106,24 +103,24 @@ public class IsoworldsUtils {
     }
 
     // Cooldown modèle: uuid;commande
-    public static Boolean isCooldown(String pPlayer, String command) {
-        // Si le tableau est null alors cooldown 0 sinon cooldown 1
-        if (instance.cooldown.get(pPlayer + ";" + command) == null) {
+    public static Boolean checkLockFormat(String pPlayer, String command) {
+        // Si le tableau est null alors lock 0 sinon lock 1
+        if (instance.lock.get(pPlayer + ";" + command) == null) {
             return false;
         } else {
             return true;
         }
     }
 
-    // Vérifie si le cooldown est présent et renvoi vrai, sinon défini le cooldown et renvoi false
-    public static Boolean isSetCooldown(Player pPlayer, String className) {
-        // Si le cooldown est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
-        if (isCooldown(pPlayer.getUniqueId().toString(), String.class.getName())) {
+    // Vérifie si le lock est présent et renvoi vrai, sinon défini le lock et renvoi false
+    public static Boolean isLocked(Player pPlayer, String className) {
+        // Si le lock est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
+        if (checkLockFormat(pPlayer.getUniqueId().toString(), String.class.getName())) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.");
             return true;
         } else {
-            // On set cooldown
-            instance.cooldown.put(pPlayer.getUniqueId().toString() + ";" + className, 1);
+            // On set lock
+            instance.lock.put(pPlayer.getUniqueId().toString() + ";" + className, 1);
             return false;
         }
     }

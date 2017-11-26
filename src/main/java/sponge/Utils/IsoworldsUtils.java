@@ -2,10 +2,7 @@ package sponge.Utils;
 
 import common.ManageFiles;
 import common.Msg;
-import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.scheduler.SynchronousExecutor;
 import org.spongepowered.api.scheduler.Task;
-import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
 
 import org.spongepowered.api.Sponge;
@@ -17,17 +14,13 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 import org.spongepowered.api.world.Location;
 
-import javax.print.attribute.standard.MediaSize;
 import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 /**
  * Created by Edwin on 08/10/2017.
@@ -334,25 +327,25 @@ public class IsoworldsUtils {
     }
 
     // Cooldown modèle: uuid;commande
-    public static Boolean isCooldown(String pPlayer, String command) {
-        // Si le tableau est null alors cooldown 0 sinon cooldown 1
-        if (plugin.cooldown.get(pPlayer + ";" + command) == null) {
+    public static Boolean checkLockFormat(String pPlayer, String command) {
+        // Si le tableau est null alors lock 0 sinon lock 1
+        if (plugin.lock.get(pPlayer + ";" + command) == null) {
             return false;
         } else {
             return true;
         }
     }
 
-    // Vérifie si le cooldown est présent et renvoi vrai, sinon défini le cooldown et renvoi false
-    public static Boolean isSetCooldown(Player pPlayer, String className) {
-        // Si le cooldown est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
-        if (isCooldown(pPlayer.getUniqueId().toString(), String.class.getName())) {
+    // Vérifie si le lock est présent et renvoi vrai, sinon défini le lock et renvoi false
+    public static Boolean isLocked(Player pPlayer, String className) {
+        // Si le lock est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
+        if (checkLockFormat(pPlayer.getUniqueId().toString(), String.class.getName())) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
             return true;
         } else {
-            // On set cooldown
-            plugin.cooldown.put(pPlayer.getUniqueId().toString() + ";" + className, 1);
+            // On set lock
+            plugin.lock.put(pPlayer.getUniqueId().toString() + ";" + className, 1);
             return false;
         }
     }

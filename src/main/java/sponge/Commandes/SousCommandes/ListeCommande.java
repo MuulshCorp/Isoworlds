@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+import static sponge.Utils.IsoworldsUtils.isLocked;
 
 /**
  * Created by Edwin on 10/10/2017.
@@ -39,8 +39,8 @@ public class ListeCommande implements CommandExecutor {
         ArrayList<World> worlds = new ArrayList<World>();
         Boolean check = false;
 
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        if (isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
 
@@ -93,7 +93,7 @@ public class ListeCommande implements CommandExecutor {
                     .onHover(TextActions.showText(Text.of(worldname))).build());
             pPlayer.sendMessage(name);
         }
-        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

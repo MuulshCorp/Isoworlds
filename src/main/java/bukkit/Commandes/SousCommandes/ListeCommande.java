@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static bukkit.Utils.IsoworldsUtils.isSetCooldown;
+import static bukkit.Utils.IsoworldsUtils.isLocked;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -26,8 +26,8 @@ public class ListeCommande {
         ArrayList<World> worlds = new ArrayList<World>();
         Boolean check = false;
 
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        if (isLocked(pPlayer, String.class.getName())) {
             return;
         }
 
@@ -41,7 +41,7 @@ public class ListeCommande {
 
         if (check == true) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania ne repère aucun IsoWorld dans le Royaume Isolonice");
-            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "[Liste des IsoWorlds]");
@@ -67,7 +67,7 @@ public class ListeCommande {
             int loadedChunks = (w.getLoadedChunks().length);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + pname + " [" + status +"] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
         }
-        instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
 
     }

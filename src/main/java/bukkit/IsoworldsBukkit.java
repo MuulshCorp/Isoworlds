@@ -3,6 +3,7 @@ package bukkit;
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
 import bukkit.Utils.IsoworldsUtils;
+import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
     FileConfiguration config = getConfig();
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
     public static Map<String, Integer> lock = new HashMap<String, Integer>();
+    public Cooldown cooldown;
 
     @Override
     public void onEnable() {
@@ -62,6 +64,8 @@ public final class IsoworldsBukkit extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        this.cooldown = new Cooldown(this.database, this.servername);
         this.logger.info("Démarrage des tâches...");
         everyMinutes();
         this.logger.info("IsoWorlds activé !");

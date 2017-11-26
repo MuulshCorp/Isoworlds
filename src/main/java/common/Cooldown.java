@@ -1,6 +1,5 @@
 package common;
 
-import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoworldsUtils;
 import org.spongepowered.api.entity.living.player.Player;
 
@@ -9,13 +8,18 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 
 public class Cooldown implements CooldownType {
-    private static final IsoworldsBukkit instance = IsoworldsBukkit.getInstance();
+    private Mysql database;
+    private String servername;
 
+    public Cooldown(Mysql database, String servername) {
+        this.database = database;
+        this.servername = servername;
+    }
 
     /**
      * Sponge method
      */
-    public static Timestamp getPlayerLastCooldown(Player pPlayer, String type) {
+    public Timestamp getPlayerLastCooldown(Player pPlayer, String type) {
         String uuid_p = sponge.Utils.IsoworldsUtils.PlayerToUUID(pPlayer).toString();
 
         return getPlayerLastCooldown(uuid_p, type);
@@ -24,7 +28,7 @@ public class Cooldown implements CooldownType {
     /**
      * Bukkit method
      */
-    public static Timestamp getPlayerLastCooldown(org.bukkit.entity.Player pPlayer, String type) {
+    public Timestamp getPlayerLastCooldown(org.bukkit.entity.Player pPlayer, String type) {
         String uuid_p = pPlayer.getUniqueId().toString();
 
         return getPlayerLastCooldown(uuid_p, type);
@@ -33,10 +37,10 @@ public class Cooldown implements CooldownType {
     /**
      * Return all the occurences for a given player, type (ex: refonte) with date greater than now
      */
-    private static Timestamp getPlayerLastCooldown(String uuid_p, String type) {
+    private Timestamp getPlayerLastCooldown(String uuid_p, String type) {
         String query = "SELECT * FROM `player_cooldown` WHERE `UUID_P` = ? AND `type` = ? AND `date` > ? AND `server_id` = ?";
         try {
-            PreparedStatement check = instance.database.prepare(query);
+            PreparedStatement check = this.database.prepare(query);
 
             // UUID _P
             check.setString(1, uuid_p);
@@ -49,7 +53,7 @@ public class Cooldown implements CooldownType {
             check.setTimestamp(3, timestamp);
 
             // SERVEUR_ID
-            check.setString(4, instance.servername);
+            check.setString(4, this.servername);
 
             ResultSet resultSet = check.executeQuery();
             IsoworldsUtils.cm(check.toString());
@@ -68,7 +72,7 @@ public class Cooldown implements CooldownType {
     /**
      * Sponge method
      */
-    public static boolean addPlayerCooldown(Player pPlayer, String type, int delay) {
+    public boolean addPlayerCooldown(Player pPlayer, String type, int delay) {
         String uuid_p = sponge.Utils.IsoworldsUtils.PlayerToUUID(pPlayer).toString();
 
         return addPlayerCooldown(uuid_p, type, delay);
@@ -77,17 +81,17 @@ public class Cooldown implements CooldownType {
     /**
      * Bukkit method
      */
-    public static boolean addPlayerCooldown(org.bukkit.entity.Player pPlayer, String type, int delay) {
+    public boolean addPlayerCooldown(org.bukkit.entity.Player pPlayer, String type, int delay) {
         String uuid_p = pPlayer.getUniqueId().toString();
 
         return addPlayerCooldown(uuid_p, type, delay);
     }
 
-    private static boolean addPlayerCooldown(String uuid_p, String type, int delay) {
+    private boolean addPlayerCooldown(String uuid_p, String type, int delay) {
         String query = "INSERT INTO `player_cooldown` (`UUID_P`, `date`, `type`, `server_id`) VALUES (?, ?, ?, ?)";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() + (delay * 1000));
         try {
-            PreparedStatement insert = instance.database.prepare(query);
+            PreparedStatement insert = this.database.prepare(query);
 
             // UUID_P
             insert.setString(1, uuid_p);
@@ -99,7 +103,7 @@ public class Cooldown implements CooldownType {
             insert.setString(3, type);
 
             // SERVEUR_ID
-            insert.setString(4, instance.servername);
+            insert.setString(4, this.servername);
 
             insert.executeUpdate();
         } catch (Exception ex) {
@@ -113,7 +117,7 @@ public class Cooldown implements CooldownType {
     }
 
 
-    public static String getCooldownTimer(Timestamp timestamp) {
+    public String getCooldownTimer(Timestamp timestamp) {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         long cooldown = (timestamp.getTime() - now.getTime()) / 1000;
         IsoworldsUtils.cm(Long.toString(cooldown));
@@ -138,7 +142,7 @@ public class Cooldown implements CooldownType {
         return timer;
     }
 
-    private static String plurializeMessage(int number, String message) {
+    private String plurializeMessage(int number, String message) {
         return number > 1 || number == 0 ? message + "s" : message;
     }
 }

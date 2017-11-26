@@ -1,6 +1,5 @@
 package common;
 
-import bukkit.Utils.IsoworldsUtils;
 import org.spongepowered.api.entity.living.player.Player;
 
 import java.sql.PreparedStatement;
@@ -56,13 +55,11 @@ public class Cooldown implements CooldownType {
             check.setString(4, this.servername);
 
             ResultSet resultSet = check.executeQuery();
-            IsoworldsUtils.cm(check.toString());
             if (resultSet.next()) {
                 return resultSet.getTimestamp("date");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            IsoworldsUtils.cm(Msg.keys.SQL);
         }
 
         return null;
@@ -108,7 +105,6 @@ public class Cooldown implements CooldownType {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            IsoworldsUtils.cm(Msg.keys.SQL);
 
             return false;
         }
@@ -120,7 +116,6 @@ public class Cooldown implements CooldownType {
     public String getCooldownTimer(Timestamp timestamp) {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         long cooldown = (timestamp.getTime() - now.getTime()) / 1000;
-        IsoworldsUtils.cm(Long.toString(cooldown));
         String timer = "";
         int hours = (int) (cooldown / 3600);
         if (hours > 0) {

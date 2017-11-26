@@ -1,5 +1,6 @@
 package sponge.Utils;
 
+import common.Msg;
 import javafx.scene.control.cell.TextFieldListCell;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
@@ -90,7 +91,8 @@ public class IsoWorldInventory {
         List<Text> list4 = new ArrayList<Text>();
         list4.add(Text.of("Rendez-vous sur votre IsoWorld"));
         List<Text> list5 = new ArrayList<Text>();
-        list5.add(Text.of("Gérez la pluie et le beau temps de votre IsoWorld"));
+        list5.add(Text.of("Gérez la pluie et le beau temps"));
+        list5.add(Text.of("de votre IsoWorld"));
         List<Text> list6 = new ArrayList<Text>();
         list6.add(Text.of("Chargez-Déchargez votre IsoWorld"));
         List<Text> list7 = new ArrayList<Text>();
@@ -186,8 +188,10 @@ public class IsoWorldInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
                     clickInventoryEvent.setCancelled(true);
-                    if (menuName.contains("Confiance")) {
-                        IsoworldsUtils.cm("test");
+                    if (menuName.contains("Ajouter")) {
+                        closeOpenMenu(pPlayer, getMenuConfianceAdd(pPlayer));
+                    } else if (menuName.contains("Retirer")) {
+                        closeOpenMenu(pPlayer, getMenuConfianceAdd(pPlayer));
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -213,6 +217,108 @@ public class IsoWorldInventory {
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);
         menu.query(SlotPos.of(8, 0)).set(item3);
+
+        return menu;
+    }
+
+    // CONFIANCE ADD
+    public static Inventory getMenuConfianceAdd(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    String menuName = String.valueOf(clickInventoryEvent.getTransactions()
+                            .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
+                    IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
+                    clickInventoryEvent.setCancelled(true);
+                    // Si joueur, on ajouter le joueur
+                    if (menuName.contains("Joueur")) {
+                        commandMenu(pPlayer, "iw confiance " + menuName);
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
+                    } else if (menuName.contains("Menu principal")) {
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
+                    }
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Ajouter").color(TextColors.GOLD).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(27, 1))
+                .build(instance);
+
+
+
+
+        int i = 0;
+        int j = 0;
+        for (Player p : Sponge.getServer().getOnlinePlayers()) {
+            if (!IsoworldsUtils.trustExists(p, pPlayer.getUniqueId(), Msg.keys.EXISTE_PAS_TRUST)) {
+                List<Text> list1 = new ArrayList<Text>();
+                list1.add(Text.of("Joueur: " + p.getName()));
+                ItemStack item1 = ItemStack.builder().itemType(ItemTypes.SKULL).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Cliquer pour ajouter")
+                        .color(TextColors.GOLD).build())).quantity(1).build();
+                if (i >= 8) {
+                    j = j++;
+                }
+                menu.query(SlotPos.of(i, j)).set(item1);
+            }
+        }
+
+        List<Text> list2 = new ArrayList<Text>();
+        list2.add(Text.of("Menu principal"));
+
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Retirer")
+                .color(TextColors.RED).build())).quantity(1).build();
+        menu.query(SlotPos.of(26, 3)).set(item2);
+
+        return menu;
+    }
+
+    // CONFIANCE REMOVE
+    public static Inventory getMenuConfianceRemove(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    String menuName = String.valueOf(clickInventoryEvent.getTransactions()
+                            .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
+                    IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
+                    clickInventoryEvent.setCancelled(true);
+                    // Si joueur, on ajouter le joueur
+                    if (menuName.contains("Joueur")) {
+                        commandMenu(pPlayer, "iw retirer " + menuName);
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
+                    } else if (menuName.contains("Menu principal")) {
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
+                    }
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Retirer").color(TextColors.GOLD).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(27, 1))
+                .build(instance);
+
+
+
+
+        int i = 0;
+        int j = 0;
+        for (Player p : Sponge.getServer().getOnlinePlayers()) {
+            if (!IsoworldsUtils.trustExists(p, pPlayer.getUniqueId(), Msg.keys.EXISTE_PAS_TRUST)) {
+                List<Text> list1 = new ArrayList<Text>();
+                list1.add(Text.of("Joueur: " + p.getName()));
+                ItemStack item1 = ItemStack.builder().itemType(ItemTypes.SKULL).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Cliquer pour retirer")
+                        .color(TextColors.GOLD).build())).quantity(1).build();
+                if (i >= 8) {
+                    j = j++;
+                }
+                menu.query(SlotPos.of(i, j)).set(item1);
+            }
+        }
+
+        List<Text> list2 = new ArrayList<Text>();
+        list2.add(Text.of("Menu principal"));
+
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Retirer")
+                .color(TextColors.RED).build())).quantity(1).build();
+        menu.query(SlotPos.of(26, 3)).set(item2);
 
         return menu;
     }
@@ -471,7 +577,7 @@ public class IsoWorldInventory {
         }
 
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Gérez l'heure de votre IsoWorld"));
+        list2.add(Text.of("Téléportez-vous sur un IsoWorld."));
 
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();

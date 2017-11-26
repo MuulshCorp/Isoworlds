@@ -191,7 +191,7 @@ public class IsoWorldInventory {
                     if (menuName.contains("Ajouter")) {
                         closeOpenMenu(pPlayer, getMenuConfianceAdd(pPlayer));
                     } else if (menuName.contains("Retirer")) {
-                        closeOpenMenu(pPlayer, getMenuConfianceAdd(pPlayer));
+                        closeOpenMenu(pPlayer, getMenuConfianceRemove(pPlayer));
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -244,9 +244,6 @@ public class IsoWorldInventory {
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(27, 1))
                 .build(instance);
 
-
-
-
         int i = 0;
         int j = 0;
         for (Player p : Sponge.getServer().getOnlinePlayers()) {
@@ -295,13 +292,10 @@ public class IsoWorldInventory {
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(27, 1))
                 .build(instance);
 
-
-
-
         int i = 0;
         int j = 0;
         for (Player p : Sponge.getServer().getOnlinePlayers()) {
-            if (!IsoworldsUtils.trustExists(p, pPlayer.getUniqueId(), Msg.keys.EXISTE_PAS_TRUST)) {
+            if (IsoworldsUtils.trustExists(p, pPlayer.getUniqueId(), Msg.keys.EXISTE_PAS_TRUST)) {
                 List<Text> list1 = new ArrayList<Text>();
                 list1.add(Text.of("Joueur: " + p.getName()));
                 ItemStack item1 = ItemStack.builder().itemType(ItemTypes.SKULL).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Cliquer pour retirer")

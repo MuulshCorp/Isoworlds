@@ -1,5 +1,6 @@
 package sponge.Utils;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
@@ -39,7 +40,7 @@ public class IsoWorldsTasks implements Consumer<Task> {
         } else if (file.exists()) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-
+            Sponge.getCommandManager().process(pPlayer, "iw h");
             task.cancel();
         }
     }

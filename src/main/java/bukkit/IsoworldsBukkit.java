@@ -2,7 +2,6 @@ package bukkit;
 
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
-import bukkit.Utils.IsoWorldsInventory;
 import bukkit.Utils.IsoworldsUtils;
 import common.ManageFiles;
 import common.Msg;
@@ -26,7 +25,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
     public String servername;
     FileConfiguration config = getConfig();
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
-    public static Map<String, Integer> cooldown = new HashMap<String, Integer>();
+    public static Map<String, Integer> lock = new HashMap<String, Integer>();
 
     @Override
     public void onEnable() {
@@ -38,7 +37,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
 
         // Purge map
         worlds.clear();
-        cooldown.clear();
+        lock.clear();
 
         Bukkit.getServer().getPluginManager().registerEvents(new IsoworldsListeners(), this);
 

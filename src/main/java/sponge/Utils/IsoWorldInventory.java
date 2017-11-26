@@ -41,7 +41,6 @@ public class IsoWorldInventory {
                     // Code event
                     clickInventoryEvent.setCancelled(true);
                     IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
-
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     // MENU PRINCIPAL //
                     // BIOME

@@ -23,7 +23,7 @@ import org.spongepowered.api.world.storage.WorldProperties;
 import java.io.*;
 import java.util.NoSuchElementException;
 
-import static sponge.Utils.IsoworldsUtils.isSetCooldown;
+import static sponge.Utils.IsoworldsUtils.isLocked;
 
 /**
  * Created by Edwin on 05/10/2017.
@@ -44,8 +44,8 @@ public class CreationCommande implements CommandExecutor {
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         IsoworldsUtils.cm("IsoWorld name: " + worldname);
 
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        if (isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
 
@@ -53,13 +53,13 @@ public class CreationCommande implements CommandExecutor {
         if (IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
         // Check si le monde existe déjà
         if (Sponge.getServer().getWorldProperties(worldname).isPresent()) {
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -71,7 +71,7 @@ public class CreationCommande implements CommandExecutor {
         } catch (IOException ie) {
             ie.printStackTrace();
             IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -111,10 +111,10 @@ public class CreationCommande implements CommandExecutor {
         } catch (IOException | NoSuchElementException ie) {
             ie.printStackTrace();
             IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
-            plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
-        plugin.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

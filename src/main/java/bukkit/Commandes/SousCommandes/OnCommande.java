@@ -9,7 +9,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static bukkit.Utils.IsoworldsUtils.isSetCooldown;
+import static bukkit.Utils.IsoworldsUtils.isLocked;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -25,21 +25,21 @@ public class OnCommande {
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         IsoworldsUtils.cm("check");
 
-        // Si la méthode renvoi vrai alors on return car le cooldown est défini, sinon elle le set auto
-        if (isSetCooldown(pPlayer, String.class.getName())) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        if (isLocked(pPlayer, String.class.getName())) {
             return;
         }
 
         if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // Import / Export
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
-            // Suppression cooldown
-            instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            // Suppression lock
+            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -50,7 +50,7 @@ public class OnCommande {
         }
 
         IsoworldsUtils.cm("finished");
-        instance.cooldown.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
     }
 }

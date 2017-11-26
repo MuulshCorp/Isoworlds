@@ -1,7 +1,5 @@
 package common;
 
-import org.bukkit.ChatColor;
-
 /**
  * Created by Edwin on 24/10/2017.
  */
@@ -65,8 +63,6 @@ public class Msg {
                 = "[Erreur 2]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
         String DATA
                 = "[Erreur 3]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
-        String BASE_MESSAGE
-                = ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA;
         String UNAVAILABLE_COMMAND = "Sijania > Mon énergie doit se recharger..., vous pourrez retenter dans";
 
     }

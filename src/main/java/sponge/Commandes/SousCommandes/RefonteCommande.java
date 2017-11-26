@@ -48,7 +48,8 @@ public class RefonteCommande implements CommandExecutor {
         Timestamp cooldown = plugin.cooldown.getPlayerLastCooldown(pPlayer, Cooldown.REFONTE);
         if (cooldown != null) {
             String timerMessage = plugin.cooldown.getCooldownTimer(cooldown);
-            pPlayer.sendMessage(Text.of(Text.builder(Msg.keys.BASE_MESSAGE + Msg.keys.UNAVAILABLE_COMMAND + timerMessage)));
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.UNAVAILABLE_COMMAND + timerMessage).color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
@@ -117,6 +118,7 @@ public class RefonteCommande implements CommandExecutor {
             }
         } catch (InterruptedException | ExecutionException ie) {
             ie.printStackTrace();
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         }
 
 

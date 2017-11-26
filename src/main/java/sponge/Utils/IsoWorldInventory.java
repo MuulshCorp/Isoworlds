@@ -495,10 +495,10 @@ public class IsoWorldInventory {
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Jour")) {
                         Sponge.getCommandManager().process(pPlayer, "iw temps jour");
-                        pPlayer.closeInventory();
+                        pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                     } else if (menuName.contains("Nuit")) {
                         Sponge.getCommandManager().process(pPlayer, "iw temps nuit");
-                        pPlayer.closeInventory();
+                        pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                     }
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Temps").color(TextColors.GOLD).build())))
@@ -529,8 +529,8 @@ public class IsoWorldInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory();
-                pPlayer.openInventory(inv);
+                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
+                pPlayer.openInventory(inv, Cause.of(NamedCause.simulated(pPlayer)));
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)
@@ -541,7 +541,7 @@ public class IsoWorldInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory();
+                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)

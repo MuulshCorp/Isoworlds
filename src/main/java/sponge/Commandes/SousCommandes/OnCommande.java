@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import common.Msg;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
 
@@ -45,6 +46,14 @@ public class OnCommande implements CommandExecutor {
         // Import / Export
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
             // Suppression lock
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
+
+        // Si isoworld déjà chargé
+        if (Sponge.getServer().getWorld(worldname).isPresent()) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Sijania indique que votre IsoWorld est déjà chargé.").color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }

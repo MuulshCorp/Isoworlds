@@ -8,6 +8,8 @@ import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
 import org.spongepowered.api.data.manipulator.mutable.SkullData;
 import org.spongepowered.api.data.type.SkullTypes;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -338,7 +340,7 @@ public class IsoWorldInventory {
 
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
-        menu.query(SlotPos.of(26, 3)).set(item2);
+        menu.query(SlotPos.of(25, 2)).set(item2);
 
         return menu;
     }
@@ -379,8 +381,8 @@ public class IsoWorldInventory {
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
                 .color(TextColors.GOLD).build())).quantity(1).build();
 
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
-                .color(TextColors.RED).build())).quantity(1).build();
+            ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+                    .color(TextColors.RED).build())).quantity(1).build();
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);
         menu.query(SlotPos.of(8, 0)).set(item3);
@@ -444,7 +446,7 @@ public class IsoWorldInventory {
                     } else if (menuName.contains("Pluie")) {
                         mtype = "pluie";
                     } else if (menuName.contains("Orage")) {
-                        mtype = "orage";
+                        mtype = "storm";
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -618,10 +620,10 @@ public class IsoWorldInventory {
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Jour")) {
                         Sponge.getCommandManager().process(pPlayer, "iw temps jour " + pPlayer.getUniqueId().toString() + "-IsoWorld");
-                        pPlayer.closeInventory();
+                        pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                     } else if (menuName.contains("Nuit")) {
                         Sponge.getCommandManager().process(pPlayer, "iw temps nuit " + pPlayer.getUniqueId().toString() + "-IsoWorld");
-                        pPlayer.closeInventory();
+                        pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                     }
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Temps").color(TextColors.GOLD).build())))
@@ -652,8 +654,8 @@ public class IsoWorldInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory();
-                pPlayer.openInventory(inv);
+                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
+                pPlayer.openInventory(inv, Cause.of(NamedCause.simulated(pPlayer)));
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)
@@ -664,7 +666,7 @@ public class IsoWorldInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory();
+                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)

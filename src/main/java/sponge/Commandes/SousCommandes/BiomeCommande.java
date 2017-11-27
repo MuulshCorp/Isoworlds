@@ -1,14 +1,9 @@
 package sponge.Commandes.SousCommandes;
 
-import common.Msg;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -58,15 +53,12 @@ public class BiomeCommande implements CommandCallable {
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
-        //Get chunk
-        int ChunkX = pPlayer.getLocation().getBlockPosition().getX();
-        int ChunkY = pPlayer.getLocation().getBlockPosition().getY();
         // Définition biome
-        Optional<Chunk> chunk = world.getChunk(ChunkX, 0, ChunkY);
+        Location loc = pPlayer.getLocation();
         for (int x = 0; x < 16; x++) {
             IsoworldsUtils.cm("TEST 3");
             for (int z = 0; z < 16; z++) {
-                chunk.get().setBiome(x, 0, z, biome);
+                loc.getExtent().setBiome(loc.getChunkPosition().getX() * 16 + x, 0, loc.getChunkPosition().getY() * 16 + x, biome);
                 IsoworldsUtils.cm("TEST4");
             }
         }

@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoworldsUtils;
+import common.Cooldown;
 import common.Msg;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -27,6 +28,12 @@ public class BiomeCommande {
         IsoworldsUtils.cm("check");
         Integer len = args.length;
         Biome biome;
+
+        //If the method return true then the command is in lock
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
+            return;
+        }
+
 
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
@@ -73,6 +80,6 @@ public class BiomeCommande {
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce biome n'existe pas.");
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-        return;
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
     }
 }

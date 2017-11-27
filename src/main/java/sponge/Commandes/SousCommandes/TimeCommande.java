@@ -4,6 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 09/11/2017.
  */
 
+import common.Cooldown;
 import common.Msg;
 import org.spongepowered.api.text.action.TextActions;
 import sponge.IsoworldsSponge;
@@ -38,6 +39,11 @@ public class TimeCommande implements CommandCallable {
         String worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
         String[] arg = args.split(" ");
         int size = arg.length;
+
+        //If the method return true then the command is in lock
+        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
+            return CommandResult.success();
+        }
 
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
@@ -92,8 +98,8 @@ public class TimeCommande implements CommandCallable {
 
             pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-            return CommandResult.success();
 
+            return CommandResult.success();
         } else if (size == 2) {
             if (arg[0].equals("jour") || arg[0].equals("day")) {
                 Sponge.getServer().getWorld(arg[1]).get().getProperties().setWorldTime(0);
@@ -102,9 +108,13 @@ public class TimeCommande implements CommandCallable {
             }
         } else {
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+
             return CommandResult.success();
         }
+
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);
+
         return CommandResult.success();
     }
 

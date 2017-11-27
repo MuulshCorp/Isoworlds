@@ -1,8 +1,8 @@
 package common;
 
 public interface CooldownType {
-    String BIOMECOMMANDE = "biome";
-    int BIOMECOMMANDE_DELAY = 86400;
+    String BIOME = "biome";
+    int BIOME_DELAY = 10;
 
     String CONFIANCE = "confiance";
     int CONFIANCE_DELAY = 86400;
@@ -17,7 +17,7 @@ public interface CooldownType {
     int MAISON_DELAY = 86400;
 
     String METEO = "meteo";
-    int METEO_DELAY = 86400;
+    int METEO_DELAY = 10;
 
     String OFF = "off";
     int OFF_DELAY = 86400;
@@ -35,5 +35,5 @@ public interface CooldownType {
     int TELEPORT_DELAY = 86400;
 
     String TIME = "time";
-    int TIME_DELAY = 86400;
+    int TIME_DELAY = 10;
 }

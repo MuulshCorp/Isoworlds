@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IsoworldsBukkit;
 
+import common.Cooldown;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,9 +22,15 @@ public class TimeCommande {
 
     public static void Time(CommandSender sender, String[] args) {
 
+        instance = IsoworldsBukkit.getInstance();
         int num;
         Player pPlayer = (Player) sender;
         Integer len = args.length;
+
+        //If the method return true then the command is in lock
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
+            return;
+        }
 
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
@@ -67,7 +74,7 @@ public class TimeCommande {
                 return;
             }
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-            return;
+            instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);
         }
     }
 }

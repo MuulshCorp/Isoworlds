@@ -30,12 +30,10 @@ public class MeteoCommande {
         Integer len = args.length;
 
         //If the method return true then the command is in lock
-        Timestamp cooldown = instance.cooldown.getPlayerLastCooldown(pPlayer, Cooldown.REFONTE);
-        if (cooldown != null) {
-            String timerMessage = instance.cooldown.getCooldownTimer(cooldown);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]" + ChatColor.AQUA + Msg.keys.UNAVAILABLE_COMMAND);
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.METEO)) {
             return;
         }
+
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
             return;
@@ -80,6 +78,6 @@ public class MeteoCommande {
             }
         }
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-        return;
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
     }
 }

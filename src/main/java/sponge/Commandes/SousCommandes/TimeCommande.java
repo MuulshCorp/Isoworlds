@@ -44,9 +44,18 @@ public class TimeCommande implements CommandCallable {
             return CommandResult.success();
         }
 
+        // Check if world exists
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
+
+        // Check if is world is loaded
+        if (!Sponge.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").get().isLoaded()) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Sijania indique que votre IsoWorld doit être chargé pour en changer le temps.").color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }

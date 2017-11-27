@@ -145,10 +145,10 @@ public class IsoWorldInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Plaines")) {
-                        //Sponge.getCommandManager().process(pPlayer, "iw biome plaines");
+                        commandMenu(pPlayer, "iw biome plaines");
                         closeMenu(pPlayer);;
                     } else if (menuName.contains("Désert")) {
-                        //Sponge.getCommandManager().process(pPlayer, "iw biome desert");
+                        commandMenu(pPlayer, "iw biome desert");
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
@@ -169,7 +169,7 @@ public class IsoWorldInventory {
 
         ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Plaines")
                 .color(TextColors.GOLD).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Désert")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.SAND).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Désert")
                 .color(TextColors.GOLD).build())).quantity(1).build();
         ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();

@@ -54,6 +54,7 @@ public class MaisonCommande implements CommandExecutor {
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
             // Suppression lock
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT");
             return CommandResult.success();
         }
 

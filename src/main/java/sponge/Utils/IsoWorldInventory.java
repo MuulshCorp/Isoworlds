@@ -1,15 +1,14 @@
 package sponge.Utils;
 
 import common.Msg;
-import javafx.scene.control.cell.TextFieldListCell;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
 import org.spongepowered.api.data.manipulator.mutable.SkullData;
 import org.spongepowered.api.data.type.SkullTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -23,6 +22,8 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.storage.WorldProperties;
+import sponge.Locations.IsoworldsLocations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -249,7 +250,7 @@ public class IsoWorldInventory {
                     }
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Ajouter").color(TextColors.GOLD).build())))
-                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(27, 1))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                 .build(instance);
 
         int i = 0;
@@ -279,9 +280,9 @@ public class IsoWorldInventory {
         List<Text> list2 = new ArrayList<Text>();
         list2.add(Text.of("Menu principal"));
 
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2  ).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
-        menu.query(SlotPos.of(26, 3)).set(item2);
+        menu.query(SlotPos.of(8, 3)).set(item2);
 
         return menu;
     }
@@ -308,7 +309,7 @@ public class IsoWorldInventory {
                     }
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Retirer").color(TextColors.GOLD).build())))
-                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(27, 1))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                 .build(instance);
 
         int i = 0;
@@ -340,7 +341,7 @@ public class IsoWorldInventory {
 
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
-        menu.query(SlotPos.of(25, 2)).set(item2);
+        menu.query(SlotPos.of(8, 3)).set(item2);
 
         return menu;
     }
@@ -535,6 +536,8 @@ public class IsoWorldInventory {
                     } else if (menuName.contains("Désactiver")) {
                         commandMenu(pPlayer, "iw off");
                         closeMenu(pPlayer);
+                    } else if (menuName.contains("Menu principal")) {
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Activation").color(TextColors.GOLD).build())))
@@ -570,26 +573,32 @@ public class IsoWorldInventory {
                 .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
                     // Code event
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
-                            .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
+                            .get(0).getOriginal().get(Keys.ITEM_LORE).get().toString());
                     clickInventoryEvent.setCancelled(true);
-                    commandMenu(pPlayer, "iw off");
-                    closeMenu(pPlayer);
+                    if (menuName.contains("IsoWorld")) {
+                        teleportMenu(pPlayer, menuName);
+                        closeMenu(pPlayer);
+                    } else if (menuName.contains("Menu principal")) {
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
+                    }
 
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Téléporation").color(TextColors.GOLD).build())))
-                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(27, 1))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                 .build(instance);
 
         int i = 0;
         int j = 0;
         for (World w : Sponge.getServer().getWorlds()) {
-            if (w.getName().contains("-IsoWorld")) {
+            if (w.getName().contains("-IsoWorld") & w.isLoaded()) {
                 String[] split = w.getName().split("-IsoWorld");
                 UUID uuid = UUID.fromString(split[0]);
                 String name = Sponge.getServer().getPlayer(uuid).get().getName();
                 List<Text> list1 = new ArrayList<Text>();
                 list1.add(Text.of(w.getName()));
-                ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome")
+                WorldProperties worldProperties = Sponge.getServer().getWorldProperties(w.getName()).get();
+                String id = worldProperties.getAdditionalProperties().getInt(DataQuery.of("SpongeData", "dimensionId")).get().toString();
+                ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("IsoWorld: ID " + id)
                         .color(TextColors.GOLD).build())).quantity(1).build();
                 if (i >= 8) {
                     j = j++;
@@ -603,7 +612,7 @@ public class IsoWorldInventory {
 
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
-        menu.query(SlotPos.of(26, 3)).set(item2);
+        menu.query(SlotPos.of(8, 3)).set(item2);
 
         return menu;
     }
@@ -619,11 +628,13 @@ public class IsoWorldInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Jour")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw temps jour " + pPlayer.getUniqueId().toString() + "-IsoWorld");
-                        pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
+                        commandMenu(pPlayer, "iw temps jour " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        pPlayer.closeInventory();
                     } else if (menuName.contains("Nuit")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw temps nuit " + pPlayer.getUniqueId().toString() + "-IsoWorld");
-                        pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
+                        commandMenu(pPlayer, "iw temps nuit " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        pPlayer.closeInventory();
+                    } else if (menuName.contains("Menu principal")) {
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Temps").color(TextColors.GOLD).build())))
@@ -654,8 +665,8 @@ public class IsoWorldInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
-                pPlayer.openInventory(inv, Cause.of(NamedCause.simulated(pPlayer)));
+                pPlayer.closeInventory();
+                pPlayer.openInventory(inv);
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)
@@ -666,7 +677,8 @@ public class IsoWorldInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
+                pPlayer.closeInventory();
+                pPlayer.openInventory(menuPrincipal(pPlayer));
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)
@@ -682,5 +694,16 @@ public class IsoWorldInventory {
         })
                 .delay(10, TimeUnit.MILLISECONDS)
                 .name("Execute une commande pour le joueur.").submit(instance);
+    }
+
+    private static void teleportMenu(Player pPlayer, String cmd) {
+        Task.builder().execute(new Runnable() {
+            @Override
+            public void run() {
+                IsoworldsLocations.teleport(pPlayer, cmd);
+            }
+        })
+                .delay(10, TimeUnit.MILLISECONDS)
+                .name("Téléporte le joueur dans un isoworld.").submit(instance);
     }
 }

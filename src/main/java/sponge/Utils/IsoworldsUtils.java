@@ -2,6 +2,7 @@ package sponge.Utils;
 
 import common.ManageFiles;
 import common.Msg;
+import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.scheduler.Task;
 import sponge.IsoworldsSponge;
 
@@ -351,11 +352,27 @@ public class IsoworldsUtils {
         }
     }
 
-        // Import Export
+    // Vérifie si le lock est présent et renvoi vrai, sinon défini le lock et renvoi false
+    public static Boolean isLockedIMPORT(Player pPlayer, String className) {
+        // Si le lock est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
+        if (checkLockFormat(pPlayer.getUniqueId().toString(), "lockIMPORT")) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que vous devez patienter le temps de l'import de votre IsoWorld.").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+            return true;
+        } else {
+            // On set lock
+            plugin.lock.put(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT", 1);
+            return false;
+        }
+    }
+
+    // Import Export
 
     public static Boolean ieWorld(Player pPlayer, String worldname) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         Integer limit = 0;
         // Vérification si monde en statut pushed
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (IsoworldsUtils.iworldPushed(worldname, Msg.keys.SQL)) {
             IsoworldsUtils.cm("Debug 6");
             // Création des chemins pour vérification

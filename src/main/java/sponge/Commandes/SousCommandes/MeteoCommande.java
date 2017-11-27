@@ -45,9 +45,19 @@ public class MeteoCommande implements CommandCallable {
             return CommandResult.success();
         }
 
+        // Check if world exists
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
+
+        // Check if is in isoworld
+        if (!pPlayer.getLocation().getExtent().getName().equals(worldname)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Sijania indique que vous devez être présent dans votre monde pour changer de biome.").color(TextColors.AQUA))).build()));
+            // Suppression lock
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
@@ -187,7 +197,7 @@ public class MeteoCommande implements CommandCallable {
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));
             } else if (arg[0].equals("pluie") || arg[0].equals("rain")) {
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.RAIN, parseInt(arg[1]));
-            } else if (arg[0].equals("deluge") || arg[0].equals("storm")) {
+            } else if (arg[0].equals("orage") || arg[0].equals("storm")) {
                 Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.THUNDER_STORM, parseInt(arg[1]));
             }
             // Message pour tous les joueurs

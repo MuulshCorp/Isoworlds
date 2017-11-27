@@ -121,7 +121,7 @@ public class RefonteCommande {
         if (!instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY)) {
             IsoworldsUtils.cm(Msg.keys.SQL);
         }
-        CreationCommande.Creation(newSender, args);
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        CreationCommande.Creation(newSender, args);
     }
 }

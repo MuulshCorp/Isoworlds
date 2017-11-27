@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import common.Msg;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -10,6 +11,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Chunk;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -41,14 +43,16 @@ public class BiomeCommande implements CommandCallable {
         int size = arg.length;
         BiomeType biome;
 
+        IsoworldsUtils.cm(arg[0]);
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
 
-        if (arg[0] == "plaines") {
+        if (arg[0].equals("plaines")) {
+            IsoworldsUtils.cm("TEST2");
             biome = BiomeTypes.PLAINS;
-        } else if (arg[0] == "desert") {
+        } else if (arg[0].equals("desert")) {
             biome = BiomeTypes.DESERT;
         } else {
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
@@ -60,11 +64,15 @@ public class BiomeCommande implements CommandCallable {
         // Définition biome
         Optional<Chunk> chunk = world.getChunk(ChunkX, 0, ChunkY);
         for (int x = 0; x < 16; x++) {
+            IsoworldsUtils.cm("TEST 3");
             for (int z = 0; z < 16; z++) {
                 chunk.get().setBiome(x, 0, z, biome);
+                IsoworldsUtils.cm("TEST4");
             }
         }
-        //pPlayer.sendMessage("[IsoWorlds]: " + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
+        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                .append(Text.of(Text.builder("Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)").color(TextColors.RED))).build()));
+
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }

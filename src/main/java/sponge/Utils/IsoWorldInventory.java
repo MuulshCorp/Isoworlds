@@ -340,7 +340,7 @@ public class IsoWorldInventory {
 
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
-        menu.query(SlotPos.of(26, 3)).set(item2);
+        menu.query(SlotPos.of(25, 2)).set(item2);
 
         return menu;
     }
@@ -381,8 +381,8 @@ public class IsoWorldInventory {
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
                 .color(TextColors.GOLD).build())).quantity(1).build();
 
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
-                .color(TextColors.RED).build())).quantity(1).build();
+            ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+                    .color(TextColors.RED).build())).quantity(1).build();
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);
         menu.query(SlotPos.of(8, 0)).set(item3);
@@ -444,9 +444,9 @@ public class IsoWorldInventory {
                     if (menuName.contains("Soleil")) {
                         mtype = "soleil";
                     } else if (menuName.contains("Pluie")) {
-                        mtype = "soleil";
+                        mtype = "pluie";
                     } else if (menuName.contains("Orage")) {
-                        mtype = "soleil";
+                        mtype = "storm";
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }

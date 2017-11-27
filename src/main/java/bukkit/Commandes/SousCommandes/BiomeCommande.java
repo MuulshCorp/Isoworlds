@@ -26,6 +26,7 @@ public class BiomeCommande {
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         IsoworldsUtils.cm("check");
         Integer len = args.length;
+        Biome biome;
 
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
@@ -45,22 +46,29 @@ public class BiomeCommande {
         }
         // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
         // si le biome indiqué existe et on l'applique
+        if (args[0].equals("plaines")) {
+            IsoworldsUtils.cm("TEST2");
+            biome = Biome.PLAINS;
+        } else if (args[0].equals("desert")) {
+            biome = Biome.DESERT;
+        } else {
+            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return;
+        }
+
         Chunk chunk = pPlayer.getLocation().getChunk();
         IsoworldsUtils.cm("Biomes" + Biome.values().toString());
-        for (Biome b : Biome.values()) {
-            if (b.name().contains(args[1])) {
-                for (int x = 0; x < 16; x++) {
-                    for (int z = 0; z < 16; z++) {
-                        if (chunk.getBlock(x, 0, z).getBiome() != b) {
-                            final Block block = chunk.getBlock(x, 0, z);
-                            block.setBiome(b);
-                        }
-                    }
+        for (int x = 0; x < 16; x++) {
+            IsoworldsUtils.cm("TEST 3");
+            for (int z = 0; z < 16; z++) {
+                if (chunk.getBlock(x, 0, z).getBiome() != biome) {
+                    final Block block = chunk.getBlock(x, 0, z);
+                    block.setBiome(biome);
                 }
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
-                instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-                return;
             }
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
+            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return;
         }
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce biome n'existe pas.");

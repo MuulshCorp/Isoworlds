@@ -1,19 +1,68 @@
 package common;
 
+import bukkit.IsoworldsBukkit;
+import org.bukkit.ChatColor;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
+import sponge.IsoworldsSponge;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
 public class Cooldown implements CooldownType {
+    private final Logger logger;
     private Mysql database;
     private String servername;
+    private String type;
 
-    public Cooldown(Mysql database, String servername) {
+    public Cooldown(Mysql database, String servername, String type, Logger logger) {
         this.database = database;
         this.servername = servername;
+        this.type = type;
+        this.logger = logger;
     }
+
+    public boolean isSponge() {
+        return this.type.equals("sponge");
+    }
+
+
+    /**
+     * Sponge method
+     */
+    public boolean isAvailable(Player pPlayer, String type) {
+        Timestamp cooldown = this.getPlayerLastCooldown(pPlayer, type);
+        if (cooldown != null) {
+            String timerMessage = this.getCooldownTimer(cooldown);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.UNAVAILABLE_COMMAND + timerMessage).color(TextColors.AQUA))).build()));
+
+            IsoworldsSponge.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Bukkit method
+     */
+    public boolean isAvailable(org.bukkit.entity.Player pPlayer, String type) {
+        Timestamp cooldown = this.getPlayerLastCooldown(pPlayer, type);
+        if (cooldown != null) {
+            String timerMessage = this.getCooldownTimer(cooldown);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.UNAVAILABLE_COMMAND + timerMessage);
+            IsoworldsBukkit.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+
+            return false;
+        }
+
+        return true;
+    }
+
 
     /**
      * Sponge method
@@ -27,7 +76,7 @@ public class Cooldown implements CooldownType {
     /**
      * Bukkit method
      */
-    public Timestamp getPlayerLastCooldown(org.bukkit.entity.Player pPlayer, String type) {
+    private Timestamp getPlayerLastCooldown(org.bukkit.entity.Player pPlayer, String type) {
         String uuid_p = pPlayer.getUniqueId().toString();
 
         return getPlayerLastCooldown(uuid_p, type);
@@ -60,6 +109,7 @@ public class Cooldown implements CooldownType {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            this.logger.log(Msg.keys.SQL);
         }
 
         return null;
@@ -69,22 +119,20 @@ public class Cooldown implements CooldownType {
     /**
      * Sponge method
      */
-    public boolean addPlayerCooldown(Player pPlayer, String type, int delay) {
+    public void addPlayerCooldown(Player pPlayer, String type, int delay) {
         String uuid_p = sponge.Utils.IsoworldsUtils.PlayerToUUID(pPlayer).toString();
-
-        return addPlayerCooldown(uuid_p, type, delay);
+        addPlayerCooldown(uuid_p, type, delay);
     }
 
     /**
      * Bukkit method
      */
-    public boolean addPlayerCooldown(org.bukkit.entity.Player pPlayer, String type, int delay) {
+    public void addPlayerCooldown(org.bukkit.entity.Player pPlayer, String type, int delay) {
         String uuid_p = pPlayer.getUniqueId().toString();
-
-        return addPlayerCooldown(uuid_p, type, delay);
+        addPlayerCooldown(uuid_p, type, delay);
     }
 
-    private boolean addPlayerCooldown(String uuid_p, String type, int delay) {
+    private void addPlayerCooldown(String uuid_p, String type, int delay) {
         String query = "INSERT INTO `player_cooldown` (`UUID_P`, `date`, `type`, `server_id`) VALUES (?, ?, ?, ?)";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() + (delay * 1000));
         try {
@@ -105,15 +153,12 @@ public class Cooldown implements CooldownType {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-
-            return false;
+            this.logger.log(Msg.keys.SQL);
         }
-
-        return true;
     }
 
 
-    public String getCooldownTimer(Timestamp timestamp) {
+    private String getCooldownTimer(Timestamp timestamp) {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         long cooldown = (timestamp.getTime() - now.getTime()) / 1000;
         String timer = "";

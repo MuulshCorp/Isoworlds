@@ -43,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class IsoworldsSponge {
 
     public static IsoworldsSponge instance;
+    public final common.Logger commonLogger;
     private Logger logger;
     private Game game;
     public String servername;
@@ -62,6 +63,7 @@ public class IsoworldsSponge {
     @Inject
     public IsoworldsSponge(Logger logger, Game game) {
         this.logger = logger;
+        this.commonLogger = new common.Logger("sponge");
         this.game = game;
         instance = this;
     }
@@ -183,7 +185,7 @@ public class IsoworldsSponge {
             return;
         }
         this.logger.info("IsoWorlds connecté avec succès à la base de données !");
-        this.cooldown = new Cooldown(this.database, this.servername);
+        this.cooldown = new Cooldown(this.database, this.servername, "sponge", this.commonLogger);
         everyMinutes();
 
 

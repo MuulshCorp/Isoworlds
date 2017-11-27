@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IsoworldsBukkit;
 
+import common.Cooldown;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,6 +10,8 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import bukkit.Utils.IsoworldsUtils;
+
+import java.sql.Timestamp;
 
 import static bukkit.Utils.IsoworldsUtils.isLocked;
 
@@ -25,6 +28,11 @@ public class MeteoCommande {
         int num;
         Player pPlayer = (Player) sender;
         Integer len = args.length;
+
+        //If the method return true then the command is in lock
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.METEO)) {
+            return;
+        }
 
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
@@ -70,6 +78,6 @@ public class MeteoCommande {
             }
         }
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-        return;
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
     }
 }

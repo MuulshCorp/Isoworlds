@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import common.Cooldown;
 import common.Msg;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -40,6 +41,12 @@ public class BiomeCommande implements CommandCallable {
         BiomeType biome;
 
         IsoworldsUtils.cm(arg[0]);
+
+        //If the method return true then the command is in lock
+        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
+            return CommandResult.success();
+        }
+
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();
@@ -67,6 +74,8 @@ public class BiomeCommande implements CommandCallable {
                 .append(Text.of(Text.builder("Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9 ou F3 + G)").color(TextColors.AQUA))).build()));
 
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
+
         return CommandResult.success();
     }
 

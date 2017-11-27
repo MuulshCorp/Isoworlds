@@ -4,6 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 14/10/2017.
  */
 
+import common.Cooldown;
 import common.Msg;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.world.weather.Weathers;
@@ -39,6 +40,11 @@ public class MeteoCommande implements CommandCallable {
         String worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
         String[] arg = args.split(" ");
         int size = arg.length;
+
+        //If the method return true then the command is in lock
+        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.METEO)) {
+            return CommandResult.success();
+        }
 
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
@@ -199,7 +205,10 @@ public class MeteoCommande implements CommandCallable {
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
+
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
+
         return CommandResult.success();
     }
 

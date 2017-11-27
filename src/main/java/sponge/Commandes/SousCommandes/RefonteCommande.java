@@ -45,12 +45,7 @@ public class RefonteCommande implements CommandExecutor {
         Player pPlayer = (Player) source;
 
         //If the method return true then the command is in lock
-        Timestamp cooldown = plugin.cooldown.getPlayerLastCooldown(pPlayer, Cooldown.REFONTE);
-        if (cooldown != null) {
-            String timerMessage = plugin.cooldown.getCooldownTimer(cooldown);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.UNAVAILABLE_COMMAND + timerMessage).color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.REFONTE)) {
             return CommandResult.success();
         }
 
@@ -132,12 +127,12 @@ public class RefonteCommande implements CommandExecutor {
 
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_REFONTE).color(TextColors.AQUA))).build()));
-        if (!plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY)) {
-            bukkit.Utils.IsoworldsUtils.cm(Msg.keys.SQL);
-        }
 
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY);
+
         Sponge.getCommandManager().process(pPlayer, "iw creation");
+
         return CommandResult.success();
     }
 

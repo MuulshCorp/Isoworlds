@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import common.Msg;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -58,12 +59,12 @@ public class BiomeCommande implements CommandCallable {
         for (int x = 0; x < 16; x++) {
             IsoworldsUtils.cm("TEST 3");
             for (int z = 0; z < 16; z++) {
-                loc.getExtent().setBiome(loc.getChunkPosition().getX() * 16 + x, 0, loc.getChunkPosition().getY() * 16 + x, biome);
+                loc.getExtent().setBiome(loc.getChunkPosition().getX() * 16 + x, 0, loc.getChunkPosition().getY() * 16 + z, biome);
                 IsoworldsUtils.cm("TEST4");
             }
         }
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)").color(TextColors.RED))).build()));
+                .append(Text.of(Text.builder("Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9 ou F3 + G)").color(TextColors.AQUA))).build()));
 
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();

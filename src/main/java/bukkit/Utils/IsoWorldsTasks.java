@@ -31,7 +31,6 @@ public class IsoWorldsTasks extends BukkitRunnable {
             cancel();
         } else if (file.exists()) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de terminer son travail, l'IsoWorld est disponible !");
-            pPlayer.performCommand("iw h");
             cancel();
         }
     }

@@ -136,8 +136,8 @@ public class RefonteCommande implements CommandExecutor {
             bukkit.Utils.IsoworldsUtils.cm(Msg.keys.SQL);
         }
 
-        Sponge.getCommandManager().process(pPlayer, "iw creation");
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        Sponge.getCommandManager().process(pPlayer, "iw creation");
         return CommandResult.success();
     }
 

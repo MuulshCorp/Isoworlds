@@ -628,11 +628,11 @@ public class IsoWorldInventory {
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Jour")) {
                         commandMenu(pPlayer, "iw temps jour " + pPlayer.getUniqueId().toString() + "-IsoWorld");
-                        pPlayer.closeInventory();
+                       closeMenu(pPlayer);
                     } else if (menuName.contains("Nuit")) {
                         commandMenu(pPlayer, "iw temps nuit " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                         pPlayer.closeInventory();
-                    } else if (menuName.contains("Menu principal")) {
+                        closeMenu(pPlayer);
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })

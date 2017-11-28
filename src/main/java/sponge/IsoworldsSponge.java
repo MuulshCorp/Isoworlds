@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
+import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
+import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import sponge.Listeners.IsoworldsListeners;
 import sponge.Utils.IsoworldsUtils;
 
@@ -72,13 +74,18 @@ public class IsoworldsSponge {
     public void onPreInit(GamePreInitializationEvent event) {
 
         // ISOWORLDS-SAS
-        logger.info("[IsoWorlds-SAS: Placement des IsoWorlds un tag dans le SAS");
-        File toSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");
-        File outSAS = new File(ManageFiles.getPath());
+        logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
+        File dest = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
+        File source = new File(ManageFiles.getPath());
         // Retourne la liste des isoworld tag
-        for (File f : ManageFiles.getOutSAS(outSAS)) {
-            ManageFiles.move(toSAS, f);
+        for (File f : ManageFiles.getOutSAS(new File (source.getPath()))) {
+            if(ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
+                logger.info("[IsoWorlds-SAS]: " + f.getName() + " déplacé dans le SAS");
+            } else {
+                logger.info("[IsoWorlds-SAS]: Echec de stockage > " + f.getName());
+            }
         }
+        // --------------
 
         registerEvents();
         logger.info("Chargement des IsoWorlds...");
@@ -198,6 +205,30 @@ public class IsoworldsSponge {
         everyMinutes();
 
 
+
+    }
+
+    @Listener
+    public void onGameLoad(GameStartedServerEvent event) {
+        // ISOWORLDS-SAS
+        Task.builder().execute(new Runnable() {
+            @Override
+            public void run() {
+                logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
+                File source = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
+                File dest = new File(ManageFiles.getPath());
+                // Retourne la liste des isoworld tag
+                for (File f : ManageFiles.getOutSAS(new File (source.getPath()))) {
+                    if(ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
+                        logger.info("[IsoWorlds-SAS]: " + f.getName() + " retiré du SAS");
+                    } else {
+                        logger.info("[IsoWorlds-SAS]: Echec de destockage > " + f.getName());
+                    }
+                }
+            }
+        })
+                .delay(1, TimeUnit.SECONDS)
+                .name("Remet les IsoWorlds hors du SAS.").submit(instance);
 
     }
 

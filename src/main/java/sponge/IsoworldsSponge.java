@@ -71,6 +71,15 @@ public class IsoworldsSponge {
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
 
+        // ISOWORLDS-SAS
+        logger.info("[IsoWorlds-SAS: Placement des IsoWorlds un tag dans le SAS");
+        File toSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");
+        File outSAS = new File(ManageFiles.getPath());
+        // Retourne la liste des isoworld tag
+        for (File f : ManageFiles.getOutSAS(outSAS)) {
+            ManageFiles.move(toSAS, f);
+        }
+
         registerEvents();
         logger.info("Chargement des IsoWorlds...");
 

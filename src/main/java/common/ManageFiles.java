@@ -1,8 +1,12 @@
 package common;
 
+import com.google.common.collect.Lists;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.CopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -52,6 +56,18 @@ public class ManageFiles {
                 file.renameTo(new File(toDir, file.getName()));
             }
         }
+    }
+
+    // Récupère la liste des dossiers tag
+    // Si contient @ alors add to list et retourne
+    public static List<File> getOutSAS(File currDir) {
+        List<File> dirs = new ArrayList<>();
+        for (File file : currDir.listFiles()) {
+            if (file.isDirectory() & file.getName().contains("@")) {
+                dirs.add(file);
+            }
+        }
+        return dirs;
     }
 
     // Renommer dossier

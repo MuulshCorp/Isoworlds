@@ -5,6 +5,9 @@ import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +16,7 @@ import java.util.List;
  */
 public class ManageFiles {
 
-    public static void copyFileOrFolder(File source, File dest, CopyOption...  options) throws IOException {
+    public static void copyFileOrFolder(File source, File dest, CopyOption... options) throws IOException {
         if (source.isDirectory())
             copyFolder(source, dest, options);
         else {
@@ -47,14 +50,21 @@ public class ManageFiles {
             parent.mkdirs();
     }
 
-    // Déplacer un dossier
-    public static void move(File toDir, File currDir) {
-        for (File file : currDir.listFiles()) {
-            if (file.isDirectory()) {
-                move(toDir, file);
-            } else {
-                file.renameTo(new File(toDir, file.getName()));
-            }
+    // Move directory
+    public static boolean move(String source, String dest) {
+        // File (or Directory) to be moved
+        File file = new File(source);
+
+        // Destination directory
+        File dir = new File(dest);
+
+        // Move file to a new directory
+        boolean success = file.renameTo(new File(dir, file.getName()));
+
+        if (success) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -63,7 +73,7 @@ public class ManageFiles {
     public static List<File> getOutSAS(File currDir) {
         List<File> dirs = new ArrayList<>();
         for (File file : currDir.listFiles()) {
-            if (file.isDirectory() & file.getName().contains("@")) {
+            if (file.isDirectory() & file.getName().contains("-IsoWorld")) {
                 dirs.add(file);
             }
         }

@@ -108,10 +108,14 @@ public class TimeCommande implements CommandCallable {
             }
         } else {
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-
             return CommandResult.success();
         }
 
+        // Message pour tous les joueurs
+        for (Player p : Sponge.getServer().getWorld(arg[2]).get().getPlayers()) {
+            p.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que " + pPlayer.getName() + " vient de changer la temps à: " + arg[0])
+                    .color(TextColors.GOLD).build()));
+        }
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);
 

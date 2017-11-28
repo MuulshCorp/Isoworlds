@@ -5,8 +5,11 @@ import com.google.inject.Inject;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
+import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.world.DimensionType;
+import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Listeners.IsoworldsListeners;
 import sponge.Utils.IsoworldsUtils;
 
@@ -79,6 +82,8 @@ public class IsoworldsSponge {
         File source = new File(ManageFiles.getPath());
         // Retourne la liste des isoworld tag
         for (File f : ManageFiles.getOutSAS(new File (source.getPath()))) {
+            ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat"));
+            ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat_old"));
             if(ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
                 logger.info("[IsoWorlds-SAS]: " + f.getName() + " déplacé dans le SAS");
             } else {
@@ -209,8 +214,9 @@ public class IsoworldsSponge {
     }
 
     @Listener
-    public void onGameLoad(GameStartedServerEvent event) {
+    public void onGameStarted(GameStartedServerEvent event) {
         // ISOWORLDS-SAS
+
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {

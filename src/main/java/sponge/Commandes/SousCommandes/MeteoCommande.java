@@ -59,11 +59,10 @@ public class MeteoCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-        // Check if is in isoworld
-        if (!pPlayer.getLocation().getExtent().getName().equals(worldname)) {
+        // Check if is world is loaded
+        if (!Sponge.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").isPresent()) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania indique que vous devez être présent dans votre monde pour changer de biome.").color(TextColors.AQUA))).build()));
-            // Suppression lock
+                    .append(Text.of(Text.builder("Sijania indique que votre IsoWorld doit être chargé pour en changer la météo.").color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }

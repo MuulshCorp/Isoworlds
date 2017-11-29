@@ -148,6 +148,11 @@ public class IsoworldsSponge {
                                 if (check.exists()) {
                                     IsoworldsUtils.cm("debug 2");
                                     IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
+
+                                    // ISOWORLDS-SAS
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
+
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
                                     IsoworldsUtils.cm("PUSH OK");
                                 }

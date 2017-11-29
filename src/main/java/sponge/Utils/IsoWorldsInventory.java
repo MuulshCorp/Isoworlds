@@ -608,7 +608,7 @@ public class IsoWorldsInventory {
         }
 
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Retourner au menu principal"));
+        list2.add(Text.of("Menu principal"));
 
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
@@ -700,6 +700,7 @@ public class IsoWorldsInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
+                IsoworldsUtils.cm("TP CMD: " + cmd);
                 IsoworldsLocations.teleport(pPlayer, cmd);
             }
         })

@@ -83,7 +83,7 @@ public class IsoWorldsInventory {
 
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds")
-                        .color(TextColors.GOLD).build())))
+                        .color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
@@ -157,7 +157,7 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Biome").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Biome").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
@@ -203,7 +203,7 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
@@ -249,7 +249,7 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Ajouter").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Ajouter").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                 .build(instance);
 
@@ -308,7 +308,7 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Retirer").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Retirer").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                 .build(instance);
 
@@ -366,7 +366,7 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Construction").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Construction").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
@@ -409,7 +409,7 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Maison").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Maison").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
@@ -464,7 +464,7 @@ public class IsoWorldsInventory {
                     }
 
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Météo").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Météo").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 3))
                 .build(instance);
 
@@ -540,7 +540,7 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Activation").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Activation").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
@@ -584,7 +584,7 @@ public class IsoWorldsInventory {
                     }
 
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Téléporation").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Téléporation").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                 .build(instance);
 
@@ -638,7 +638,7 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Temps").color(TextColors.GOLD).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Temps").color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 

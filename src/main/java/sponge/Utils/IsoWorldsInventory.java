@@ -35,7 +35,7 @@ import static sponge.IsoworldsSponge.instance;
 /**
  * Created by Edwin on 25/11/2017.
  */
-public class IsoWorldInventory {
+public class IsoWorldsInventory {
 
     // MENU PRINCIPAL
     public static Inventory menuPrincipal(Player pPlayer) {

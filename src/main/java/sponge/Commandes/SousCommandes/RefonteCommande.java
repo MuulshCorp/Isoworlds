@@ -62,8 +62,16 @@ public class RefonteCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
+        // SELECT WORLD
+        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
+
         // Confirmation
-        if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {;
+        if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));

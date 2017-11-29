@@ -45,6 +45,8 @@ public class TimeCommande implements CommandCallable {
             return CommandResult.success();
         }
 
+        IsoworldsUtils.cm("taille" + size);
+        IsoworldsUtils.cm(arg[0]);
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();
@@ -66,7 +68,7 @@ public class TimeCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-        if (size == 1) {
+        if (size == 0) {
             pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("IsoWorlds ").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
@@ -100,11 +102,11 @@ public class TimeCommande implements CommandCallable {
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
 
             return CommandResult.success();
-        } else if (size == 2) {
+        } else if (size == 1) {
             if (arg[0].equals("jour") || arg[0].equals("day")) {
-                Sponge.getServer().getWorld(arg[1]).get().getProperties().setWorldTime(0);
+                Sponge.getServer().getWorld(worldname).get().getProperties().setWorldTime(0);
             } else if (arg[0].equals("nuit") || arg[0].equals("night")) {
-                Sponge.getServer().getWorld(arg[1]).get().getProperties().setWorldTime(12000);
+                Sponge.getServer().getWorld(worldname).get().getProperties().setWorldTime(12000);
             }
         } else {
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
@@ -112,7 +114,7 @@ public class TimeCommande implements CommandCallable {
         }
 
         // Message pour tous les joueurs
-        for (Player p : Sponge.getServer().getWorld(arg[2]).get().getPlayers()) {
+        for (Player p : Sponge.getServer().getWorld(worldname).get().getPlayers()) {
             p.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que " + pPlayer.getName() + " vient de changer la temps à: " + arg[0])
                     .color(TextColors.GOLD).build()));
         }

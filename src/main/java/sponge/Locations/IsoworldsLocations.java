@@ -52,6 +52,7 @@ public class IsoworldsLocations {
     }
 
     public static void teleport(Player player, String world) {
+
         Location<World> spawn = Sponge.getGame().getServer().getWorld(world).get().getSpawnLocation();
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);

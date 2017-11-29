@@ -575,6 +575,7 @@ public class IsoWorldInventory {
                             .get(0).getOriginal().get(Keys.ITEM_LORE).get().toString());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("IsoWorld")) {
+                        IsoworldsUtils.cm("NOM: " + menuName);
                         teleportMenu(pPlayer, menuName);
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
@@ -607,7 +608,7 @@ public class IsoWorldInventory {
         }
 
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Téléportez-vous sur un IsoWorld."));
+        list2.add(Text.of("Retourner au menu principal"));
 
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
@@ -627,10 +628,10 @@ public class IsoWorldInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Jour")) {
-                        commandMenu(pPlayer, "iw temps jour " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        commandMenu(pPlayer, "iw temps jour");
                        closeMenu(pPlayer);
                     } else if (menuName.contains("Nuit")) {
-                        commandMenu(pPlayer, "iw temps nuit " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        commandMenu(pPlayer, "iw temps nuit");
                         pPlayer.closeInventory();
                         closeMenu(pPlayer);
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));

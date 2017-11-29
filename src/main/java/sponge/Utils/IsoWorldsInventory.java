@@ -8,6 +8,8 @@ import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
 import org.spongepowered.api.data.manipulator.mutable.SkullData;
 import org.spongepowered.api.data.type.SkullTypes;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -25,7 +27,6 @@ import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Locations.IsoworldsLocations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -666,8 +667,8 @@ public class IsoWorldsInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory();
-                pPlayer.openInventory(inv);
+                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
+                pPlayer.openInventory(inv, Cause.of(NamedCause.simulated(pPlayer)));
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)
@@ -678,8 +679,8 @@ public class IsoWorldsInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory();
-                pPlayer.openInventory(menuPrincipal(pPlayer));
+                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
+                pPlayer.openInventory(menuPrincipal(pPlayer), Cause.of(NamedCause.simulated(pPlayer)));
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)

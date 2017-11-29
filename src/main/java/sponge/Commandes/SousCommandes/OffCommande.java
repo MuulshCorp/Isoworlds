@@ -52,6 +52,14 @@ public class OffCommande implements CommandExecutor {
             }
         }
 
+        // Si isoworld déjà déchargé
+        if (!Sponge.getServer().getWorld(worldname).isPresent()) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Sijania indique que votre IsoWorld est déjà déchargé.").color(TextColors.AQUA))).build()));
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
+
         // loop iworlds
         for (World world : worlds) {
             // si iworld existe

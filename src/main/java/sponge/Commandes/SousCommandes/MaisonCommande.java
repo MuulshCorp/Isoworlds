@@ -54,6 +54,10 @@ public class MaisonCommande implements CommandExecutor {
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
             // Suppression lock
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+<<<<<<< HEAD
+=======
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT");
+>>>>>>> SPONGE-API/7
             return CommandResult.success();
         }
 

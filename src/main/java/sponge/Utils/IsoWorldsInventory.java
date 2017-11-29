@@ -8,8 +8,11 @@ import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
 import org.spongepowered.api.data.manipulator.mutable.SkullData;
 import org.spongepowered.api.data.type.SkullTypes;
 import org.spongepowered.api.entity.living.player.Player;
+<<<<<<< HEAD
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
+=======
+>>>>>>> SPONGE-API/7
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -23,11 +26,18 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.World;
+<<<<<<< HEAD
 import org.spongepowered.api.world.biome.BiomeTypes;
+=======
+>>>>>>> SPONGE-API/7
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Locations.IsoworldsLocations;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+import java.util.Arrays;
+>>>>>>> SPONGE-API/7
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -674,8 +684,13 @@ public class IsoWorldsInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
+<<<<<<< HEAD
                 pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                 pPlayer.openInventory(inv, Cause.of(NamedCause.simulated(pPlayer)));
+=======
+                pPlayer.closeInventory();
+                pPlayer.openInventory(inv);
+>>>>>>> SPONGE-API/7
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)
@@ -686,8 +701,13 @@ public class IsoWorldsInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
+<<<<<<< HEAD
                 pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                 pPlayer.openInventory(menuPrincipal(pPlayer), Cause.of(NamedCause.simulated(pPlayer)));
+=======
+                pPlayer.closeInventory();
+                pPlayer.openInventory(menuPrincipal(pPlayer));
+>>>>>>> SPONGE-API/7
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)

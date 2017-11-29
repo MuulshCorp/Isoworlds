@@ -52,6 +52,27 @@ public class BiomeCommande implements CommandCallable {
             return CommandResult.success();
         }
 
+<<<<<<< HEAD
+=======
+        // SELECT WORLD
+        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            // Suppression lock
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
+
+        // Check if is in isoworld
+        if (!world.getName().equals(pPlayer.getUniqueId() + "-IsoWorld")) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Sijania indique que vous devez être présent dans votre monde pour changer de biome.").color(TextColors.AQUA))).build()));
+            // Suppression lock
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return CommandResult.success();
+        }
+
+>>>>>>> SPONGE-API/7
         if (arg[0].equals("plaines")) {
             IsoworldsUtils.cm("TEST2");
             biome = BiomeTypes.PLAINS;

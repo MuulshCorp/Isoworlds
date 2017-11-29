@@ -148,7 +148,8 @@ public class IsoWorldsInventory {
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Plaines")) {
                         commandMenu(pPlayer, "iw biome plaines");
-                        closeMenu(pPlayer);;
+                        closeMenu(pPlayer);
+                        ;
                     } else if (menuName.contains("Désert")) {
                         commandMenu(pPlayer, "iw biome desert");
                         closeMenu(pPlayer);
@@ -322,7 +323,7 @@ public class IsoWorldsInventory {
                 data.set(Keys.SKULL_TYPE, SkullTypes.PLAYER);
                 ItemStack stack = Sponge.getGame().getRegistry().createBuilder(ItemStack.Builder.class).itemType(ItemTypes.SKULL).itemData(data)
                         .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(p.getName())
-                        .color(TextColors.GOLD).build())).quantity(1)
+                                .color(TextColors.GOLD).build())).quantity(1)
                         .build();
                 RepresentedPlayerData skinData = Sponge.getGame().getDataManager().getManipulatorBuilder(RepresentedPlayerData.class).get().create();
                 skinData.set(Keys.REPRESENTED_PLAYER, GameProfile.of(UUID.fromString(p.getUniqueId().toString()), p.getName()));
@@ -381,8 +382,8 @@ public class IsoWorldsInventory {
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
                 .color(TextColors.GOLD).build())).quantity(1).build();
 
-            ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
-                    .color(TextColors.RED).build())).quantity(1).build();
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+                .color(TextColors.RED).build())).quantity(1).build();
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);
         menu.query(SlotPos.of(8, 0)).set(item3);
@@ -629,11 +630,11 @@ public class IsoWorldsInventory {
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Jour")) {
                         commandMenu(pPlayer, "iw temps jour");
-                       closeMenu(pPlayer);
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("Nuit")) {
                         commandMenu(pPlayer, "iw temps nuit");
-                        pPlayer.closeInventory();
                         closeMenu(pPlayer);
+                    } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })

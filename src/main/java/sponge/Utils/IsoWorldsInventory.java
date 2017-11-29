@@ -647,7 +647,7 @@ public class IsoWorldsInventory {
         List<Text> list2 = new ArrayList<Text>();
         list2.add(Text.of("La nuit tombe"));
         List<Text> list3 = new ArrayList<Text>();
-        list3.add(Text.of("Retour au menu principal"));
+        list3.add(Text.of("Menu principal"));
 
         ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Jour")
                 .color(TextColors.YELLOW).build())).quantity(1).build();

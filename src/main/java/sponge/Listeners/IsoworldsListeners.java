@@ -85,7 +85,7 @@ public class IsoworldsListeners {
     @Listener
     public void test(InteractBlockEvent.Secondary event) {
         BlockState block = event.getTargetBlock().getState();
-        IsoworldsUtils.cm("BLOCK NAME" + block.getName());
+        IsoworldsUtils.cm("BLOCK NAME: " + block.getName());
     }
 
     @Listener

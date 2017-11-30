@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static sponge.Utils.IsoWorldsBanWorldItems.checkLoadedChunks;
+
 @Plugin(
         id = "isoworlds",
         name = "IsoWorlds",
@@ -113,6 +115,7 @@ public class IsoworldsSponge {
 
     private void unload() {
         Task.builder().execute(() -> {
+            //checkLoadedChunks();
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);
             for (World world : Sponge.getServer().getWorlds()) {

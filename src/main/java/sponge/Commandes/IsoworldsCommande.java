@@ -28,7 +28,7 @@ public class IsoworldsCommande implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         Player pPlayer = (Player) source;
 
-        IsoworldsUtils.getHelp(pPlayer);
+        //IsoworldsUtils.getHelp(pPlayer);
         // Ouverture du menu principal
         pPlayer.openInventory(IsoWorldsInventory.menuPrincipal(pPlayer), Cause.of(NamedCause.simulated(pPlayer)));
         return CommandResult.success();

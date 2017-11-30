@@ -154,6 +154,15 @@ public class IsoworldsSponge {
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
 
+                                    // DISABLE WORLD PROPERTIES
+                                    WorldProperties worldProperties = Sponge.getServer().getWorldProperties(world.getName()).get();
+                                    if (worldProperties.isEnabled()) {
+                                        IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
+                                        continue;
+                                    }
+
+                                    worldProperties.setEnabled(true);
+
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
                                     IsoworldsUtils.cm("PUSH OK");
                                 }

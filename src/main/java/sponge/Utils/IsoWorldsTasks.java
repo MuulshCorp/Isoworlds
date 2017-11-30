@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  */
 public class IsoWorldsTasks implements Consumer<Task> {
 
-    private int check = 20;
+    private int check = 60;
     private Player pPlayer;
     private File file;
     private final IsoworldsSponge plugin = IsoworldsSponge.instance;

@@ -238,10 +238,14 @@ public class IsoworldsSponge {
             @Override
             public void run() {
                 logger.info("[IsoWorlds-Protection]: Mob Griefing protection appliqué au spawn");
-                WorldProperties worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-                Sponge.getServer().getWorldProperties("Isolonice").get().setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
-                Sponge.getServer().saveWorldProperties(worldProperties);
-
+                try {
+                    WorldProperties worldProperties = Sponge.getServer().createWorldProperties("Isolonice", WorldArchetypes.OVERWORLD);
+                    Sponge.getServer().getWorldProperties("Isolonice").get().setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
+                    Sponge.getServer().saveWorldProperties(worldProperties);
+                } catch (IOException io) {
+                    io.printStackTrace();
+                    logger.info("[IsoWorlds-Protection]: ECHEC APPLICATION MOB GRIEFING !!!");
+                }
                 logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
                 File source = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
                 File dest = new File(ManageFiles.getPath());

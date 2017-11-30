@@ -9,6 +9,8 @@ import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.world.DimensionType;
+import org.spongepowered.api.world.WorldArchetypes;
+import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Listeners.IsoworldsListeners;
 import sponge.Utils.IsoworldsUtils;
@@ -235,6 +237,11 @@ public class IsoworldsSponge {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
+                logger.info("[IsoWorlds-Protection]: Mob Griefing protection appliqué au spawn");
+                WorldProperties worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
+                Sponge.getServer().getWorldProperties("Isolonice").get().setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
+                Sponge.getServer().saveWorldProperties(worldProperties);
+
                 logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
                 File source = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
                 File dest = new File(ManageFiles.getPath());

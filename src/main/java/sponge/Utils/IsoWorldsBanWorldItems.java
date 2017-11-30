@@ -1,6 +1,5 @@
 package sponge.Utils;
 
-import bukkit.Utils.*;
 import com.flowpowered.math.vector.Vector3i;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockState;
@@ -24,7 +23,6 @@ public class IsoWorldsBanWorldItems {
 
     public static void checkLoadedChunks() {
         Collection<World> loadedWorlds = Sponge.getServer().getWorlds();
-        //final java.util.List<ItemData> items = new ArrayList<ItemData>(getItemData());
         Sponge.getScheduler().createAsyncExecutor(plugin).execute(new Runnable() {
             public void run() {
                 loadedWorlds.forEach(world -> {
@@ -37,13 +35,13 @@ public class IsoWorldsBanWorldItems {
                                 for (int z = min.getZ(); z <= max.getZ(); z++) {
                                     BlockState block = chunk.getBlock(x, y, z);
                                     Location blockLoc = chunk.getLocation(x, y, z);
-                                    if (block.getType().getName().contains("tiles.Hives")) {
+                                    if (block.getType().getName().contains("minecraft:wool")) {
                                         int finalX = x;
                                         int finalY = y;
                                         int finalZ = z;
                                         Sponge.getScheduler().createTaskBuilder().execute(() -> {
                                             blockLoc.setBlock(BlockTypes.AIR.getDefaultState(), BlockChangeFlag.ALL, Cause.of(NamedCause.owner(plugin)));
-                                            bukkit.Utils.IsoworldsUtils.cm("[IsoWorlds-BanItemWorlds]: " + block.getType().getName() + " at x:" + finalX + " y:" + finalY + " z:" + finalZ);
+                                            IsoworldsUtils.cm("[IsoWorlds-BanItemWorlds]: " + block.getType().getName() + " at x:" + finalX + " y:" + finalY + " z:" + finalZ);
                                         }).submit(plugin);
                                     }
                                 }

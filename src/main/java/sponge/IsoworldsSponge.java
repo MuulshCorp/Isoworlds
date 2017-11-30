@@ -161,7 +161,7 @@ public class IsoworldsSponge {
 
                                     // DISABLE WORLD PROPERTIES
                                     WorldProperties worldProperties = Sponge.getServer().getWorldProperties(world.getName()).get();
-                                    if (worldProperties.isEnabled()) {
+                                    if (!worldProperties.isEnabled()) {
                                         IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
                                         continue;
                                     }

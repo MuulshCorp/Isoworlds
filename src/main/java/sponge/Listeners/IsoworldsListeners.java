@@ -4,8 +4,10 @@ import common.ManageFiles;
 import common.Msg;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.event.block.InteractBlockEvent;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
@@ -77,6 +79,13 @@ public class IsoworldsListeners {
        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
         event.getTargetEntity().setLocationSafely(top);
         IsoworldsUtils.cm("Joueur téléporté au spawn");
+    }
+
+    // TEST
+    @Listener
+    public void test(InteractBlockEvent.Secondary event) {
+        BlockState block = event.getTargetBlock().getState();
+        IsoworldsUtils.cm("BLOCK NAME" + block.getName());
     }
 
     @Listener

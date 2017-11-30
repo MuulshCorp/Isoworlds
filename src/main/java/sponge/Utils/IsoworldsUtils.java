@@ -2,10 +2,7 @@ package sponge.Utils;
 
 import common.ManageFiles;
 import common.Msg;
-<<<<<<< HEAD
-=======
-import org.spongepowered.api.command.CommandResult;
->>>>>>> SPONGE-API/7
+
 import org.spongepowered.api.scheduler.Task;
 import sponge.IsoworldsSponge;
 
@@ -351,8 +348,6 @@ public class IsoworldsUtils {
         } else {
             // On set lock
             plugin.lock.put(pPlayer.getUniqueId().toString() + ";" + className, 1);
-<<<<<<< HEAD
-=======
             return false;
         }
     }
@@ -367,7 +362,6 @@ public class IsoworldsUtils {
         } else {
             // On set lock
             plugin.lock.put(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT", 1);
->>>>>>> SPONGE-API/7
             return false;
         }
     }

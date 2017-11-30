@@ -52,8 +52,6 @@ public class BiomeCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-<<<<<<< HEAD
-=======
         // SELECT WORLD
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
@@ -72,7 +70,6 @@ public class BiomeCommande implements CommandCallable {
             return CommandResult.success();
         }
 
->>>>>>> SPONGE-API/7
         if (arg[0].equals("plaines")) {
             IsoworldsUtils.cm("TEST2");
             biome = BiomeTypes.PLAINS;

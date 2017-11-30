@@ -30,11 +30,7 @@ public class IsoworldsCommande implements CommandExecutor {
 
         IsoworldsUtils.getHelp(pPlayer);
         // Ouverture du menu principal
-<<<<<<< HEAD
         pPlayer.openInventory(IsoWorldsInventory.menuPrincipal(pPlayer), Cause.of(NamedCause.simulated(pPlayer)));
-=======
-        pPlayer.openInventory(IsoWorldsInventory.menuPrincipal(pPlayer));
->>>>>>> SPONGE-API/7
         return CommandResult.success();
     }
 

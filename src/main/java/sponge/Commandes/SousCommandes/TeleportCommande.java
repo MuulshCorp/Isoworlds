@@ -38,8 +38,6 @@ public class TeleportCommande implements CommandCallable {
         String[] arg = args.split(" ");
         length = arg.length;
 
-<<<<<<< HEAD
-=======
         // Check if world exists
         if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
@@ -64,7 +62,6 @@ public class TeleportCommande implements CommandCallable {
             return CommandResult.success();
         }
 
->>>>>>> SPONGE-API/7
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();

@@ -57,13 +57,24 @@ public class IsoworldsListeners {
         event.setToTransform(t);
     }
 
+    @Listener
+    public void onLogin(ClientConnectionEvent.Login event) {
+        String worldname = ("Isolonice");
+        Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
+        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+        Transform<World> t = new Transform<World>(top);
+        IsoworldsUtils.cm("DEBUG SPAWN 1" + t.toString());
+        event.setToTransform(t);
+    }
+
     // Logout event, tp spawn
     @Listener
     public void onLogout(ClientConnectionEvent.Disconnect event) {
         String worldname = ("Isolonice");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+       Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
         event.getTargetEntity().setLocationSafely(top);
         IsoworldsUtils.cm("Joueur téléporté au spawn");
     }

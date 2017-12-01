@@ -52,7 +52,7 @@ public class IsoWorldsTasks implements Consumer<Task> {
 
             // DISABLE WORLD PROPERTIES
             WorldProperties worldProperties = Sponge.getServer().getWorldProperties(pPlayer.getUniqueId() + "-IsoWorld").get();
-            if (worldProperties.isEnabled()) {
+            if (!worldProperties.isEnabled()) {
                 IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
             }
 

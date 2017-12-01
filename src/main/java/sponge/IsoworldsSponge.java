@@ -166,7 +166,7 @@ public class IsoworldsSponge {
                                         continue;
                                     }
 
-                                    worldProperties.setEnabled(true);
+                                    worldProperties.setEnabled(false);
 
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
                                     IsoworldsUtils.cm("PUSH OK");

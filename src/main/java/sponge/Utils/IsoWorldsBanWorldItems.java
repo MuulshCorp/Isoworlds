@@ -35,7 +35,15 @@ public class IsoWorldsBanWorldItems {
                                 for (int z = min.getZ(); z <= max.getZ(); z++) {
                                     BlockState block = chunk.getBlock(x, y, z);
                                     Location blockLoc = chunk.getLocation(x, y, z);
-                                    if (block.getType().getName().contains("magicbees:hiveblock") || block.getType().getName().contains("forestry:beehives")) {
+                                    if (block.getType().getName().contains("magicbees:hiveblock")) {
+                                        int finalX = x;
+                                        int finalY = y;
+                                        int finalZ = z;
+                                        Sponge.getScheduler().createTaskBuilder().execute(() -> {
+                                            blockLoc.setBlock(BlockTypes.AIR.getDefaultState(), BlockChangeFlag.ALL);
+                                            IsoworldsUtils.cm("[IsoWorlds-BanItemWorlds]: " + block.getType().getName() + " at x:" + finalX + " y:" + finalY + " z:" + finalZ);
+                                        }).submit(plugin);
+                                    } else if (block.getType().getName().contains("forestry:beehives")) {
                                         int finalX = x;
                                         int finalY = y;
                                         int finalZ = z;

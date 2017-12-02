@@ -144,6 +144,8 @@ public class IsoworldsSponge {
                                 e.printStackTrace();
                                 continue;
                             }
+
+                            // UNLOAD ISOWORLD
                             Sponge.getServer().unloadWorld(world);
                             worlds.remove(world.getName());
 
@@ -164,12 +166,20 @@ public class IsoworldsSponge {
 
                                     worldProperties.setEnabled(false);
 
-                                    // ISOWORLDS-SAS
-                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
-                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
+                                    Task.builder().execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // ISOWORLDS-SAS
+                                            ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
+                                            ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
 
-                                    ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
-                                    IsoworldsUtils.cm("PUSH OK");
+                                            ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                            IsoworldsUtils.cm("PUSH OK");
+                                        }
+                                    })
+                                            .delay(5, TimeUnit.SECONDS)
+                                            .name("Ferme l'inventaire d'un joueur.").submit(instance);
+
                                 }
                             }
                         } else {

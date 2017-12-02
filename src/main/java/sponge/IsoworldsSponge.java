@@ -178,7 +178,7 @@ public class IsoworldsSponge {
                                         }
                                     })
                                             .delay(5, TimeUnit.SECONDS)
-                                            .name("Ferme l'inventaire d'un joueur.").submit(instance);
+                                            .name("Supprimer et push").submit(instance);
 
                                 }
                             }

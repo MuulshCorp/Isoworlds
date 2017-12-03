@@ -123,7 +123,7 @@ public class IsoworldsSponge {
             // Boucle de tous les mondes
             for (World world : Sponge.getServer().getWorlds()) {
                 // Si le monde est chargé et contient IsoWorld
-                if (Sponge.getServer().getWorld(world.getUniqueId()).isPresent() & world.getName().contains("-IsoWorld")) {
+                if (world.isLoaded() & world.getName().contains("-IsoWorld")) {
 
                     // Si le nombre de joueurs == 0
                     if (world.getPlayers().size() == 0) {

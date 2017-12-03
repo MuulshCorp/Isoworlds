@@ -4,8 +4,6 @@ import com.flowpowered.math.vector.Vector3i;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.world.BlockChangeFlag;
 import org.spongepowered.api.world.Chunk;
 import org.spongepowered.api.world.Location;
@@ -48,7 +46,7 @@ public class IsoWorldsBanWorldItems {
                                         int finalY = y;
                                         int finalZ = z;
                                         Sponge.getScheduler().createTaskBuilder().execute(() -> {
-                                            blockLoc.setBlock(BlockTypes.AIR.getDefaultState(), BlockChangeFlag.ALL, Cause.of(NamedCause.owner(plugin)));
+                                            blockLoc.setBlock(BlockTypes.AIR.getDefaultState(), BlockChangeFlag.ALL);
                                             IsoworldsUtils.cm("[IsoWorlds-BanItemWorlds]: " + block.getType().getName() + " at x:" + finalX + " y:" + finalY + " z:" + finalZ);
                                         }).submit(plugin);
                                     }

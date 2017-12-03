@@ -115,80 +115,86 @@ public class IsoworldsSponge {
     }
 
     private void unload() {
+        int x = 10;
         Task.builder().execute(() -> {
             checkLoadedChunks();
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);
+            // Boucle de tous les mondes
             for (World world : Sponge.getServer().getWorlds()) {
-                // Si le monde n'est pas chargé on vide le tableau
-                if (Sponge.getServer().getWorld(world.getName()).isPresent()) {
-                    // Si le monde est chargé et aucun joueur dedans
-                    if (worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
-                        if (world.getName().contains("-IsoWorld")) {
+                // Si le monde est chargé
+                if (Sponge.getServer().getWorld(world.getUniqueId()).isPresent()) {
+
+                    // Si le nombre de joueurs == 0
+                    if (world.getPlayers().size() == 0) {
+                        // Si le monde n'est pas présent dans le tableau
+                        if (worlds.get(world.getName()) == null) {
                             worlds.put(world.getName(), 1);
                         } else {
-                            continue;
-                        }
-                        // Si tableau rempli
-                    } else if (worlds.get(world.getName()) != null) {
-                        // Si de nouveau des joueurs on remove
-                        if (world.getPlayers().size() != 0) {
-                            worlds.remove(world.getName());
-                            continue;
-                            // Sinon on incrémente et on check si c'est à 10
-                        } else {
+                            // Sinon on incrémente
                             worlds.put(world.getName(), worlds.get(world.getName()) + 1);
-                            if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 10) {
-                                IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
-                                // Save du monde
-                                try {
-                                    Sponge.getServer().getWorld(world.getName()).get().save();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    continue;
-                                }
+                        }
 
-                                Sponge.getServer().unloadWorld(world);
-                                worlds.remove(world.getName());
-
-                                if (!IsoworldsUtils.iworldPushed(world.getName(), Msg.keys.SQL)) {
-                                    IsoworldsUtils.cm("debug 1");
-                                    // Prepair for pushing to backup server
-                                    File check = new File(ManageFiles.getPath() + world.getName());
-                                    if (check.exists()) {
-                                        IsoworldsUtils.cm("debug 2");
-                                        IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
-
-                                        // DISABLE WORLD PROPERTIES
-                                        WorldProperties worldProperties = Sponge.getServer().getWorldProperties(world.getName()).get();
-                                        if (!worldProperties.isEnabled()) {
-                                            IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
-                                            continue;
-                                        }
-
-                                        worldProperties.setEnabled(false);
-
-                                        // ISOWORLDS-SAS
-                                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
-                                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
-
-                                        ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
-                                        IsoworldsUtils.cm("PUSH OK");
-                                    }
-                                }
-                            } else {
+                        // Si le nombre est supérieur ou = à X on unload
+                        if (worlds.get(world.getName()) >= x) {
+                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
+                            // Procédure de déchargement //
+                            // Sauvegarde du monde
+                            try {
+                                Sponge.getServer().getWorld(world.getName()).get().save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
                                 continue;
                             }
+
+                            // Déchargement du monde
+                            Sponge.getServer().unloadWorld(world);
+                            // Suppression dans le tableau
+                            worlds.remove(world.getName());
+
+                            // Vérification du statut du monde, si il est push ou non
+                            if (!IsoworldsUtils.iworldPushed(world.getName(), Msg.keys.SQL)) {
+                                IsoworldsUtils.cm("debug 1");
+                                File check = new File(ManageFiles.getPath() + world.getName());
+                                // Si le dossier existe alors on met le statut à 1 (push)
+                                if (check.exists()) {
+                                    IsoworldsUtils.cm("debug 2");
+                                    IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
+
+                                    // Vérification si World Properties activés
+                                    WorldProperties worldProperties = Sponge.getServer().getWorldProperties(world.getName()).get();
+                                    if (!worldProperties.isEnabled()) {
+                                        IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
+                                        continue;
+                                    }
+
+                                    // Désactivation des World Properties de l'IsoWorld
+                                    worldProperties.setEnabled(false);
+
+                                    // ISOWORLDS-SAS
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
+
+                                    // Tag du dossier en push
+                                    ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                    IsoworldsUtils.cm("PUSH OK");
+                                }
+                            } else {
+                                // Sinon on continue la boucle
+                                continue;
+                            }
+
                         }
+                        // Si le nombre de joueur est supérieur à 0, purge le tableau du IsoWorld
+                    } else if (worlds.get(world.getName()) != null) {
+                        worlds.remove(world.getName());
                     }
-                } else if (worlds.get(world.getName()) != null) {
-                    worlds.remove(world.getName());
                 }
             }
-            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé");
+            // Message de fin de boucle
+            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés");
+        }).name("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés").submit(this);
 
-
-        }).name("Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé").submit(this);
     }
 
     @Listener

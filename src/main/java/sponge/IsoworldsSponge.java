@@ -8,6 +8,7 @@ import common.Msg;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.world.Chunk;
 import org.spongepowered.api.world.DimensionType;
 import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
@@ -85,10 +86,10 @@ public class IsoworldsSponge {
         File dest = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
         File source = new File(ManageFiles.getPath());
         // Retourne la liste des isoworld tag
-        for (File f : ManageFiles.getOutSAS(new File (source.getPath()))) {
+        for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat"));
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat_old"));
-            if(ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
+            if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
                 logger.info("[IsoWorlds-SAS]: " + f.getName() + " déplacé dans le SAS");
             } else {
                 logger.info("[IsoWorlds-SAS]: Echec de stockage > " + f.getName());
@@ -119,73 +120,69 @@ public class IsoworldsSponge {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);
             for (World world : Sponge.getServer().getWorlds()) {
-                // Si chargé et pas présent dans map et vide
-                if (worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
-                    if (world.getName().contains("-IsoWorld")) {
-                        worlds.put(world.getName(), 1);
-                    } else {
-                        continue;
-                    }
-                    // Si tableau rempli
-                } else if (worlds.get(world.getName()) != null) {
-                    // Si de nouveau des joueurs on remove
-                    if (world.getPlayers().size() != 0) {
-                        worlds.remove(world.getName());
-                        continue;
-                        // Sinon on incrémente et on check si c'est à 10
-                    } else {
-                        worlds.put(world.getName(), worlds.get(world.getName()) + 1);
-                        if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 10) {
-                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
-                            // Save du monde
-                            try {
-                                Sponge.getServer().getWorld(world.getName()).get().save();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                continue;
-                            }
-
-                            // UNLOAD ISOWORLD
-                            Sponge.getServer().unloadWorld(world);
-                            worlds.remove(world.getName());
-
-                            if (!IsoworldsUtils.iworldPushed(world.getName(), Msg.keys.SQL)) {
-                                IsoworldsUtils.cm("debug 1");
-                                // Prepair for pushing to backup server
-                                File check = new File(ManageFiles.getPath() + world.getName());
-                                if (check.exists()) {
-                                    IsoworldsUtils.cm("debug 2");
-                                    IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
-
-                                    // DISABLE WORLD PROPERTIES
-                                    WorldProperties worldProperties = Sponge.getServer().getWorldProperties(world.getName()).get();
-                                    if (!worldProperties.isEnabled()) {
-                                        IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
-                                        continue;
-                                    }
-
-                                    worldProperties.setEnabled(false);
-
-                                    Task.builder().execute(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            // ISOWORLDS-SAS
-                                            ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
-                                            ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
-
-                                            ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
-                                            IsoworldsUtils.cm("PUSH OK");
-                                        }
-                                    })
-                                            .delay(5, TimeUnit.SECONDS)
-                                            .name("Supprimer et push").submit(instance);
-
-                                }
-                            }
+                // Si le monde n'est pas chargé on vide le tableau
+                if (Sponge.getServer().getWorld(world.getName()).isPresent()) {
+                    // Si le monde est chargé et aucun joueur dedans
+                    if (worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
+                        if (world.getName().contains("-IsoWorld")) {
+                            worlds.put(world.getName(), 1);
                         } else {
                             continue;
                         }
+                        // Si tableau rempli
+                    } else if (worlds.get(world.getName()) != null) {
+                        // Si de nouveau des joueurs on remove
+                        if (world.getPlayers().size() != 0) {
+                            worlds.remove(world.getName());
+                            continue;
+                            // Sinon on incrémente et on check si c'est à 10
+                        } else {
+                            worlds.put(world.getName(), worlds.get(world.getName()) + 1);
+                            if (world.getPlayers().size() == 0 & worlds.get(world.getName()) == 10) {
+                                IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 10 ! On unload !");
+                                // Save du monde
+                                try {
+                                    Sponge.getServer().getWorld(world.getName()).get().save();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    continue;
+                                }
+
+                                Sponge.getServer().unloadWorld(world);
+                                worlds.remove(world.getName());
+
+                                if (!IsoworldsUtils.iworldPushed(world.getName(), Msg.keys.SQL)) {
+                                    IsoworldsUtils.cm("debug 1");
+                                    // Prepair for pushing to backup server
+                                    File check = new File(ManageFiles.getPath() + world.getName());
+                                    if (check.exists()) {
+                                        IsoworldsUtils.cm("debug 2");
+                                        IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
+
+                                        // DISABLE WORLD PROPERTIES
+                                        WorldProperties worldProperties = Sponge.getServer().getWorldProperties(world.getName()).get();
+                                        if (!worldProperties.isEnabled()) {
+                                            IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
+                                            continue;
+                                        }
+
+                                        worldProperties.setEnabled(false);
+
+                                        // ISOWORLDS-SAS
+                                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
+                                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
+
+                                        ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                        IsoworldsUtils.cm("PUSH OK");
+                                    }
+                                }
+                            } else {
+                                continue;
+                            }
+                        }
                     }
+                } else if (worlds.get(world.getName()) != null) {
+                    worlds.remove(world.getName());
                 }
             }
             IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé");
@@ -240,7 +237,6 @@ public class IsoworldsSponge {
         everyMinutes();
 
 
-
     }
 
     @Listener
@@ -263,8 +259,8 @@ public class IsoworldsSponge {
                 File source = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
                 File dest = new File(ManageFiles.getPath());
                 // Retourne la liste des isoworld tag
-                for (File f : ManageFiles.getOutSAS(new File (source.getPath()))) {
-                    if(ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
+                for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
+                    if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
                         logger.info("[IsoWorlds-SAS]: " + f.getName() + " retiré du SAS");
                     } else {
                         logger.info("[IsoWorlds-SAS]: Echec de destockage > " + f.getName());

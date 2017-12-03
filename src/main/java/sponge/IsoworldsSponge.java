@@ -117,7 +117,7 @@ public class IsoworldsSponge {
     private void unload() {
         int x = 10;
         Task.builder().execute(() -> {
-            checkLoadedChunks();
+            //checkLoadedChunks();
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);
             // Boucle de tous les mondes

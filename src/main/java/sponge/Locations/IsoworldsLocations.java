@@ -1,8 +1,5 @@
 package sponge.Locations;
 
-import org.spongepowered.api.block.BlockType;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
 
@@ -62,14 +59,14 @@ public class IsoworldsLocations {
         try {
             Double Y = top.getY();
             if (Y == null) {
-                Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.of(NamedCause.simulated(player)));
+                Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT);
                 go = new Location<>(spawn.getExtent(), 0, 61, 0);
             } else {
                 secours = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
                 go = new Location<>(spawn.getExtent(), 0, secours.getBlockY(), 0);
             }
         } catch (NullPointerException npe) {
-            Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.of(NamedCause.simulated(player)));
+            Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT);
         }
 
         // Téléportation du joueur

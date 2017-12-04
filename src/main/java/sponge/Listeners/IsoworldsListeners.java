@@ -107,6 +107,8 @@ public class IsoworldsListeners {
         }
 
         if (event.getTargetWorld().getName().contains("-IsoWorld")) {
+
+            // Properties
             Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
             Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setKeepSpawnLoaded(false);
             IsoworldsUtils.cm("KeepSpawnLoaded: " + optionalWorld.get().doesKeepSpawnLoaded());
@@ -121,6 +123,15 @@ public class IsoworldsListeners {
             IsoworldsUtils.cm("KeepSpawnLoaded: " + optionalWorld.get().doesKeepSpawnLoaded());
 
             Sponge.getServer().saveWorldProperties(event.getTargetWorld().getProperties());
+
+            // Configuration du monde
+            Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().setKeepSpawnLoaded(true);
+            Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getWorldBorder().setCenter(0, 0);
+            Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getWorldBorder().setDiameter(500);
+
+            Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(event.getTargetWorld().getName()).get(), 0, 0, 0);
+            Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
+            Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getProperties().setSpawnPosition(firstspawn.getBlockPosition());
         }
     }
 

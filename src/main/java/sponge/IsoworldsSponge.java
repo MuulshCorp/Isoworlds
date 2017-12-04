@@ -194,13 +194,15 @@ public class IsoworldsSponge {
                     } else if (worlds.get(world.getName()) != null) {
                         worlds.remove(world.getName());
                     }
-                } else if (worlds.get(world.getName()) != null) {
-                    worlds.remove(world.getName());
                 }
             }
             // Message de fin de boucle
             IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés");
-        }).name("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés").submit(this);
+        }).
+
+                name("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés").
+
+                submit(this);
 
     }
 

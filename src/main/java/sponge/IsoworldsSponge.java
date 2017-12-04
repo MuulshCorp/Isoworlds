@@ -189,6 +189,8 @@ public class IsoworldsSponge {
                     } else if (worlds.get(world.getName()) != null) {
                         worlds.remove(world.getName());
                     }
+                } else if (worlds.get(world.getName()) != null) {
+                    worlds.remove(world.getName());
                 }
             }
             // Message de fin de boucle

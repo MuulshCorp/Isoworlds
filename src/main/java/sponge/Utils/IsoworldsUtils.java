@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -290,6 +291,35 @@ public class IsoworldsUtils {
             return false;
         }
         return false;
+    }
+
+    // Get all trusted iw for a player, si == null alors rien
+    public static ResultSet getAccessIW(Player pPlayer, String messageErreur) {
+        String CHECK = "SELECT `UUID_W` FROM `autorisations` WHERE `UUID_P` = ? AND `SERVEUR_ID` = ?";
+        String check_p;
+        ResultSet result = null;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // UUID _P
+            check_p = IsoworldsUtils.PlayerToUUID(pPlayer).toString();
+            check.setString(1, check_p);
+            // SERVEUR_ID
+            check.setString(2, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            if (rselect.isBeforeFirst()) {
+                result = rselect;
+                return result;
+            }
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return result;
+        }
+        return result;
     }
 
     // check if status is push or pull exists

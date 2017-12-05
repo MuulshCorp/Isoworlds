@@ -2,6 +2,7 @@ package sponge.Utils;
 
 import common.Msg;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
@@ -371,6 +372,12 @@ public class IsoWorldsInventory {
                     clickInventoryEvent.setCancelled(true);
                     // Si joueur, on ajouter le joueur
                     if (menuName.contains("Joueur")) {
+                        // Execution de la commande home, pour le joueur en question
+                        try {
+                            MaisonCommande.getCommand().getExecutor().execute(pPlayer, null);
+                        } catch (CommandException e) {
+                            e.printStackTrace();
+                        }
                         commandMenu(pPlayer, "iw retirer " + menuPlayer);
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     } else if (menuName.contains("Menu principal")) {

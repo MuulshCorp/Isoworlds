@@ -387,7 +387,12 @@ public class IsoWorldsInventory {
                         Task.builder().execute(new Runnable() {
                             @Override
                             public void run() {
-                                IsoworldsUtils.ieWorld(pPlayer, user.get().getName() + "-IsoWorld");
+                                if (IsoworldsUtils.ieWorld(pPlayer, (user.get().getUniqueId().toString() + "-IsoWorld"))) {
+                                    // Chargement du monde
+                                    Sponge.getServer().loadWorld(user.get().getUniqueId().toString() + "-IsoWorld");
+                                    IsoworldsLocations.teleport(pPlayer, user.get().getUniqueId().toString() + "-IsoWorld");
+                                }
+
                             }
                         })
                                 .delay(10, TimeUnit.MILLISECONDS)

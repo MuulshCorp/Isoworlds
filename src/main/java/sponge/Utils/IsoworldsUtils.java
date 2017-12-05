@@ -3,7 +3,9 @@ package sponge.Utils;
 import common.ManageFiles;
 import common.Msg;
 
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.scheduler.Task;
+import org.spongepowered.api.service.user.UserStorageService;
 import sponge.IsoworldsSponge;
 
 import org.spongepowered.api.Sponge;
@@ -21,6 +23,8 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -615,6 +619,19 @@ public class IsoworldsUtils {
             return false;
         }
         return true;
+    }
+
+    // Récupération user (off/one) depuis un uuid
+    public static Optional<User> getPlayerFromUUID(UUID uuid) {
+        Optional<User> user = null;
+        try {
+            UserStorageService userStorage = Sponge.getServiceManager().provide(UserStorageService.class).get();
+            user = userStorage.get(uuid);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return user;
+        }
+        return user;
     }
 
 

@@ -9,6 +9,7 @@ import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
 import org.spongepowered.api.data.manipulator.mutable.SkullData;
 import org.spongepowered.api.data.type.SkullTypes;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
@@ -28,8 +29,10 @@ import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Commandes.SousCommandes.MaisonCommande;
 import sponge.Locations.IsoworldsLocations;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -229,12 +232,15 @@ public class IsoWorldsInventory {
                 .color(TextColors.GREEN).build())).quantity(1).build();
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Retirer")
                 .color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Mes accès")
+                .color(TextColors.RED).build())).quantity(1).build();
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
 
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);
-        menu.query(SlotPos.of(8, 0)).set(item3);
+        menu.query(SlotPos.of(2, 0)).set(item3);
+        menu.query(SlotPos.of(8, 0)).set(item4);
 
         return menu;
     }
@@ -365,21 +371,30 @@ public class IsoWorldsInventory {
                 .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
                     // Code event
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
-                            .get(0).getOriginal().get(Keys.ITEM_LORE).get().toString());
+                            .get(0).getOriginal().get(Keys.ITEM_LORE).get().get(0).toPlain());
                     String menuPlayer = String.valueOf(clickInventoryEvent.getTransactions()
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
                     clickInventoryEvent.setCancelled(true);
-                    // Si joueur, on ajouter le joueur
-                    if (menuName.contains("Joueur")) {
-                        // Execution de la commande home, pour le joueur en question
-                        try {
-                            MaisonCommande.getCommand().getExecutor().execute(pPlayer, null);
-                        } catch (CommandException e) {
-                            e.printStackTrace();
-                        }
-                        commandMenu(pPlayer, "iw retirer " + menuPlayer);
+                    // Si joueur, on ajoute le joueur
+                    if (menuPlayer.contains("IsoWorld Accessible")) {
+                        // Récupération UUID
+                        String[] tmp = menuName.split("-IsoWorld");
+                        IsoworldsUtils.cm("NAME " + menuName);
+                        Optional<User> user = IsoworldsUtils.getPlayerFromUUID(UUID.fromString(tmp[0]));
+
+                        // Pull du IsoWorld
+                        Task.builder().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                IsoworldsUtils.ieWorld(pPlayer, user.get().getName() + "-IsoWorld");
+                            }
+                        })
+                                .delay(10, TimeUnit.MILLISECONDS)
+                                .name("Pull du IsoWorld.").submit(instance);
+
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
+
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -390,26 +405,38 @@ public class IsoWorldsInventory {
 
         int i = 0;
         int j = 0;
-        for (Player p : Sponge.getServer().getOnlinePlayers()) {
-            if (IsoworldsUtils.trustExists(p, pPlayer.getUniqueId(), Msg.keys.EXISTE_PAS_TRUST)) {
-                List<Text> list1 = new ArrayList<Text>();
-                list1.add(Text.of("Joueur"));
+        ResultSet trusts = IsoworldsUtils.getAccessIW(pPlayer, Msg.keys.SQL);
+        try {
+            while (trusts.next()) {
+                // Récupération uuid
+                String[] tmp = trusts.getString(1).split("-IsoWorld");
+                UUID uuid = UUID.fromString(tmp[0]);
+                Optional<User> user = IsoworldsUtils.getPlayerFromUUID(uuid);
 
+                // Construction du lore
+                List<Text> list1 = new ArrayList<Text>();
+                list1.add(Text.of(user.get().getUniqueId().toString()));
+                IsoworldsUtils.cm("record: " + trusts.getString(1));
+
+                // Construction des skin itemstack
                 SkullData data = Sponge.getGame().getDataManager().getManipulatorBuilder(SkullData.class).get().create();
                 data.set(Keys.SKULL_TYPE, SkullTypes.PLAYER);
                 ItemStack stack = Sponge.getGame().getRegistry().createBuilder(ItemStack.Builder.class).itemType(ItemTypes.SKULL).itemData(data)
-                        .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(p.getName())
+                        .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("IsoWorld Accessible: " + user.get().getName())
                                 .color(TextColors.GOLD).build())).quantity(1)
                         .build();
                 RepresentedPlayerData skinData = Sponge.getGame().getDataManager().getManipulatorBuilder(RepresentedPlayerData.class).get().create();
-                skinData.set(Keys.REPRESENTED_PLAYER, GameProfile.of(UUID.fromString(p.getUniqueId().toString()), p.getName()));
+                skinData.set(Keys.REPRESENTED_PLAYER, GameProfile.of(user.get().getUniqueId(), user.get().getName()));
                 stack.offer(skinData);
 
                 if (i >= 8) {
                     j = j++;
                 }
                 menu.query(SlotPos.of(i, j)).set(stack);
+                i++;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         List<Text> list2 = new ArrayList<Text>();

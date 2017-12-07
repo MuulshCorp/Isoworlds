@@ -1,5 +1,6 @@
 package sponge.Utils;
 
+import com.sun.org.apache.xml.internal.serializer.utils.MsgKey;
 import common.Cooldown;
 import common.Msg;
 import org.spongepowered.api.Sponge;
@@ -8,6 +9,8 @@ import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
 import org.spongepowered.api.data.manipulator.mutable.SkullData;
+import org.spongepowered.api.data.type.DyeColor;
+import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.data.type.SkullTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
@@ -492,23 +495,29 @@ public class IsoWorldsInventory {
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
-        List<Text> list1 = new ArrayList<Text>();
-        list1.add(Text.of("Créer votre IsoWorld."));
+
+        // Affiche la refonte si le monde est créé, sinon affiche la création
+        if (IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, false)) {
+            List<Text> list1 = new ArrayList<Text>();
+            list1.add(Text.of("Réinitialiser votre IsoWorld."));
+            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.CLAY).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
+                    .color(TextColors.GOLD).build())).quantity(1).build();
+            menu.query(SlotPos.of(0, 0)).set(item1);
+        } else {
+            List<Text> list1 = new ArrayList<Text>();
+            list1.add(Text.of("Créer votre IsoWorld."));
+            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.CLAY).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Création")
+                    .color(TextColors.GOLD).build())).quantity(1).build();
+            menu.query(SlotPos.of(0, 0)).set(item1);
+        }
+
+        // Bouton retour
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Réinitialiser votre IsoWorld."));
-        List<Text> list3 = new ArrayList<Text>();
-        list3.add(Text.of("Retour au menu principal"));
-
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Création")
-                .color(TextColors.GOLD).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
-                .color(TextColors.GOLD).build())).quantity(1).build();
-
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        list2.add(Text.of("Retour au menu principal"));
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
-        menu.query(SlotPos.of(0, 0)).set(item1);
+
         menu.query(SlotPos.of(1, 0)).set(item2);
-        menu.query(SlotPos.of(8, 0)).set(item3);
 
         return menu;
     }
@@ -674,9 +683,9 @@ public class IsoWorldsInventory {
         list3.add(Text.of("Retour au menu principal"));
 
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activer")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.CLAY).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activer")
                 .color(TextColors.GREEN).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Désactiver")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.CLAY).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Désactiver")
                 .color(TextColors.RED).build())).quantity(1).build();
         ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();

@@ -270,7 +270,7 @@ public class IsoworldsUtils {
     }
 
     // check if iworld exists
-    public static Boolean iworldExists(Player pPlayer, String messageErreur) {
+    public static Boolean iworldExists(Player pPlayer, String messageErreur, Boolean load) {
         String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
         String check_p;
@@ -287,11 +287,16 @@ public class IsoworldsUtils {
             check.setString(3, plugin.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
+
             if (rselect.isBeforeFirst()) {
-                setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
-                Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
+                // Chargement si load = true
+                if (load) {
+                    setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
+                    Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
+                }
                 return true;
             }
+
         } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(Msg.keys.SQL);

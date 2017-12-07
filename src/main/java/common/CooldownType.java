@@ -5,7 +5,7 @@ public interface CooldownType {
     int BIOME_DELAY = 10;
 
     String CONFIANCE = "confiance";
-    int CONFIANCE_DELAY = 86400;
+    int CONFIANCE_DELAY = 10;
 
     String CREATION = "creation";
     int CREATION_DELAY = 86400;

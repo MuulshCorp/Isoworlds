@@ -1,5 +1,6 @@
 package sponge.Utils;
 
+import common.Cooldown;
 import common.Msg;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -26,14 +27,11 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.storage.WorldProperties;
-import sponge.Commandes.SousCommandes.MaisonCommande;
+import sponge.IsoworldsSponge;
 import sponge.Locations.IsoworldsLocations;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static sponge.IsoworldsSponge.instance;
@@ -44,6 +42,8 @@ import static sponge.IsoworldsSponge.instance;
 public class IsoWorldsInventory {
 
     // MENU PRINCIPAL
+    private static final IsoworldsSponge plugin = IsoworldsSponge.instance;
+
     public static Inventory menuPrincipal(Player pPlayer) {
 
         Inventory menu = Inventory.builder()
@@ -376,21 +376,30 @@ public class IsoWorldsInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
                     clickInventoryEvent.setCancelled(true);
+
+                    //If the method return true then the command is in lock
+                    if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.CONFIANCE)) {
+                        return;
+                    }
+
                     // Si joueur, on ajoute le joueur
                     if (menuPlayer.contains("IsoWorld Accessible")) {
                         // Récupération UUID
                         String[] tmp = menuName.split("-IsoWorld");
                         IsoworldsUtils.cm("NAME " + menuName);
                         Optional<User> user = IsoworldsUtils.getPlayerFromUUID(UUID.fromString(tmp[0]));
+                        String worldname = user.get().getUniqueId().toString() + "-IsoWorld";
 
                         // Pull du IsoWorld
                         Task.builder().execute(new Runnable() {
                             @Override
                             public void run() {
-                                if (IsoworldsUtils.ieWorld(pPlayer, (user.get().getUniqueId().toString() + "-IsoWorld"))) {
-                                    // Chargement du monde
-                                    Sponge.getServer().loadWorld(user.get().getUniqueId().toString() + "-IsoWorld");
+                                // Si monde présent en dossier ?
+                                if (IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+                                    // Chargement du isoworld + tp
+                                    Sponge.getServer().loadWorld(worldname);
                                     IsoworldsLocations.teleport(pPlayer, user.get().getUniqueId().toString() + "-IsoWorld");
+                                    plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
                                 }
 
                             }
@@ -431,6 +440,7 @@ public class IsoWorldsInventory {
                                 .color(TextColors.GOLD).build())).quantity(1)
                         .build();
                 RepresentedPlayerData skinData = Sponge.getGame().getDataManager().getManipulatorBuilder(RepresentedPlayerData.class).get().create();
+                IsoworldsUtils.cm("USER: " + user.get().getUniqueId().toString() + user.get().getName());
                 skinData.set(Keys.REPRESENTED_PLAYER, GameProfile.of(user.get().getUniqueId(), user.get().getName()));
                 stack.offer(skinData);
 

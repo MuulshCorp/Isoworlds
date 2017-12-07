@@ -50,16 +50,6 @@ public class IsoWorldsTasks implements Consumer<Task> {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
 
-            // DISABLE WORLD PROPERTIES
-            IsoworldsUtils.cm("FILE " + file.toString());
-            WorldProperties worldProperties = Sponge.getServer().getWorldProperties(file.toString()).get();
-            if (!worldProperties.isEnabled()) {
-                IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
-            }
-
-            worldProperties.setEnabled(true);
-
-
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT");
             task.cancel();
         }

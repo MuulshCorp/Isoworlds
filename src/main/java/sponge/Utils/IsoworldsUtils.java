@@ -6,6 +6,9 @@ import common.Msg;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.user.UserStorageService;
+import org.spongepowered.api.world.WorldArchetypes;
+import org.spongepowered.api.world.gamerule.DefaultGameRules;
+import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.IsoworldsSponge;
 
 import org.spongepowered.api.Sponge;
@@ -18,6 +21,7 @@ import org.spongepowered.api.text.title.Title;
 import org.spongepowered.api.world.Location;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -284,6 +288,7 @@ public class IsoworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
+                setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
                 Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
                 return true;
             }
@@ -295,6 +300,52 @@ public class IsoworldsUtils {
             return false;
         }
         return false;
+    }
+
+    public static WorldProperties setWorldProperties(String worldname, Player pPlayer) {
+
+        // Check si world properties en place, création else
+        Optional<WorldProperties> wp = Sponge.getServer().getWorldProperties(worldname);
+        WorldProperties worldProperties;
+
+        try {
+            if (wp.isPresent()) {
+                worldProperties = wp.get();
+                IsoworldsUtils.cm("WOLRD PROPERTIES: déjà présent");
+            } else {
+                worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
+                IsoworldsUtils.cm("WOLRD PROPERTIES: non présents, création...");
+
+            }
+
+            // Global
+            worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
+            worldProperties.setKeepSpawnLoaded(false);
+            worldProperties.setLoadOnStartup(false);
+            worldProperties.setGenerateSpawnOnLoad(false);
+            worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
+            worldProperties.setPVPEnabled(true);
+            worldProperties.setWorldBorderCenter(0, 0);
+            worldProperties.setWorldBorderDiameter(500);
+
+            // Spawn
+            //Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
+            //Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
+            //worldProperties.setSpawnPosition(firstspawn.getBlockPosition()    );
+
+
+            // Sauvegarde
+            Sponge.getServer().saveWorldProperties(worldProperties);
+            IsoworldsUtils.cm("WorldProperties à jour");
+
+        } catch (IOException | NoSuchElementException ie) {
+            ie.printStackTrace();
+            IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            return null;
+        }
+
+        return worldProperties;
     }
 
     // Get all trusted iw for a player, si == null alors rien

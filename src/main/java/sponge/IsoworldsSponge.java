@@ -166,16 +166,6 @@ public class IsoworldsSponge {
                                     IsoworldsUtils.cm("debug 2");
                                     IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
 
-                                    // Vérification si World Properties activés
-                                    WorldProperties worldProperties = Sponge.getServer().getWorldProperties(world.getName()).get();
-                                    if (!worldProperties.isEnabled()) {
-                                        IsoworldsUtils.cm("ERREUR DISABLE WORLD PROPERTIES");
-                                        continue;
-                                    }
-
-                                    // Désactivation des World Properties de l'IsoWorld
-                                    worldProperties.setEnabled(false);
-
                                     // ISOWORLDS-SAS
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));

@@ -4,6 +4,7 @@ package sponge.Commandes.SousCommandes;
  * Created by Edwin on 14/10/2017.
  */
 
+import common.Cooldown;
 import common.Msg;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
@@ -39,6 +40,11 @@ public class ConfianceCommande implements CommandCallable {
         Player pPlayer = (Player) source;
         String[] arg = args.split(" ");
         int size = arg.length;
+
+        //If the method return true then the command is in lock
+        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.CONFIANCE)) {
+            return CommandResult.success();
+        }
 
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
@@ -110,6 +116,7 @@ public class ConfianceCommande implements CommandCallable {
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_TRUST).color(TextColors.AQUA))).build()));
         // Suppression lock
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
         return CommandResult.success();
     }
 

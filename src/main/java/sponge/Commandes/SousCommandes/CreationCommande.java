@@ -22,8 +22,10 @@ import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.io.*;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static sponge.Utils.IsoworldsUtils.isLocked;
+import static sponge.Utils.IsoworldsUtils.setWorldProperties;
 
 /**
  * Created by Edwin on 05/10/2017.
@@ -76,44 +78,26 @@ public class CreationCommande implements CommandExecutor {
         }
 
 
-        try {
-            //WorldArchetype worldArchetype = WorldArchetype.builder().dimension(DimensionTypes.OVERWORLD).reset().build(worldname, worldname);
-            WorldProperties worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-            Sponge.getServer().getWorldProperties(worldname).get().setLoadOnStartup(false);
-            Sponge.getServer().getWorldProperties(worldname).get().getDimensionType().getId();
-            Sponge.getServer().getWorldProperties(worldname).get().setGenerateSpawnOnLoad(false);
-            Sponge.getServer().getWorldProperties(worldname).get().setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
-            Sponge.getServer().saveWorldProperties(worldProperties);
+        // Création properties
+        setWorldProperties(worldname, pPlayer);
 
 
-            // INSERT
-            if (IsoworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
-                // INSERT TRUST
-                if (IsoworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
-                    Sponge.getGame().getServer().loadWorld(worldname);
-                    // Configuration du monde
-                    Sponge.getServer().getWorld(worldname).get().setKeepSpawnLoaded(true);
-                    Sponge.getServer().getWorld(worldname).get().getWorldBorder().setCenter(0, 0);
-                    Sponge.getServer().getWorld(worldname).get().getWorldBorder().setDiameter(500);
+        // INSERT
+        if (IsoworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+            // INSERT TRUST
+            if (IsoworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+                // Chargement
+                Sponge.getGame().getServer().loadWorld(worldname);
 
-                    Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
-                    Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
-                    Sponge.getServer().getWorld(worldname).get().getProperties().setSpawnPosition(firstspawn.getBlockPosition());
-
-                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
-                    IsoworldsLocations.teleport(pPlayer, worldname);
-                    pPlayer.sendTitle(IsoworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
-                }
+                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
+                // Téléport
+                IsoworldsLocations.teleport(pPlayer, worldname);
+                pPlayer.sendTitle(IsoworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
             }
-
-
-        } catch (IOException | NoSuchElementException ie) {
-            ie.printStackTrace();
-            IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-            return CommandResult.success();
         }
+
+
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }

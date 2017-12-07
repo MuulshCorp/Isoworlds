@@ -26,10 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -391,7 +388,7 @@ public class IsoworldsUtils {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
             // UUID _W
-            check_w = pPlayer.getName() + "-IsoWorld";
+            check_w = pPlayer.getUniqueId().toString() + "-IsoWorld";
             check.setString(1, check_w);
             // SERVEUR_ID
             check.setString(2, plugin.servername);
@@ -443,6 +440,15 @@ public class IsoworldsUtils {
             se.printStackTrace();
             IsoworldsUtils.cm(messageErreur);
             return false;
+        }
+        return false;
+    }
+
+    public static Boolean isEqualName(String user) {
+        for (Player p : Sponge.getServer().getOnlinePlayers()) {
+            if (p.getName().equals(user)) {
+                return true;
+            }
         }
         return false;
     }

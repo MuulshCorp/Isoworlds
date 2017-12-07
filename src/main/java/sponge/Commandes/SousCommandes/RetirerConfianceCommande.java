@@ -106,11 +106,13 @@ public class RetirerConfianceCommande implements CommandCallable {
 
         try {
             if (player.get().isOnline()) {
-                Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
-                Player playerOnline = Sponge.getServer().getPlayer(arg[0]).get();
-                playerOnline.setLocation(spawn);
-                playerOnline.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.KICK_TRUST).color(TextColors.AQUA))).build()));
+                if (player.get().getPlayer().get().getWorld().getName().equals(pPlayer.getUniqueId().toString() + "-IsoWorld")) {
+                    Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
+                    Player playerOnline = Sponge.getServer().getPlayer(arg[0]).get();
+                    playerOnline.setLocation(spawn);
+                    playerOnline.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                            .append(Text.of(Text.builder(Msg.keys.KICK_TRUST).color(TextColors.AQUA))).build()));
+                }
             }
         } catch (NoSuchElementException nse) {
             nse.printStackTrace();

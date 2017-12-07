@@ -287,9 +287,11 @@ public class IsoworldsUtils {
 
             if (rselect.isBeforeFirst()) {
                 // Chargement si load = true
-                if (load) {
-                    setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
-                    Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
+                if (!IsoworldsUtils.iworldPushed(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", Msg.keys.SQL)) {
+                    if (load) {
+                        setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
+                        Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
+                    }
                 }
                 return true;
             }

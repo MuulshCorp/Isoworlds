@@ -42,19 +42,19 @@ public class MaisonCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
-        // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, true)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-            return CommandResult.success();
-        }
-
         // Import / Export
         if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
             // Suppression lock
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT");
+            return CommandResult.success();
+        }
+
+        // SELECT WORLD
+        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, true)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 

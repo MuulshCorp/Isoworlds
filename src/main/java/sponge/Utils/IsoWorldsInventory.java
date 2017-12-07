@@ -234,11 +234,11 @@ public class IsoWorldsInventory {
         List<Text> list3 = new ArrayList<Text>();
         list3.add(Text.of("Retour au menu principal"));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Ajouter")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.CLAY).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Ajouter")
                 .color(TextColors.GREEN).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Retirer")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.CLAY).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Retirer")
                 .color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Mes accès")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.CLAY).add(Keys.DYE_COLOR, DyeColors.ORANGE).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Mes accès")
                 .color(TextColors.RED).build())).quantity(1).build();
         ItemStack item4 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
@@ -549,7 +549,7 @@ public class IsoWorldsInventory {
         List<Text> list2 = new ArrayList<Text>();
         list2.add(Text.of("Retour au menu principal"));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison")
                 .color(TextColors.GOLD).build())).quantity(1).build();
 
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")

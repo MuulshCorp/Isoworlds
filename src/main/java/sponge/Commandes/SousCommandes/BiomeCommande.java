@@ -71,10 +71,21 @@ public class BiomeCommande implements CommandCallable {
         }
 
         if (arg[0].equals("plaines")) {
-            IsoworldsUtils.cm("TEST2");
             biome = BiomeTypes.PLAINS;
         } else if (arg[0].equals("desert")) {
             biome = BiomeTypes.DESERT;
+        } else if (arg[0].equals("marais")) {
+            biome = BiomeTypes.SWAMPLAND;
+        } else if (arg[0].equals("ocean")) {
+            biome = BiomeTypes.OCEAN;
+        } else if (arg[0].equals("champignon")) {
+            biome = BiomeTypes.MUSHROOM_ISLAND;
+        } else if (arg[0].equals("jungle")) {
+            biome = BiomeTypes.JUNGLE;
+        } else if (arg[0].equals("enfer")) {
+            biome = BiomeTypes.HELL;
+        } else if (arg[0].equals("end")) {
+            biome = BiomeTypes.VOID;
         } else {
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();

@@ -182,7 +182,7 @@ public class IsoWorldsInventory {
         List<Text> list3 = new ArrayList<Text>();
         list3.add(Text.of("Retour au menu principal"));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Plaines")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.SAPLING).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Plaines")
                 .color(TextColors.GOLD).build())).quantity(1).build();
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.SAND).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Désert")
                 .color(TextColors.GOLD).build())).quantity(1).build();

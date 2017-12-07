@@ -19,6 +19,7 @@ import org.spongepowered.api.world.storage.WorldProperties;
 import java.util.ArrayList;
 
 import static sponge.Utils.IsoworldsUtils.isLocked;
+import static sponge.Utils.IsoworldsUtils.setWorldProperties;
 
 /**
  * Created by Edwin on 15/10/2017.
@@ -79,6 +80,7 @@ public class OnCommande implements CommandExecutor {
                         .append(Text.of(Text.builder("Sijania vient d'activer votre IsoWorld.").color(TextColors.AQUA))).build()));
                 // Si ça réussi
                 try {
+                    setWorldProperties(worldname, pPlayer);
                     Sponge.getServer().loadWorld(worldname.toString());
                     plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();

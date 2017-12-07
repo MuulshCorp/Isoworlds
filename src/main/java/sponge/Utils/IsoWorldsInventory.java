@@ -500,13 +500,13 @@ public class IsoWorldsInventory {
         if (IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, false)) {
             List<Text> list1 = new ArrayList<Text>();
             list1.add(Text.of("Réinitialiser votre IsoWorld."));
-            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
+            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
                     .color(TextColors.GOLD).build())).quantity(1).build();
             menu.query(SlotPos.of(0, 0)).set(item1);
         } else {
             List<Text> list1 = new ArrayList<Text>();
             list1.add(Text.of("Créer votre IsoWorld."));
-            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Création")
+            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Création")
                     .color(TextColors.GOLD).build())).quantity(1).build();
             menu.query(SlotPos.of(0, 0)).set(item1);
         }

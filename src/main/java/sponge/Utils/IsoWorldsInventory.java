@@ -112,22 +112,24 @@ public class IsoWorldsInventory {
         List<Text> list8 = new ArrayList<Text>();
         list8.add(Text.of("Gérez l'heure de votre IsoWorld"));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome")
-                .color(TextColors.GOLD).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.EMERALD).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance")
-                .color(TextColors.GREEN).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.BRICK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Construction")
+
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.DIAMOND_PICKAXE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Construction")
                 .color(TextColors.GRAY).build())).quantity(1).build();
-        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison")
                 .color(TextColors.BLUE).build())).quantity(1).build();
-        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Météo")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.EMERALD).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance")
+                .color(TextColors.GREEN).build())).quantity(1).build();
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.SAPLING).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome")
+                .color(TextColors.GOLD).build())).quantity(1).build();
+        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.CLOCK).add(Keys.ITEM_LORE, list8).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Temps")
+                .color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
+        ItemStack item6 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Météo")
                 .color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item6 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation")
+        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation")
                 .color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.DIAMOND_BOOTS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Téléportation")
+        ItemStack item8 = ItemStack.builder().itemType(ItemTypes.DIAMOND_BOOTS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Téléportation")
                 .color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
-        ItemStack item8 = ItemStack.builder().itemType(ItemTypes.CLOCK).add(Keys.ITEM_LORE, list8).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Temps")
-                .color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
+
 
         // Placement item dans le menu
         menu.query(SlotPos.of(0, 0)).set(item1);
@@ -135,13 +137,14 @@ public class IsoWorldsInventory {
         menu.query(SlotPos.of(2, 0)).set(item3);
         menu.query(SlotPos.of(3, 0)).set(item4);
         menu.query(SlotPos.of(4, 0)).set(item5);
+        menu.query(SlotPos.of(5, 0)).set(item6);
 
         // STAFF
         if (pPlayer.hasPermission("isworlds.menu.activation")) {
-            menu.query(SlotPos.of(5, 0)).set(item6);
+            menu.query(SlotPos.of(6, 0)).set(item7);
         }
         if (pPlayer.hasPermission("isoworlds.menu.teleportation")) {
-            menu.query(SlotPos.of(6, 0)).set(item7);
+            menu.query(SlotPos.of(7, 0)).set(item8);
         }
         menu.query(SlotPos.of(7, 0)).set(item8);
 
@@ -182,7 +185,7 @@ public class IsoWorldsInventory {
         List<Text> list3 = new ArrayList<Text>();
         list3.add(Text.of("Retour au menu principal"));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.SAPLING).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Plaines")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Plaines")
                 .color(TextColors.GOLD).build())).quantity(1).build();
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.SAND).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Désert")
                 .color(TextColors.GOLD).build())).quantity(1).build();

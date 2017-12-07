@@ -120,7 +120,7 @@ public class IsoWorldsInventory {
                 .color(TextColors.GRAY).build())).quantity(1).build();
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison")
                 .color(TextColors.BLUE).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.SKULL).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.SKULL).add(Keys.SKULL_TYPE, SkullTypes.PLAYER).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance")
                 .color(TextColors.GREEN).build())).quantity(1).build();
         ItemStack item4 = ItemStack.builder().itemType(ItemTypes.LEAVES).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome")
                 .color(TextColors.GOLD).build())).quantity(1).build();

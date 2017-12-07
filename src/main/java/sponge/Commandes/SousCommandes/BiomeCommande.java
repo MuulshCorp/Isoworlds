@@ -93,10 +93,8 @@ public class BiomeCommande implements CommandCallable {
         // Définition biome
         Location loc = pPlayer.getLocation();
         for (int x = 0; x < 16; x++) {
-            IsoworldsUtils.cm("TEST 3");
             for (int z = 0; z < 16; z++) {
                 loc.getExtent().setBiome(loc.getChunkPosition().getX() * 16 + x, 0, loc.getChunkPosition().getY() * 16 + z, biome);
-                IsoworldsUtils.cm("TEST4");
             }
         }
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)

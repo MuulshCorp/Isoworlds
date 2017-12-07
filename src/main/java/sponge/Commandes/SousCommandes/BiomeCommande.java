@@ -76,7 +76,7 @@ public class BiomeCommande implements CommandCallable {
             biome = BiomeTypes.DESERT;
         } else if (arg[0].equals("marais")) {
             biome = BiomeTypes.SWAMPLAND;
-        } else if (arg[0].equals("ocean")) {
+        } else if (arg[0].equals("océan")) {
             biome = BiomeTypes.OCEAN;
         } else if (arg[0].equals("champignon")) {
             biome = BiomeTypes.MUSHROOM_ISLAND;

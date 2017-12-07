@@ -167,11 +167,33 @@ public class IsoWorldsInventory {
                     if (menuName.contains("Plaines")) {
                         commandMenu(pPlayer, "iw biome plaines");
                         closeMenu(pPlayer);
-                        ;
                     } else if (menuName.contains("Désert")) {
                         commandMenu(pPlayer, "iw biome desert");
                         closeMenu(pPlayer);
-                    } else if (menuName.contains("Menu principal")) {
+                    }else if (menuName.contains("Marais")) {
+                        commandMenu(pPlayer, "iw biome marais");
+                        closeMenu(pPlayer);
+                    }
+                    else if (menuName.contains("Océan")) {
+                        commandMenu(pPlayer, "iw biome océan");
+                        closeMenu(pPlayer);
+                    }
+                    else if (menuName.contains("Champignon")) {
+                        commandMenu(pPlayer, "iw biome champignon");
+                        closeMenu(pPlayer);
+                    }
+                    else if (menuName.contains("Jungle")) {
+                        commandMenu(pPlayer, "iw biome jungle");
+                        closeMenu(pPlayer);
+                    }
+                    else if (menuName.contains("Enfer")) {
+                        commandMenu(pPlayer, "iw biome enfer");
+                        closeMenu(pPlayer);
+                    }
+                    else if (menuName.contains("End")) {
+                        commandMenu(pPlayer, "iw biome end");
+                        closeMenu(pPlayer);
+                    }else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
                 })

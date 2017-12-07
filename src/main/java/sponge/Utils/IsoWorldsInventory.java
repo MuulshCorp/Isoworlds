@@ -120,7 +120,7 @@ public class IsoWorldsInventory {
                 .color(TextColors.GRAY).build())).quantity(1).build();
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison")
                 .color(TextColors.BLUE).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.EMERALD).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.SKULL).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance")
                 .color(TextColors.GREEN).build())).quantity(1).build();
         ItemStack item4 = ItemStack.builder().itemType(ItemTypes.LEAVES).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome")
                 .color(TextColors.GOLD).build())).quantity(1).build();
@@ -423,32 +423,38 @@ public class IsoWorldsInventory {
 
         int i = 0;
         int j = 0;
-        for (Player p : Sponge.getServer().getOnlinePlayers()) {
-            if (IsoworldsUtils.trustExists(p, pPlayer.getUniqueId(), Msg.keys.EXISTE_PAS_TRUST)) {
+        ResultSet trusts = IsoworldsUtils.getTrusts(pPlayer, Msg.keys.SQL);
+        try {
+            while (trusts.next()) {
+                // Récupération uuid
+                String tmp = trusts.getString(1);
+                UUID uuid = UUID.fromString(tmp);
+                Optional<User> user = IsoworldsUtils.getPlayerFromUUID(uuid);
 
-                // Continue si c'est le profil du joueur executant
-                if (p.getName().equals(pPlayer.getName())) {
-                    continue;
-                }
-
+                // Construction du lore
                 List<Text> list1 = new ArrayList<Text>();
                 list1.add(Text.of("Joueur"));
 
+                // Construction des skin itemstack
                 SkullData data = Sponge.getGame().getDataManager().getManipulatorBuilder(SkullData.class).get().create();
                 data.set(Keys.SKULL_TYPE, SkullTypes.PLAYER);
                 ItemStack stack = Sponge.getGame().getRegistry().createBuilder(ItemStack.Builder.class).itemType(ItemTypes.SKULL).itemData(data)
-                        .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(p.getName())
+                        .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(user.get().getName())
                                 .color(TextColors.GOLD).build())).quantity(1)
                         .build();
                 RepresentedPlayerData skinData = Sponge.getGame().getDataManager().getManipulatorBuilder(RepresentedPlayerData.class).get().create();
-                skinData.set(Keys.REPRESENTED_PLAYER, GameProfile.of(UUID.fromString(p.getUniqueId().toString()), p.getName()));
+                IsoworldsUtils.cm("USER: " + user.get().getUniqueId().toString() + user.get().getName());
+                skinData.set(Keys.REPRESENTED_PLAYER, GameProfile.of(user.get().getUniqueId(), user.get().getName()));
                 stack.offer(skinData);
 
                 if (i >= 8) {
                     j = j++;
                 }
                 menu.query(SlotPos.of(i, j)).set(stack);
+                i++;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         List<Text> list2 = new ArrayList<Text>();

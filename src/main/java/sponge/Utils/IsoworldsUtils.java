@@ -382,6 +382,35 @@ public class IsoworldsUtils {
         return result;
     }
 
+    // Get all players that was trusted
+    public static ResultSet getTrusts(Player pPlayer, String messageErreur) {
+        String CHECK = "SELECT `UUID_P` FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String check_w;
+        ResultSet result = null;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // UUID _W
+            check_w = pPlayer.getName() + "-IsoWorld";
+            check.setString(1, check_w);
+            // SERVEUR_ID
+            check.setString(2, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            if (rselect.isBeforeFirst()) {
+                result = rselect;
+                return result;
+            }
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return result;
+        }
+        return result;
+    }
+
     // check if status is push or pull exists
     // true si présent, false si envoyé ou à envoyer
     public static Boolean iworldPushed(String world, String messageErreur) {

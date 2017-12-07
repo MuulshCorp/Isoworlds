@@ -360,6 +360,12 @@ public class IsoWorldsInventory {
         int j = 0;
         for (Player p : Sponge.getServer().getOnlinePlayers()) {
             if (!IsoworldsUtils.trustExists(p, pPlayer.getUniqueId(), Msg.keys.EXISTE_PAS_TRUST)) {
+
+                // Continue si c'est le profil du joueur executant
+                if (p.getName().equals(pPlayer.getName())) {
+                    continue;
+                }
+
                 List<Text> list1 = new ArrayList<Text>();
                 list1.add(Text.of("Joueur"));
 
@@ -419,6 +425,12 @@ public class IsoWorldsInventory {
         int j = 0;
         for (Player p : Sponge.getServer().getOnlinePlayers()) {
             if (IsoworldsUtils.trustExists(p, pPlayer.getUniqueId(), Msg.keys.EXISTE_PAS_TRUST)) {
+
+                // Continue si c'est le profil du joueur executant
+                if (p.getName().equals(pPlayer.getName())) {
+                    continue;
+                }
+
                 List<Text> list1 = new ArrayList<Text>();
                 list1.add(Text.of("Joueur"));
 

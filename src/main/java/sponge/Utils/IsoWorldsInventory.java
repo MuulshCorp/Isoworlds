@@ -215,7 +215,7 @@ public class IsoWorldsInventory {
         list5.add(Text.of("Un biome assez rare, les monstres"));
         list5.add(Text.of("n'y apparaîssent pas."));
 
-        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.MUSHROOM_STEW).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Champignon")
+        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.RED_MUSHROOM).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Champignon")
                 .color(TextColors.RED).build())).quantity(1).build();
 
         // Jungle

@@ -9,7 +9,6 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.world.Chunk;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.biome.BiomeType;
@@ -53,7 +52,7 @@ public class BiomeCommande implements CommandCallable {
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             // Suppression lock

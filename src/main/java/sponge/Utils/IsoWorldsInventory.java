@@ -1,15 +1,12 @@
 package sponge.Utils;
 
-import com.sun.org.apache.xml.internal.serializer.utils.MsgKey;
 import common.Cooldown;
 import common.Msg;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
 import org.spongepowered.api.data.manipulator.mutable.SkullData;
-import org.spongepowered.api.data.type.DyeColor;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.data.type.SkullTypes;
 import org.spongepowered.api.entity.living.player.Player;
@@ -528,7 +525,7 @@ public class IsoWorldsInventory {
                             @Override
                             public void run() {
                                 // Si monde présent en dossier ?
-                                if (IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+                                if (IsoworldsUtils.checkTag(pPlayer, worldname)) {
                                     // Chargement du isoworld + tp
                                     Sponge.getServer().loadWorld(worldname);
                                     IsoworldsLocations.teleport(pPlayer, user.get().getUniqueId().toString() + "-IsoWorld");
@@ -552,7 +549,7 @@ public class IsoWorldsInventory {
 
         int i = 0;
         int j = 0;
-        ResultSet trusts = IsoworldsUtils.getAccessIW(pPlayer, Msg.keys.SQL);
+        ResultSet trusts = IsoworldsUtils.getAccess(pPlayer, Msg.keys.SQL);
         try {
             while (trusts.next()) {
                 // Récupération uuid
@@ -629,7 +626,7 @@ public class IsoWorldsInventory {
 
 
         // Affiche la refonte si le monde est créé, sinon affiche la création
-        if (IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, false)) {
+        if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             List<Text> list1 = new ArrayList<Text>();
             list1.add(Text.of("Réinitialiser votre IsoWorld."));
             ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")

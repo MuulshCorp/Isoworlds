@@ -5,11 +5,8 @@ import com.google.inject.Inject;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
-import org.spongepowered.api.data.DataQuery;
-import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.world.Chunk;
-import org.spongepowered.api.world.DimensionType;
 import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
@@ -36,8 +33,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import static sponge.Utils.IsoWorldsBanWorldItems.checkLoadedChunks;
 
 @Plugin(
         id = "isoworlds",
@@ -158,13 +153,13 @@ public class IsoworldsSponge {
                             worlds.remove(world.getName());
 
                             // Vérification du statut du monde, si il est push ou non
-                            if (!IsoworldsUtils.iworldPushed(world.getName(), Msg.keys.SQL)) {
+                            if (!IsoworldsUtils.getStatus(world.getName(), Msg.keys.SQL)) {
                                 IsoworldsUtils.cm("debug 1");
                                 File check = new File(ManageFiles.getPath() + world.getName());
                                 // Si le dossier existe alors on met le statut à 1 (push)
                                 if (check.exists()) {
                                     IsoworldsUtils.cm("debug 2");
-                                    IsoworldsUtils.iworldSetStatus(world.getName(), 1, Msg.keys.SQL);
+                                    IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
 
                                     // ISOWORLDS-SAS
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));

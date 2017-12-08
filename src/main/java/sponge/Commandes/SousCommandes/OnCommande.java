@@ -1,6 +1,5 @@
 package sponge.Commandes.SousCommandes;
 
-import common.Msg;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
 
@@ -45,7 +44,7 @@ public class OnCommande implements CommandExecutor {
         }
 
         // Import / Export
-        if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+        if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
             // Suppression lock
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
@@ -69,7 +68,7 @@ public class OnCommande implements CommandExecutor {
         for (WorldProperties world : worlds) {
             // si iworld existe
             if (world.getWorldName().equals(worldname.toString())) {
-                if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+                if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
                     plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                 }

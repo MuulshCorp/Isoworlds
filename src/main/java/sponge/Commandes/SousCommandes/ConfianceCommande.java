@@ -60,7 +60,7 @@ public class ConfianceCommande implements CommandCallable {
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             // Suppression lock
@@ -97,7 +97,7 @@ public class ConfianceCommande implements CommandCallable {
         }
 
         // CHECK AUTORISATIONS
-        if (IsoworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (IsoworldsUtils.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_TRUST).color(TextColors.AQUA))).build()));
             // Suppression lock
@@ -106,7 +106,7 @@ public class ConfianceCommande implements CommandCallable {
         }
 
         // INSERT
-        if (!IsoworldsUtils.insertTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.setTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
             // Suppression lock
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();

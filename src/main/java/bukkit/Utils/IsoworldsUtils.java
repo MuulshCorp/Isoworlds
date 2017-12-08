@@ -34,7 +34,7 @@ public class IsoworldsUtils {
     }
 
     // Check if iworld exists
-    public static Boolean iworldExists(String uuid, String messageErreur) {
+    public static Boolean iworldExists(String uuid, String messageErreur, Boolean load) {
         IsoworldsBukkit instance;
         instance = IsoworldsBukkit.getInstance();
         String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
@@ -55,7 +55,18 @@ public class IsoworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst() ) {
-                Bukkit.getServer().createWorld(new WorldCreator(uuid + "-IsoWorld"));
+
+                return true;
+            }
+
+            if (rselect.isBeforeFirst()) {
+                // Chargement si load = true
+                if (!IsoworldsUtils.iworldPushed(uuid + "-IsoWorld", Msg.keys.SQL)) {
+                    if (load) {
+                        setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
+                        Bukkit.getServer().createWorld(new WorldCreator(uuid + "-IsoWorld"));
+                    }
+                }
                 return true;
             }
         } catch (Exception se){

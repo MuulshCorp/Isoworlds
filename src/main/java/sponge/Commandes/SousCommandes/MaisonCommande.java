@@ -43,7 +43,7 @@ public class MaisonCommande implements CommandExecutor {
         }
 
         // Import / Export
-        if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+        if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
             // Suppression lock
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT");
@@ -51,7 +51,7 @@ public class MaisonCommande implements CommandExecutor {
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, true)) {
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());

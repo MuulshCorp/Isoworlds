@@ -55,7 +55,7 @@ public class RetirerConfianceCommande implements CommandCallable {
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
@@ -89,7 +89,7 @@ public class RetirerConfianceCommande implements CommandCallable {
         }
 
         // CHECK AUTORISATIONS
-        if (!IsoworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_TRUST_2).color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());

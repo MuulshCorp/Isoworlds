@@ -55,7 +55,7 @@ public class RefonteCommande implements CommandExecutor {
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
@@ -118,7 +118,7 @@ public class RefonteCommande implements CommandExecutor {
 
 
         // DELETE WORLD
-        if (!IsoworldsUtils.deleteIworld(pPlayer, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.deleteIsoWorld(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());

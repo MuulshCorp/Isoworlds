@@ -2,23 +2,11 @@ package sponge.Listeners;
 
 import common.ManageFiles;
 import common.Msg;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.entity.Transform;
-import org.spongepowered.api.entity.living.player.User;
-import org.spongepowered.api.event.block.InteractBlockEvent;
-import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
-import org.spongepowered.api.event.world.UnloadWorldEvent;
-import org.spongepowered.api.event.world.chunk.LoadChunkEvent;
-import org.spongepowered.api.network.PlayerConnection;
-import org.spongepowered.api.service.user.UserStorageService;
-import org.spongepowered.api.world.WorldArchetypes;
-import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
@@ -36,7 +24,6 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
@@ -93,14 +80,14 @@ public class IsoworldsListeners {
     @Listener
     public void onLoadWorld(LoadWorldEvent event) {
         if (event.getTargetWorld().getName().contains("-IsoWorld")) {
-            if (IsoworldsUtils.iworldPushed(event.getTargetWorld().getName(), Msg.keys.SQL)) {
+            if (IsoworldsUtils.getStatus(event.getTargetWorld().getName(), Msg.keys.SQL)) {
                 IsoworldsUtils.cm("Debug 4");
                 // Prepair for pushing to backup server
                 File check = new File(ManageFiles.getPath() + event.getTargetWorld().getName() + "PULL");
                 File check2 = new File(ManageFiles.getPath() + event.getTargetWorld().getName());
                 if (check2.exists()) {
                     IsoworldsUtils.cm("Debug 5");
-                    IsoworldsUtils.iworldSetStatus(event.getTargetWorld().getName(), 0, Msg.keys.SQL);
+                    IsoworldsUtils.setStatus(event.getTargetWorld().getName(), 0, Msg.keys.SQL);
                 } else if (check.exists()) {
                     ManageFiles.rename(ManageFiles.getPath() + event.getTargetWorld().getName() + "@PUSH", "@PULL");
                     IsoworldsUtils.cm("PULL OK");

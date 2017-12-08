@@ -1,7 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
 import common.Msg;
-import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import sponge.IsoworldsSponge;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
@@ -17,12 +16,8 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.world.*;
-import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.io.*;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static sponge.Utils.IsoworldsUtils.isLocked;
 import static sponge.Utils.IsoworldsUtils.setWorldProperties;
@@ -52,7 +47,7 @@ public class CreationCommande implements CommandExecutor {
         }
 
         // SELECT WORLD
-        if (IsoworldsUtils.iworldExists(pPlayer, Msg.keys.SQL, false)) {
+        if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
@@ -83,9 +78,9 @@ public class CreationCommande implements CommandExecutor {
 
 
         // INSERT
-        if (IsoworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+        if (IsoworldsUtils.setIsoWorld(pPlayer, Msg.keys.SQL)) {
             // INSERT TRUST
-            if (IsoworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+            if (IsoworldsUtils.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
                 // Chargement
                 Sponge.getGame().getServer().loadWorld(worldname);
 

@@ -6,6 +6,7 @@ import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -47,13 +48,13 @@ public class IsoworldsUtils {
         String check_p;
         ResultSet result = null;
         try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
+            PreparedStatement check = instance.database.prepare(CHECK);
 
             // UUID _P
-            check_p = IsoworldsUtils.PlayerToUUID(pPlayer).toString();
+            check_p = pPlayer.getUniqueId().toString();
             check.setString(1, check_p);
             // SERVEUR_ID
-            check.setString(2, plugin.servername);
+            check.setString(2, instance.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
@@ -63,8 +64,7 @@ public class IsoworldsUtils {
         } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return result;
         }
         return result;
@@ -76,13 +76,13 @@ public class IsoworldsUtils {
         String check_w;
         ResultSet result = null;
         try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
+            PreparedStatement check = instance.database.prepare(CHECK);
 
             // UUID _W
             check_w = pPlayer.getUniqueId().toString() + "-IsoWorld";
             check.setString(1, check_w);
             // SERVEUR_ID
-            check.setString(2, plugin.servername);
+            check.setString(2, instance.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
@@ -92,8 +92,7 @@ public class IsoworldsUtils {
         } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return result;
         }
         return result;
@@ -219,50 +218,28 @@ public class IsoworldsUtils {
     }
 
     // Create world properties IsoWorlds
-    public static WorldProperties setWorldProperties(String worldname, Player pPlayer) {
+    public static void setWorldProperties(String worldname, Player pPlayer) {
 
-        // Check si world properties en place, création else
-        Optional<WorldProperties> wp = Sponge.getServer().getWorldProperties(worldname);
-        WorldProperties worldProperties;
-
-        try {
-            if (wp.isPresent()) {
-                worldProperties = wp.get();
-                IsoworldsUtils.cm("WOLRD PROPERTIES: déjà présent");
-            } else {
-                worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-                IsoworldsUtils.cm("WOLRD PROPERTIES: non présents, création...");
-
-            }
-
-            // Global
-            worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-            worldProperties.setKeepSpawnLoaded(false);
-            worldProperties.setLoadOnStartup(false);
-            worldProperties.setGenerateSpawnOnLoad(false);
-            worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
-            worldProperties.setPVPEnabled(true);
-            worldProperties.setWorldBorderCenter(0, 0);
-            worldProperties.setWorldBorderDiameter(500);
+            // Properties of IsoWorld
+            // Radius border
+            int x = 250;
+            int y = 250;
+            Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
+            Bukkit.getServer().getWorld(worldname).setPVP(true);
+            IsoworldsUtils.cmd("wb " + worldname + " set " + x + " " + y + " 0 0");
+            Block yLoc = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
+            Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, yLoc.getY(), 0);
+            Bukkit.getServer().getWorld(worldname).setGameRuleValue("MobGriefing", "false");
 
             // Spawn
             //Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
             //Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
             //worldProperties.setSpawnPosition(firstspawn.getBlockPosition()    );
 
+            // Sauvegarde a faire ?
 
-            // Sauvegarde
-            Sponge.getServer().saveWorldProperties(worldProperties);
             IsoworldsUtils.cm("WorldProperties à jour");
 
-        } catch (IOException | NoSuchElementException ie) {
-            ie.printStackTrace();
-            IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-            return null;
-        }
-
-        return worldProperties;
     }
 
     // Delete IsoWorld of pPlayer
@@ -356,7 +333,7 @@ public class IsoworldsUtils {
     }
 
     // Check if iworld exists
-    public static Boolean isPresent(String uuid, String messageErreur, Boolean load) {
+    public static Boolean isPresent(Player pPlayer, String messageErreur, Boolean load) {
         IsoworldsBukkit instance;
         instance = IsoworldsBukkit.getInstance();
         String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
@@ -367,10 +344,10 @@ public class IsoworldsUtils {
             PreparedStatement check = instance.database.prepare(CHECK);
 
             // UUID _P
-            check_p = uuid;
+            check_p = pPlayer.getUniqueId().toString();
             check.setString(1, check_p);
             // UUID_W
-            check_w = (uuid + "-IsoWorld");
+            check_w = (check_p + "-IsoWorld");
             check.setString(2, check_w);
             // SERVEUR_ID
             check.setString(3, instance.servername);
@@ -383,10 +360,10 @@ public class IsoworldsUtils {
 
             if (rselect.isBeforeFirst()) {
                 // Chargement si load = true
-                if (!IsoworldsUtils.getStatus(uuid + "-IsoWorld", Msg.keys.SQL)) {
+                if (!IsoworldsUtils.getStatus(check_p + "-IsoWorld", Msg.keys.SQL)) {
                     if (load) {
-                        setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
-                        Bukkit.getServer().createWorld(new WorldCreator(uuid + "-IsoWorld"));
+                        setWorldProperties(check_p + "-IsoWorld", pPlayer);
+                        Bukkit.getServer().createWorld(new WorldCreator(check_p + "-IsoWorld"));
                     }
                 }
                 return true;

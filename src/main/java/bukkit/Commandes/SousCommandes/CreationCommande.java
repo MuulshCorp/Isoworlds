@@ -13,7 +13,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.spongepowered.api.world.gamerule.DefaultGameRules;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +38,7 @@ public class CreationCommande {
         }
 
         // SELECT WORLD
-        if (IsoworldsUtils.isPresent(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+        if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
@@ -99,7 +98,7 @@ public class CreationCommande {
         IsoworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
         Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
         Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
-        Bukkit.getServer().getWorld(worldname).setGameRuleValue(DefaultGameRules.MOB_GRIEFING, "false");
+        Bukkit.getServer().getWorld(worldname).setGameRuleValue("MobGriefing", "false");
         IsoworldsLocations.teleport(pPlayer, worldname);
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());

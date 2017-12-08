@@ -16,6 +16,7 @@ import static bukkit.Utils.IsoworldsUtils.isLocked;
 /**
  * Created by Edwin on 20/11/2017.
  */
+
 public class BiomeCommande {
 
     public static IsoworldsBukkit instance;
@@ -40,7 +41,8 @@ public class BiomeCommande {
             return;
         }
 
-        if (!IsoworldsUtils.isPresent(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+        // SELECT WORLD
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;

@@ -446,15 +446,6 @@ public class IsoworldsUtils {
         return false;
     }
 
-    public static Boolean isEqualName(String user) {
-        for (Player p : Sponge.getServer().getOnlinePlayers()) {
-            if (p.getName().equals(user)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // Cooldown modèle: uuid;commande
     public static Boolean checkLockFormat(String pPlayer, String command) {
         // Si le tableau est null alors lock 0 sinon lock 1

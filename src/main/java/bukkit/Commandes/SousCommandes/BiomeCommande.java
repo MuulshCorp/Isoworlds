@@ -54,10 +54,20 @@ public class BiomeCommande {
         // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
         // si le biome indiqué existe et on l'applique
         if (args[0].equals("plaines")) {
-            IsoworldsUtils.cm("TEST2");
             biome = Biome.PLAINS;
         } else if (args[0].equals("desert")) {
             biome = Biome.DESERT;
+        } else if (args[0].equals("marais")) {
+            biome = Biome.SWAMPLAND;
+        } else if (args[0].equals("océan")) {
+            biome = Biome.OCEAN;
+        } else if (args[0].equals("champignon")) {
+            biome = Biome.MUSHROOM_ISLAND;
+        } else if (args[0].equals("jungle")) {
+            biome = Biome.JUNGLE;
+        } else if (args[0].equals("enfer")) {
+            biome = Biome.HELL;
+        // Biome VOID inexistant 1.7.10
         } else {
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
@@ -66,7 +76,6 @@ public class BiomeCommande {
         Chunk chunk = pPlayer.getLocation().getChunk();
         IsoworldsUtils.cm("Biomes" + Biome.values().toString());
         for (int x = 0; x < 16; x++) {
-            IsoworldsUtils.cm("TEST 3");
             for (int z = 0; z < 16; z++) {
                 if (chunk.getBlock(x, 0, z).getBiome() != biome) {
                     final Block block = chunk.getBlock(x, 0, z);

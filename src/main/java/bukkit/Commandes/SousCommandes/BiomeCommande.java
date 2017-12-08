@@ -35,7 +35,6 @@ public class BiomeCommande {
             return;
         }
 
-
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
             return;

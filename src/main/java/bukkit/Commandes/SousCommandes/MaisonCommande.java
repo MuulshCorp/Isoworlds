@@ -59,7 +59,7 @@ public class MaisonCommande {
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.isPresent(uuid, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;

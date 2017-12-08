@@ -46,7 +46,7 @@ public class RetirerConfianceCommande {
 
         try {
             // SELECT WORLD
-            if (!IsoworldsUtils.isPresent(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+            if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;

@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoworldsUtils;
+import common.Cooldown;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,13 +27,18 @@ public class ConfianceCommande {
         UUID uuidcible;
         Integer len = args.length;
 
+        //If the method return true then the command is in lock
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
+            return;
+        }
+
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         if (isLocked(pPlayer, String.class.getName())) {
             return;
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.isPresent(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
@@ -66,6 +72,7 @@ public class ConfianceCommande {
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TRUST);
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
         return;
     }
 }

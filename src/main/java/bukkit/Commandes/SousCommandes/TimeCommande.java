@@ -37,7 +37,7 @@ public class TimeCommande {
             return;
         }
 
-        if (!IsoworldsUtils.isPresent(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+        if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;

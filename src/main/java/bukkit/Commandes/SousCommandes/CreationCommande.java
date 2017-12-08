@@ -39,7 +39,7 @@ public class CreationCommande {
         }
 
         // SELECT WORLD
-        if (IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+        if (IsoworldsUtils.isPresent(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
@@ -83,13 +83,13 @@ public class CreationCommande {
         Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
         // INSERT
-        if (!IsoworldsUtils.insertCreation(pPlayer, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.setIsoWorld(pPlayer, Msg.keys.SQL)) {
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // INSERT TRUST
-        if (!IsoworldsUtils.insertTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+        if (!IsoworldsUtils.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }

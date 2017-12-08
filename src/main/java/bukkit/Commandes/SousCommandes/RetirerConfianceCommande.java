@@ -46,7 +46,7 @@ public class RetirerConfianceCommande {
 
         try {
             // SELECT WORLD
-            if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+            if (!IsoworldsUtils.isPresent(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;
@@ -83,7 +83,7 @@ public class RetirerConfianceCommande {
         }
 
         // CHECK AUTORISATIONS
-        if (!IsoworldsUtils.trustExists(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;

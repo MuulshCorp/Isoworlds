@@ -30,14 +30,14 @@ public class OnCommande {
             return;
         }
 
-        if (!IsoworldsUtils.iworldExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+        if (!IsoworldsUtils.isPresent(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // Import / Export
-        if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+        if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
             // Suppression lock
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;

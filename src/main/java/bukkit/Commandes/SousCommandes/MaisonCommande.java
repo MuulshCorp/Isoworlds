@@ -52,14 +52,14 @@ public class MaisonCommande {
         }
 
         // Import / Export
-        if (!IsoworldsUtils.ieWorld(pPlayer, worldname)) {
+        if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
             // Suppression lock
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // SELECT WORLD
-        if (!IsoworldsUtils.iworldExists(uuid, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.isPresent(uuid, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;

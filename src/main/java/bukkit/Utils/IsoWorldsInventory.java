@@ -4,29 +4,301 @@ package bukkit.Utils;
  * Created by Edwin on 23/11/2017.
  */
 
+import bukkit.IsoworldsBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.UUID;
+import java.util.List;
+
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
+
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-
-import static bukkit.IsoworldsBukkit.instance;
-
 
 public class IsoWorldsInventory implements Listener {
+
+    private String name;
+    private int size;
+    private onClick click;
+    List<String> viewing = new ArrayList<String>();
+    private static final IsoworldsBukkit plugin = IsoworldsBukkit.instance;
+
+    private ItemStack[] items;
+
+    // MENU PRINCIPAL
+    public static IsoWorldsInventory MenuPrincipal(Player pPlayer) {
+        IsoWorldsInventory menu = new IsoWorldsInventory("IsoWorlds", 1, new onClick() {
+            @Override
+            public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
+                // MENU PRINCIPAL //
+                // BIOME
+                String menuName = row.getRowItem(slot).getItemMeta().getDisplayName();
+                if (menuName.equals("Biome")) {
+                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    getMenuBiome(pPlayer).open(pPlayer);
+                    return true;
+                    // CONFIANCE
+                } /*else if (row.getRowItem(slot).getType().name().equals(ChatColor.GREEN + "Confiance")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuConfiance().open(p);
+                        // CONSTRUCTION
+                    } else if (row.getRowItem(slot).getType().name().equals(ChatColor.GRAY + "Construction")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuConstruction().open(p);
+                        // MAISON
+                    } else if (row.getRowItem(slot).getType().name().equals(ChatColor.BLUE + "Maison")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuMaison().open(p);
+                        // METEO
+                    } else if (row.getRowItem(slot).getType().name().equals(ChatColor.YELLOW + "Météo")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuMeteo().open(p);
+                        // ACTIVATION
+                    } else if (row.getRowItem(slot).getType().name().equals(ChatColor.RED + "Activation")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuActivation().open(p);
+                        // TELEPORTATION
+                    } else if (row.getRowItem(slot).getType().name().equals(ChatColor.LIGHT_PURPLE + "Téléportation")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuTeleportation().open(p);
+                    } else if (row.getRowItem(slot).getType().name().equals(ChatColor.RED + "Menu principal")) {
+                        IsoworldsUtils.cm("PLAYER MENU 3");
+                        getMenuPrincipal().open(p);
+                    }*/
+                Bukkit.broadcastMessage(row.getRowItem(slot).getType().name());
+
+                return true;
+            }
+        });
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.DIAMOND_PICKAXE), "Construction");
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.BED), "Maison");
+        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.SKULL_ITEM), "Confiance");
+        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.LEAVES), "Biome");
+        menu.addButton(menu.getRow(0), 4, new ItemStack(Material.WATCH), "Temps");
+        menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), "Météo");
+        menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), "Activation");
+        menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), "Téléportation");
+
+        return menu;
+    }
+
+    // MENU BIOME
+    public static IsoWorldsInventory getMenuBiome(Player pPlayer) {
+        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Biome", 2, new onClick() {
+            @Override
+            public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
+
+                // MENU PRINCIPAL //
+                // BIOME
+                String menuName = row.getRowItem(slot).getItemMeta().getDisplayName();
+                if (menuName.contains("Plaines")) {
+                    p.performCommand("iw biome plaines");
+                    p.closeInventory();
+                    return true;
+                } else if (menuName.contains("Désert")) {
+                    p.performCommand("iw biome desert");
+                    p.closeInventory();
+                    return true;
+                } else if (menuName.contains("Marais")) {
+                    p.performCommand("iw biome marais");
+                    p.closeInventory();
+                    return true;
+                } else if (menuName.contains("Océan")) {
+                    p.performCommand("iw biome océan");
+                    p.closeInventory();
+                    return true;
+                } else if (menuName.contains("Champignon")) {
+                    p.performCommand("iw biome champignon");
+                    p.closeInventory();
+                    return true;
+                } else if (menuName.contains("Jungle")) {
+                    p.performCommand("iw biome jungle");
+                    p.closeInventory();
+                    return true;
+                } else if (menuName.contains(ChatColor.DARK_RED + "Enfer")) {
+                    p.performCommand("iw biome enfer");
+                    p.closeInventory();
+                    return true;
+                } else if (menuName.contains("(INDISPONIBLE) End")) {
+                    p.closeInventory();
+                    // INDISPONIBLE
+                    return true;
+                } else if (menuName.contains("Menu principal")) {
+                    MenuPrincipal(pPlayer).open(pPlayer);
+                    return true;
+                }
+
+                if (row.getRowItem(slot).getType().name().equals(ChatColor.GOLD + "Plaines")) {
+                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    Bukkit.broadcastMessage(row.getRowItem(slot).getType().name());
+                    // CONFIANCE
+                }
+
+                return true;
+            }
+        });
+        // Plaines
+        String[] list1 = new String[] {"Un biome relativement plat avec des collines", "vallonnées et une grande quantité de fleurs."};
+
+        // Désert
+        String[] list2 = new String[] {"Un biome constitué principalement de sable", "de cactus et de canne à sucre."};
+
+        // Marais
+        String[] list3 = new String[] {"Un biome avec des nombreuses étendues", "d'eau."};
+
+        // Océan
+        String[] list4 = new String[] {"Un biome avec de vastes étendues d'eau."};
+
+        // Champignon
+        String[] list5 = new String[] {"Un biome assez rare, les monstres", "n'y apparaîssent pas."};
+
+        // Jungle
+        String[] list6 = new String[] {"Un biome avec des arbres imposants", "et une grosse quantité de bois."};
+
+        // Enfer
+        String[] list7 = new String[] {"Un biome qui constitue le nether."};
+
+        // End
+        String[] list8 = new String[] {"Indisponible sur la version 1.7.10, désolé ! =D"};
+
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.GRASS, 1), ChatColor.GREEN + "Plaines", list1);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.DIAMOND_PICKAXE, 1), ChatColor.YELLOW + "Désert", list2);
+        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.CLAY, 1), ChatColor.GRAY + "Marais", list3);
+        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1), ChatColor.BLUE + "Océan", list4);
+        menu.addButton(menu.getRow(0), 4, new ItemStack(Material.RED_MUSHROOM, 1), ChatColor.RED + "Champignon", list5);
+        menu.addButton(menu.getRow(0), 5, new ItemStack(Material.SAPLING, 1), ChatColor.DARK_GREEN + "Jungle", list6);
+        menu.addButton(menu.getRow(0), 6, new ItemStack(Material.NETHERRACK, 1), ChatColor.DARK_RED + "Enfer", list7);
+        menu.addButton(menu.getRow(0), 7, new ItemStack(Material.ENDER_STONE, 1), ChatColor.DARK_PURPLE + "(INDISPONIBLE) End", list8);
+        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal");
+
+        return menu;
+    }
+
+
+    public IsoWorldsInventory(String name, int size, onClick click) {
+        this.name = name;
+        this.size = size * 9;
+        items = new ItemStack[this.size];
+        this.click = click;
+        Bukkit.getPluginManager().registerEvents(this, Bukkit.getPluginManager().getPlugins()[0]);
+    }
+
+    @EventHandler
+    public void onPluginDisable(PluginDisableEvent event) {
+        for (Player p : this.getViewers())
+            close(p);
+    }
+
+    public IsoWorldsInventory open(Player p) {
+        p.openInventory(getInventory(p));
+        viewing.add(p.getName());
+        return this;
+    }
+
+    private Inventory getInventory(Player p) {
+        Inventory inv = Bukkit.createInventory(p, size, name);
+        for (int i = 0; i < items.length; i++)
+            if (items[i] != null)
+                inv.setItem(i, items[i]);
+        return inv;
+    }
+
+    public IsoWorldsInventory close(Player p) {
+        if (p.getOpenInventory().getTitle().equals(name))
+            p.closeInventory();
+        return this;
+    }
+
+    public List<Player> getViewers() {
+        List<Player> viewers = new ArrayList<Player>();
+        for (String s : viewing)
+            viewers.add(Bukkit.getPlayer(s));
+        return viewers;
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (viewing.contains(event.getWhoClicked().getName())) {
+            event.setCancelled(true);
+            Player p = (Player) event.getWhoClicked();
+            Row row = getRowFromSlot(event.getSlot());
+            if (!click.click(p, this, row, event.getSlot() - row.getRow() * 9, event.getCurrentItem()))
+                close(p);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (viewing.contains(event.getPlayer().getName()))
+            viewing.remove(event.getPlayer().getName());
+    }
+
+    public IsoWorldsInventory addButton(Row row, int position, ItemStack item, String name, String... lore) {
+        items[row.getRow() * 9 + position] = getItem(item, name, lore);
+        return this;
+    }
+
+    public Row getRowFromSlot(int slot) {
+        return new Row(slot / 9, items);
+    }
+
+    public Row getRow(int row) {
+        return new Row(row, items);
+    }
+
+    public interface onClick {
+        public abstract boolean click(Player clicker, IsoWorldsInventory menu, Row row, int slot, ItemStack item);
+    }
+
+    public class Row {
+        private ItemStack[] rowItems = new ItemStack[9];
+        int row;
+
+        public Row(int row, ItemStack[] items) {
+            this.row = row;
+            int j = 0;
+            for (int i = (row * 9); i < (row * 9) + 9; i++) {
+                rowItems[j] = items[i];
+                j++;
+            }
+        }
+
+        public ItemStack[] getRowItems() {
+            return rowItems;
+        }
+
+        public ItemStack getRowItem(int item) {
+            return rowItems[item] == null ? new ItemStack(Material.AIR) : rowItems[item];
+        }
+
+        public int getRow() {
+            return row;
+        }
+    }
+
+    private ItemStack getItem(ItemStack item, String name, String... lore) {
+        ItemMeta im = item.getItemMeta();
+        im.setDisplayName(name);
+        im.setLore(Arrays.asList(lore));
+        item.setItemMeta(im);
+        return item;
+    }
+
+}
+
+
+
+/*  public class IsoWorldsInventory implements Listener {
 
     private static String name;
     private static int size;
@@ -69,6 +341,7 @@ public class IsoWorldsInventory implements Listener {
         optionNames = null;
         optionIcons = null;
     }
+
 
     @EventHandler(priority = EventPriority.MONITOR)
     void onInventoryClick(InventoryClickEvent event) {
@@ -180,7 +453,7 @@ public class IsoWorldsInventory implements Listener {
                                 }
                                 // TIME
                             } else if (event.getInventory().getName().contains("Temps")) {
-                                    //Jour
+                                //Jour
                                 if (clicked.getItemMeta().getDisplayName().contains("Jour")) {
                                     p.performCommand("iw t " + clicked.getItemMeta().getDisplayName());
                                     //Nuit
@@ -265,9 +538,9 @@ public class IsoWorldsInventory implements Listener {
                 event.setWillClose(true);
             }
         }, instance)
-                .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Biome", "Gérez le biome des vos chunks")
-                .setOption(1, new ItemStack(Material.EMERALD, 1), ChatColor.GREEN + "Confiance", "Gérez qui peut avoir accès à votre IsoWorld")
-                .setOption(2, new ItemStack(Material.BRICK, 1), ChatColor.GRAY + "Construction", "Créez ou refondez votre IsoWorld")
+                .setOption(0, new ItemStack(Material.LEAVES, 1), ChatColor.GOLD + "Biome", "Gérez le biome des vos chunks")
+                .setOption(1, new ItemStack(Material.SKULL_ITEM, 1), ChatColor.GREEN + "Confiance", "Gérez qui peut avoir accès à votre IsoWorld")
+                .setOption(2, new ItemStack(Material.DIAMOND_PICKAXE, 1), ChatColor.GRAY + "Construction", "Créez ou refondez votre IsoWorld")
                 .setOption(3, new ItemStack(Material.BED, 1), ChatColor.BLUE + "Maison", "Rendez-vous sur votre IsoWorld")
                 .setOption(4, new ItemStack(Material.DOUBLE_PLANT, 1), ChatColor.YELLOW + "Météo", "Gérez la pluie et le beau temps de votre IsoWorld")
                 .setOption(5, new ItemStack(Material.LEVER, 1), ChatColor.RED + "Activation", "Chargez-Déchargez votre IsoWorld")
@@ -282,11 +555,18 @@ public class IsoWorldsInventory implements Listener {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
+                IsoworldsUtils.cm("TEST 1");
                 event.setWillClose(true);
             }
         }, instance)
                 .setOption(0, new ItemStack(Material.GRASS, 1), ChatColor.GOLD + "Plaines", "Un biome relativement plat avec des collines || vallonnées et une grande quantité de fleurs")
                 .setOption(1, new ItemStack(Material.SAND, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.")
+                .setOption(2, new ItemStack(Material.CLAY, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.")
+                .setOption(3, new ItemStack(Material.WOOL, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.")
+                .setOption(4, new ItemStack(Material.RED_MUSHROOM, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.")
+                .setOption(5, new ItemStack(Material.SAPLING, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.")
+                .setOption(6, new ItemStack(Material.NETHERRACK, 1), ChatColor.GREEN + "Désert", "Un biome constitué principalement de sable, de cactus et de canne à sucre.")
+                .setOption(7, new ItemStack(Material.ENDER_STONE, 1), ChatColor.RED + "(INDISPONIBLE) Void", "Indisponible sur la version 1.7.10, désolé ! =D")
 
                 // RETOUR
                 .setOption(8, new ItemStack(Material.GOLD_BLOCK, 1), ChatColor.RED + "Menu principal", "Retour au menu principal");
@@ -427,4 +707,4 @@ public class IsoWorldsInventory implements Listener {
         return menuTime;
     }
 
-}
+}*/

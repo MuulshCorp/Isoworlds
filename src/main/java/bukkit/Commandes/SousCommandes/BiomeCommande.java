@@ -31,19 +31,13 @@ public class BiomeCommande {
         Biome biome;
 
         //If the method return true then the command is in lock
-        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
-            return;
-        }
-
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return;
-        }
+        //if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
+        //    return;
+        //}
 
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -54,23 +48,25 @@ public class BiomeCommande {
         }
         // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
         // si le biome indiqué existe et on l'applique
-        if (args[0].equals("plaines")) {
+        for (String s : args) {
+            IsoworldsUtils.cm(s);
+        }
+        if (args[1].equals("plaines")) {
             biome = Biome.PLAINS;
-        } else if (args[0].equals("desert")) {
+        } else if (args[1].equals("desert")) {
             biome = Biome.DESERT;
-        } else if (args[0].equals("marais")) {
+        } else if (args[1].equals("marais")) {
             biome = Biome.SWAMPLAND;
-        } else if (args[0].equals("océan")) {
+        } else if (args[1].equals("océan")) {
             biome = Biome.OCEAN;
-        } else if (args[0].equals("champignon")) {
+        } else if (args[1].equals("champignon")) {
             biome = Biome.MUSHROOM_ISLAND;
-        } else if (args[0].equals("jungle")) {
+        } else if (args[1].equals("jungle")) {
             biome = Biome.JUNGLE;
-        } else if (args[0].equals("enfer")) {
+        } else if (args[1].equals("enfer")) {
             biome = Biome.HELL;
         // Biome VOID inexistant 1.7.10
         } else {
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -84,12 +80,10 @@ public class BiomeCommande {
                 }
             }
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce biome n'existe pas.");
-        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
+        //instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
     }
 }

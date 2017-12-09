@@ -258,7 +258,7 @@ public class IsoWorldsInventory implements Listener {
 
     //MENU PRINCIPAL
     public static IsoWorldsInventory getMenuPrincipal() {
-        IsoWorldsInventory menuPrincipal = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.GOLD + "IsoWorlds: Menu principal"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuPrincipal = new IsoWorldsInventory(ChatColor.GOLD + "IsoWorlds: Menu principal", 9, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -278,7 +278,7 @@ public class IsoWorldsInventory implements Listener {
 
     // BIOME
     public static IsoWorldsInventory getMenuBiome() {
-        IsoWorldsInventory menuBiome = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Biome"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuBiome = new IsoWorldsInventory(ChatColor.RED + "IsoWorlds: Biome", 9, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -295,7 +295,7 @@ public class IsoWorldsInventory implements Listener {
 
     // CONFIANCE
     public static IsoWorldsInventory getMenuConfiance() {
-        IsoWorldsInventory menuConfiance = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Confiance"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuConfiance = new IsoWorldsInventory(ChatColor.RED + "IsoWorlds: Confiance", 9, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -312,7 +312,7 @@ public class IsoWorldsInventory implements Listener {
 
     // CONSTRUCTION
     public static IsoWorldsInventory getMenuConstruction() {
-        IsoWorldsInventory menuConstruction = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Construction"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuConstruction = new IsoWorldsInventory(ChatColor.RED + "IsoWorlds: Construction", 9, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -329,7 +329,7 @@ public class IsoWorldsInventory implements Listener {
 
     // MAISON
     public static IsoWorldsInventory getMenuMaison() {
-        IsoWorldsInventory menuMaison = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Maison"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuMaison = new IsoWorldsInventory(ChatColor.RED + "IsoWorlds: Maison", 9, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -345,7 +345,7 @@ public class IsoWorldsInventory implements Listener {
 
     // METEO
     public static IsoWorldsInventory getMenuMeteo() {
-        IsoWorldsInventory menuMeteo = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Météo"), 18, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuMeteo = new IsoWorldsInventory(ChatColor.RED + "IsoWorlds: Météo", 18, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -367,7 +367,7 @@ public class IsoWorldsInventory implements Listener {
 
     // ACTIVATION
     public static IsoWorldsInventory getMenuActivation() {
-        IsoWorldsInventory menuActivation = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Activation"), 9, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuActivation = new IsoWorldsInventory(ChatColor.RED + "IsoWorlds: Activation", 9, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -384,7 +384,7 @@ public class IsoWorldsInventory implements Listener {
 
     // TELEPORTATION
     public static IsoWorldsInventory getMenuTeleportation() {
-        IsoWorldsInventory menuTeleportation = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Téléportation"), 27, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuTeleportation = new IsoWorldsInventory(ChatColor.RED + "IsoWorlds: Téléportation", 27, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());
@@ -411,7 +411,7 @@ public class IsoWorldsInventory implements Listener {
 
     // TIME
     public static IsoWorldsInventory getMenuTime() {
-        IsoWorldsInventory menuTime = new IsoWorldsInventory(IsoworldsUtils.centerTitle(ChatColor.RED + "IsoWorlds: Temps"), 18, new IsoWorldsInventory.OptionClickEventHandler() {
+        IsoWorldsInventory menuTime = new IsoWorldsInventory(ChatColor.RED + "IsoWorlds: Temps", 18, new IsoWorldsInventory.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IsoWorldsInventory.OptionClickEvent event) {
                 event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds] Vous entrez dans le menu: " + event.getName());

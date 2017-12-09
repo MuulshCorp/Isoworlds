@@ -53,6 +53,7 @@ public class MaisonCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
+        // Supprime le lock
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // SELECT WORLD

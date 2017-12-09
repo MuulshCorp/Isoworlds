@@ -57,7 +57,6 @@ public class IsoworldsCommandes implements CommandExecutor {
                 BiomeCommande.Biome(sender, args);
                 return true;
             } else {
-                IsoworldsUtils.getHelp(sender);
                 return true;
             }
         } else {

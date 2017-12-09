@@ -98,9 +98,6 @@ public class IsoWorldsInventory implements Listener {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Biome", 2, new onClick() {
             @Override
             public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
-
-                // MENU PRINCIPAL //
-                // BIOME
                 String menuName = row.getRowItem(slot).getItemMeta().getDisplayName();
                 if (menuName.contains("Plaines")) {
                     p.performCommand("iw biome plaines");
@@ -139,12 +136,6 @@ public class IsoWorldsInventory implements Listener {
                     return true;
                 }
 
-                if (row.getRowItem(slot).getType().name().equals(ChatColor.GOLD + "Plaines")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
-                    Bukkit.broadcastMessage(row.getRowItem(slot).getType().name());
-                    // CONFIANCE
-                }
-
                 return true;
             }
         });
@@ -180,6 +171,40 @@ public class IsoWorldsInventory implements Listener {
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.SAPLING, 1), ChatColor.DARK_GREEN + "Jungle", list6);
         menu.addButton(menu.getRow(0), 6, new ItemStack(Material.NETHERRACK, 1), ChatColor.DARK_RED + "Enfer", list7);
         menu.addButton(menu.getRow(0), 7, new ItemStack(Material.ENDER_STONE, 1), ChatColor.DARK_PURPLE + "(INDISPONIBLE) End", list8);
+        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal");
+
+        return menu;
+    }
+
+    // MENU BIOME
+    public static IsoWorldsInventory getMenuConfiance(Player pPlayer) {
+        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Confiance", 2, new onClick() {
+            @Override
+            public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
+                String menuName = row.getRowItem(slot).getItemMeta().getDisplayName();
+                if (menuName.contains("Ajouter")) {
+                    getMenuConfianceAdd(pPlayer).open(pPlayer);
+                } else if (menuName.contains("Retirer")) {
+                    getMenuConfianceRemove(pPlayer).open(pPlayer);
+                } else if (menuName.contains("Mes accès")) {
+                    getMenuConfianceAccess(pPlayer).open(pPlayer);
+                } else if (menuName.contains("Menu principal")) {
+                    MenuPrincipal(pPlayer).open(pPlayer);
+                }
+
+                return true;
+            }
+        });
+
+        // Lore
+        String[] list1 = new String[] {"Autoriser l'accès à votre IsoWorld."};
+        String[] list2 = new String[] {"Retirer l'accès à votre IsoWorld."};
+        String[] list3 = new String[] {"Retour au menu principal"};
+
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + "Ajouter", list1);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + "Retirer", list1);
+        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.ORANGE.getData()), ChatColor.RED + "Mes accès", list1);
+
         menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal");
 
         return menu;

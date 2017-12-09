@@ -32,14 +32,8 @@ public class MeteoCommande {
             return;
         }
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return;
-        }
-
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -50,14 +44,12 @@ public class MeteoCommande {
             pPlayer.sendMessage(ChatColor.GOLD + "- Pluie: " + ChatColor.AQUA + "/iw meteo " + ChatColor.GOLD + "[" + ChatColor.GREEN + "pluie"
                     + ChatColor.GOLD + "/" + ChatColor.GREEN + "soleil" + ChatColor.GOLD + "] " + ChatColor.GREEN + "(durée en minute)");
             pPlayer.sendMessage(" ");
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         } else {
             try {
                 num = Integer.parseInt(args[2]);
             } catch (NumberFormatException e) {
                 pPlayer.sendMessage(ChatColor.AQUA + "Sijania indique que vous n'avez pas renseigné de minutes.");
-                instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;
             }
             World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
@@ -75,7 +67,6 @@ public class MeteoCommande {
                         + " vient de changer la météo à: " + args[1] + " pendant: " + num + " ticks.");
             }
         }
-        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
     }
 }

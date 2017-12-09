@@ -33,11 +33,6 @@ public class RetirerConfianceCommande {
         Boolean is;
         Integer len = args.length;
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return;
-        }
-
         if (len > 2 || len < 2) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
@@ -48,14 +43,12 @@ public class RetirerConfianceCommande {
             // SELECT WORLD
             if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
-                instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;
             }
         } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -71,28 +64,24 @@ public class RetirerConfianceCommande {
         // IF TARGET NOT SET
         if (uuidcible == null) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // DENY SELF REMOVE
         if (uuidcible.toString().equals(pPlayer.getUniqueId().toString())) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.BLUE + Msg.keys.DENY_SELF_REMOVE);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // CHECK AUTORISATIONS
         if (!IsoworldsUtils.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // DELETE AUTORISATION
         if (!IsoworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -104,7 +93,6 @@ public class RetirerConfianceCommande {
         } // Gestion du kick offline à gérer dès que possible
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_RETIRER_CONFIANCE);
-        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
 
     }

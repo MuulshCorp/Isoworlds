@@ -25,21 +25,14 @@ public class OnCommande {
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         IsoworldsUtils.cm("check");
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return;
-        }
-
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // Import / Export
         if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
             // Suppression lock
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -50,7 +43,6 @@ public class OnCommande {
         }
 
         IsoworldsUtils.cm("finished");
-        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
     }
 }

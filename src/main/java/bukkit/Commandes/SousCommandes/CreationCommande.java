@@ -32,15 +32,9 @@ public class CreationCommande {
         Player pPlayer = (Player) sender;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return;
-        }
-
         // SELECT WORLD
         if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -50,7 +44,6 @@ public class CreationCommande {
         // Check si le monde existe déjà
         if (Bukkit.getServer().getWorld(worldname) != null) {
             IsoworldsUtils.cm("Le monde existe déjà");
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -75,7 +68,6 @@ public class CreationCommande {
         } catch (IOException ie) {
             IsoworldsUtils.cm(Msg.keys.FICHIERS);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.FICHIERS);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -83,13 +75,11 @@ public class CreationCommande {
 
         // INSERT
         if (!IsoworldsUtils.setIsoWorld(pPlayer, Msg.keys.SQL)) {
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // INSERT TRUST
         if (!IsoworldsUtils.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -101,7 +91,6 @@ public class CreationCommande {
         Bukkit.getServer().getWorld(worldname).setGameRuleValue("MobGriefing", "false");
         IsoworldsLocations.teleport(pPlayer, worldname);
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
-        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
     }
 }

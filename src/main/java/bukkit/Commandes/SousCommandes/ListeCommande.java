@@ -26,11 +26,6 @@ public class ListeCommande {
         ArrayList<World> worlds = new ArrayList<World>();
         Boolean check = false;
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return;
-        }
-
         for(World world : Bukkit.getServer().getWorlds()) {
             if (world.getName() != null) {
                 if (world.getName().contains("-IsoWorld")) {
@@ -41,7 +36,6 @@ public class ListeCommande {
 
         if (check == true) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania ne repère aucun IsoWorld dans le Royaume Isolonice");
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "[Liste des IsoWorlds]");
@@ -67,7 +61,6 @@ public class ListeCommande {
             int loadedChunks = (w.getLoadedChunks().length);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + pname + " [" + status +"] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
         }
-        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
 
     }

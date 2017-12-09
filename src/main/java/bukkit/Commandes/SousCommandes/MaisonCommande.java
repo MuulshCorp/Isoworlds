@@ -27,18 +27,12 @@ public class MaisonCommande {
         String uuid;
         pPlayer = (Player) sender;
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return;
-        }
-
         // Check if home of trusted isoworld
         IsoworldsUtils.cm("DEBUG MAISON: " + args.length);
         // Si joueur précisé
         if (args.length == 2) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(args[1]);
             if (owner == null) {
-                instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return;
             }
             uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
@@ -53,15 +47,12 @@ public class MaisonCommande {
 
         // Import / Export
         if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
-            // Suppression lock
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
@@ -82,14 +73,12 @@ public class MaisonCommande {
         } catch (NullPointerException npe) {
             //
             Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         }
 
         // Téléportation du joueur
         if (pPlayer.teleport(go)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
         }
-        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return;
 
     }

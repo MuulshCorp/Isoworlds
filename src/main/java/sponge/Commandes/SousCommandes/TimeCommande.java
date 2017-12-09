@@ -45,18 +45,10 @@ public class TimeCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-        IsoworldsUtils.cm("taille" + size);
-        IsoworldsUtils.cm(arg[0]);
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return CommandResult.success();
-        }
-
         // Check if world exists
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -64,7 +56,6 @@ public class TimeCommande implements CommandCallable {
         if (!Sponge.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").isPresent()) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania indique que votre IsoWorld doit être chargé pour en changer le temps.").color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -99,7 +90,6 @@ public class TimeCommande implements CommandCallable {
             pPlayer.sendMessage(night);
 
             pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
 
             return CommandResult.success();
         } else if (size == 1) {
@@ -109,7 +99,6 @@ public class TimeCommande implements CommandCallable {
                 Sponge.getServer().getWorld(worldname).get().getProperties().setWorldTime(12000);
             }
         } else {
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -118,9 +107,7 @@ public class TimeCommande implements CommandCallable {
             p.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que " + pPlayer.getName() + " vient de changer la temps à: " + arg[0])
                     .color(TextColors.GOLD).build()));
         }
-        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);
-
         return CommandResult.success();
     }
 

@@ -41,22 +41,15 @@ public class CreationCommande implements CommandExecutor {
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         IsoworldsUtils.cm("IsoWorld name: " + worldname);
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return CommandResult.success();
-        }
-
         // SELECT WORLD
         if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
         // Check si le monde existe déjà
         if (Sponge.getServer().getWorldProperties(worldname).isPresent()) {
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -68,7 +61,6 @@ public class CreationCommande implements CommandExecutor {
         } catch (IOException ie) {
             ie.printStackTrace();
             IsoworldsUtils.coloredMessage(pPlayer, Msg.keys.SQL);
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -91,9 +83,6 @@ public class CreationCommande implements CommandExecutor {
                 pPlayer.sendTitle(IsoworldsUtils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
             }
         }
-
-
-        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

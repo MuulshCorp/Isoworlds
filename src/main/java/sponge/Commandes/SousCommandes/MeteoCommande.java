@@ -46,16 +46,10 @@ public class MeteoCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return CommandResult.success();
-        }
-
         // Check if world exists
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -63,7 +57,6 @@ public class MeteoCommande implements CommandCallable {
         if (!Sponge.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").isPresent()) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania indique que votre IsoWorld doit être chargé pour en changer la météo.").color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -194,7 +187,6 @@ public class MeteoCommande implements CommandCallable {
 
             pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
 
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
 
         } else if (size == 3) {
@@ -211,11 +203,9 @@ public class MeteoCommande implements CommandCallable {
                         .color(TextColors.GOLD).build()));
             }
         } else {
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
-        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
 
         return CommandResult.success();

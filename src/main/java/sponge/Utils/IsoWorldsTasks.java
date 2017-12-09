@@ -44,13 +44,13 @@ public class IsoWorldsTasks implements Consumer<Task> {
         if (check < 1) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania ne parvient pas à charger votre monde, veuillez re tenter ou contacter l'équipe Isolonice.").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("").color(TextColors.RED))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT");
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
             task.cancel();
         } else if (file.exists()) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
 
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT");
+            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
             task.cancel();
         }
     }

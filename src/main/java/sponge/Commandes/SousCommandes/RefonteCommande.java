@@ -49,16 +49,10 @@ public class RefonteCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return CommandResult.success();
-        }
-
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -67,7 +61,6 @@ public class RefonteCommande implements CommandExecutor {
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         } else {
             long millis = timestamp.getTime() - (confirm.get(pPlayer.getUniqueId().toString()).getTime());
@@ -76,7 +69,6 @@ public class RefonteCommande implements CommandExecutor {
                 confirm.remove(pPlayer.getUniqueId().toString());
                 pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                         .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));
-                plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                 return CommandResult.success();
             }
         }
@@ -89,7 +81,6 @@ public class RefonteCommande implements CommandExecutor {
         if (!Sponge.getServer().getWorld(worldname).isPresent()) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
         if (Sponge.getServer().getWorld(worldname).get().isLoaded()) {
@@ -113,7 +104,6 @@ public class RefonteCommande implements CommandExecutor {
             }
         } catch (InterruptedException | ExecutionException ie) {
             ie.printStackTrace();
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         }
 
 
@@ -121,14 +111,12 @@ public class RefonteCommande implements CommandExecutor {
         if (!IsoworldsUtils.deleteIsoWorld(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(Msg.keys.SUCCES_REFONTE).color(TextColors.AQUA))).build()));
 
-        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY);
 
         Sponge.getCommandManager().process(pPlayer, "iw creation");

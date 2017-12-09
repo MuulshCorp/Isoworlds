@@ -38,15 +38,9 @@ public class OnCommande implements CommandExecutor {
         ArrayList<WorldProperties> worlds = new ArrayList<WorldProperties>();
         IsoworldsUtils.cm("check");
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return CommandResult.success();
-        }
-
         // Import / Export
         if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
             // Suppression lock
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -54,7 +48,6 @@ public class OnCommande implements CommandExecutor {
         if (Sponge.getServer().getWorld(worldname).isPresent()) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania indique que votre IsoWorld est déjà chargé.").color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -69,7 +62,6 @@ public class OnCommande implements CommandExecutor {
             // si iworld existe
             if (world.getWorldName().equals(worldname.toString())) {
                 if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
-                    plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                 }
 
@@ -81,7 +73,6 @@ public class OnCommande implements CommandExecutor {
                 try {
                     setWorldProperties(worldname, pPlayer);
                     Sponge.getServer().loadWorld(worldname.toString());
-                    plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                 } catch (NullPointerException npe) {
                     npe.printStackTrace();
@@ -93,13 +84,11 @@ public class OnCommande implements CommandExecutor {
                 if (check == false) {
                     pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                             .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld à votre nom dans le Royaume Isolonice. Entrez /iw creation pour en obtenir un.").color(TextColors.AQUA))).build()));
-                    plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
                     return CommandResult.success();
                 }
             }
         }
         IsoworldsUtils.cm("finished");
-        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

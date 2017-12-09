@@ -142,11 +142,6 @@ public class IsoworldsSponge {
                                 continue;
                             }
 
-                            // Déchargement des chunks
-                            for (Chunk chunk : world.getLoadedChunks()) {
-                                chunk.unloadChunk();
-                            }
-
                             // Déchargement du monde
                             Sponge.getServer().unloadWorld(world);
                             // Suppression dans le tableau

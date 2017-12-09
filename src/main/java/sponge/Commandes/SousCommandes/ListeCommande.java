@@ -39,11 +39,6 @@ public class ListeCommande implements CommandExecutor {
         ArrayList<World> worlds = new ArrayList<World>();
         Boolean check = false;
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return CommandResult.success();
-        }
-
         for(World world : Sponge.getServer().getWorlds()) {
             if (world.isLoaded()) {
                 if (world.getName().contains("-IsoWorld")) {
@@ -93,7 +88,6 @@ public class ListeCommande implements CommandExecutor {
                     .onHover(TextActions.showText(Text.of(worldname))).build());
             pPlayer.sendMessage(name);
         }
-        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         return CommandResult.success();
     }
 

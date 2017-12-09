@@ -46,17 +46,10 @@ public class BiomeCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
-            return CommandResult.success();
-        }
-
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-            // Suppression lock
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -64,8 +57,6 @@ public class BiomeCommande implements CommandCallable {
         if (!world.getName().equals(pPlayer.getUniqueId() + "-IsoWorld")) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania indique que vous devez être présent dans votre monde pour changer de biome.").color(TextColors.AQUA))).build()));
-            // Suppression lock
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -86,7 +77,6 @@ public class BiomeCommande implements CommandCallable {
         } else if (arg[0].equals("end")) {
             biome = BiomeTypes.VOID;
         } else {
-            instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
         // Définition biome
@@ -106,7 +96,6 @@ public class BiomeCommande implements CommandCallable {
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9 ou F3 + G)").color(TextColors.AQUA))).build()));
 
-        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
 
         return CommandResult.success();

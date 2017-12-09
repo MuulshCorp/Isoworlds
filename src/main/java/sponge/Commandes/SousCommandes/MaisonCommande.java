@@ -1,5 +1,6 @@
 package sponge.Commandes.SousCommandes;
 
+import common.Cooldown;
 import common.Msg;
 import sponge.IsoworldsSponge;
 import sponge.Locations.IsoworldsLocations;
@@ -37,24 +38,27 @@ public class MaisonCommande implements CommandExecutor {
         Player pPlayer = (Player) source;
         worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
+        //If the method return true then the command is in lock
+        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.MAISON)) {
+            return CommandResult.success();
+        }
+
+        // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
+        if (isLocked(pPlayer, "checkTag")) {
             return CommandResult.success();
         }
 
         // Import / Export
         if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
-            // Suppression lock
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "lockIMPORT");
             return CommandResult.success();
         }
+
+        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -65,8 +69,6 @@ public class MaisonCommande implements CommandExecutor {
             e.printStackTrace();
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.DATA).color(TextColors.AQUA))).build()));
-            // Suppression lock
-            plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return CommandResult.success();
         }
 
@@ -81,8 +83,7 @@ public class MaisonCommande implements CommandExecutor {
                     .append(Text.of(Text.builder("Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.").color(TextColors.AQUA))).build()));
         }
 
-        // Suppression lock
-        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.MAISON, Cooldown.MAISON_DELAY);
         return CommandResult.success();
     }
 

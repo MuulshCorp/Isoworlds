@@ -14,7 +14,7 @@ public interface CooldownType {
     int LISTE_DELAY = 86400;
 
     String MAISON = "maison";
-    int MAISON_DELAY = 86400;
+    int MAISON_DELAY = 10;
 
     String METEO = "meteo";
     int METEO_DELAY = 10;
@@ -29,7 +29,13 @@ public interface CooldownType {
     int REFONTE_DELAY = 86400;
 
     String RETIRERCONFIANCE = "retirerconfiance";
-    int RETIRERCONFIANCE_DELAY = 86400;
+    int RETIRERCONFIANCE_DELAY = 10;
+
+    String AJOUTERCONFIANCE = "ajouterconfiance";
+    int AJOUTERCONFIANCE_DELAY = 10;
+
+    String ACCESCONFIANCE = "accesconfiance";
+    int ACCESCONFIANCE_DELAY = 10;
 
     String TELEPORT = "teleport";
     int TELEPORT_DELAY = 86400;

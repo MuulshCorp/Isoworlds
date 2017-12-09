@@ -1,5 +1,6 @@
 package sponge.Utils;
 
+import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
 
@@ -32,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class IsoworldsUtils {
 
-    private static final IsoworldsSponge plugin = IsoworldsSponge.instance;
+    public static final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     // ------------------------------------------------- USER MANIPULATION
 
@@ -494,7 +495,7 @@ public class IsoworldsUtils {
     // Vérifie si le lock est présent et renvoi vrai, sinon défini le lock et renvoi false
     public static Boolean isLocked(Player pPlayer, String className) {
         // Si le lock est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
-        if (checkLockFormat(pPlayer.getUniqueId().toString(), String.class.getName())) {
+        if (checkLockFormat(pPlayer.getUniqueId().toString(), className)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
             return true;

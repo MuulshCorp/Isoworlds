@@ -7,6 +7,7 @@ package bukkit.Utils;
 import bukkit.IsoworldsBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -174,7 +175,7 @@ public class IsoWorldsInventory implements Listener {
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.GRASS, 1), ChatColor.GREEN + "Plaines", list1);
         menu.addButton(menu.getRow(0), 1, new ItemStack(Material.DIAMOND_PICKAXE, 1), ChatColor.YELLOW + "Désert", list2);
         menu.addButton(menu.getRow(0), 2, new ItemStack(Material.CLAY, 1), ChatColor.GRAY + "Marais", list3);
-        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1), ChatColor.BLUE + "Océan", list4);
+        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1, DyeColor.BLUE.getData()), ChatColor.BLUE + "Océan", list4);
         menu.addButton(menu.getRow(0), 4, new ItemStack(Material.RED_MUSHROOM, 1), ChatColor.RED + "Champignon", list5);
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.SAPLING, 1), ChatColor.DARK_GREEN + "Jungle", list6);
         menu.addButton(menu.getRow(0), 6, new ItemStack(Material.NETHERRACK, 1), ChatColor.DARK_RED + "Enfer", list7);

@@ -28,9 +28,9 @@ public class ConfianceCommande {
         Integer len = args.length;
 
         //If the method return true then the command is in lock
-        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
-            return;
-        }
+        //if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
+        //    return;
+        //}
 
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
@@ -45,10 +45,16 @@ public class ConfianceCommande {
 
         // Getting uuidcible
         if (Bukkit.getServer().getPlayer(args[1]) == null) {
+            IsoworldsUtils.cm("ARG: " + args[1]);
             uuidcible = Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId();
+            IsoworldsUtils.cm("OFFLINE");
         } else {
+            IsoworldsUtils.cm("ARG: " + args[1]);
             uuidcible = Bukkit.getServer().getPlayer(args[1]).getUniqueId();
+            IsoworldsUtils.cm("ONLINE");
         }
+
+        IsoworldsUtils.cm("CONFIANCE: " + uuidcible);
 
         // CHECK AUTORISATIONS
         if (IsoworldsUtils.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
@@ -62,7 +68,7 @@ public class ConfianceCommande {
         }
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TRUST);
-        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
+        //instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
         return;
     }
 }

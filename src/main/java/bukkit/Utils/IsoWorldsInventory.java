@@ -5,10 +5,9 @@ package bukkit.Utils;
  */
 
 import bukkit.IsoworldsBukkit;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
+import bukkit.Locations.IsoworldsLocations;
+import common.Msg;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -17,14 +16,20 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 
 import org.bukkit.event.EventHandler;
 
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import static bukkit.Utils.IsoworldsUtils.setWorldProperties;
 
 public class IsoWorldsInventory implements Listener {
 
@@ -49,11 +54,11 @@ public class IsoWorldsInventory implements Listener {
                     getMenuBiome(pPlayer).open(pPlayer);
                     return true;
                     // CONFIANCE
-                } /*else if (row.getRowItem(slot).getType().name().equals(ChatColor.GREEN + "Confiance")) {
-                        IsoworldsUtils.cm("PLAYER MENU 3");
-                        getMenuConfiance().open(p);
-                        // CONSTRUCTION
-                    } else if (row.getRowItem(slot).getType().name().equals(ChatColor.GRAY + "Construction")) {
+                } else if (menuName.equals("Confiance")) {
+                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    getMenuConfiance(pPlayer).open(pPlayer);
+                    // CONSTRUCTION
+                } /*else if (row.getRowItem(slot).getType().name().equals(ChatColor.GRAY + "Construction")) {
                         IsoworldsUtils.cm("PLAYER MENU 3");
                         getMenuConstruction().open(p);
                         // MAISON
@@ -81,9 +86,16 @@ public class IsoWorldsInventory implements Listener {
                 return true;
             }
         });
+
+        // Construction des skin itemstack
+        ItemStack item1 = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta sm = (SkullMeta) item1.getItemMeta();
+        sm.setOwner("Steve");
+        item1.setItemMeta(sm);
+
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.DIAMOND_PICKAXE), "Construction");
         menu.addButton(menu.getRow(0), 1, new ItemStack(Material.BED), "Maison");
-        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.SKULL_ITEM), "Confiance");
+        menu.addButton(menu.getRow(0), 2, item1, "Confiance");
         menu.addButton(menu.getRow(0), 3, new ItemStack(Material.LEAVES), "Biome");
         menu.addButton(menu.getRow(0), 4, new ItemStack(Material.WATCH), "Temps");
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), "Météo");
@@ -102,66 +114,57 @@ public class IsoWorldsInventory implements Listener {
                 if (menuName.contains("Plaines")) {
                     p.performCommand("iw biome plaines");
                     p.closeInventory();
-                    return true;
                 } else if (menuName.contains("Désert")) {
                     p.performCommand("iw biome desert");
                     p.closeInventory();
-                    return true;
                 } else if (menuName.contains("Marais")) {
                     p.performCommand("iw biome marais");
                     p.closeInventory();
-                    return true;
                 } else if (menuName.contains("Océan")) {
                     p.performCommand("iw biome océan");
                     p.closeInventory();
-                    return true;
                 } else if (menuName.contains("Champignon")) {
                     p.performCommand("iw biome champignon");
                     p.closeInventory();
-                    return true;
                 } else if (menuName.contains("Jungle")) {
                     p.performCommand("iw biome jungle");
                     p.closeInventory();
-                    return true;
                 } else if (menuName.contains(ChatColor.DARK_RED + "Enfer")) {
                     p.performCommand("iw biome enfer");
                     p.closeInventory();
-                    return true;
                 } else if (menuName.contains("(INDISPONIBLE) End")) {
                     p.closeInventory();
                     // INDISPONIBLE
-                    return true;
                 } else if (menuName.contains("Menu principal")) {
                     MenuPrincipal(pPlayer).open(pPlayer);
-                    return true;
                 }
 
                 return true;
             }
         });
         // Plaines
-        String[] list1 = new String[] {"Un biome relativement plat avec des collines", "vallonnées et une grande quantité de fleurs."};
+        String[] list1 = new String[]{"Un biome relativement plat avec des collines", "vallonnées et une grande quantité de fleurs."};
 
         // Désert
-        String[] list2 = new String[] {"Un biome constitué principalement de sable", "de cactus et de canne à sucre."};
+        String[] list2 = new String[]{"Un biome constitué principalement de sable", "de cactus et de canne à sucre."};
 
         // Marais
-        String[] list3 = new String[] {"Un biome avec des nombreuses étendues", "d'eau."};
+        String[] list3 = new String[]{"Un biome avec des nombreuses étendues", "d'eau."};
 
         // Océan
-        String[] list4 = new String[] {"Un biome avec de vastes étendues d'eau."};
+        String[] list4 = new String[]{"Un biome avec de vastes étendues d'eau."};
 
         // Champignon
-        String[] list5 = new String[] {"Un biome assez rare, les monstres", "n'y apparaîssent pas."};
+        String[] list5 = new String[]{"Un biome assez rare, les monstres", "n'y apparaîssent pas."};
 
         // Jungle
-        String[] list6 = new String[] {"Un biome avec des arbres imposants", "et une grosse quantité de bois."};
+        String[] list6 = new String[]{"Un biome avec des arbres imposants", "et une grosse quantité de bois."};
 
         // Enfer
-        String[] list7 = new String[] {"Un biome qui constitue le nether."};
+        String[] list7 = new String[]{"Un biome qui constitue le nether."};
 
         // End
-        String[] list8 = new String[] {"Indisponible sur la version 1.7.10, désolé ! =D"};
+        String[] list8 = new String[]{"Indisponible sur la version 1.7.10, désolé ! =D"};
 
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.GRASS, 1), ChatColor.GREEN + "Plaines", list1);
         menu.addButton(menu.getRow(0), 1, new ItemStack(Material.DIAMOND_PICKAXE, 1), ChatColor.YELLOW + "Désert", list2);
@@ -171,12 +174,12 @@ public class IsoWorldsInventory implements Listener {
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.SAPLING, 1), ChatColor.DARK_GREEN + "Jungle", list6);
         menu.addButton(menu.getRow(0), 6, new ItemStack(Material.NETHERRACK, 1), ChatColor.DARK_RED + "Enfer", list7);
         menu.addButton(menu.getRow(0), 7, new ItemStack(Material.ENDER_STONE, 1), ChatColor.DARK_PURPLE + "(INDISPONIBLE) End", list8);
-        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal");
+        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal", "Retour au menu principal");
 
         return menu;
     }
 
-    // MENU BIOME
+    // MENU CONFIANCE
     public static IsoWorldsInventory getMenuConfiance(Player pPlayer) {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Confiance", 2, new onClick() {
             @Override
@@ -186,10 +189,10 @@ public class IsoWorldsInventory implements Listener {
                     getMenuConfianceAdd(pPlayer).open(pPlayer);
                 } else if (menuName.contains("Retirer")) {
                     getMenuConfianceRemove(pPlayer).open(pPlayer);
-                } else if (menuName.contains("Mes accès")) {
-                    getMenuConfianceAccess(pPlayer).open(pPlayer);
-                } else if (menuName.contains("Menu principal")) {
-                    MenuPrincipal(pPlayer).open(pPlayer);
+                    //} else if (menuName.contains("Mes accès")) {
+                    //    getMenuConfianceAccess(pPlayer).open(pPlayer);
+                    //} else if (menuName.contains("Menu principal")) {
+                    //    MenuPrincipal(pPlayer).open(pPlayer);
                 }
 
                 return true;
@@ -197,15 +200,247 @@ public class IsoWorldsInventory implements Listener {
         });
 
         // Lore
-        String[] list1 = new String[] {"Autoriser l'accès à votre IsoWorld."};
-        String[] list2 = new String[] {"Retirer l'accès à votre IsoWorld."};
-        String[] list3 = new String[] {"Retour au menu principal"};
+        String[] list1 = new String[]{"Autoriser l'accès à votre IsoWorld."};
+        String[] list2 = new String[]{"Retirer l'accès à votre IsoWorld."};
+        String[] list3 = new String[]{"Retour au menu principal"};
 
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + "Ajouter", list1);
         menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + "Retirer", list1);
         menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.ORANGE.getData()), ChatColor.RED + "Mes accès", list1);
 
-        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal");
+        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal", "Retour au menu principal");
+
+        return menu;
+    }
+
+    // MENU CONFIANCE ADD
+    public static IsoWorldsInventory getMenuConfianceAdd(Player pPlayer) {
+        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Confiance > Ajouter", 4, new onClick() {
+            @Override
+            public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
+                String menuName = row.getRowItem(slot).getItemMeta().getLore().toString();
+                String menuPlayer = row.getRowItem(slot).getItemMeta().getDisplayName();
+                // Si joueur, on ajouter le joueur
+                if (menuName.contains("Joueur")) {
+                    p.performCommand("iw confiance " + ChatColor.stripColor(menuPlayer));
+                    IsoworldsUtils.cm("Confiance:" + menuPlayer);
+                    p.closeInventory();
+                } else if (menuName.contains("menu principal")) {
+                    MenuPrincipal(pPlayer).open(pPlayer);
+                }
+
+                return true;
+            }
+        });
+
+        int i = 0;
+        int j = 0;
+        boolean check = false;
+        ResultSet trusts = IsoworldsUtils.getTrusts(pPlayer, Msg.keys.SQL);
+        List<String> players = new ArrayList<String>();
+
+        // Récupération joueurs trust dans un tableau
+        try {
+            while (trusts.next()) {
+                String tmp = trusts.getString(1);
+                UUID uuid = UUID.fromString(tmp);
+
+                // Getting uuidowner
+                String pname;
+                if (Bukkit.getServer().getPlayer(uuid) == null) {
+                    pname = Bukkit.getServer().getOfflinePlayer(uuid).getName();
+                } else {
+                    pname = Bukkit.getServer().getPlayer(uuid).getDisplayName();
+                }
+                players.add(pname);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Boucle des joueurs en ligne, si dans tableau on continue
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (players.contains(p.getDisplayName())) {
+                continue;
+            }
+
+            // Dont show own access
+            if (p.getName().equals(pPlayer.getDisplayName())) {
+                continue;
+            }
+
+            // Construction du lore
+            String list1 = "Joueur";
+
+            // Construction des skin itemstack
+            ItemStack item1 = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            SkullMeta sm = (SkullMeta) item1.getItemMeta();
+            sm.setOwner(p.getDisplayName());
+            item1.setItemMeta(sm);
+
+            if (i >= 8) {
+                j = j++;
+            }
+            menu.addButton(menu.getRow(j), i, item1, ChatColor.GREEN + p.getName(), list1);
+            i++;
+
+
+        }
+
+        menu.addButton(menu.getRow(3), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal", "Retour au menu principal");
+
+        return menu;
+    }
+
+    // CONFIANCE REMOVE
+    public static IsoWorldsInventory getMenuConfianceRemove(Player pPlayer) {
+        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Confiance > Retirer", 4, new onClick() {
+            @Override
+            public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
+                String menuName = row.getRowItem(slot).getItemMeta().getLore().toString();
+                String menuPlayer = row.getRowItem(slot).getItemMeta().getDisplayName();
+                // Si joueur, on ajouter le joueur
+                if (menuName.contains("Joueur")) {
+                    p.performCommand("iw retirer " + ChatColor.stripColor(menuPlayer));
+                    p.closeInventory();
+                } else if (menuName.contains("menu principal")) {
+                    MenuPrincipal(pPlayer).open(pPlayer);
+                }
+
+                return true;
+            }
+        });
+
+
+        int i = 0;
+        int j = 0;
+        ResultSet trusts = IsoworldsUtils.getTrusts(pPlayer, Msg.keys.SQL);
+        try {
+            while (trusts.next()) {
+                // Récupération du nom du joueur
+                String tmp = trusts.getString(1);
+                IsoworldsUtils.cm("name = " + tmp);
+                UUID uuid = UUID.fromString(tmp);
+                IsoworldsUtils.cm("uuid = " + uuid);
+
+                String pname;
+                if (Bukkit.getServer().getPlayer(uuid) == null) {
+                    pname = Bukkit.getServer().getOfflinePlayer(uuid).getName();
+                } else {
+                    pname = Bukkit.getServer().getPlayer(uuid).getDisplayName();
+                }
+
+                // Dont show own access
+                if (pname.equals(pPlayer.getDisplayName())) {
+                    continue;
+                }
+
+                // Construction du lore
+                String list1 = "Joueur";
+
+
+                // Construction des skin itemstack
+                ItemStack item1 = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+                SkullMeta sm = (SkullMeta) item1.getItemMeta();
+                sm.setOwner(pname);
+                item1.setItemMeta(sm);
+
+                if (i >= 8) {
+                    j = j++;
+                }
+                menu.addButton(menu.getRow(j), i, item1, ChatColor.GREEN + pname, list1);
+                i++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        menu.addButton(menu.getRow(3), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal", "Retour au menu principal");
+
+        return menu;
+    }
+
+    // CONFIANCE ACCESS
+    public static IsoWorldsInventory getMenuConfianceAccess(Player pPlayer) {
+        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Confiance > Accès", 4, new onClick() {
+            @Override
+            public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
+                String menuName = row.getRowItem(slot).getItemMeta().getLore().toString();
+                String menuPlayer = row.getRowItem(slot).getItemMeta().getDisplayName();
+                // Si joueur, on ajoute le joueur
+                if (menuPlayer.contains("IsoWorld Accessible")) {
+                    // Récupération UUID
+                    String[] tmp = menuName.split("-IsoWorld");
+                    IsoworldsUtils.cm("NAME " + menuName);
+                    String pname;
+                    if (Bukkit.getServer().getPlayer(tmp[0]) == null) {
+                        pname = Bukkit.getServer().getOfflinePlayer(tmp[0]).getName();
+                    } else {
+                        pname = Bukkit.getServer().getPlayer(tmp[0]).getDisplayName();
+                    }
+
+                    String worldname = pname + "-IsoWorld";
+
+                    // Pull du IsoWorld
+
+                    // Si monde présent en dossier ?
+                    if (IsoworldsUtils.checkTag(pPlayer, worldname)) {
+                        // Chargement du isoworld + tp
+                        setWorldProperties(pname + "-IsoWorld", pPlayer);
+                        Bukkit.getServer().createWorld(new WorldCreator(pname + "-IsoWorld"));
+                        IsoworldsLocations.teleport(pPlayer, pname + "-IsoWorld");
+                        //plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
+                    }
+                    p.closeInventory();
+
+                } else if (menuName.contains("menu principal")) {
+                    p.closeInventory();
+                }
+
+                return true;
+            }
+        });
+
+        int i = 0;
+        int j = 0;
+        ResultSet trusts = IsoworldsUtils.getAccess(pPlayer, Msg.keys.SQL);
+        try {
+            while (trusts.next()) {
+                // Récupération uuid
+                String[] tmp = trusts.getString(1).split("-IsoWorld");
+                UUID uuid = UUID.fromString(tmp[0]);
+                String pname;
+                if (Bukkit.getServer().getPlayer(tmp[0]) == null) {
+                    pname = Bukkit.getServer().getOfflinePlayer(tmp[0]).getName();
+                } else {
+                    pname = Bukkit.getServer().getPlayer(tmp[0]).getDisplayName();
+                }
+
+                // Dont show own access
+                if (pname.equals(pPlayer.getName())) {
+                    continue;
+                }
+
+                // Construction du lore
+                String list1 = "Joueur";
+
+                // Construction des skin itemstack
+                ItemStack item1 = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+                SkullMeta sm = (SkullMeta) item1.getItemMeta();
+                sm.setOwner(pname);
+                item1.setItemMeta(sm);
+
+                if (i >= 8) {
+                    j = j++;
+                }
+                menu.addButton(menu.getRow(j), i, item1, ChatColor.GREEN + pname, list1);
+                i++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        menu.addButton(menu.getRow(3), 8, new ItemStack(Material.GOLD_BLOCK), "Menu principal", "Retour au menu principal");
 
         return menu;
     }

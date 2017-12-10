@@ -31,9 +31,9 @@ public class BiomeCommande {
         Biome biome;
 
         //If the method return true then the command is in lock
-        //if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
-        //    return;
-        //}
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
+            return;
+        }
 
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
@@ -84,6 +84,6 @@ public class BiomeCommande {
         }
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce biome n'existe pas.");
-        //instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
     }
 }

@@ -351,18 +351,15 @@ public class IsoworldsUtils {
             // SERVEUR_ID
             check.setString(3, instance.servername);
             // Requête
-            ResultSet rselect = check.executeQuery();
-            if (rselect.isBeforeFirst() ) {
 
-                return true;
-            }
+            ResultSet rselect = check.executeQuery();
 
             if (rselect.isBeforeFirst()) {
                 // Chargement si load = true
                 if (!IsoworldsUtils.getStatus(check_p + "-IsoWorld", Msg.keys.SQL)) {
                     if (load) {
-                        setWorldProperties(check_p + "-IsoWorld", pPlayer);
                         Bukkit.getServer().createWorld(new WorldCreator(check_p + "-IsoWorld"));
+                        setWorldProperties(check_p + "-IsoWorld", pPlayer);
                     }
                 }
                 return true;

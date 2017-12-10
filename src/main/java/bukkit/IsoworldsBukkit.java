@@ -15,6 +15,7 @@ import java.io.File;
 
 import common.Mysql;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -72,6 +73,21 @@ public final class IsoworldsBukkit extends JavaPlugin {
         this.logger.info("Démarrage des tâches...");
         everyMinutes();
         this.logger.info("IsoWorlds activé !");
+
+        // ISOWORLDS-SAS
+        logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
+        File dest = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
+        File source = new File(ManageFiles.getPath());
+        // Retourne la liste des isoworld tag
+        for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
+            ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat"));
+            ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat_old"));
+            if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
+                logger.info("[IsoWorlds-SAS]: " + f.getName() + " déplacé dans le SAS");
+            } else {
+                logger.info("[IsoWorlds-SAS]: Echec de stockage > " + f.getName());
+            }
+        }
     }
 
     @Override
@@ -86,47 +102,65 @@ public final class IsoworldsBukkit extends JavaPlugin {
     }
 
     private void everyMinutes() {
+        int x = 10;
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);
+            // Boucle de tous les mondes
             for (World world : Bukkit.getServer().getWorlds()) {
-                // Si chargé et pas présent dans map et vide
-                if (worlds.get(world.getName()) == null & world.getPlayers().size() == 0) {
-                    if (world.getName().contains("-IsoWorld")) {
-                        worlds.put(world.getName(), 1);
-                    } else {
-                        continue;
-                    }
-                    // Si tableau rempli
-                } else if (worlds.get(world.getName()) != null) {
-                    // Si de nouveau des joueurs on remove
-                    if (world.getPlayers().size() != 0) {
-                        worlds.remove(world.getName());
-                        continue;
-                        // Sinon on incrémente et on check si c'est à 10
-                    } else {
-                        //worlds.put(world.getName(), worlds.get(world.getName().toString()) + 1);
-                        if (world.getPlayers().size() == 0 & worlds.get(world.getName().toString()) == 1) {
-                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de 5 ! On unload !");
+                // Si le monde est chargé et contient IsoWorld
+                if (world == null & world.getName().contains("-IsoWorld")) {
+
+                    // Si le nombre de joueurs == 0
+                    if (world.getPlayers().size() == 0) {
+                        // Si le monde n'est pas présent dans le tableau
+                        if (worlds.get(world.getName()) == null) {
+                            worlds.put(world.getName(), 1);
+                        } else {
+                            // Sinon on incrémente
+                            worlds.put(world.getName(), worlds.get(world.getName()) + 1);
+                        }
+
+                        // Si le nombre est supérieur ou = à X on unload
+                        if (worlds.get(world.getName()) >= x) {
+                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
+                            // Procédure de déchargement //
+                            // Sauvegarde du monde
+                            // Déchargement du monde
                             Bukkit.getServer().unloadWorld(world, true);
+                            // Suppression dans le tableau
                             worlds.remove(world.getName());
+
+                            // Vérification du statut du monde, si il est push ou non
                             if (!IsoworldsUtils.getStatus(world.getName(), Msg.keys.SQL)) {
                                 IsoworldsUtils.cm("debug 1");
-                                // Prepair for pushing to backup server
                                 File check = new File(ManageFiles.getPath() + world.getName());
+                                // Si le dossier existe alors on met le statut à 1 (push)
                                 if (check.exists()) {
                                     IsoworldsUtils.cm("debug 2");
                                     IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
+
+                                    // ISOWORLDS-SAS
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
+
+                                    // Tag du dossier en push
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
                                     IsoworldsUtils.cm("PUSH OK");
                                 }
+                            } else {
+                                // Sinon on continue la boucle
+                                continue;
                             }
-                        } else {
-                            continue;
+
                         }
+                        // Si le nombre de joueur est supérieur à 0, purge le tableau du IsoWorld
+                    } else if (worlds.get(world.getName()) != null) {
+                        worlds.remove(world.getName());
                     }
                 }
             }
+
             IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé");
         }), 1200 * 1, 1200 * 1);
     }

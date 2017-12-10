@@ -2,6 +2,7 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoworldsUtils;
+import common.Cooldown;
 import common.Msg;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -26,6 +27,11 @@ public class MaisonCommande {
         Player pPlayer;
         String uuid;
         pPlayer = (Player) sender;
+
+        //If the method return true then the command is in lock
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.MAISON)) {
+            return;
+        }
 
         // Check if home of trusted isoworld
         IsoworldsUtils.cm("DEBUG MAISON: " + args.length);
@@ -78,6 +84,7 @@ public class MaisonCommande {
         // Téléportation du joueur
         if (pPlayer.teleport(go)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
+            instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
         }
         return;
 

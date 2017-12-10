@@ -28,9 +28,9 @@ public class ConfianceCommande {
         Integer len = args.length;
 
         //If the method return true then the command is in lock
-        //if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
-        //    return;
-        //}
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.CONFIANCE)) {
+            return;
+        }
 
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
@@ -68,7 +68,7 @@ public class ConfianceCommande {
         }
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TRUST);
-        //instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
         return;
     }
 }

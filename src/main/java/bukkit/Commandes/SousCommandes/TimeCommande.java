@@ -46,12 +46,6 @@ public class TimeCommande {
             pPlayer.sendMessage(" ");
             return;
         } else {
-            try{
-                num = Integer.parseInt(args[1]);
-            } catch (NumberFormatException e) {
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania indique que vous n'avez pas renseigné de minutes.");
-                return;
-            }
             World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
             IsoworldsUtils.cm("Time world: " + weather.getName());
             if (args[1].equals("jour") || args[1].equals("day")) {

@@ -528,7 +528,7 @@ public class IsoWorldsInventory {
                                 // Si monde présent en dossier ?
                                 if (IsoworldsUtils.checkTag(pPlayer, worldname)) {
                                     // Chargement du isoworld + tp
-                                    setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
+                                    setWorldProperties(worldname, pPlayer);
                                     Sponge.getServer().loadWorld(worldname);
                                     IsoworldsLocations.teleport(pPlayer, user.get().getUniqueId().toString() + "-IsoWorld");
                                     plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);

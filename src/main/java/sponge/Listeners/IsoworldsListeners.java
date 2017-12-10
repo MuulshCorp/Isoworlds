@@ -28,12 +28,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
+import static sponge.IsoworldsSponge.instance;
+
 
 /**
  * Created by Edwin on 08/10/2017.
  */
 public class IsoworldsListeners {
-    private final IsoworldsSponge plugin = IsoworldsSponge.instance;
+    private final IsoworldsSponge plugin = instance;
 
     @Listener
     public void onRespawnPlayerEvent(RespawnPlayerEvent event) {
@@ -78,29 +80,13 @@ public class IsoworldsListeners {
     //}
 
     @Listener
-    public void onLoadWorld(LoadWorldEvent event) {
+    public void onLoadWorld(LoadWorldEvent event, @First Player pPlayer) {
         if (event.getTargetWorld().getName().contains("-IsoWorld")) {
-            if (IsoworldsUtils.getStatus(event.getTargetWorld().getName(), Msg.keys.SQL)) {
-                IsoworldsUtils.cm("Debug 4");
-                // Prepair for pushing to backup server
-                File check = new File(ManageFiles.getPath() + event.getTargetWorld().getName() + "PULL");
-                File check2 = new File(ManageFiles.getPath() + event.getTargetWorld().getName());
-                if (check2.exists()) {
-                    IsoworldsUtils.cm("Debug 5");
-                    IsoworldsUtils.setStatus(event.getTargetWorld().getName(), 0, Msg.keys.SQL);
-                } else if (check.exists()) {
-                    ManageFiles.rename(ManageFiles.getPath() + event.getTargetWorld().getName() + "@PUSH", "@PULL");
-                    IsoworldsUtils.cm("PULL OK");
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-
-            Optional<WorldProperties> optionalWP = Sponge.getServer().getWorldProperties(event.getTargetWorld().getName());
-            if (!optionalWP.get().isEnabled()) {
-                WorldProperties world = optionalWP.get();
-                world.setEnabled(true);
-                IsoworldsUtils.cm("WP activé");
+            // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
+            // Import / Export
+            if (!IsoworldsUtils.checkTag(pPlayer, event.getTargetWorld().getName())) {
+                event.setCancelled(true);
+                return;
             }
         }
     }

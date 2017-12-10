@@ -91,14 +91,14 @@ public class IsoWorldsInventory implements Listener {
 
         // Création item
 
-        String[] list1 = new String[]{"Gérez le biome des vos chunks"};
-        String[] list2 = new String[]{"Gérez qui peut avoir accès à votre IsoWorld"};
-        String[] list3 = new String[]{"Créez ou refondez votre IsoWorld"};
-        String[] list4 = new String[]{"Rendez-vous sur votre IsoWorld"};
-        String[] list5 = new String[]{"Gérez la pluie et le beau temps", "de votre IsoWorld"};
-        String[] list6 = new String[]{"Chargez-Déchargez votre IsoWorld"};
-        String[] list7 = new String[]{"Téléportez vous sur un IsoWorld [STAFF]"};
-        String[] list8 = new String[]{"Gérez l'heure de votre IsoWorld"};
+        String[] list1 = new String[]{"Créez ou refondez votre IsoWorld"};
+        String[] list2 = new String[]{"Rendez-vous sur votre IsoWorld"};
+        String[] list3 = new String[]{"Gérez qui peut avoir accès à votre IsoWorld"};
+        String[] list4 = new String[]{"Gérez le biome de vos chunks"};
+        String[] list5 = new String[]{"Gérez l'heure de votre IsoWorld"};
+        String[] list6 = new String[]{"Gérez la pluie et le beau temps", "de votre IsoWorld"};
+        String[] list7 = new String[]{"Chargez-Déchargez votre IsoWorld"};
+        String[] list8 = new String[]{"Téléportez vous sur un IsoWorld [STAFF]"};
 
         // Construction des skin itemstack
         ItemStack item1 = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
@@ -112,8 +112,8 @@ public class IsoWorldsInventory implements Listener {
         menu.addButton(menu.getRow(0), 3, new ItemStack(Material.LEAVES), ChatColor.GOLD + "Biome", list4);
         menu.addButton(menu.getRow(0), 4, new ItemStack(Material.WATCH), ChatColor.LIGHT_PURPLE + "Temps", list5);
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), ChatColor.YELLOW + "Météo", list6);
-        menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), ChatColor.RED + "Activation", list7);
-        menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), ChatColor.LIGHT_PURPLE + "Téléportation", list8);
+        //menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), ChatColor.RED + "Activation", list7);
+        //menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), ChatColor.LIGHT_PURPLE + "Téléportation", list8);
 
         return menu;
     }

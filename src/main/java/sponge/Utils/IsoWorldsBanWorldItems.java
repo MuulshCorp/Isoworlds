@@ -40,7 +40,7 @@ public class IsoWorldsBanWorldItems {
                                         int finalY = y;
                                         int finalZ = z;
                                         Sponge.getScheduler().createTaskBuilder().execute(() -> {
-                                            blockLoc.setBlock(BlockTypes.AIR.getDefaultState(), BlockChangeFlag.ALL, Cause.of(NamedCause.simulated(plugin)));
+                                            blockLoc.setBlock(BlockTypes.AIR.getDefaultState(), Cause.of(NamedCause.simulated(plugin)));
                                             IsoworldsUtils.cm("[IsoWorlds-BanItemWorlds]: " + block.getType().getName() + " at x:" + finalX + " y:" + finalY + " z:" + finalZ);
                                         }).submit(plugin);
                                     } else if (block.getType().getName().contains("forestry:beehives")) {
@@ -48,7 +48,7 @@ public class IsoWorldsBanWorldItems {
                                         int finalY = y;
                                         int finalZ = z;
                                         Sponge.getScheduler().createTaskBuilder().execute(() -> {
-                                            blockLoc.setBlock(BlockTypes.AIR.getDefaultState(), BlockChangeFlag.ALL, Cause.of(NamedCause.simulated(plugin)));
+                                            blockLoc.setBlock(BlockTypes.AIR.getDefaultState(), Cause.of(NamedCause.simulated(plugin)));
                                             IsoworldsUtils.cm("[IsoWorlds-BanItemWorlds]: " + block.getType().getName() + " at x:" + finalX + " y:" + finalY + " z:" + finalZ);
                                         }).submit(plugin);
                                     }

@@ -142,13 +142,13 @@ public class IsoWorldsInventory {
         menu.query(SlotPos.of(5, 0)).set(item6);
 
         // STAFF
-        if (pPlayer.hasPermission("isworlds.menu.activation")) {
-            menu.query(SlotPos.of(6, 0)).set(item7);
-        }
-        if (pPlayer.hasPermission("isoworlds.menu.teleportation")) {
-            menu.query(SlotPos.of(7, 0)).set(item8);
-        }
-        menu.query(SlotPos.of(7, 0)).set(item8);
+        //if (pPlayer.hasPermission("isworlds.menu.activation")) {
+        //    menu.query(SlotPos.of(6, 0)).set(item7);
+        //}
+        //if (pPlayer.hasPermission("isoworlds.menu.teleportation")) {
+        //    menu.query(SlotPos.of(7, 0)).set(item8);
+        //}
+        //menu.query(SlotPos.of(7, 0)).set(item8);
 
         return menu;
     }

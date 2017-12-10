@@ -33,28 +33,20 @@ public class MaisonCommande {
             return;
         }
 
-        // Check if home of trusted isoworld
-        IsoworldsUtils.cm("DEBUG MAISON: " + args.length);
-        // Si joueur précisé
-        if (args.length == 2) {
-            OfflinePlayer owner = Bukkit.getOfflinePlayer(args[1]);
-            if (owner == null) {
-                return;
-            }
-            uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
-            worldname = uuid + "-IsoWorld";
-            IsoworldsUtils.cm("DEBUG OFF MAISON: " + worldname);
-            // Si aucun joueur précisé
-        } else {
-            uuid = pPlayer.getUniqueId().toString();
-            worldname = (pPlayer.getUniqueId() + "-IsoWorld");
-            IsoworldsUtils.cm("DEBUG ON MAISON: " + worldname);
+        worldname = (pPlayer.getUniqueId() + "-IsoWorld");
+
+        // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
+        if (isLocked(pPlayer, "checkTag")) {
+            return;
         }
 
         // Import / Export
         if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
             return;
         }
+
+        // Supprime le lock
+        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, true)) {

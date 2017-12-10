@@ -87,9 +87,11 @@ public class RetirerConfianceCommande {
 
         Location spawn = Bukkit.getServer().getWorld("Isolonice").getSpawnLocation();
         if (is == true) {
-            Player player = Bukkit.getServer().getPlayer(args[1]);
-            player.teleport(spawn);
-            player.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
+            if (Bukkit.getServer().getPlayer(uuidcible).getWorld().getName().equals(pPlayer.getUniqueId().toString() + "-IsoWorld")) {
+                Player player = Bukkit.getServer().getPlayer(args[1]);
+                player.teleport(spawn);
+                player.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
+            }
         } // Gestion du kick offline à gérer dès que possible
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_RETIRER_CONFIANCE);

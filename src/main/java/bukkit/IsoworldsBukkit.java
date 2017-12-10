@@ -74,20 +74,6 @@ public final class IsoworldsBukkit extends JavaPlugin {
         everyMinutes();
         this.logger.info("IsoWorlds activé !");
 
-        // ISOWORLDS-SAS
-        logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
-        File dest = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
-        File source = new File(ManageFiles.getPath());
-        // Retourne la liste des isoworld tag
-        for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
-            ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat"));
-            ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat_old"));
-            if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
-                logger.info("[IsoWorlds-SAS]: " + f.getName() + " déplacé dans le SAS");
-            } else {
-                logger.info("[IsoWorlds-SAS]: Echec de stockage > " + f.getName());
-            }
-        }
     }
 
     @Override
@@ -102,14 +88,14 @@ public final class IsoworldsBukkit extends JavaPlugin {
     }
 
     private void everyMinutes() {
-        int x = 10;
+        int x = 2;
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);
             // Boucle de tous les mondes
             for (World world : Bukkit.getServer().getWorlds()) {
                 // Si le monde est chargé et contient IsoWorld
-                if (world == null & world.getName().contains("-IsoWorld")) {
+                if (world != null & world.getName().contains("-IsoWorld")) {
 
                     // Si le nombre de joueurs == 0
                     if (world.getPlayers().size() == 0) {
@@ -160,8 +146,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
                     }
                 }
             }
-
-            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis 5 minutes viennent d'être déchargé");
+            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargé");
         }), 1200 * 1, 1200 * 1);
     }
 

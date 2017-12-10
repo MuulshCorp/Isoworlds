@@ -20,6 +20,7 @@ public class OnCommande {
 
     public static void On(CommandSender sender, String[] args) {
         // Variables
+        instance = IsoworldsBukkit.getInstance();
         String worldname = "";
         Player pPlayer = (Player) sender;
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");

@@ -23,6 +23,7 @@ public class ConfianceCommande {
     @SuppressWarnings("deprecation")
     public static void Confiance(CommandSender sender, String[] args) {
 
+        instance = IsoworldsBukkit.getInstance();
         Player pPlayer = (Player) sender;
         UUID uuidcible;
         Integer len = args.length;

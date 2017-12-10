@@ -385,7 +385,6 @@ public class IsoworldsUtils {
             if (file.exists()) {
                 IsoworldsUtils.cm("Debug 7");
                 IsoworldsUtils.setStatus(worldname, 0, Msg.keys.SQL);
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de terminer son travail, l'IsoWorld est disponible !");
                 // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
                 // Le script check ensutie
                 return true;

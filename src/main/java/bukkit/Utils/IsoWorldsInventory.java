@@ -119,6 +119,7 @@ public class IsoWorldsInventory implements Listener {
     }
 
     // MENU BIOME
+    @SuppressWarnings("deprecation")
     public static IsoWorldsInventory getMenuBiome(Player pPlayer) {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Biome", 2, new onClick() {
             @Override
@@ -180,7 +181,7 @@ public class IsoWorldsInventory implements Listener {
         String[] list8 = new String[]{"Indisponible sur la version 1.7.10, désolé ! =D"};
 
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.GRASS, 1), ChatColor.GREEN + "Plaines", list1);
-        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.DIAMOND_PICKAXE, 1), ChatColor.YELLOW + "Désert", list2);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.SAND, 1), ChatColor.YELLOW + "Désert", list2);
         menu.addButton(menu.getRow(0), 2, new ItemStack(Material.CLAY, 1), ChatColor.GRAY + "Marais", list3);
         menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1, DyeColor.BLUE.getData()), ChatColor.BLUE + "Océan", list4);
         menu.addButton(menu.getRow(0), 4, new ItemStack(Material.RED_MUSHROOM, 1), ChatColor.RED + "Champignon", list5);
@@ -193,6 +194,7 @@ public class IsoWorldsInventory implements Listener {
     }
 
     // MENU CONFIANCE
+    @SuppressWarnings("deprecation")
     public static IsoWorldsInventory getMenuConfiance(Player pPlayer) {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Confiance", 2, new onClick() {
             @Override
@@ -231,8 +233,8 @@ public class IsoWorldsInventory implements Listener {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Confiance > Ajouter", 4, new onClick() {
             @Override
             public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
-                String menuName = row.getRowItem(slot).getItemMeta().getLore().toString();
-                String menuPlayer = row.getRowItem(slot).getItemMeta().getDisplayName();
+                String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getLore().toString());
+                String menuPlayer = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
                 // Si joueur, on ajouter le joueur
                 if (menuName.contains("Joueur")) {
                     p.performCommand("iw confiance " + ChatColor.stripColor(menuPlayer));
@@ -310,8 +312,8 @@ public class IsoWorldsInventory implements Listener {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Confiance > Retirer", 4, new onClick() {
             @Override
             public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
-                String menuName = row.getRowItem(slot).getItemMeta().getLore().toString();
-                String menuPlayer = row.getRowItem(slot).getItemMeta().getDisplayName();
+                String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getLore().toString());
+                String menuPlayer = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
                 // Si joueur, on ajouter le joueur
                 if (menuName.contains("Joueur")) {
                     p.performCommand("iw retirer " + ChatColor.stripColor(menuPlayer));
@@ -385,7 +387,7 @@ public class IsoWorldsInventory implements Listener {
                 // Si joueur, on ajoute le joueur
                 if (menuPlayer.contains("IsoWorld Accessible")) {
                     // Récupération UUID
-                    String pname = menuName.split("-IsoWorld")[0];
+                    String pname = menuName.split("-IsoWorld")[0].replace("[", "").replace("]", "");
                     String worldname = pname + "-IsoWorld";
 
                     // Pull du IsoWorld
@@ -393,15 +395,14 @@ public class IsoWorldsInventory implements Listener {
                     // Si monde présent en dossier ?
                     if (IsoworldsUtils.checkTag(pPlayer, worldname)) {
                         // Chargement du isoworld + tp
-                        setWorldProperties(pname + "-IsoWorld", pPlayer);
                         Bukkit.getServer().createWorld(new WorldCreator(pname + "-IsoWorld"));
+                        setWorldProperties(pname + "-IsoWorld", pPlayer);
                         IsoworldsLocations.teleport(pPlayer, pname + "-IsoWorld");
                         //plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
                     }
                     p.closeInventory();
-
                 } else if (menuName.contains("menu principal")) {
-                    p.closeInventory();
+                    MenuPrincipal(pPlayer).open(pPlayer);
                 }
 
                 return true;
@@ -455,6 +456,7 @@ public class IsoWorldsInventory implements Listener {
     }
 
     // MENU CONSTRUCTION
+    @SuppressWarnings("deprecation")
     public static IsoWorldsInventory getMenuConstruction(Player pPlayer) {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Construction", 1, new onClick() {
             @Override
@@ -511,6 +513,7 @@ public class IsoWorldsInventory implements Listener {
     }
 
     // MENU METEO
+    @SuppressWarnings("deprecation")
     public static IsoWorldsInventory getMenuMeteo(Player pPlayer) {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Météo", 3, new onClick() {
             @Override
@@ -567,6 +570,7 @@ public class IsoWorldsInventory implements Listener {
     }
 
     // MENU ACTIVATION
+    @SuppressWarnings("deprecation")
     public static IsoWorldsInventory getMenuActivation(Player pPlayer) {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Activation", 1, new onClick() {
             @Override
@@ -633,6 +637,7 @@ public class IsoWorldsInventory implements Listener {
     }
 
     // MENU ACTIVATION
+    @SuppressWarnings("deprecation")
     public static IsoWorldsInventory getMenuTemps(Player pPlayer) {
         IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Temps", 1, new onClick() {
             @Override
@@ -695,6 +700,7 @@ public class IsoWorldsInventory implements Listener {
         return this;
     }
 
+    @SuppressWarnings("deprecation")
     public List<Player> getViewers() {
         List<Player> viewers = new ArrayList<Player>();
         for (String s : viewing)

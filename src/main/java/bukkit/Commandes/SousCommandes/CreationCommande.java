@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 
 import static bukkit.Utils.IsoworldsUtils.isLocked;
+import static bukkit.Utils.IsoworldsUtils.setWorldProperties;
 
 public class CreationCommande {
 
@@ -27,6 +28,7 @@ public class CreationCommande {
     public static void Creation(CommandSender sender, String[] args) {
 
         // Variables
+        instance = IsoworldsBukkit.getInstance();
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) sender;
@@ -84,11 +86,8 @@ public class CreationCommande {
         }
 
         // Configuration du monde
-        Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
-        IsoworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
-        Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-        Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
-        Bukkit.getServer().getWorld(worldname).setGameRuleValue("MobGriefing", "false");
+        setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
+
         IsoworldsLocations.teleport(pPlayer, worldname);
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
         return;

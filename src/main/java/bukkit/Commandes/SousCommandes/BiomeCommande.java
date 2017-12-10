@@ -23,6 +23,7 @@ public class BiomeCommande {
 
     public static void Biome(CommandSender sender, String[] args) {
         // Variables
+        instance = IsoworldsBukkit.getInstance();
         String worldname = "";
         Player pPlayer = (Player) sender;
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
@@ -65,25 +66,22 @@ public class BiomeCommande {
             biome = Biome.JUNGLE;
         } else if (args[1].equals("enfer")) {
             biome = Biome.HELL;
-        // Biome VOID inexistant 1.7.10
+            // Biome VOID inexistant 1.7.10
         } else {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce biome n'existe pas.");
             return;
         }
 
         Chunk chunk = pPlayer.getLocation().getChunk();
         IsoworldsUtils.cm("Biomes" + Biome.values().toString());
+
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                if (chunk.getBlock(x, 0, z).getBiome() != biome) {
-                    final Block block = chunk.getBlock(x, 0, z);
-                    block.setBiome(biome);
-                }
+                chunk.getWorld().setBiome(chunk.getX() + x, chunk.getZ() + z, biome);
             }
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
-            return;
         }
+        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce biome n'existe pas.");
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
     }
 }

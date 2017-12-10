@@ -276,14 +276,13 @@ public class IsoworldsUtils {
     }
 
     // Delete trust uuid of pPlayer's IsoWorld
-    public static Boolean deleteTrust(Player pPlayer, String messageErreur) {
+    public static Boolean deleteTrust(Player pPlayer, UUID uuid, String messageErreur) {
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try {
             PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
-            Iuuid_p = pPlayer.getUniqueId().toString();
+            Iuuid_p = uuid.toString();
             Iuuid_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
 
             // delete autorisation

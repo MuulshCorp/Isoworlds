@@ -80,7 +80,7 @@ public class RetirerConfianceCommande {
         }
 
         // DELETE AUTORISATION
-        if (!IsoworldsUtils.deleteTrust(pPlayer, Msg.keys.SQL)) {
+        if (!IsoworldsUtils.deleteTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }

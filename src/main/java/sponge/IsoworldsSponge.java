@@ -110,7 +110,7 @@ public class IsoworldsSponge {
     }
 
     private void unload() {
-        int x = 2;
+        int x = 10;
         Task.builder().execute(() -> {
             //checkLoadedChunks();
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
@@ -145,7 +145,6 @@ public class IsoworldsSponge {
 
                             // Déchargement du monde
                             Sponge.getServer().unloadWorld(world);
-                            Sponge.getServer().getWorldProperties("d4198c4d-5bc7-455f-9e73-67d85459bf16-IsoWorld").get().setEnabled(false);
                             // Suppression dans le tableau
                             worlds.remove(world.getName());
 

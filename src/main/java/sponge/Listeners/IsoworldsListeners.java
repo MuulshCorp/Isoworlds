@@ -146,6 +146,10 @@ public class IsoworldsListeners {
         if (!event.getInteractionPoint().isPresent()) {
             return;
         }
+        // Allow break if permission
+        if (p.hasPermission("isoworlds.bypass.spawn")) {
+            return;
+        }
         if (p.getWorld().getName().equals("Isolonice")) {
             event.setCancelled(true);
         }

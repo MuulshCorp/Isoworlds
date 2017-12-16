@@ -65,10 +65,12 @@ public class IsoworldsListeners implements Listener {
     // Anti grief spawn
     public void onInteractSpawn(PlayerInteractEvent event) {
         Player p = event.getPlayer();
+        if (p.hasPermission("isoworlds.bypass.spawn")) {
+            return;
+        }
         if (p.getLocation().getWorld().equals("Isolonice")) {
             event.setCancelled(true);
         }
-
     }
 
     // Used to redefine rules of the world

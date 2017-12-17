@@ -110,7 +110,7 @@ public class IsoworldsSponge {
     }
 
     private void unload() {
-        int x = 10;
+        int x = 15;
         Task.builder().execute(() -> {
             //checkLoadedChunks();
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
@@ -163,6 +163,10 @@ public class IsoworldsSponge {
 
                                     // Tag du dossier en push
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+
+                                    // Suppression du monde
+                                    Sponge.getServer().deleteWorld(world.getProperties());
+
                                     IsoworldsUtils.cm("PUSH OK");
                                 }
                             } else {

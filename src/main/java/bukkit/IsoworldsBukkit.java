@@ -88,7 +88,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
     }
 
     private void everyMinutes() {
-        int x = 10;
+        int x = 15;
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);

@@ -79,17 +79,22 @@ public class IsoworldsListeners {
     //    IsoworldsUtils.cm("BLOCK NAME: " + block.getName());
     //}
 
-    @Listener
-    public void onLoadWorld(LoadWorldEvent event, @First Player pPlayer) {
-        if (event.getTargetWorld().getName().contains("-IsoWorld")) {
-            // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
-            // Import / Export
-            if (!IsoworldsUtils.checkTag(pPlayer, event.getTargetWorld().getName())) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
+//    @Listener
+//    public void onLoadWorld(@First LoadWorldEvent event) {
+//        IsoworldsUtils.cm("event LOAD -- : " + event.getTargetWorld().toString());
+//        IsoworldsUtils.cm("UNLOADED");
+//        if (IsoworldsUtils.getStatus(event.getTargetWorld().getName(), Msg.keys.SQL)) {
+//            for (Player p : Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getPlayers()) {
+//                Location<World> spawn = Sponge.getGame().getServer().getWorld("Isolonice").get().getSpawnLocation();
+//                Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+//                Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+//                event.setCancelled(true);
+//                p.setLocationSafely(top);
+//            }
+//            Sponge.getServer().unloadWorld(event.getTargetWorld());
+//            IsoworldsUtils.cm("Chargement IsoWorld annulé: ETAT PUSHED");
+//        }
+//    }
 
     @Listener
     public void onPlayerChangeWorld(MoveEntityEvent.Teleport event, @Getter("getTargetEntity") Player pPlayer) {

@@ -3,10 +3,14 @@ package sponge.Listeners;
 import common.ManageFiles;
 import common.Msg;
 import org.spongepowered.api.entity.Transform;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
+import org.spongepowered.api.event.game.state.GameStoppedEvent;
+import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
+import org.spongepowered.api.event.world.UnloadWorldEvent;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
@@ -50,6 +54,21 @@ public class IsoworldsListeners {
         event.setToTransform(t);
     }
 
+    // On téléporte tous les joueurs à la déconnexion
+    @Listener
+    public void onStop(GameStoppingServerEvent event) {
+        Collection<Player> players = Sponge.getServer().getOnlinePlayers();
+        String worldname = ("Isolonice");
+        Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
+        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+
+        for (Player p : players ) {
+            p.setLocation(top);
+            IsoworldsUtils.cm("TP DECO: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
+        }
+    }
+
     @Listener
     public void onLogin(ClientConnectionEvent.Login event) {
         String worldname = ("Isolonice");
@@ -72,30 +91,25 @@ public class IsoworldsListeners {
         IsoworldsUtils.cm("Joueur téléporté au spawn");
     }
 
-    // TEST
-    //@Listener
-    //public void test(InteractBlockEvent.Secondary event) {
-    //    BlockState block = event.getTargetBlock().getState();
-    //    IsoworldsUtils.cm("BLOCK NAME: " + block.getName());
-    //}
+    // Debug load world
+    @Listener
+    public void onLoadWorld(LoadWorldEvent event) {
+        IsoworldsUtils.cm("LOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString());
+    }
 
-//    @Listener
-//    public void onLoadWorld(@First LoadWorldEvent event) {
-//        IsoworldsUtils.cm("event LOAD -- : " + event.getTargetWorld().toString());
-//        IsoworldsUtils.cm("UNLOADED");
-//        if (IsoworldsUtils.getStatus(event.getTargetWorld().getName(), Msg.keys.SQL)) {
-//            for (Player p : Sponge.getServer().getWorld(event.getTargetWorld().getName()).get().getPlayers()) {
-//                Location<World> spawn = Sponge.getGame().getServer().getWorld("Isolonice").get().getSpawnLocation();
-//                Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-//                Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
-//                event.setCancelled(true);
-//                p.setLocationSafely(top);
-//            }
-//            Sponge.getServer().unloadWorld(event.getTargetWorld());
-//            IsoworldsUtils.cm("Chargement IsoWorld annulé: ETAT PUSHED");
-//        }
-//    }
+    // TP lors du unload d'un monde
+    @Listener
+    public void onUnloadWorld(UnloadWorldEvent event) {
+        String worldname = ("Isolonice");
+        Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
+        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
 
+        for (Player p : event.getTargetWorld().getPlayers()) {
+            p.setLocation(top);
+            IsoworldsUtils.cm("TP UNLOAD: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
+        }
+    }
     @Listener
     public void onPlayerChangeWorld(MoveEntityEvent.Teleport event, @Getter("getTargetEntity") Player pPlayer) {
         final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";

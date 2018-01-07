@@ -116,11 +116,9 @@ public class IsoworldsSponge {
             IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
             IsoworldsUtils.cm("map: " + worlds);
             // Boucle de tous les mondes
-            Sponge.getServer().loadWorld("d4198c4d-5bc7-455f-9e73-67d85459bf16-IsoWorld");
             for (World world : Sponge.getServer().getWorlds()) {
                 // Si le monde est chargé et contient IsoWorld
                 if (world.isLoaded() & world.getName().contains("-IsoWorld")) {
-
                     // Si le nombre de joueurs == 0
                     if (world.getPlayers().size() == 0) {
                         // Si le monde n'est pas présent dans le tableau

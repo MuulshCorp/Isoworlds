@@ -109,7 +109,8 @@ public class IsoworldsListeners {
             p.setLocation(top);
             IsoworldsUtils.cm("TP UNLOAD: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
         }
-    }
+   }
+
     @Listener
     public void onPlayerChangeWorld(MoveEntityEvent.Teleport event, @Getter("getTargetEntity") Player pPlayer) {
         final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";

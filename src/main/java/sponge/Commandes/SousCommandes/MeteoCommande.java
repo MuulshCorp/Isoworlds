@@ -41,6 +41,11 @@ public class MeteoCommande implements CommandCallable {
         String[] arg = args.split(" ");
         int size = arg.length;
 
+        // If got charges
+        if (IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL) == 0){
+            return CommandResult.success();
+        }
+
         //If the method return true then the command is in lock
         if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.METEO)) {
             return CommandResult.success();

@@ -2,6 +2,7 @@ package sponge.Utils;
 
 import common.Cooldown;
 import common.Msg;
+import org.hamcrest.core.Is;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Keys;
@@ -95,6 +96,9 @@ public class IsoWorldsInventory {
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
+        // Récupération nombre charge
+        Integer charges = IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL);
+
         // Création item
         List<Text> list1 = new ArrayList<Text>();
         list1.add(Text.of("Gérez le biome des vos chunks"));
@@ -110,7 +114,9 @@ public class IsoWorldsInventory {
         List<Text> list6 = new ArrayList<Text>();
         list6.add(Text.of("Chargez-Déchargez votre IsoWorld"));
         List<Text> list7 = new ArrayList<Text>();
-        list7.add(Text.of("Téléportez vous sur un IsoWorld [STAFF]"));
+        list7.add(Text.of("Vous possédez: " + charges + "charge(s)"));
+        //List<Text> list7 = new ArrayList<Text>();
+        //list7.add(Text.of("Téléportez vous sur un IsoWorld [STAFF]"));
         List<Text> list8 = new ArrayList<Text>();
         list8.add(Text.of("Gérez l'heure de votre IsoWorld"));
 
@@ -127,10 +133,13 @@ public class IsoWorldsInventory {
                 .color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
         ItemStack item6 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Météo")
                 .color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation")
-                .color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item8 = ItemStack.builder().itemType(ItemTypes.DIAMOND_BOOTS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Téléportation")
-                .color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
+        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Charges")
+                .color(TextColors.AQUA).build())).quantity(1).build();
+
+        //ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation")
+        //        .color(TextColors.RED).build())).quantity(1).build();
+        //ItemStack item8 = ItemStack.builder().itemType(ItemTypes.DIAMOND_BOOTS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Téléportation")
+        //        .color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
 
 
         // Placement item dans le menu
@@ -140,6 +149,7 @@ public class IsoWorldsInventory {
         menu.query(SlotPos.of(3, 0)).set(item4);
         menu.query(SlotPos.of(4, 0)).set(item5);
         menu.query(SlotPos.of(5, 0)).set(item6);
+        menu.query(SlotPos.of(7, 0)).set(item7);
 
         // STAFF
         //if (pPlayer.hasPermission("isworlds.menu.activation")) {
@@ -164,28 +174,44 @@ public class IsoWorldsInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Plaines")) {
-                        commandMenu(pPlayer, "iw biome plaines");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw biome plaines");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Désert")) {
-                        commandMenu(pPlayer, "iw biome desert");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw biome desert");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Marais")) {
-                        commandMenu(pPlayer, "iw biome marais");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw biome marais");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Océan")) {
-                        commandMenu(pPlayer, "iw biome océan");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw biome océan");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Champignon")) {
-                        commandMenu(pPlayer, "iw biome champignon");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw biome champignon");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Jungle")) {
-                        commandMenu(pPlayer, "iw biome jungle");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw biome jungle");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Enfer")) {
-                        commandMenu(pPlayer, "iw biome enfer");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw biome enfer");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("End")) {
-                        commandMenu(pPlayer, "iw biome end");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw biome end");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
@@ -715,13 +741,20 @@ public class IsoWorldsInventory {
                     }
 
                     if (menuName.contains("10 minutes")) {
-                        commandMenu(pPlayer, "iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        // Check if charge higher than 0
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("30 minutes")) {
-                        commandMenu(pPlayer, "iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("1 heure")) {
-                        commandMenu(pPlayer, "iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        }
                         closeMenu(pPlayer);
                     }
 
@@ -891,10 +924,14 @@ public class IsoWorldsInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Jour")) {
-                        commandMenu(pPlayer, "iw temps jour");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw temps jour");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Nuit")) {
-                        commandMenu(pPlayer, "iw temps nuit");
+                        if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
+                            commandMenu(pPlayer, "iw temps nuit");
+                        }
                         closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));

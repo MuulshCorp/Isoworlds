@@ -432,28 +432,66 @@ public class IsoworldsUtils {
 
     // ------------------------------------------------- INFORMATION SYSTEM
 
+    // -------------------------------------------------  CHARGES SYSTEM
 
+    // Get charge of a player
+    public static Integer getCharge(Player pPlayer, String messageErreur) {
+        String CHECK = "SELECT `charges` FROM `player_info` WHERE `UUID_P` = ?";
+        ResultSet result;
+        Integer number;
+        try {
+            PreparedStatement check = instance.database.prepare(CHECK);
+            // UUID _P
+            check.setString(1, pPlayer.getUniqueId().toString());
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            while (rselect.next()) {
+                IsoworldsUtils.cm(rselect.toString());
+                IsoworldsUtils.cm("Debug charge 1");
+                number = rselect.getInt(1);
+                return number;
+            }
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return null;
+        }
+        return null;
+    }
 
+    // Ajoute des charges à un joueur, succès = true
+    public static Boolean updateCharge(Player pPlayer, Integer number, String messageErreur) {
+        String CHECK = "UPDATE `player_info` SET `charges` = ? WHERE `UUID_P` = ?";
+        try {
+            PreparedStatement check = instance.database.prepare(CHECK);
 
+            // UUID_P
+            check.setString(1, pPlayer.getUniqueId().toString());
+            // NUMBER
+            check.setInt(2, number);
+            // Requête
+            IsoworldsUtils.cm("Debug 3: " + check.toString());
+            check.executeUpdate();
+            return true;
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return false;
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // Vérifie les charges, retire si en possède sinon return false avec message
+    public static Boolean checkCharge(Player pPlayer, String messageErreur) {
+        Integer charges = IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL);
+        if (charges == 0) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que vous ne possédez aucune charge !");
+            return false;
+        } else {
+            charges--;
+            IsoworldsUtils.updateCharge(pPlayer, charges, Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + charges + " charge(s)");
+            return true;
+        }
+    }
 
 }

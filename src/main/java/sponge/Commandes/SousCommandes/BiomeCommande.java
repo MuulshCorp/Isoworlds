@@ -41,6 +41,11 @@ public class BiomeCommande implements CommandCallable {
 
         IsoworldsUtils.cm(arg[0]);
 
+        // If got charges
+        if (IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL) == 0){
+            return CommandResult.success();
+        }
+
         //If the method return true then the command is in lock
         if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
             return CommandResult.success();

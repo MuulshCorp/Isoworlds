@@ -31,6 +31,11 @@ public class BiomeCommande {
         Integer len = args.length;
         Biome biome;
 
+        // If got charges
+        if (IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL) == 0){
+            return;
+        }
+
         //If the method return true then the command is in lock
         if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
             return;

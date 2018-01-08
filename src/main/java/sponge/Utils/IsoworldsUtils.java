@@ -5,6 +5,7 @@ import common.ManageFiles;
 import common.Msg;
 
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.event.entity.MoveEntityEvent;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.world.WorldArchetypes;
@@ -547,5 +548,69 @@ public class IsoworldsUtils {
         return user;
     }
 
+    // -------------------------------------------------  CHARGES SYSTEM
+
+    // Get charge of a player
+    public static Integer getCharge(Player pPlayer, String messageErreur) {
+        String CHECK = "SELECT `charges` FROM `player_info` WHERE `UUID_P` = ?";
+        ResultSet result;
+        Integer number;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+            // UUID _P
+            check.setString(1, pPlayer.getUniqueId().toString());
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            while (rselect.next()) {
+                IsoworldsUtils.cm(rselect.toString());
+                IsoworldsUtils.cm("Debug charge 1");
+                number = rselect.getInt(1);
+                return number;
+            }
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return null;
+        }
+        return null;
+    }
+
+    // Ajoute des charges à un joueur, succès = true
+    public static Boolean updateCharge(Player pPlayer, Integer number, String messageErreur) {
+        String CHECK = "UPDATE `player_info` SET `charges` = ? WHERE `UUID_P` = ?";
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // UUID_P
+            check.setString(1, pPlayer.getUniqueId().toString());
+            // NUMBER
+            check.setInt(2, number);
+            // Requête
+            IsoworldsUtils.cm("Debug 3: " + check.toString());
+            check.executeUpdate();
+            return true;
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return false;
+        }
+    }
+
+    // Vérifie les charges, retire si en possède sinon return false avec message
+    public static Boolean checkCharge(Player pPlayer, String messageErreur) {
+        Integer charges = IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL);
+        if (charges == 0) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Sijania indique que vous ne possédez aucune charge !").color(TextColors.RED))).build()));
+            return false;
+        } else {
+            charges--;
+            IsoworldsUtils.updateCharge(pPlayer, charges, Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.AQUA)))
+                            .append(Text.of(Text.builder(charges + " charge(s)").color(TextColors.GREEN))).build()));
+            return true;
+        }
+    }
 
 }

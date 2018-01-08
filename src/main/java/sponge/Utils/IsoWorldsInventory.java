@@ -114,7 +114,7 @@ public class IsoWorldsInventory {
         List<Text> list6 = new ArrayList<Text>();
         list6.add(Text.of("Chargez-Déchargez votre IsoWorld"));
         List<Text> list7 = new ArrayList<Text>();
-        list7.add(Text.of("Vous possédez: " + charges + "charge(s)"));
+        list7.add(Text.of("[" + charges + "]" + " charge(s) disponible(s)"));
         //List<Text> list7 = new ArrayList<Text>();
         //list7.add(Text.of("Téléportez vous sur un IsoWorld [STAFF]"));
         List<Text> list8 = new ArrayList<Text>();
@@ -149,7 +149,7 @@ public class IsoWorldsInventory {
         menu.query(SlotPos.of(3, 0)).set(item4);
         menu.query(SlotPos.of(4, 0)).set(item5);
         menu.query(SlotPos.of(5, 0)).set(item6);
-        menu.query(SlotPos.of(7, 0)).set(item7);
+        menu.query(SlotPos.of(8, 0)).set(item7);
 
         // STAFF
         //if (pPlayer.hasPermission("isworlds.menu.activation")) {

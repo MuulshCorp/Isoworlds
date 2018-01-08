@@ -99,7 +99,7 @@ public class IsoWorldsInventory implements Listener {
         String[] list4 = new String[]{"Gérez le biome de vos chunks"};
         String[] list5 = new String[]{"Gérez l'heure de votre IsoWorld"};
         String[] list6 = new String[]{"Gérez la pluie et le beau temps", "de votre IsoWorld"};
-        String[] list7 = new String[]{"Vous possédez: " + charges + "charge(s)"};
+        String[] list7 = new String[]{"[" + charges + "]" + " charge(s) disponible(s)"};
         //String[] list7 = new String[]{"Chargez-Déchargez votre IsoWorld"};
         //String[] list8 = new String[]{"Téléportez vous sur un IsoWorld [STAFF]"};
 
@@ -115,7 +115,7 @@ public class IsoWorldsInventory implements Listener {
         menu.addButton(menu.getRow(0), 3, new ItemStack(Material.LEAVES), ChatColor.GOLD + "Biome", list4);
         menu.addButton(menu.getRow(0), 4, new ItemStack(Material.WATCH), ChatColor.LIGHT_PURPLE + "Temps", list5);
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), ChatColor.YELLOW + "Météo", list6);
-        menu.addButton(menu.getRow(0), 7, new ItemStack(Material.LEVER), ChatColor.AQUA + "Charges", list6);
+        menu.addButton(menu.getRow(0), 8, new ItemStack(Material.LEVER), ChatColor.AQUA + "Charges", list6);
         //menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), ChatColor.RED + "Activation", list7);
         //menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), ChatColor.LIGHT_PURPLE + "Téléportation", list8);
 

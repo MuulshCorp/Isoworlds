@@ -577,7 +577,7 @@ public class IsoworldsUtils {
 
     // Ajoute des charges à un joueur, succès = true
     public static Boolean updateCharge(Player pPlayer, Integer number, String messageErreur) {
-        String CHECK = "UPDATE `players_info` SET `charges` = ? WHERE `UUID_P` = ?";
+        String CHECK = "UPDATE `players_info` SET `UUID_P` = ? WHERE `charges` = ?";
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
 

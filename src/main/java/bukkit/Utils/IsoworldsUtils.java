@@ -436,7 +436,7 @@ public class IsoworldsUtils {
 
     // Get charge of a player
     public static Integer getCharge(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `charges` FROM `player_info` WHERE `UUID_P` = ?";
+        String CHECK = "SELECT `charges` FROM `players_info` WHERE `UUID_P` = ?";
         ResultSet result;
         Integer number;
         try {
@@ -461,7 +461,7 @@ public class IsoworldsUtils {
 
     // Ajoute des charges à un joueur, succès = true
     public static Boolean updateCharge(Player pPlayer, Integer number, String messageErreur) {
-        String CHECK = "UPDATE `player_info` SET `charges` = ? WHERE `UUID_P` = ?";
+        String CHECK = "UPDATE `players_info` SET `charges` = ? WHERE `UUID_P` = ?";
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
 

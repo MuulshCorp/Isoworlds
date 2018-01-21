@@ -572,7 +572,8 @@ public class IsoworldsUtils {
             IsoworldsUtils.cm(messageErreur);
             return null;
         }
-        return null;
+        initCharges(pPlayer, Msg.keys.SQL);
+        return 0;
     }
 
     // Ajoute des charges à un joueur, succès = true
@@ -596,9 +597,37 @@ public class IsoworldsUtils {
         }
     }
 
+    // Create trust for uuidcible on pPlayer IsoWorld
+    public static Boolean initCharges(Player pPlayer, String messageErreur) {
+        String INSERT = "INSERT INTO `players_info` (`UUID_P`, `charges`) VALUES (?, ?)";
+        Integer number;
+        String Iuuid_p;
+
+        try {
+            PreparedStatement insert = plugin.database.prepare(INSERT);
+            // UUID_P
+            Iuuid_p = pPlayer.getUniqueId().toString();
+            insert.setString(1, Iuuid_p);
+            // Number
+            number = 0;
+            insert.setInt(2, number);
+            insert.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            return false;
+        }
+        return true;
+    }
+
     // Vérifie les charges, retire si en possède sinon return false avec message
     public static Boolean checkCharge(Player pPlayer, String messageErreur) {
         Integer charges = IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL);
+
+        if (charges == null) {
+            initCharges(pPlayer, Msg.keys.SQL);
+            return false;
+        }
         if (charges == 0) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania indique que vous ne possédez aucune charge !").color(TextColors.RED))).build()));

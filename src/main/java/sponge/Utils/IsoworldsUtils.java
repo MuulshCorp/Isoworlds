@@ -577,14 +577,14 @@ public class IsoworldsUtils {
 
     // Ajoute des charges à un joueur, succès = true
     public static Boolean updateCharge(Player pPlayer, Integer number, String messageErreur) {
-        String CHECK = "UPDATE `players_info` SET `UUID_P` = ? WHERE `charges` = ?";
+        String CHECK = "UPDATE `players_info` SET `charges` = ? WHERE `UUID_P` = ?";
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
+            // Number
+            check.setInt(1, number);
             // UUID_P
-            check.setString(1, pPlayer.getUniqueId().toString());
-            // NUMBER
-            check.setInt(2, number);
+            check.setString(2, pPlayer.getUniqueId().toString());
             // Requête
             IsoworldsUtils.cm("Debug 3: " + check.toString());
             check.executeUpdate();

@@ -7,6 +7,7 @@ import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -113,6 +114,10 @@ public final class IsoworldsBukkit extends JavaPlugin {
                             // Procédure de déchargement //
                             // Sauvegarde du monde
                             // Déchargement du monde
+                            for (Chunk c : Bukkit.getServer().getWorld(world.getName()).getLoadedChunks()) {
+                                c.unload();
+                            }
+
                             Bukkit.getServer().unloadWorld(world, true);
                             // Suppression dans le tableau
                             worlds.remove(world.getName());
@@ -125,10 +130,6 @@ public final class IsoworldsBukkit extends JavaPlugin {
                                 if (check.exists()) {
                                     IsoworldsUtils.cm("debug 2");
                                     IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
-
-                                    // ISOWORLDS-SAS
-                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
-                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
 
                                     // Tag du dossier en push
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");

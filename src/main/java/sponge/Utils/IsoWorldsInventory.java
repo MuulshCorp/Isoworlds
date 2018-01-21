@@ -114,7 +114,7 @@ public class IsoWorldsInventory {
         List<Text> list6 = new ArrayList<Text>();
         list6.add(Text.of("Chargez-Déchargez votre IsoWorld"));
         List<Text> list7 = new ArrayList<Text>();
-        list7.add(Text.of("[" + charges + "]" + " charge(s) disponible(s)"));
+        list7.add(Text.of("[ " + charges + " ]" + " charge(s) disponible(s)"));
         //List<Text> list7 = new ArrayList<Text>();
         //list7.add(Text.of("Téléportez vous sur un IsoWorld [STAFF]"));
         List<Text> list8 = new ArrayList<Text>();

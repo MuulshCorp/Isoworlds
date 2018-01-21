@@ -289,6 +289,20 @@ public class IsoworldsUtils {
             }
 
             // Global
+            // Radius border 500
+            int x;
+            if (pPlayer.hasPermission("isoworlds.size.500")) {
+                x = 1000;
+                // Radius border 750
+            } else if (pPlayer.hasPermission("isoworlds.size.750")) {
+                x = 1500;
+                // Radius border 1000
+            } else if (pPlayer.hasPermission("isoworlds.size.1000")) {
+                x = 2000;
+                // Radius border default
+            } else {
+                x = 500;
+            }
             worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
             worldProperties.setKeepSpawnLoaded(false);
             worldProperties.setLoadOnStartup(false);
@@ -296,7 +310,7 @@ public class IsoworldsUtils {
             worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
             worldProperties.setPVPEnabled(true);
             worldProperties.setWorldBorderCenter(0, 0);
-            worldProperties.setWorldBorderDiameter(500);
+            worldProperties.setWorldBorderDiameter(x);
 
             // Spawn
             //Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
@@ -627,6 +641,10 @@ public class IsoworldsUtils {
         if (charges == null) {
             initCharges(pPlayer, Msg.keys.SQL);
             return false;
+        }
+        // Permissions unlimited for player
+        if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+            return true;
         }
         if (charges == 0) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)

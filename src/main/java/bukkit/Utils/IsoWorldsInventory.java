@@ -499,7 +499,7 @@ public class IsoWorldsInventory implements Listener {
             menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GOLD + "Refonte", list1);
         } else {
             String[] list1 = new String[]{"Créer votre IsoWorld."};
-            menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GOLD + "Création", list1);
+            menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GOLD + "Création", list1);
         }
 
         menu.addButton(menu.getRow(0), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");

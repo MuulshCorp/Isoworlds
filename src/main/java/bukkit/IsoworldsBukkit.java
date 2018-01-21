@@ -8,8 +8,10 @@ import common.ManageFiles;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -113,12 +115,9 @@ public final class IsoworldsBukkit extends JavaPlugin {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
                             // Procédure de déchargement //
                             // Sauvegarde du monde
-                            // Déchargement du monde
-                            for (Chunk c : Bukkit.getServer().getWorld(world.getName()).getLoadedChunks()) {
-                                c.unload();
+                            if (!Bukkit.getServer().getWorld(world.getName()).equals(null)) {
+                                Bukkit.getServer().unloadWorld(world.getName(), true);
                             }
-
-                            Bukkit.getServer().unloadWorld(world, true);
                             // Suppression dans le tableau
                             worlds.remove(world.getName());
 

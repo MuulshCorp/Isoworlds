@@ -30,7 +30,7 @@ public class IsoworldsUtils {
     // ------------------------------------------------- MESSAGES
 
     // Console message
-    public static void cm(String message){
+    public static void cm(String message) {
         Bukkit.getConsoleSender().sendMessage(message);
     }
 
@@ -220,25 +220,41 @@ public class IsoworldsUtils {
     // Create world properties IsoWorlds
     public static void setWorldProperties(String worldname, Player pPlayer) {
 
-            // Properties of IsoWorld
-            // Radius border
-            int x = 250;
-            int y = 250;
-            Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
-            Bukkit.getServer().getWorld(worldname).setPVP(true);
-            IsoworldsUtils.cmd("wb " + worldname + " set " + x + " " + y + " 0 0");
-            Block yLoc = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-            Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, yLoc.getY(), 0);
-            Bukkit.getServer().getWorld(worldname).setGameRuleValue("MobGriefing", "false");
+        // Properties of IsoWorld
+        // Radius border 500
+        int x;
+        int y;
+        if (pPlayer.hasPermission("isoworlds.size.500")) {
+            x = 500;
+            y = 500;
+        // Radius border 750
+        } else if (pPlayer.hasPermission("isoworlds.size.750")) {
+            x = 750;
+            y = 750;
+        // Radius border 1000
+        } else if (pPlayer.hasPermission("isoworlds.size.1000")) {
+            x = 1000;
+            y = 1000;
+        // Radius border default
+        } else {
+            x = 250;
+            y = 250;
+        }
+        Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
+        Bukkit.getServer().getWorld(worldname).setPVP(true);
+        IsoworldsUtils.cmd("wb " + worldname + " set " + x + " " + y + " 0 0");
+        Block yLoc = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
+        Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, yLoc.getY(), 0);
+        Bukkit.getServer().getWorld(worldname).setGameRuleValue("MobGriefing", "false");
 
-            // Spawn
-            //Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
-            //Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
-            //worldProperties.setSpawnPosition(firstspawn.getBlockPosition()    );
+        // Spawn
+        //Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
+        //Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
+        //worldProperties.setSpawnPosition(firstspawn.getBlockPosition()    );
 
-            // Sauvegarde a faire ?
+        // Sauvegarde a faire ?
 
-            IsoworldsUtils.cm("WorldProperties à jour");
+        IsoworldsUtils.cm("WorldProperties à jour");
 
     }
 
@@ -319,7 +335,7 @@ public class IsoworldsUtils {
             check.setString(3, instance.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
-            if (rselect.isBeforeFirst() ) {
+            if (rselect.isBeforeFirst()) {
                 return true;
             }
         } catch (Exception se) {
@@ -364,7 +380,7 @@ public class IsoworldsUtils {
                 }
                 return true;
             }
-        } catch (Exception se){
+        } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(Msg.keys.SQL);
             return false;
@@ -512,6 +528,10 @@ public class IsoworldsUtils {
         if (charges == null) {
             initCharges(pPlayer, Msg.keys.SQL);
             return false;
+        }
+        // Permissions unlimited for player
+        if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+            return true;
         }
         if (charges == 0) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que vous ne possédez aucune charge !");

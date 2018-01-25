@@ -28,7 +28,8 @@ public class MeteoCommande {
         Integer len = args.length;
 
         // If got charges
-        if (IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL) == 0){
+        int charges = IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL);
+        if (charges == -1) {
             return;
         }
 
@@ -71,6 +72,11 @@ public class MeteoCommande {
                 pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds] Sijania indique que " + pPlayer.getName()
                         + " vient de changer la météo à: " + args[1] + " pendant: " + num + " ticks.");
             }
+        }
+        // Update charges if not unlimited & positive
+        if (charges > 0) {
+            IsoworldsUtils.updateCharge(pPlayer, -1, Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + charges + " charge(s)");
         }
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
     }

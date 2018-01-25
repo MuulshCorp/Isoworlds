@@ -32,7 +32,8 @@ public class BiomeCommande {
         Biome biome;
 
         // If got charges
-        if (IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL) == 0){
+        int charges = IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL);
+        if (charges == -1) {
             return;
         }
 
@@ -85,6 +86,12 @@ public class BiomeCommande {
                 final Block block = chunk.getBlock(x, 0, z);
                 block.setBiome(biome);
             }
+        }
+
+        // Update charges if not unlimited & positive
+        if (charges > 0) {
+            IsoworldsUtils.updateCharge(pPlayer, -1, Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + charges + " charge(s)");
         }
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
 

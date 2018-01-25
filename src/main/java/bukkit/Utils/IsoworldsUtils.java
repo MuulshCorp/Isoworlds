@@ -526,25 +526,23 @@ public class IsoworldsUtils {
     }
 
     // Vérifie les charges, retire si en possède sinon return false avec message
-    public static Boolean checkCharge(Player pPlayer, String messageErreur) {
+    // -1 = false // true = charges // illimited = -99
+    public static Integer checkCharge(Player pPlayer, String messageErreur) {
         Integer charges = IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL);
 
         if (charges == null) {
             initCharges(pPlayer, Msg.keys.SQL);
-            return false;
+            return -1;
         }
         // Permissions unlimited for player
         if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-            return true;
+            return -99;
         }
         if (charges == 0) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que vous ne possédez aucune charge !");
-            return false;
+            return -1;
         } else {
-            charges--;
-            IsoworldsUtils.updateCharge(pPlayer, charges, Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + charges + " charge(s)");
-            return true;
+            return charges;
         }
     }
 

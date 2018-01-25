@@ -130,39 +130,25 @@ public class IsoWorldsInventory implements Listener {
             public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
                 if (menuName.contains("Plaines")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw biome plaines");
-                    }
+                    p.performCommand("iw biome plaines");
                     p.closeInventory();
                 } else if (menuName.contains("Désert")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw biome desert");
-                    }
+                    p.performCommand("iw biome desert");
                     p.closeInventory();
                 } else if (menuName.contains("Marais")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw biome marais");
-                    }
+                    p.performCommand("iw biome marais");
                     p.closeInventory();
                 } else if (menuName.contains("Océan")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw biome océan");
-                    }
+                    p.performCommand("iw biome océan");
                     p.closeInventory();
                 } else if (menuName.contains("Champignon")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw biome champignon");
-                    }
+                    p.performCommand("iw biome champignon");
                     p.closeInventory();
                 } else if (menuName.contains("Jungle")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw biome jungle");
-                    }
+                    p.performCommand("iw biome jungle");
                     p.closeInventory();
                 } else if (menuName.contains("Enfer")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw biome enfer");
-                    }
+                    p.performCommand("iw biome enfer");
                     p.closeInventory();
                 } else if (menuName.contains("(INDISPONIBLE) End")) {
                     p.closeInventory();
@@ -552,19 +538,13 @@ public class IsoWorldsInventory implements Listener {
                 }
 
                 if (menuName.contains("10 minutes")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
-                    }
+                    p.performCommand("iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                     p.closeInventory();
                 } else if (menuName.contains("30 minutes")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
-                    }
+                    p.performCommand("iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                     p.closeInventory();
                 } else if (menuName.contains("1 heure")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
-                    }
+                    p.performCommand("iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
                     p.closeInventory();
                 }
 
@@ -668,14 +648,10 @@ public class IsoWorldsInventory implements Listener {
             public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
                 if (menuName.contains("Jour")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw temps jour 0");
-                    }
+                    p.performCommand("iw temps jour 0");
                     p.closeInventory();
                 } else if (menuName.contains("Nuit")) {
-                    if (IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL)) {
-                        p.performCommand("iw temps nuit 12000");
-                    }
+                    p.performCommand("iw temps nuit 12000");
                     p.closeInventory();
                 } else if (menuName.contains("Menu principal")) {
                     MenuPrincipal(pPlayer).open(pPlayer);

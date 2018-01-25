@@ -42,7 +42,8 @@ public class BiomeCommande implements CommandCallable {
         IsoworldsUtils.cm(arg[0]);
 
         // If got charges
-        if (IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL) == 0){
+        int charges = IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL);
+        if (charges == -1) {
             return CommandResult.success();
         }
 
@@ -98,6 +99,15 @@ public class BiomeCommande implements CommandCallable {
                 );
             }
         }
+
+        // Update charges if not unlimited & positive
+        if (charges > 0) {
+            IsoworldsUtils.updateCharge(pPlayer, -1, Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)
+                            .append(Text.of(Text.builder(charges + " charge(s)").color(TextColors.GREEN))))).build()));
+        }
+
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9 ou F3 + G)").color(TextColors.AQUA))).build()));
 

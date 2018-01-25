@@ -79,10 +79,11 @@ public class BiomeCommande {
 
         Chunk chunk = pPlayer.getLocation().getChunk();
         IsoworldsUtils.cm("Biomes" + Biome.values().toString());
-
+        IsoworldsUtils.cm("COORDINATES: X: " + chunk.getX() + " Z: " + chunk.getZ());
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                chunk.getWorld().setBiome(chunk.getX() + x, chunk.getZ() + z, biome);
+                final Block block = chunk.getBlock(x, 0, z);
+                block.setBiome(biome);
             }
         }
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");

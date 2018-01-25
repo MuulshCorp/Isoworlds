@@ -240,7 +240,7 @@ public class IsoworldsUtils {
             x = 250;
             y = 250;
         }
-        Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
+        //Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
         Bukkit.getServer().getWorld(worldname).setPVP(true);
         IsoworldsUtils.cmd("wb " + worldname + " set " + x + " " + y + " 0 0");
         Block yLoc = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
@@ -455,6 +455,10 @@ public class IsoworldsUtils {
         String CHECK = "SELECT `charges` FROM `players_info` WHERE `UUID_P` = ?";
         ResultSet result;
         Integer number;
+        // If unlimited
+        if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+            return 1;
+        }
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
             // UUID _P

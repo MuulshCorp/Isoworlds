@@ -2,6 +2,7 @@ package bukkit;
 
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
+import bukkit.Locations.IsoworldsLocations;
 import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
 import common.ManageFiles;
@@ -18,6 +19,7 @@ import java.io.File;
 
 import common.Mysql;
 
+import javax.print.attribute.standard.MediaSize;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -114,6 +116,11 @@ public final class IsoworldsBukkit extends JavaPlugin {
                         if (worlds.get(world.getName()) >= x) {
                             IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
                             // Procédure de déchargement //
+
+                            for (Player p : Bukkit.getServer().getWorld(world.getName()).getPlayers()) {
+                                IsoworldsLocations.teleport(p, "Isolonice");
+                            }
+
                             // Sauvegarde du monde
                             if (!Bukkit.getServer().getWorld(world.getName()).equals(null)) {
                                 Bukkit.getServer().unloadWorld(world.getName(), true);
@@ -147,7 +154,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
                 }
             }
             IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargé");
-        }), 1200 * 1, 1200 * 1);
+        }), 600 * 1, 1200 * 1);
     }
 
     public static IsoworldsBukkit getInstance() {

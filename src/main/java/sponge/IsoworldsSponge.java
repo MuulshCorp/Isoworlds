@@ -75,7 +75,7 @@ public class IsoworldsSponge {
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
-        String name;
+        String name = "";
 
         // ISOWORLDS-SAS
         logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
@@ -90,16 +90,17 @@ public class IsoworldsSponge {
             if (!f.getName().contains("@")) {
                 logger.info("[IsoWorlds-SAS]: IsoWorld sans TAG, démarrage du push...");
                 // Vérification du statut du monde, si il est push ou non
-                if (!IsoworldsUtils.getStatus(f.getName(), Msg.keys.SQL)) {
-                    IsoworldsUtils.setStatus(f.getName(), 1, Msg.keys.SQL);
-                    // Tag du dossier en push
-                    ManageFiles.rename(ManageFiles.getPath() + f.getName(), "@PUSH");
-                    IsoworldsUtils.cm("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
-                    name = f.getName() + "@PUSH";
-                }
+                //if (!IsoworldsUtils.getStatus(f.getName(), Msg.keys.SQL)) {
+                //    IsoworldsUtils.setStatus(f.getName(), 1, Msg.keys.SQL);
+                    // Si nom set à name alors on le renomme une fois déplacé
+                    name = f.getName();
+                //}
             }
-            if (ManageFiles.move(source + "/" + name, dest.getPath())) {
-                logger.info("[IsoWorlds-SAS]: " + name + " déplacé dans le SAS");
+            if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
+                if (name.equals(f.getName())) {
+                    ManageFiles.rename(ManageFiles.getPath() + "/ISOWORLDS-SAS/" + f.getName(), "@PUSH");
+                    logger.info("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
+                }
             } else {
                 logger.info("[IsoWorlds-SAS]: Echec de stockage > " + name);
             }

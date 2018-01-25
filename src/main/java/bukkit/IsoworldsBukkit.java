@@ -44,6 +44,13 @@ public final class IsoworldsBukkit extends JavaPlugin {
         this.createConfig();
         this.servername = getConfig().getString("id");
 
+        // Check if ISOWORLDS-SAS exists
+        File checkSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");
+        if (!checkSAS.exists()) {
+            checkSAS.mkdir();
+            logger.info("[IsoWorlds] Dossier ISOWORLDS-SAS crée !");
+        }
+
         // Purge map
         worlds.clear();
         lock.clear();

@@ -75,6 +75,7 @@ public class IsoworldsSponge {
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
+        String name;
 
         // ISOWORLDS-SAS
         logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
@@ -82,12 +83,25 @@ public class IsoworldsSponge {
         File source = new File(ManageFiles.getPath());
         // Retourne la liste des isoworld tag
         for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
+            name = f.getName();
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat"));
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat_old"));
-            if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
-                logger.info("[IsoWorlds-SAS]: " + f.getName() + " déplacé dans le SAS");
+            // Gestion des IsoWorlds non push, si ne contient pas de tag alors "PUSH-SAS" et on le renomme lors de la sortie
+            if (!f.getName().contains("@")) {
+                logger.info("[IsoWorlds-SAS]: IsoWorld sans TAG, démarrage du push...");
+                // Vérification du statut du monde, si il est push ou non
+                if (!IsoworldsUtils.getStatus(f.getName(), Msg.keys.SQL)) {
+                    IsoworldsUtils.setStatus(f.getName(), 1, Msg.keys.SQL);
+                    // Tag du dossier en push
+                    ManageFiles.rename(ManageFiles.getPath() + f.getName(), "@PUSH");
+                    IsoworldsUtils.cm("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
+                    name = f.getName() + "@PUSH";
+                }
+            }
+            if (ManageFiles.move(source + "/" + name, dest.getPath())) {
+                logger.info("[IsoWorlds-SAS]: " + name + " déplacé dans le SAS");
             } else {
-                logger.info("[IsoWorlds-SAS]: Echec de stockage > " + f.getName());
+                logger.info("[IsoWorlds-SAS]: Echec de stockage > " + name);
             }
         }
         // --------------
@@ -191,6 +205,14 @@ public class IsoworldsSponge {
 
     @Listener
     public void onGameInit(GameInitializationEvent event) {
+
+        // Check if ISOWORLDS-SAS exists
+        File checkSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");
+        if (!checkSAS.exists()) {
+            checkSAS.mkdir();
+            logger.info("[IsoWorlds] Dossier ISOWORLDS-SAS crée !");
+        }
+
         try {
             if (!this.configuration.exists()) {
                 this.logger.info("Fichier de configuration non trouvé, création en cours...");
@@ -258,6 +280,7 @@ public class IsoworldsSponge {
                 File dest = new File(ManageFiles.getPath());
                 // Retourne la liste des isoworld tag
                 for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
+                    // Gestion des IsoWorlds non push, si ne contient pas de tag
                     if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
                         logger.info("[IsoWorlds-SAS]: " + f.getName() + " retiré du SAS");
                     } else {

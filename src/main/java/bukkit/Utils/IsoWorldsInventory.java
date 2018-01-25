@@ -51,37 +51,37 @@ public class IsoWorldsInventory implements Listener {
                 // BIOME
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
                 if (menuName.equals("Biome")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu BIOME: " + p.getName());
                     getMenuBiome(pPlayer).open(pPlayer);
                     // CONFIANCE
                 } else if (menuName.equals("Confiance")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu CONFIANCE: " + p.getName());
                     getMenuConfiance(pPlayer).open(pPlayer);
                     // CONSTRUCTION
                 } else if (menuName.equals("Construction")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu CONSTRUCTION: " + p.getName());
                     getMenuConstruction(pPlayer).open(pPlayer);
                     // MAISON
                 } else if (menuName.equals("Maison")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu MAISON: " + p.getName());
                     getMenuMaison(pPlayer).open(pPlayer);
                     // METEO
                 } else if (menuName.equals("Météo")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu METEO: " + p.getName());
                     getMenuMeteo(pPlayer).open(pPlayer);
                     // ACTIVATION
                 } else if (menuName.equals("Activation")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu ACTIVATION: " + p.getName());
                     getMenuActivation(pPlayer).open(pPlayer);
                     // TELEPORTATION
                 } else if (menuName.equals("Téléportation")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu TELEPORTATION: " + p.getName());
                     getMenuTeleportation(pPlayer).open(pPlayer);
                 } else if (menuName.equals("Temps")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu TEMPS: " + p.getName());
                     getMenuTemps(pPlayer).open(pPlayer);
                 } else if (menuName.equals("Menu principal")) {
-                    IsoworldsUtils.cm("PLAYER MENU 3");
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu PRINCIPAL: " + p.getName());
                     MenuPrincipal(pPlayer).open(pPlayer);
                 }
 

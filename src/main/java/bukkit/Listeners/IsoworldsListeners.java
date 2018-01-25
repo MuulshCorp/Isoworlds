@@ -95,6 +95,8 @@ public class IsoworldsListeners implements Listener {
         Location worldFrom = event.getFrom();
         Player pPlayer = event.getPlayer();
 
+        IsoworldsUtils.cm("[TRACKING-IW] Téléporation: " + pPlayer.getName() + " [FROM: " + worldFrom.toString() + "] - [TO: " + worldTo.toString() + "] - [CAUSE: "
+                + event.getCause().toString() + "]");
         if (worldTo.toString().equals(worldFrom.toString())) {
             return;
         }

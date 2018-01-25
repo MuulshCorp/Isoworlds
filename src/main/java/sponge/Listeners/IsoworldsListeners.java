@@ -2,6 +2,7 @@ package sponge.Listeners;
 
 import common.ManageFiles;
 import common.Msg;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
@@ -117,6 +118,8 @@ public class IsoworldsListeners {
         String check_p;
         String check_w;
 
+        IsoworldsUtils.cm("[TRACKING-IW] Téléporation: " + pPlayer.getName() + " [FROM: " + event.getFromTransform().toString() + "] - [TO: " + event.getToTransform().toString() + "] - [CAUSE: "
+                + event.getCause().toString() + "]");
 
         String eventworld = event.getToTransform().getExtent().getName();
         // Check if world status is 0
@@ -175,4 +178,5 @@ public class IsoworldsListeners {
         }
 
     }
+
 }

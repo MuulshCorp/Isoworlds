@@ -11,6 +11,7 @@ import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Listeners.IsoworldsListeners;
+import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
 
 import common.Mysql;
@@ -127,18 +128,27 @@ public class IsoworldsSponge {
     private void unload() {
         int x = 15;
         Task.builder().execute(() -> {
-            //checkLoadedChunks();
-            IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
-            IsoworldsUtils.cm("map: " + worlds);
+            // Démarrage de la procédure, on log tout les élements du map à chaque fois
+            IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
+            if (worlds.isEmpty()) {
+                IsoworldsLogger.info("IsoWorlds inactifs à l'analyse précédente: Aucun");
+            } else {
+                IsoworldsLogger.info("IsoWorlds inactifs à l'analyse précédente:");
+                for (Map.Entry<String, Integer> entry : worlds.entrySet()) {
+                    IsoworldsLogger.info("- " + entry);
+                }
+            }
             // Boucle de tous les mondes
             for (World world : Sponge.getServer().getWorlds()) {
                 // Si le monde est chargé et contient IsoWorld
                 if (world.isLoaded() & world.getName().contains("-IsoWorld")) {
+
                     // Si le nombre de joueurs == 0
                     if (world.getPlayers().size() == 0) {
                         // Si le monde n'est pas présent dans le tableau
                         if (worlds.get(world.getName()) == null) {
                             worlds.put(world.getName(), 1);
+                            IsoworldsLogger.warning(world.getName() + " vient d'être ajouté à l'analyse");
                         } else {
                             // Sinon on incrémente
                             worlds.put(world.getName(), worlds.get(world.getName()) + 1);
@@ -146,9 +156,10 @@ public class IsoworldsSponge {
 
                         // Si le nombre est supérieur ou = à X on unload
                         if (worlds.get(world.getName()) >= x) {
-                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
+                            IsoworldsLogger.info("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
                             // Procédure de déchargement //
-                            // Sauvegarde du monde
+
+                            // Sauvegarde du monde et déchargement
                             try {
                                 Sponge.getServer().getWorld(world.getName()).get().save();
                             } catch (IOException e) {
@@ -156,7 +167,6 @@ public class IsoworldsSponge {
                                 continue;
                             }
 
-                            // Déchargement du monde
                             Sponge.getServer().unloadWorld(world);
                             // Suppression dans le tableau
                             worlds.remove(world.getName());
@@ -176,11 +186,10 @@ public class IsoworldsSponge {
 
                                     // Tag du dossier en push
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                    IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
 
                                     // Suppression du monde
                                     Sponge.getServer().deleteWorld(world.getProperties());
-
-                                    IsoworldsUtils.cm("PUSH OK");
                                 }
                             } else {
                                 // Sinon on continue la boucle
@@ -191,16 +200,18 @@ public class IsoworldsSponge {
                         // Si le nombre de joueur est supérieur à 0, purge le tableau du IsoWorld
                     } else if (worlds.get(world.getName()) != null) {
                         worlds.remove(world.getName());
+                        IsoworldsLogger.warning(world.getName() + " de nouveau actif, supprimé de l'analyse");
                     }
                 }
             }
-            // Message de fin de boucle
-            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés");
-        }).
-
-                name("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés").
-
-                submit(this);
+            if (worlds.isEmpty()) {
+                IsoworldsLogger.info("Aucun IsoWorld n'est à " + x + " minutes d'inactivité...");
+                IsoworldsLogger.warning("Fin de l'analyse");
+            } else {
+                IsoworldsLogger.info("Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés");
+                IsoworldsLogger.warning("Fin de l'analyse");
+            }
+        }).submit(this);
 
     }
 
@@ -211,12 +222,12 @@ public class IsoworldsSponge {
         File checkSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");
         if (!checkSAS.exists()) {
             checkSAS.mkdir();
-            logger.info("[IsoWorlds] Dossier ISOWORLDS-SAS crée !");
+            IsoworldsLogger.info("Dossier ISOWORLDS-SAS crée !");
         }
 
         try {
             if (!this.configuration.exists()) {
-                this.logger.info("Fichier de configuration non trouvé, création en cours...");
+                IsoworldsLogger.warning("Fichier de configuration non trouvé, création en cours...");
                 this.configuration.createNewFile();
                 this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).setValue("isoworlds");
@@ -227,7 +238,7 @@ public class IsoworldsSponge {
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).setValue("806de245af712155c74dea135e6491d8");
                 this.configurationLoader.save(this.configurationNode);
             }
-            this.logger.info("Lecture de la configuration   ...");
+            IsoworldsLogger.info("Lecture de la configuration...");
             this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
             try {
                 this.servername = (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).getValue();
@@ -245,15 +256,15 @@ public class IsoworldsSponge {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        this.logger.info("Connexion à la base de données...");
+        IsoworldsLogger.info("Connexion à la base de données...");
         try {
             this.database.connect();
         } catch (Exception ex) {
-            logger.info("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
+            IsoworldsLogger.info("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
             ex.printStackTrace();
             return;
         }
-        this.logger.info("IsoWorlds connecté avec succès à la base de données !");
+        IsoworldsLogger.info("IsoWorlds connecté avec succès à la base de données !");
         this.cooldown = new Cooldown(this.database, this.servername, "sponge", this.commonLogger);
         everyMinutes();
 
@@ -267,16 +278,16 @@ public class IsoworldsSponge {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                logger.info("[IsoWorlds-Protection]: Mob Griefing protection appliqué au spawn");
+                IsoworldsLogger.info("Mob Griefing protection appliqué au spawn");
                 try {
                     WorldProperties worldProperties = Sponge.getServer().createWorldProperties("Isolonice", WorldArchetypes.OVERWORLD);
                     Sponge.getServer().getWorldProperties("Isolonice").get().setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
                     Sponge.getServer().saveWorldProperties(worldProperties);
                 } catch (IOException io) {
                     io.printStackTrace();
-                    logger.info("[IsoWorlds-Protection]: ECHEC APPLICATION MOB GRIEFING !!!");
+                    IsoworldsLogger.severe("Echec application mob griefing");
                 }
-                logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
+                IsoworldsLogger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
                 File source = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
                 File dest = new File(ManageFiles.getPath());
                 // Retourne la liste des isoworld tag

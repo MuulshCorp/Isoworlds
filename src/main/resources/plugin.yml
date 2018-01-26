@@ -11,22 +11,7 @@ commands:
         usage: /<iw> [creation][liste][maison][confiance][on][off][teleport]
         aliases: [isoworlds, isoworld]
 
-permission:
+permissions:
     isoworlds.default:
-      description: Autoriser une utilisation des iworlds
-      defaut: true
-    isoworlds.unlimited.charges:
-      description: Autoriser l'utilisation des charges sans en posséder
-      default: false
-    isoworlds.size.500:
-      description: Taille du monde: 500
-      default: false
-    isoworlds.size.750:
-      description: Taille du monde: 750
-      default: false
-    isoworlds.size.1000:
-      description: Taille du monde 1000
-      default: false
-    isoworlds.bypass.spawn:
-      description: Permet d'intéragir avec le spawn
-      default: false
+        description: Autoriser une utilisation des iworlds
+        defaut: true

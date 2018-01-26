@@ -3,24 +3,21 @@ package bukkit;
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
 import bukkit.Locations.IsoworldsLocations;
+import bukkit.Utils.IsoworldsLogger;
 import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
 import common.Mysql;
 
-import javax.print.attribute.standard.MediaSize;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -39,8 +36,13 @@ public final class IsoworldsBukkit extends JavaPlugin {
     @Override
     public void onEnable() {
         this.instance = this;
-        this.logger = getLogger();
-        this.logger.info("Lecture de la configuration...");
+
+        // Affiche le tag / version au lancement
+        IsoworldsLogger.tag();
+        PluginDescriptionFile pdf = getDescription();
+        IsoworldsLogger.info("Chargement de la version Bukkit: " + pdf.getVersion() + " Auteur: " + pdf.getAuthors() + " Site: " + pdf.getWebsite());
+        IsoworldsLogger.info("Lecture de la configuration...");
+
         this.createConfig();
         this.servername = getConfig().getString("id");
 
@@ -48,7 +50,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
         File checkSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");
         if (!checkSAS.exists()) {
             checkSAS.mkdir();
-            logger.info("[IsoWorlds] Dossier ISOWORLDS-SAS crée !");
+            IsoworldsLogger.info("Dossier ISOWORLDS-SAS crée !");
         }
 
         // Purge map
@@ -67,30 +69,27 @@ public final class IsoworldsBukkit extends JavaPlugin {
                 getConfig().getString("sql.mdp"), true
         );
 
-        this.logger.info(this.database.toString());
-
-        this.logger.info("Connexion à la base de données    ...");
+        IsoworldsLogger.info("Connexion à la base de données...");
         try {
             this.database.connect();
         } catch (Exception ex) {
-            this.logger.severe("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
+            IsoworldsLogger.severe("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
             ex.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
 
-
         this.commonLogger = new common.Logger("bukkit");
         this.cooldown = new Cooldown(this.database, this.servername, "bukkit", this.commonLogger);
-        this.logger.info("Démarrage des tâches...");
+        IsoworldsLogger.info("Démarrage des tâches...");
         everyMinutes();
-        this.logger.info("IsoWorlds activé !");
+        IsoworldsLogger.info("IsoWorlds connecté avec succès à la base de données !");
 
     }
 
     @Override
     public void onDisable() {
-        this.logger.info("IsoWorlds désactivé !");
+        IsoworldsLogger.info("IsoWorlds désactivé !");
         Bukkit.getScheduler().cancelTasks(this);
         this.instance = null;
         this.servername = null;
@@ -102,8 +101,16 @@ public final class IsoworldsBukkit extends JavaPlugin {
     private void everyMinutes() {
         int x = 15;
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
-            IsoworldsUtils.cm("[IsoWorlds] Analyse des IsoWorls vides...");
-            IsoworldsUtils.cm("map: " + worlds);
+            // Démarrage de la procédure, on log tout les élements du map à chaque fois
+            IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
+            if (worlds.isEmpty()) {
+                IsoworldsLogger.info("IsoWorlds inactifs à l'analyse précédente: Aucun");
+            } else {
+                IsoworldsLogger.info("IsoWorlds inactifs à l'analyse précédente:");
+                for (Map.Entry<String, Integer> entry : worlds.entrySet()) {
+                    IsoworldsLogger.info("- " + entry);
+                }
+            }
             // Boucle de tous les mondes
             for (World world : Bukkit.getServer().getWorlds()) {
                 // Si le monde est chargé et contient IsoWorld
@@ -114,6 +121,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
                         // Si le monde n'est pas présent dans le tableau
                         if (worlds.get(world.getName()) == null) {
                             worlds.put(world.getName(), 1);
+                            IsoworldsLogger.warning(world.getName() + " vient d'être ajouté à l'analyse");
                         } else {
                             // Sinon on incrémente
                             worlds.put(world.getName(), worlds.get(world.getName()) + 1);
@@ -121,14 +129,14 @@ public final class IsoworldsBukkit extends JavaPlugin {
 
                         // Si le nombre est supérieur ou = à X on unload
                         if (worlds.get(world.getName()) >= x) {
-                            IsoworldsUtils.cm("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
+                            IsoworldsLogger.info("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
                             // Procédure de déchargement //
 
                             for (Player p : Bukkit.getServer().getWorld(world.getName()).getPlayers()) {
                                 IsoworldsLocations.teleport(p, "Isolonice");
                             }
 
-                            // Sauvegarde du monde
+                            // Sauvegarde du monde et déchargement
                             if (!Bukkit.getServer().getWorld(world.getName()).equals(null)) {
                                 Bukkit.getServer().unloadWorld(world.getName(), true);
                             }
@@ -146,7 +154,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
 
                                     // Tag du dossier en push
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
-                                    IsoworldsUtils.cm("PUSH OK");
+                                    IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
                                 }
                             } else {
                                 // Sinon on continue la boucle
@@ -157,10 +165,17 @@ public final class IsoworldsBukkit extends JavaPlugin {
                         // Si le nombre de joueur est supérieur à 0, purge le tableau du IsoWorld
                     } else if (worlds.get(world.getName()) != null) {
                         worlds.remove(world.getName());
+                        IsoworldsLogger.warning(world.getName() + " de nouveau actif, supprimé de l'analyse");
                     }
                 }
             }
-            IsoworldsUtils.cm("[IsoWorlds] Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargé");
+            if (worlds.isEmpty()) {
+                IsoworldsLogger.info("Aucun IsoWorld n'est à " + x + " minutes d'inactivité...");
+                IsoworldsLogger.warning("Fin de l'analyse");
+            } else {
+                IsoworldsLogger.info("Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés");
+                IsoworldsLogger.warning("Fin de l'analyse");
+            }
         }), 600 * 1, 1200 * 1);
     }
 
@@ -175,10 +190,10 @@ public final class IsoworldsBukkit extends JavaPlugin {
             }
             File file = new File(getDataFolder(), "config.yml");
             if (!file.exists()) {
-                getLogger().info("config.yml non trouvé, création!");
+                IsoworldsLogger.warning("Fichier de configuration non trouvé, création en cours...");
                 saveDefaultConfig();
             } else {
-                getLogger().info("config.yml trouvé!");
+                IsoworldsLogger.info("Lecture de la configuration...");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -16,6 +16,7 @@ import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 
 import java.io.File;
@@ -43,6 +44,21 @@ public class IsoworldsListeners implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
+        if (IsoworldsUtils.getCharge(event.getPlayer(), Msg.keys.SQL) == null) {
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Sijania vous souhaite la bienvenue !");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Sur Isolonice, vous possédez votre propre monde nommé: IsoWorld");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Vous êtes seul maître à bord, il est à vous !");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Pour commencer l'aventure entrez la commande: /iw");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Puis sélectionnez le premier menu (Construction)");
+                }
+
+            }.runTaskLater(this.instance, 100);
+        }
 
         String world = event.getPlayer().getWorld().getName();
         IsoworldsUtils.cm("DEBUG1: " + world);
@@ -137,7 +153,6 @@ public class IsoworldsListeners implements Listener {
 
         }
     }
-
 
 
 }

@@ -39,7 +39,6 @@ public class IsoworldsUtils {
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
     }
 
-
     // ------------------------------------------------- ISOWORLDS MANIPULATION
 
     // Get all IsoWorlds that trusted pPlayer

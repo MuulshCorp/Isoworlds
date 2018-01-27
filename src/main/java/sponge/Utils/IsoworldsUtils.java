@@ -187,6 +187,26 @@ public class IsoworldsUtils {
         return false;
     }
 
+    // Set global status
+    public static Boolean setGlobalStatus(String messageErreur) {
+        String CHECK = "UPDATE `isoworlds` SET `STATUS` = 1 WHERE `SERVEUR_ID` = ?";
+        String check_w;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // SERVEUR_ID
+            check.setString(2, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            IsoworldsUtils.cm(check.toString());
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return false;
+        }
+        return true;
+    }
+
     // Create IsoWorld for pPlayer
     public static Boolean setIsoWorld(Player pPlayer, String messageErreur) {
         String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`) VALUES (?, ?, ?, ?, ?)";

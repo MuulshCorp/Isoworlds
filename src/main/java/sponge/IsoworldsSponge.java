@@ -86,15 +86,6 @@ public class IsoworldsSponge {
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat"));
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat_old"));
             // Gestion des IsoWorlds non push, si ne contient pas de tag alors "PUSH-SAS" et on le renomme lors de la sortie
-            if (!f.getName().contains("@")) {
-                logger.info("[IsoWorlds-SAS]: IsoWorld sans TAG, démarrage du push...");
-                // Vérification du statut du monde, si il est push ou non
-                if (!IsoworldsUtils.getStatus(f.getName(), Msg.keys.SQL)) {
-                    IsoworldsUtils.setStatus(f.getName(), 1, Msg.keys.SQL);
-                    // Si nom set à name alors on le renomme une fois déplacé
-                    name = f.getName();
-                }
-            }
             if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
                 if (!f.getName().contains("@PUSHED")) {
                     ManageFiles.rename(ManageFiles.getPath() + "/ISOWORLDS-SAS/" + f.getName(), "@PUSH");
@@ -104,6 +95,10 @@ public class IsoworldsSponge {
                 logger.info("[IsoWorlds-SAS]: Echec de stockage > " + name);
             }
         }
+
+        // Set global status 1
+        IsoworldsUtils.setGlobalStatus(Msg.keys.SQL);
+
         // --------------
 
         registerEvents();

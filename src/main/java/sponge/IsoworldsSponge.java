@@ -96,7 +96,7 @@ public class IsoworldsSponge {
                 }
             }
             if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
-                if (name.equals(f.getName())) {
+                if (!f.getName().contains("@PUSHED")) {
                     ManageFiles.rename(ManageFiles.getPath() + "/ISOWORLDS-SAS/" + f.getName(), "@PUSH");
                     logger.info("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
                 }

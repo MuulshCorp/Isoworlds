@@ -195,7 +195,7 @@ public class IsoworldsUtils {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
             // SERVEUR_ID
-            check.setString(2, plugin.servername);
+            check.setString(1, plugin.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
             IsoworldsUtils.cm(check.toString());

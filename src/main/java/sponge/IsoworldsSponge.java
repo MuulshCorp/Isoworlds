@@ -96,6 +96,8 @@ public class IsoworldsSponge {
             }
         }
 
+        this.initServerName();
+        this.initMySQL();
         // Set global status 1
         IsoworldsUtils.setGlobalStatus(Msg.keys.SQL);
 
@@ -238,31 +240,15 @@ public class IsoworldsSponge {
             IsoworldsLogger.info("Chargement de la version Bukkit: " + pdf.getVersion() + " Auteur: " + pdf.getAuthors() + " Site: " + pdf.getUrl());
 
             IsoworldsLogger.info("Lecture de la configuration...");
-            this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
-            try {
-                this.servername = (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).getValue();
-            } catch (NullPointerException npe) {
-                npe.printStackTrace();
+            this.initServerName();
+            IsoworldsLogger.info("Connexion à la base de données...");
+            if (!this.initMySQL()) {
+                return;
             }
-            this.database = new Mysql(
-                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_host"}).getValue(),
-                    (Integer) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_port"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_database"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_username"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).getValue(),
-                    true
-            );
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        IsoworldsLogger.info("Connexion à la base de données...");
-        try {
-            this.database.connect();
-        } catch (Exception ex) {
-            IsoworldsLogger.info("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
-            ex.printStackTrace();
-            return;
-        }
+
         IsoworldsLogger.info("IsoWorlds connecté avec succès à la base de données !");
         this.cooldown = new Cooldown(this.database, this.servername, "sponge", this.commonLogger);
         everyMinutes();
@@ -319,5 +305,51 @@ public class IsoworldsSponge {
 
     public Logger getLogger() {
         return logger;
+    }
+
+    private boolean initMySQL() {
+        if (this.configurationNode == null) {
+            try {
+                this.configurationNode = this.configurationLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (this.database == null) {
+            this.database = new Mysql(
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_host"}).getValue(),
+                    (Integer) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_port"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_database"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_username"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).getValue(),
+                    true
+            );
+
+            try {
+                this.database.connect();
+            } catch (Exception ex) {
+                IsoworldsLogger.info("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void initServerName() {
+        if (this.configurationNode == null) {
+            try {
+                this.configurationNode = this.configurationLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            this.servername = (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).getValue();
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
     }
 }

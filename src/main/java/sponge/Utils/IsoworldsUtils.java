@@ -199,8 +199,8 @@ public class IsoworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             IsoworldsUtils.cm(check.toString());
-        } catch (Exception se) {
-            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             IsoworldsUtils.cm(messageErreur);
             return false;
         }

@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
         name = "IsoWorlds",
         description = "Manager de isoworlds Isolonice",
         url = "https://isolonice.fr",
-        version = "@version@",
+        version = "1.8.3-DEV",
         authors = {
                 "Sythiel"
         }
@@ -83,18 +83,17 @@ public class IsoworldsSponge {
         File source = new File(ManageFiles.getPath());
         // Retourne la liste des isoworld tag
         for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
-            name = f.getName();
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat"));
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat_old"));
             // Gestion des IsoWorlds non push, si ne contient pas de tag alors "PUSH-SAS" et on le renomme lors de la sortie
             if (!f.getName().contains("@")) {
                 logger.info("[IsoWorlds-SAS]: IsoWorld sans TAG, démarrage du push...");
                 // Vérification du statut du monde, si il est push ou non
-                //if (!IsoworldsUtils.getStatus(f.getName(), Msg.keys.SQL)) {
-                //    IsoworldsUtils.setStatus(f.getName(), 1, Msg.keys.SQL);
+                if (!IsoworldsUtils.getStatus(f.getName(), Msg.keys.SQL)) {
+                    IsoworldsUtils.setStatus(f.getName(), 1, Msg.keys.SQL);
                     // Si nom set à name alors on le renomme une fois déplacé
                     name = f.getName();
-                //}
+                }
             }
             if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
                 if (name.equals(f.getName())) {

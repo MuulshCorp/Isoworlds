@@ -1,10 +1,7 @@
 package sponge.Utils;
 
 
-import javafx.scene.text.TextBuilder;
-import org.bukkit.ChatColor;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.IsoworldsSponge;
 

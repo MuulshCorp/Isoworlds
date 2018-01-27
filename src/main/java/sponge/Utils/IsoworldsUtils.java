@@ -565,6 +565,32 @@ public class IsoworldsUtils {
     // -------------------------------------------------  CHARGES SYSTEM
 
     // Get charge of a player
+    public static Integer firstTime(Player pPlayer, String messageErreur) {
+        String CHECK = "SELECT `charges` FROM `players_info` WHERE `UUID_P` = ?";
+        ResultSet result;
+        Integer number;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+            // UUID _P
+            check.setString(1, pPlayer.getUniqueId().toString());
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            while (rselect.next()) {
+                IsoworldsUtils.cm(rselect.toString());
+                IsoworldsUtils.cm("Debug charge 1");
+                number = rselect.getInt(1);
+                return number;
+            }
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return null;
+        }
+        return null;
+    }
+
+
+    // Get charge of a player
     public static Integer getCharge(Player pPlayer, String messageErreur) {
         String CHECK = "SELECT `charges` FROM `players_info` WHERE `UUID_P` = ?";
         ResultSet result;

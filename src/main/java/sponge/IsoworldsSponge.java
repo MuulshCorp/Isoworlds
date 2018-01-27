@@ -6,7 +6,7 @@ import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
-import org.spongepowered.api.world.Chunk;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Plugin(
@@ -40,14 +41,13 @@ import java.util.concurrent.TimeUnit;
         name = "IsoWorlds",
         description = "Manager de isoworlds Isolonice",
         url = "https://isolonice.fr",
-        version = "1.1-SNAPSHOT",
+        version = "@version@",
         authors = {
                 "Sythiel"
         }
 )
 
 public class IsoworldsSponge {
-
     public static IsoworldsSponge instance;
     public final common.Logger commonLogger;
     private Logger logger;
@@ -77,7 +77,6 @@ public class IsoworldsSponge {
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
         String name = "";
-
         // ISOWORLDS-SAS
         logger.info("[IsoWorlds-SAS]: Stockage des IsoWorlds un tag dans le SAS");
         File dest = new File(ManageFiles.getPath() + "/ISOWORLDS-SAS/");
@@ -238,6 +237,12 @@ public class IsoworldsSponge {
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).setValue("806de245af712155c74dea135e6491d8");
                 this.configurationLoader.save(this.configurationNode);
             }
+
+            // Affiche le tag / version au lancement
+            IsoworldsLogger.tag();
+            PluginContainer pdf = Sponge.getPluginManager().getPlugin("Isoworlds").get();
+            IsoworldsLogger.info("Chargement de la version Bukkit: " + pdf.getVersion() + " Auteur: " + pdf.getAuthors() + " Site: " + pdf.getUrl());
+
             IsoworldsLogger.info("Lecture de la configuration...");
             this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
             try {

@@ -1,18 +1,14 @@
 package sponge.Listeners;
 
-import common.ManageFiles;
 import common.Msg;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.spongepowered.api.entity.Transform;
-import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
-import org.spongepowered.api.event.game.state.GameStoppedEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
-import org.spongepowered.api.world.storage.WorldProperties;
+import org.spongepowered.api.scheduler.Task;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
 import sponge.IsoworldsSponge;
@@ -28,10 +24,10 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static sponge.IsoworldsSponge.instance;
 
@@ -64,15 +60,37 @@ public class IsoworldsListeners {
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
 
-        for (Player p : players ) {
+        for (Player p : players) {
             p.setLocation(top);
             IsoworldsUtils.cm("TP DECO: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
         }
     }
 
     @Listener
+    public void onConnect(ClientConnectionEvent.Join event) {
+        // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
+        IsoworldsUtils.cm("TEST");
+        IsoworldsUtils.cm("TEST" + event.getTargetEntity().getName());
+        if (IsoworldsUtils.firstTime(event.getTargetEntity(), Msg.keys.SQL) == null) {
+            IsoworldsUtils.cm("TEST2");
+            Task.builder().execute(new Runnable() {
+                @Override
+                public void run() {
+                    IsoworldsUtils.cm("TEST");
+                    event.getTargetEntity().sendMessage(Text.of(Text.builder("[IsoWorlds]").color(TextColors.GOLD)
+                            .append(Text.of(Text.builder(" Sijania vous souhaite la bienvenue sur Isolonice !\n" +
+                                    "Dans ce royaume, vous possédez votre propre monde nommé: IsoWorld.\n" +
+                                    "Vous êtes seul maître à bord, il est à vous et vous pouvez choisir qui peut y accéder.\n" +
+                                    "Essayez dès maintenant via la commande: /iw").color(TextColors.GREEN))).build()));
+                }
+            }).delay(5, TimeUnit.SECONDS).submit(instance);
+        }
+    }
+
+    @Listener
     public void onLogin(ClientConnectionEvent.Login event) {
         String worldname = ("Isolonice");
+
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
@@ -110,7 +128,7 @@ public class IsoworldsListeners {
             p.setLocation(top);
             IsoworldsUtils.cm("TP UNLOAD: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
         }
-   }
+    }
 
     @Listener
     public void onPlayerChangeWorld(MoveEntityEvent.Teleport event, @Getter("getTargetEntity") Player pPlayer) {

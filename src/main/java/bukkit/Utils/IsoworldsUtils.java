@@ -223,17 +223,17 @@ public class IsoworldsUtils {
         // Radius border 500
         int x;
         int y;
-        if (pPlayer.hasPermission("isoworlds.size.500")) {
-            x = 500;
-            y = 500;
+        if (pPlayer.hasPermission("isoworlds.size.1000")) {
+            x = 1000;
+            y = 1000;
         // Radius border 750
         } else if (pPlayer.hasPermission("isoworlds.size.750")) {
             x = 750;
             y = 750;
         // Radius border 1000
-        } else if (pPlayer.hasPermission("isoworlds.size.1000")) {
-            x = 1000;
-            y = 1000;
+        } else if (pPlayer.hasPermission("isoworlds.size.500")) {
+            x = 500;
+            y = 500;
         // Radius border default
         } else {
             x = 250;

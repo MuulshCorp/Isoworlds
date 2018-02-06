@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 
 import common.Mysql;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -152,9 +153,12 @@ public final class IsoworldsBukkit extends JavaPlugin {
                                     IsoworldsUtils.cm("debug 2");
                                     IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
 
-                                    // Tag du dossier en push
-                                    ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
-                                    IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
+                                    // Tag du dossier en push, delayed
+                                    Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> {
+                                            ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                            IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
+                                    }, 20L);
+
                                 }
                             } else {
                                 // Sinon on continue la boucle

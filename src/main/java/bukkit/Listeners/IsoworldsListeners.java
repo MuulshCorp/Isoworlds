@@ -89,18 +89,18 @@ public class IsoworldsListeners implements Listener {
         }
     }
 
-    // Used to redefine rules of the world
-    public void onLoadWorld(WorldLoadEvent event) {
-
-        if (event.getWorld().getName().contains("-IsoWorld")) {
-            String worldname = event.getWorld().getName();
-            Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
-            IsoworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
-            Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-            Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
-            Bukkit.getServer().getWorld(worldname).setGameRuleValue(DefaultGameRules.MOB_GRIEFING, "false");
-        }
-    }
+//    // Used to redefine rules of the world
+//    public void onLoadWorld(WorldLoadEvent event) {
+//
+//        if (event.getWorld().getName().contains("-IsoWorld")) {
+//            String worldname = event.getWorld().getName();
+//            Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
+//            IsoworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
+//            Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
+//            Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
+//            Bukkit.getServer().getWorld(worldname).setGameRuleValue(DefaultGameRules.MOB_GRIEFING, "false");
+//        }
+//    }
 
     @EventHandler
     public void onPlayerChangeWorld(PlayerTeleportEvent event) {

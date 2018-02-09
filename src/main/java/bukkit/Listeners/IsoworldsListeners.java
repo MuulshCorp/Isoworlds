@@ -42,6 +42,20 @@ public class IsoworldsListeners implements Listener {
         p.teleport(top);
     }
 
+    // Set autosave for a new loaded world to avoid crash ?
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent event) {
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                event.getWorld().setAutoSave(true);
+            }
+        }.runTaskLater(this.instance, 20);
+
+
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes

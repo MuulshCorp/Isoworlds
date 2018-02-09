@@ -48,7 +48,7 @@ public class MaisonCommande {
         // Supprime le lock
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
-        // SELECT WORLD
+        // SELECT WORLD (load it if need)
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;

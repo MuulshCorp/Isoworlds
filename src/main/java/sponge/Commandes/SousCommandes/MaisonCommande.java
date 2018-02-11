@@ -56,7 +56,7 @@ public class MaisonCommande implements CommandExecutor {
         // Supprime le lock
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
-        // SELECT WORLD
+        // SELECT WORLD (load if need)
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));

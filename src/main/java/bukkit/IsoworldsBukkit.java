@@ -100,7 +100,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
     }
 
     private void everyMinutes() {
-        int x = 15;
+        int x = 1;
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
@@ -139,7 +139,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
 
                             // Sauvegarde du monde et déchargement
                             if (!Bukkit.getServer().getWorld(world.getName()).equals(null)) {
-                                Bukkit.getServer().unloadWorld(world.getName(), true);
+                                Bukkit.getServer().unloadWorld(world, true);
                             }
                             // Suppression dans le tableau
                             worlds.remove(world.getName());

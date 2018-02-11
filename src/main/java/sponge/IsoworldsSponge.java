@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 @Plugin(
@@ -121,7 +122,7 @@ public class IsoworldsSponge {
     }
 
     private void unload() {
-        int x = 15;
+        int x = 1;
         Task.builder().execute(() -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
@@ -184,7 +185,13 @@ public class IsoworldsSponge {
                                     IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
 
                                     // Suppression du monde
-                                    Sponge.getServer().deleteWorld(world.getProperties());
+                                    try {
+                                        if (Sponge.getServer().deleteWorld(world.getProperties()).get()) {
+                                            IsoworldsLogger.info("- " + world.getName() + " : Isoworld supprimé avec succès !");
+                                        }
+                                    } catch (InterruptedException | ExecutionException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             } else {
                                 // Sinon on continue la boucle

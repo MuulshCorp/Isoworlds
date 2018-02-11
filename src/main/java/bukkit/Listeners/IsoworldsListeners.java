@@ -2,6 +2,7 @@ package bukkit.Listeners;
 
 import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoWorldsInventory;
+import bukkit.Utils.IsoworldsLogger;
 import common.ManageFiles;
 import common.Msg;
 import org.bukkit.*;
@@ -50,6 +51,7 @@ public class IsoworldsListeners implements Listener {
             @Override
             public void run() {
                 event.getWorld().setAutoSave(true);
+                IsoworldsLogger.info("- Isoworld setAutoSave to TRUE");
             }
         }.runTaskLater(this.instance, 20);
 
@@ -128,6 +130,14 @@ public class IsoworldsListeners implements Listener {
         IsoworldsUtils.cm("[TRACKING-IW] Téléporation: " + pPlayer.getName() + " [FROM: " + worldFrom.toString() + "] - [TO: " + worldTo.toString() + "] - [CAUSE: "
                 + event.getCause().toString() + "]");
         if (worldTo.toString().equals(worldFrom.toString())) {
+            return;
+        }
+
+        // Deny teleport to unloaded world with /back that load world DIM number instead
+        File checkFolder = new File(ManageFiles.getPath() + worldTo.getWorld().getName());
+        if (!checkFolder.exists() & worldTo.getWorld().getName().contains("IsoWorld")) {
+            event.setCancelled(true);
+            IsoworldsLogger.warning("Isoworld non actif, téléporation annulée !");
             return;
         }
 

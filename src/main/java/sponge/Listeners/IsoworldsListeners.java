@@ -1,5 +1,6 @@
 package sponge.Listeners;
 
+import common.ManageFiles;
 import common.Msg;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
@@ -10,6 +11,7 @@ import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
 import org.spongepowered.api.scheduler.Task;
 import sponge.Locations.IsoworldsLocations;
+import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
 import sponge.IsoworldsSponge;
 
@@ -24,6 +26,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
@@ -140,7 +143,14 @@ public class IsoworldsListeners {
                 + event.getCause().toString() + "]");
 
         String eventworld = event.getToTransform().getExtent().getName();
-        // Check if world status is 0
+
+        // Check if world folder is present
+        File checkFolder = new File(ManageFiles.getPath() + eventworld);
+        if (!checkFolder.exists() & eventworld.contains("IsoWorld")) {
+            event.setCancelled(true);
+            IsoworldsLogger.warning("Isoworld non actif, téléporation annulée !");
+            return;
+        }
 
         Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
 

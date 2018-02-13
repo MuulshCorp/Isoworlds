@@ -6,12 +6,7 @@ import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.entity.living.player.User;
-import org.spongepowered.api.event.cause.NamedCause;
-import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
@@ -19,9 +14,7 @@ import sponge.Utils.IsoworldsUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by Edwin on 13/02/2018.

@@ -184,7 +184,6 @@ public class IsoworldsSponge {
 
                                     // Tag du dossier en push
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
-                                    //ManageFiles.rename(ManageFiles.getPath() + world.getName() + "@TEMP-PUSH", "@PUSH");
                                     IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
 
                                     // Suppression du monde

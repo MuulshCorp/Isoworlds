@@ -86,6 +86,10 @@ public class ManageFiles {
         if (!file.isDirectory()) {
             return false;
         }
+        // ISOWORLDS on unload auto
+        if (path.contains("@TEMP-PUSH")) {
+            path = path.split("@TEMP-PUSH")[0];
+        }
         file.renameTo(new File(path + newname));
         return true;
     }

@@ -122,7 +122,7 @@ public class IsoworldsSponge {
     }
 
     private void unload() {
-        int x = 15;
+        int x = 1;
         Task.builder().execute(() -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
@@ -176,12 +176,15 @@ public class IsoworldsSponge {
                                     IsoworldsUtils.cm("debug 2");
                                     IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
 
-                                    // ISOWORLDS-SAS
+                                    // Suppression ID
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat_old"));
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/session.lock"));
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/forcedchunks.dat"));
 
                                     // Tag du dossier en push
                                     ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                    //ManageFiles.rename(ManageFiles.getPath() + world.getName() + "@TEMP-PUSH", "@PUSH");
                                     IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
 
                                     // Suppression du monde
@@ -192,6 +195,7 @@ public class IsoworldsSponge {
                                     } catch (InterruptedException | ExecutionException e) {
                                         e.printStackTrace();
                                     }
+
                                 }
                             } else {
                                 // Sinon on continue la boucle

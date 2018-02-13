@@ -27,8 +27,6 @@ import org.spongepowered.api.world.World;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import static sponge.Utils.IsoworldsUtils.isLocked;
-
 public class ConfianceCommande implements CommandCallable {
 
     private final IsoworldsSponge plugin = IsoworldsSponge.instance;

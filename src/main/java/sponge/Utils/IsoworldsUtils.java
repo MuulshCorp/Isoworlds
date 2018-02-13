@@ -495,12 +495,19 @@ public class IsoworldsUtils {
             // Création des chemins pour vérification
             File file = new File(ManageFiles.getPath() + worldname);
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
-            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
 
+
+            // Suppression si doublon (généré sans autorisation), on remove le non tag
+            if (file.exists() & file2.exists()) {
+                IsoworldsLogger.warning(" --- Anomalie: Dossier isoworld et isoworld tag tous deux présents pour: " + worldname + " ---");
+                ManageFiles.deleteDir(file);
+            }
+
+            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
             if (file.exists()) {
                 IsoworldsUtils.cm("Debug 7");
                 IsoworldsUtils.setStatus(worldname, 0, Msg.keys.SQL);
-                // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
+                // Si le dossier est en @PUSHED et qu'un joueur le demande alors on le passe en @PULL
                 // Le script check ensutie
                 return true;
             } else {
@@ -522,6 +529,117 @@ public class IsoworldsUtils {
         return true;
     }
 
+    // COPY FOR CHARGERCOMMANDE
+    // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
+    public static Boolean checkTagCharger(String worldname) {
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        Integer limit = 0;
+        // Vérification si monde en statut pushed
+        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+        if (IsoworldsUtils.getStatus(worldname, Msg.keys.SQL)) {
+            // Création des chemins pour vérification
+            File file = new File(ManageFiles.getPath() + worldname);
+            File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
+            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
+
+            if (file.exists()) {
+                IsoworldsUtils.setStatus(worldname, 0, Msg.keys.SQL);
+                // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
+                // Le script check ensutie
+                return true;
+            } else {
+                IsoworldsLogger.warning("--- IMPORT MANUEL IW EN COURS POUR: " + worldname);
+            }
+            if (file2.exists()) {
+                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
+                IsoworldsUtils.cm("--- PULL MANUEL OK POUR: " + worldname);
+                return false;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    // COPY FOR CHARGERCOMMAND
+    // Check if pPlayer's IsoWorld is created on database
+    public static Boolean isPresentCharger(String uuid, String messageErreur, Boolean load) {
+        String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String check_w;
+        String check_p;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // UUID _P
+            check_p = uuid;
+            check.setString(1, check_p);
+            // UUID_W
+            check_w = uuid + "-IsoWorld";
+            check.setString(2, check_w);
+            // SERVEUR_ID
+            check.setString(3, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+
+            if (rselect.isBeforeFirst()) {
+                // Chargement si load = true
+                if (!IsoworldsUtils.getStatus(uuid + "-IsoWorld", Msg.keys.SQL)) {
+                    if (load) {
+                        setWorldPropertiesCharger(uuid + "-IsoWorld");
+                        Sponge.getServer().loadWorld(uuid + "-IsoWorld");
+                    }
+                }
+                return true;
+            }
+
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            return false;
+        }
+        return false;
+    }
+
+    // COPY FOR CHARGERCOMMANDE
+    // Create world properties IsoWorlds
+    public static WorldProperties setWorldPropertiesCharger(String worldname) {
+
+        // Check si world properties en place, création else
+        Optional<WorldProperties> wp = Sponge.getServer().getWorldProperties(worldname);
+        WorldProperties worldProperties;
+
+        try {
+            if (wp.isPresent()) {
+                worldProperties = wp.get();
+                IsoworldsUtils.cm("WOLRD PROPERTIES: déjà présent");
+            } else {
+                worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
+                IsoworldsUtils.cm("WOLRD PROPERTIES: non présents, création...");
+
+            }
+
+            // Global
+            // Radius border 500
+            int x = 500;
+            worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
+            worldProperties.setKeepSpawnLoaded(false);
+            worldProperties.setLoadOnStartup(false);
+            worldProperties.setGenerateSpawnOnLoad(false);
+            worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
+            worldProperties.setPVPEnabled(true);
+            worldProperties.setWorldBorderCenter(0, 0);
+            worldProperties.setWorldBorderDiameter(x);
+
+            // Sauvegarde
+            Sponge.getServer().saveWorldProperties(worldProperties);
+            IsoworldsUtils.cm("WorldProperties à jour");
+
+        } catch (IOException | NoSuchElementException ie) {
+            ie.printStackTrace();
+            return null;
+        }
+
+        return worldProperties;
+    }
 
     // ------------------------------------------------- LOCK AND CHECK SYSTEM
 

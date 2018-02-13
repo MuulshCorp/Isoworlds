@@ -116,7 +116,23 @@ public class IsoworldsListeners {
     // Debug load world
     @Listener
     public void onLoadWorld(LoadWorldEvent event) {
-        IsoworldsUtils.cm("LOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString());
+        String worldname = event.getTargetWorld().getName();
+        World world = event.getTargetWorld();
+
+        // Check si généré de façon anormale, on log le tout pour sanctionner ;.;
+        File file = new File(ManageFiles.getPath() + "/" + event.getTargetWorld().getName() + "/@PUSHED");
+        if (file.exists()) {
+            IsoworldsLogger.warning("--- Anomalie: LOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString() + " ---");
+            // Check if players in there
+            for (Player p : world.getPlayers()) {
+                p.kick(Text.of("Vous faites quelque chose d'anormal, veuillez avertir le staff"));
+                IsoworldsLogger.warning("--- Le joueur " + p.getName() + " fait partie de l'anomalie ---");
+            }
+            Sponge.getServer().unloadWorld(world);
+            Sponge.getServer().deleteWorld(world.getProperties());
+        } else {
+            IsoworldsLogger.info("LOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString());
+        }
     }
 
     // TP lors du unload d'un monde

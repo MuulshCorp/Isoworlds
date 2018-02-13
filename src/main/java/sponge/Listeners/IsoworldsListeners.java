@@ -120,14 +120,16 @@ public class IsoworldsListeners {
         World world = event.getTargetWorld();
 
         // Check si généré de façon anormale, on log le tout pour sanctionner ;.;
-        File file = new File(ManageFiles.getPath() + "/" + event.getTargetWorld().getName() + "/@PUSHED");
+        File file = new File(ManageFiles.getPath() + "/" + event.getTargetWorld().getName() + "@PUSHED");
         if (file.exists()) {
+            // Anomalie
             IsoworldsLogger.warning("--- Anomalie: LOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString() + " ---");
             // Check if players in there
             for (Player p : world.getPlayers()) {
                 p.kick(Text.of("Vous faites quelque chose d'anormal, veuillez avertir le staff"));
-                IsoworldsLogger.warning("--- Le joueur " + p.getName() + " fait partie de l'anomalie ---");
+                IsoworldsLogger.severe("--- Le joueur " + p.getName() + " fait partie de l'anomalie ---");
             }
+            // Déchargement et suppression
             Sponge.getServer().unloadWorld(world);
             Sponge.getServer().deleteWorld(world.getProperties());
         } else {
@@ -139,6 +141,7 @@ public class IsoworldsListeners {
     @Listener
     public void onUnloadWorld(UnloadWorldEvent event) {
         String worldname = ("Isolonice");
+        World world = event.getTargetWorld();
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
@@ -146,6 +149,21 @@ public class IsoworldsListeners {
         for (Player p : event.getTargetWorld().getPlayers()) {
             p.setLocation(top);
             IsoworldsUtils.cm("TP UNLOAD: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
+        }
+
+        File file = new File(ManageFiles.getPath() + "/" + event.getTargetWorld().getName() + "@PUSHED");
+        if (file.exists()) {
+            // Anomalie
+            IsoworldsLogger.severe("--- Anomalie: UNLOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString() + " ---");
+            // Check if players in there
+            for (Player p : world.getPlayers()) {
+                p.kick(Text.of("Vous faites quelque chose d'anormal, veuillez avertir le staff"));
+                IsoworldsLogger.warning("--- Le joueur " + p.getName() + " fait partie de l'anomalie ---");
+            }
+            // Suppression du monde
+            Sponge.getServer().deleteWorld(world.getProperties());
+        } else {
+            IsoworldsLogger.info("UNLOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString());
         }
     }
 

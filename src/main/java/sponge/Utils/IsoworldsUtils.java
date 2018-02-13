@@ -542,6 +542,13 @@ public class IsoworldsUtils {
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
             // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
 
+
+            // Suppression si doublon (généré sans autorisation), on remove le non tag
+            if (file.exists() & file2.exists()) {
+                IsoworldsLogger.severe(" --- Anomalie: Dossier isoworld et isoworld tag tous deux présents pour: " + worldname + " ---");
+                ManageFiles.deleteDir(file);
+            }
+
             if (file.exists()) {
                 IsoworldsUtils.setStatus(worldname, 0, Msg.keys.SQL);
                 // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL

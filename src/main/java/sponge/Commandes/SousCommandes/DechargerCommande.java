@@ -11,7 +11,9 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.IsoworldsSponge;
+import sponge.Listeners.IsoworldsListeners;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
@@ -64,7 +66,16 @@ public class DechargerCommande implements CommandCallable {
         // Save & unload
         try {
             world.save();
-            Sponge.getServer().unloadWorld(world);
+            // If is mirrored then unload + remove then return
+            if (IsoworldsUtils.isMirrored(worldname) == 1) {
+                IsoworldsLogger.severe("--- Anomalie détectée, unload interrompu et suppression de l'anomalie: " + worldname + " ---");
+                Sponge.getServer().unloadWorld(world);
+                Sponge.getServer().deleteWorld(world.getProperties());
+                IsoworldsLogger.severe("--- Anomalie: Corrigée, suppression effectuée avec succès de l'isoworld: "+ worldname + " ---");
+                return CommandResult.success();
+            } else {
+                Sponge.getServer().unloadWorld(world);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return CommandResult.success();

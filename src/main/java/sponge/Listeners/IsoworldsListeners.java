@@ -2,6 +2,7 @@ package sponge.Listeners;
 
 import common.ManageFiles;
 import common.Msg;
+import org.bukkit.Bukkit;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
@@ -146,13 +147,17 @@ public class IsoworldsListeners {
         Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
 
+        // Kick players
         for (Player p : event.getTargetWorld().getPlayers()) {
             p.setLocation(top);
             IsoworldsUtils.cm("TP UNLOAD: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
         }
 
+        // Check if file exist, to detect mirrors
         File file = new File(ManageFiles.getPath() + "/" + event.getTargetWorld().getName() + "@PUSHED");
-        if (file.exists()) {
+        File file2 = new File(ManageFiles.getPath() + "/" + event.getTargetWorld().getName());
+        // If exists and contains Isoworld
+        if (file.exists() & event.getTargetWorld().getName().contains("-IsoWorld")) {
             // Anomalie
             IsoworldsLogger.severe("--- Anomalie: UNLOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString() + " ---");
             // Check if players in there
@@ -160,8 +165,7 @@ public class IsoworldsListeners {
                 p.kick(Text.of("Vous faites quelque chose d'anormal, veuillez avertir le staff"));
                 IsoworldsLogger.warning("--- Le joueur " + p.getName() + " fait partie de l'anomalie ---");
             }
-            // Suppression du monde
-            Sponge.getServer().deleteWorld(world.getProperties());
+            return;
         } else {
             IsoworldsLogger.info("UNLOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString());
         }

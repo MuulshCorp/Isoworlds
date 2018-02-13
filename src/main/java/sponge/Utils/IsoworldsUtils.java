@@ -664,6 +664,19 @@ public class IsoworldsUtils {
         }
     }
 
+    // Check if mirror iw
+    //0 normal - 1 anomally
+    public static int isMirrored(String worldname) {
+        // Check if file exist, to detect mirrors
+        File file = new File(ManageFiles.getPath() + "/" + worldname + "@PUSHED");
+        File file2 = new File(ManageFiles.getPath() + "/" + worldname);
+        // If exists and contains Isoworld
+        if (file.exists() & file2.exists() & worldname.contains("-IsoWorld")) {
+            return 1;
+        }
+        return 0;
+    }
+
     // Cooldown modèle: uuid;commande
     public static Boolean checkLockFormat(String pPlayer, String command) {
         // Si le tableau est null alors lock 0 sinon lock 1

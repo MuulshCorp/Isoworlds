@@ -163,7 +163,27 @@ public class IsoworldsSponge {
                                 continue;
                             }
 
-                            Sponge.getServer().unloadWorld(world);
+                            // Save & unload AUTO CORRECT
+                            try {
+                                world.save();
+                                // If is mirrored then unload + remove then return
+                                if (IsoworldsUtils.isMirrored(world.getName()) == 1) {
+                                    IsoworldsLogger.severe("--- Anomalie détectée, unload interrompu et suppression de l'anomalie: " + world.getName() + " ---");
+                                    Sponge.getServer().unloadWorld(world);
+                                    Sponge.getServer().deleteWorld(world.getProperties());
+                                    IsoworldsLogger.severe("--- Anomalie: Corrigée, suppression effectuée avec succès de l'isoworld: "+ world.getName() + " ---");
+                                    continue;
+                                } else {
+                                    if (!Sponge.getServer().unloadWorld(world)) {
+                                        IsoworldsLogger.severe("--- Echec du déchargement de l'IsoWorld: " + world.getName() + " ---");
+                                        continue;
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return;
+                            }
+
                             // Suppression dans le tableau
                             worlds.remove(world.getName());
 

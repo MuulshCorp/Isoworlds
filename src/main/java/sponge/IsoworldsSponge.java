@@ -122,7 +122,7 @@ public class IsoworldsSponge {
     }
 
     private void unload() {
-        int x = 1;
+        int x = 15;
         Task.builder().execute(() -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");

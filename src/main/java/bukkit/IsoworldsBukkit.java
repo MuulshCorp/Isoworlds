@@ -2,7 +2,6 @@ package bukkit;
 
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
-import bukkit.Locations.IsoworldsLocations;
 import bukkit.Utils.IsoworldsLogger;
 import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
@@ -10,14 +9,12 @@ import common.ManageFiles;
 import common.Msg;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
 import common.Mysql;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +51,18 @@ public final class IsoworldsBukkit extends JavaPlugin {
             IsoworldsLogger.info("Dossier ISOWORLDS-SAS crée !");
         }
 
+        File source = new File(ManageFiles.getPath());
+        // Retourne la liste des isoworld tag
+        for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
+            ManageFiles.deleteDir(new File(f.getPath() + "/uid.dat"));
+            ManageFiles.deleteDir(new File(f.getPath() + "/session.lock"));
+            // Gestion des IsoWorlds non push, on les tag à @PUSH si pas de tag @PUSHED
+            if (!f.getName().contains("@PUSHED")) {
+                ManageFiles.rename(ManageFiles.getPath() + "/" + f.getName(), "@PUSH");
+                IsoworldsLogger.warning("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
+            }
+        }
+
         // Purge map
         worlds.clear();
         lock.clear();
@@ -85,6 +94,9 @@ public final class IsoworldsBukkit extends JavaPlugin {
         IsoworldsLogger.info("Démarrage des tâches...");
         everyMinutes();
         IsoworldsLogger.info("IsoWorlds connecté avec succès à la base de données !");
+
+        // Set global status 1
+        IsoworldsUtils.setGlobalStatus(Msg.keys.SQL);
 
     }
 

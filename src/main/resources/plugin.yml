@@ -3,6 +3,7 @@ version: @version@
 main: bukkit.IsoworldsBukkit
 authors: [Sythiel]
 description: Manager de mondes personnels
+load: STARTUP
 website: https://isolonice.fr
 
 commands:

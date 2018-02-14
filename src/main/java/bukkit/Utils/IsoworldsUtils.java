@@ -163,6 +163,26 @@ public class IsoworldsUtils {
         return true;
     }
 
+    // Set global status
+    public static Boolean setGlobalStatus(String messageErreur) {
+        String CHECK = "UPDATE `isoworlds` SET `STATUS` = 1 WHERE `SERVEUR_ID` = ?";
+        String check_w;
+        try {
+            PreparedStatement check = instance.database.prepare(CHECK);
+
+            // SERVEUR_ID
+            check.setString(1, instance.servername);
+            // Requête
+            check.executeUpdate();
+            IsoworldsUtils.cm(check.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return false;
+        }
+        return true;
+    }
+
     // Create trust for uuidcible on pPlayer IsoWorld
     public static Boolean setTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
         String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";

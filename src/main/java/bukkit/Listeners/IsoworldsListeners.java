@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import bukkit.Utils.IsoworldsUtils;
+import org.bukkit.event.world.ChunkEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.Inventory;
@@ -117,6 +119,16 @@ public class IsoworldsListeners implements Listener {
 //            Bukkit.getServer().getWorld(worldname).setGameRuleValue(DefaultGameRules.MOB_GRIEFING, "false");
 //        }
 //    }
+
+    // Disable loading new chunk
+    @EventHandler
+    public void onCreateChunk(ChunkLoadEvent event) {
+        if (event.getWorld().getName().contains("-IsoWorld")) {
+            if (event.isNewChunk()) {
+                event.getChunk().unload(false);
+            }
+        }
+    }
 
     @EventHandler
     public void onPlayerChangeWorld(PlayerTeleportEvent event) {

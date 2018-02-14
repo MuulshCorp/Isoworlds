@@ -562,7 +562,10 @@ public class IsoworldsUtils {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que vous ne possédez aucune charge !");
             return -1;
         } else {
-            return charges;
+            charges--;
+            IsoworldsUtils.updateCharge(pPlayer, charges, Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GOLD + charges + " charge(s)");
+            return charges++;
         }
     }
 

@@ -840,7 +840,7 @@ public class IsoworldsUtils {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.AQUA)))
                             .append(Text.of(Text.builder(charges + " charge(s)").color(TextColors.GREEN))).build()));
-            return charges;
+            return charges++;
         }
     }
 

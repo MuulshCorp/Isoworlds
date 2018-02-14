@@ -8,6 +8,7 @@ import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
+import org.spongepowered.api.event.world.ChunkPreGenerationEvent;
 import org.spongepowered.api.event.world.GenerateChunkEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
@@ -138,6 +139,14 @@ public class IsoworldsListeners {
             Sponge.getServer().deleteWorld(world.getProperties());
         } else {
             IsoworldsLogger.info("LOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString());
+        }
+    }
+
+    // Cancel chunk generation
+    @Listener
+    public void onCreateChunk(ChunkPreGenerationEvent event) {
+        if (event.getTargetWorld().getName().contains("-IsoWorld")) {
+            event.getChunkPreGenerate().cancel();
         }
     }
 

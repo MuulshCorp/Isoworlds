@@ -120,16 +120,6 @@ public class IsoworldsListeners implements Listener {
 //        }
 //    }
 
-    // Disable loading new chunk
-    @EventHandler
-    public void onCreateChunk(ChunkLoadEvent event) {
-        if (event.getWorld().getName().contains("-IsoWorld")) {
-            if (event.isNewChunk()) {
-                event.getChunk().unload(false);
-            }
-        }
-    }
-
     @EventHandler
     public void onPlayerChangeWorld(PlayerTeleportEvent event) {
         final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";

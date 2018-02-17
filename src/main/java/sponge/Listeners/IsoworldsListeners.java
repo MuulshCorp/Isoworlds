@@ -2,8 +2,8 @@ package sponge.Listeners;
 
 import common.ManageFiles;
 import common.Msg;
-import org.bukkit.Bukkit;
 import org.spongepowered.api.entity.Transform;
+import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
@@ -13,8 +13,10 @@ import org.spongepowered.api.event.world.GenerateChunkEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
 import org.spongepowered.api.event.world.chunk.LoadChunkEvent;
+import org.spongepowered.api.event.world.chunk.PopulateChunkEvent;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.world.ChunkPreGenerate;
+import org.spongepowered.api.world.WorldBorder;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
@@ -143,12 +145,12 @@ public class IsoworldsListeners {
     }
 
     // Cancel chunk generation
-    @Listener
-    public void onCreateChunk(ChunkPreGenerationEvent event) {
-        if (event.getTargetWorld().getName().contains("-IsoWorld")) {
-            event.getChunkPreGenerate().cancel();
-        }
-    }
+    //@Listener
+    //public void onCreateChunk(ChunkPreGenerationEvent event) {
+    //    if (event.getTargetWorld().getName().contains("-IsoWorld")) {
+    //        event.getChunkPreGenerate().cancel();
+    //    }
+    //}
 
     // TP lors du unload d'un monde
     @Listener

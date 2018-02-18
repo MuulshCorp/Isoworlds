@@ -2,6 +2,7 @@ package bukkit;
 
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
+import bukkit.Locations.IsoworldsLocations;
 import bukkit.Utils.IsoworldsLogger;
 import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
@@ -9,6 +10,7 @@ import common.ManageFiles;
 import common.Msg;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -145,9 +147,6 @@ public final class IsoworldsBukkit extends JavaPlugin {
                             IsoworldsLogger.info("La valeur de: " + world.getName() + " est de " + x + " , déchargement...");
 
                             // Procédure de déchargement //
-                            // Sauvegarde du monde et déchargement
-                            Bukkit.getServer().unloadWorld(world, true);
-
                             // Suppression dans le tableau
                             worlds.remove(world.getName());
 
@@ -158,13 +157,37 @@ public final class IsoworldsBukkit extends JavaPlugin {
                                 // Si le dossier existe alors on met le statut à 1 (push)
                                 if (check.exists()) {
                                     IsoworldsUtils.cm("debug 2");
-                                    IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
 
-                                    // Tag du dossier en push, delayed et suppression uid.session
-                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/uid.dat"));
-                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/session.lock"));
-                                    ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
-                                    IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
+                                    //Kick all players
+                                    for (Player p : world.getPlayers()) {
+                                        IsoworldsLocations.teleport(p, "Isolonice");
+                                    }
+
+                                    //Unload chunk
+                                    for (Chunk chunk : world.getLoadedChunks()) {
+                                        chunk.unload(true);
+                                    }
+
+                                    //Unload world
+                                    Bukkit.getServer().unloadWorld(world, true);
+
+                                    // Remove files
+                                    Bukkit.getScheduler().runTaskLater(instance, new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            // Sauvegarde du monde et déchargement
+
+                                            // Tag du dossier en push, delayed et suppression uid.session
+                                            ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/uid.dat"));
+                                            ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/session.lock"));
+                                            ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                            //Set pushed status bdd
+                                            IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
+                                            IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
+                                        }
+                                    }, 2 * 20);
+
                                 }
                             } else {
                                 // Sinon on continue la boucle

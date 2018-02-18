@@ -168,8 +168,6 @@ public final class IsoworldsBukkit extends JavaPlugin {
                                         chunk.unload(true);
                                     }
 
-                                    //Unload world
-                                    Bukkit.getServer().unloadWorld(world, true);
 
                                     // Remove files
                                     Bukkit.getScheduler().runTaskLater(instance, new Runnable() {
@@ -177,6 +175,9 @@ public final class IsoworldsBukkit extends JavaPlugin {
                                         @Override
                                         public void run() {
                                             // Sauvegarde du monde et déchargement
+
+                                            //Unload world
+                                            Bukkit.getServer().unloadWorld(world, true);
 
                                             // Tag du dossier en push, delayed et suppression uid.session
                                             ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/uid.dat"));

@@ -10,7 +10,6 @@ import bukkit.Locations.IsoworldsLocations;
 import bukkit.Utils.IsoworldsUtils;
 import common.Msg;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 
-import static bukkit.Utils.IsoworldsUtils.isLocked;
 import static bukkit.Utils.IsoworldsUtils.setWorldProperties;
 
 public class CreationCommande {

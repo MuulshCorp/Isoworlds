@@ -395,9 +395,9 @@ public class IsoworldsUtils {
                 if (!IsoworldsUtils.getStatus(check_p + "-IsoWorld", Msg.keys.SQL)) {
                     if (load) {
                         Bukkit.getServer().createWorld(new WorldCreator(check_p + "-IsoWorld"));
-                        setWorldProperties(check_p + "-IsoWorld", pPlayer);
                     }
                 }
+                setWorldProperties(check_p + "-IsoWorld", pPlayer);
                 return true;
             }
         } catch (Exception se) {

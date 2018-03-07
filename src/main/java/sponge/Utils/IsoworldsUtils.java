@@ -308,21 +308,43 @@ public class IsoworldsUtils {
 
             }
 
-            // Global
-            // Radius border 500
+            // Deal with permission of owner only
             int x;
-            if (pPlayer.hasPermission("isoworlds.size.1000")) {
-                x = 2000;
-                // Radius border 750
-            } else if (pPlayer.hasPermission("isoworlds.size.750")) {
-                x = 1500;
-                // Radius border 1000
-            } else if (pPlayer.hasPermission("isoworlds.size.500")) {
-                x = 1000;
-                // Radius border default
+            String username = worldname.split("-IsoWorld")[0];
+            Optional<User> user = IsoworldsUtils.getPlayerFromUUID(UUID.fromString(username));
+            if (!username.equals(pPlayer.getUniqueId().toString())) {
+                // Global
+                // Radius border 500
+                if (user.get().hasPermission("isoworlds.size.1000")) {
+                    x = 2000;
+                    // Radius border 750
+                } else if (user.get().hasPermission("isoworlds.size.750")) {
+                    x = 1500;
+                    // Radius border 1000
+                } else if (user.get().hasPermission("isoworlds.size.500")) {
+                    x = 1000;
+                    // Radius border default
+                } else {
+                    x = 500;
+                }
             } else {
-                x = 500;
+                // Global
+                // Radius border 500
+                if (pPlayer.hasPermission("isoworlds.size.1000")) {
+                    x = 2000;
+                    // Radius border 750
+                } else if (pPlayer.hasPermission("isoworlds.size.750")) {
+                    x = 1500;
+                    // Radius border 1000
+                } else if (pPlayer.hasPermission("isoworlds.size.500")) {
+                    x = 1000;
+                    // Radius border default
+                } else {
+                    x = 500;
+                }
             }
+
+
             worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
             worldProperties.setKeepSpawnLoaded(false);
             worldProperties.setLoadOnStartup(false);
@@ -465,6 +487,7 @@ public class IsoworldsUtils {
 
             if (rselect.isBeforeFirst()) {
                 // Chargement si load = true
+                setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
                 if (!IsoworldsUtils.getStatus(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", Msg.keys.SQL)) {
                     if (load) {
                         setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);

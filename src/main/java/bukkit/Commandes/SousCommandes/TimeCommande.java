@@ -27,14 +27,14 @@ public class TimeCommande {
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 
-        // If got charges
-        int charges = IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL);
-        if (charges == -1) {
+        //If the method return true then the command is in lock
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
             return;
         }
 
-        //If the method return true then the command is in lock
-        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
+        // If got charges
+        int charges = IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL);
+        if (charges == -1) {
             return;
         }
 

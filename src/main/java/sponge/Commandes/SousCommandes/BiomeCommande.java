@@ -14,6 +14,7 @@ import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.biome.BiomeType;
 import org.spongepowered.api.world.biome.BiomeTypes;
 import sponge.IsoworldsSponge;
+import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
 
 import javax.annotation.Nullable;
@@ -41,16 +42,17 @@ public class BiomeCommande implements CommandCallable {
 
         IsoworldsUtils.cm(arg[0]);
 
+        //If the method return true then the command is in lock
+        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
+            return CommandResult.success();
+        }
+
         // If got charges
         int charges = IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL);
         if (charges == -1) {
             return CommandResult.success();
         }
 
-        //If the method return true then the command is in lock
-        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
-            return CommandResult.success();
-        }
 
         // SELECT WORLD
         if (!IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
@@ -94,19 +96,16 @@ public class BiomeCommande implements CommandCallable {
                 loc.getExtent().setBiome(
                         loc.getChunkPosition().getX() * 16 + x,
                         0,
-                        loc.getChunkPosition().getY() * 16 + z,
+                        loc.getChunkPosition().getZ() * 16 + z,
                         biome
                 );
             }
         }
 
-        // Update charges if not unlimited & positive
-        if (charges > 0) {
-            IsoworldsUtils.updateCharge(pPlayer, -1, Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)
-                            .append(Text.of(Text.builder(charges + " charge(s)").color(TextColors.GREEN))))).build()));
-        }
+        IsoworldsUtils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)
+                        .append(Text.of(Text.builder(charges - 1 + " charge(s)").color(TextColors.GREEN))))).build()));
 
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9 ou F3 + G)").color(TextColors.AQUA))).build()));

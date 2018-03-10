@@ -40,14 +40,14 @@ public class TimeCommande implements CommandCallable {
         String[] arg = args.split(" ");
         int size = arg.length;
 
-        // If got charges
-        int charges = IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL);
-        if (charges == -1) {
+        //If the method return true then the command is in lock
+        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
             return CommandResult.success();
         }
 
-        //If the method return true then the command is in lock
-        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
+        // If got charges
+        int charges = IsoworldsUtils.checkCharge(pPlayer, Msg.keys.SQL);
+        if (charges == -1) {
             return CommandResult.success();
         }
 
@@ -113,13 +113,12 @@ public class TimeCommande implements CommandCallable {
             p.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que " + pPlayer.getName() + " vient de changer la temps à: " + arg[0])
                     .color(TextColors.GOLD).build()));
         }
-        // Update charges if not unlimited & positive
-        if (charges > 0) {
-            IsoworldsUtils.updateCharge(pPlayer, -1, Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)
-                            .append(Text.of(Text.builder(charges + " charge(s)").color(TextColors.GREEN))))).build()));
-        }
+
+        IsoworldsUtils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)
+                        .append(Text.of(Text.builder(charges - 1 + " charge(s)").color(TextColors.GREEN))))).build()));
+
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);
         return CommandResult.success();
     }

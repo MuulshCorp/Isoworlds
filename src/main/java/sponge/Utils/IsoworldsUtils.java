@@ -8,6 +8,7 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.entity.MoveEntityEvent;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.user.UserStorageService;
+import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
@@ -299,15 +300,6 @@ public class IsoworldsUtils {
         WorldProperties worldProperties;
 
         try {
-            if (wp.isPresent()) {
-                worldProperties = wp.get();
-                IsoworldsUtils.cm("WOLRD PROPERTIES: déjà présent");
-            } else {
-                worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-                IsoworldsUtils.cm("WOLRD PROPERTIES: non présents, création...");
-
-            }
-
             // Deal with permission of owner only
             int x;
             String username = worldname.split("-IsoWorld")[0];
@@ -345,23 +337,39 @@ public class IsoworldsUtils {
             }
 
 
-            worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-            worldProperties.setKeepSpawnLoaded(false);
-            worldProperties.setLoadOnStartup(false);
-            worldProperties.setGenerateSpawnOnLoad(false);
-            worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
-            worldProperties.setPVPEnabled(true);
-            worldProperties.setWorldBorderCenter(0, 0);
-            worldProperties.setWorldBorderDiameter(x);
 
-            // Spawn
-            //Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
-            //Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
-            //worldProperties.setSpawnPosition(firstspawn.getBlockPosition()    );
-
-
-            // Sauvegarde
-            Sponge.getServer().saveWorldProperties(worldProperties);
+            if (wp.isPresent()) {
+                worldProperties = wp.get();
+                IsoworldsUtils.cm("WOLRD PROPERTIES: déjà présent");
+                worldProperties.setKeepSpawnLoaded(false);
+                worldProperties.setLoadOnStartup(false);
+                worldProperties.setGenerateSpawnOnLoad(false);
+                worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
+                worldProperties.setPVPEnabled(true);
+                worldProperties.setWorldBorderCenter(0, 0);
+                worldProperties.setWorldBorderDiameter(x);
+                worldProperties.setEnabled(false);
+                worldProperties.setEnabled(true);
+                Sponge.getServer().saveWorldProperties(worldProperties);
+                // Border
+                Optional<World> world = Sponge.getServer().getWorld(worldname);
+                if (world.isPresent()) {
+                    world.get().getWorldBorder().setDiameter(x);
+                }
+                IsoworldsLogger.warning("Border nouveau: " + x);
+            } else {
+                worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
+                IsoworldsUtils.cm("WOLRD PROPERTIES: non présents, création...");
+                worldProperties.setKeepSpawnLoaded(false);
+                worldProperties.setLoadOnStartup(false);
+                worldProperties.setGenerateSpawnOnLoad(false);
+                worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
+                worldProperties.setPVPEnabled(true);
+                worldProperties.setWorldBorderCenter(0, 0);
+                worldProperties.setWorldBorderDiameter(x);
+                Sponge.getServer().saveWorldProperties(worldProperties);
+                IsoworldsLogger.warning("Border nouveau: " + x);
+            }
             IsoworldsUtils.cm("WorldProperties à jour");
 
         } catch (IOException | NoSuchElementException ie) {
@@ -843,6 +851,7 @@ public class IsoworldsUtils {
     // Vérifie les charges, retire si en possède sinon return false avec message
     public static Integer checkCharge(Player pPlayer, String messageErreur) {
         Integer charges = IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL);
+        Integer newCharges;
 
         if (charges == null) {
             initCharges(pPlayer, Msg.keys.SQL);
@@ -852,18 +861,11 @@ public class IsoworldsUtils {
         if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
             return -99;
         }
-        if (charges == 0) {
+        if (charges <= 0) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania indique que vous ne possédez aucune charge !").color(TextColors.RED))).build()));
             return -1;
-        } else {
-            charges--;
-            IsoworldsUtils.updateCharge(pPlayer, charges, Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.AQUA)))
-                            .append(Text.of(Text.builder(charges + " charge(s)").color(TextColors.GREEN))).build()));
-            return charges++;
         }
+        return charges;
     }
-
 }

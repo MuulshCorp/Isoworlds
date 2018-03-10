@@ -1,5 +1,6 @@
 package sponge.Locations;
 
+import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
 import sponge.IsoworldsSponge;
@@ -23,7 +24,7 @@ import static sponge.IsoworldsSponge.instance;
 
 public class IsoworldsLocations {
 
-    private final IsoworldsSponge plugin = instance;
+    private static final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     public static Optional<Location<World>> getHighestLoc(Location<World> loc) {
         Optional<Integer> y = getHighestY(loc.getExtent(), loc.getX(), loc.getZ());
@@ -50,33 +51,37 @@ public class IsoworldsLocations {
         return Optional.of(y);
     }
 
-    public static void teleport(Player player, String world) {
+    public static boolean teleport(Player player, String world) {
 
-        Location<World> spawn = Sponge.getGame().getServer().getWorld(world).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
-        Location<World> secours;
-        Location<World> go = new Location<>(spawn.getExtent(), 0, 60, 0);
+        Optional<World> finalWorld = plugin.getGame().getServer().getWorld(world);
+        if (finalWorld.isPresent()) {
+            Location<World> spawn = finalWorld.get().getSpawnLocation();
+            Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+            Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+            Location<World> secours;
+            Location<World> go = new Location<>(spawn.getExtent(), 0, 60, 0);
 
-        try {
-            Double Y = top.getY();
-            if (Y == null) {
-                Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.of(NamedCause.simulated(player)));
-                go = new Location<>(spawn.getExtent(), 0, 61, 0);
-            } else {
-                secours = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
-                go = new Location<>(spawn.getExtent(), 0, secours.getBlockY(), 0);
+            try {
+                if (top == null) {
+                    finalWorld.get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                    go = new Location<>(spawn.getExtent(), 0, 61, 0);
+                } else {
+                    secours = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+                    go = new Location<>(spawn.getExtent(), 0, secours.getBlockY(), 0);
+                }
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
             }
-        } catch (NullPointerException npe) {
-            Sponge.getServer().getWorld(world).get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.of(NamedCause.simulated(player)));
-        }
 
-        // Téléportation du joueur
-        if (player.setLocationSafely(go)) {
-            IsoworldsUtils.cm("Le joueur a bien été téléporté !");
-        } else {
-            IsoworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
-        }
 
+            // Téléportation du joueur
+            if (player.setLocationSafely(go)) {
+                IsoworldsUtils.cm("Le joueur a bien été téléporté !");
+            } else {
+                IsoworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
+                return false;
+            }
+        }
+        return true;
     }
 }

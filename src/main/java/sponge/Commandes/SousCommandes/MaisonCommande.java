@@ -2,6 +2,7 @@ package sponge.Commandes.SousCommandes;
 
 import common.Cooldown;
 import common.Msg;
+import org.spongepowered.api.Sponge;
 import sponge.IsoworldsSponge;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
@@ -18,6 +19,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.*;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static sponge.Utils.IsoworldsUtils.isLocked;
 
@@ -34,6 +36,7 @@ public class MaisonCommande implements CommandExecutor {
         // Variables
         String cmdname = "maison";
         String worldname = "";
+        Optional<World> world = Sponge.getServer().getWorld(worldname);
         Location<World> spawn;
         Player pPlayer = (Player) source;
         worldname = (IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
@@ -64,19 +67,9 @@ public class MaisonCommande implements CommandExecutor {
         }
 
         // Construction du point de respawn
-        try {
-            spawn = plugin.getGame().getServer().getWorld(worldname).get().getSpawnLocation();
-        } catch (NullPointerException | NoSuchElementException e) {
-            e.printStackTrace();
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.DATA).color(TextColors.AQUA))).build()));
-            return CommandResult.success();
-        }
 
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
         // Téléportation du joueur
-        if (pPlayer.setLocationSafely(top)) {
+        if (IsoworldsLocations.teleport(pPlayer, worldname)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION + pPlayer.getName()).color(TextColors.AQUA))).build()));
         } else {
@@ -85,6 +78,8 @@ public class MaisonCommande implements CommandExecutor {
         }
 
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.MAISON, Cooldown.MAISON_DELAY);
+
+
         return CommandResult.success();
     }
 

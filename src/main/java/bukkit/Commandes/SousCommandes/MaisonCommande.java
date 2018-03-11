@@ -1,6 +1,8 @@
 package bukkit.Commandes.SousCommandes;
 
 import bukkit.IsoworldsBukkit;
+import bukkit.Locations.IsoworldsLocations;
+import bukkit.Utils.IsoworldsLogger;
 import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
 import common.Msg;
@@ -54,31 +56,6 @@ public class MaisonCommande {
             return;
         }
 
-
-        // Construction du point de respawn
-        Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-        Integer secours;
-        Location go = new Location(Bukkit.getServer().getWorld(worldname), 0, 60, 0);
-
-        try {
-            if (top == null) {
-                Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
-                go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
-            } else {
-                secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-                go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
-            }
-        } catch (NullPointerException npe) {
-            //
-            Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
-        }
-
-        // Téléportation du joueur
-        if (pPlayer.teleport(go)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
-            instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
-        }
-        return;
-
+        IsoworldsLocations.teleport(pPlayer, worldname);
     }
 }

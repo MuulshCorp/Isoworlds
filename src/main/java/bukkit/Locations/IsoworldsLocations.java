@@ -1,7 +1,12 @@
 package bukkit.Locations;
 
+import bukkit.IsoworldsBukkit;
+import bukkit.Utils.IsoworldsLogger;
 import bukkit.Utils.IsoworldsUtils;
+import common.Cooldown;
+import common.Msg;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,28 +17,34 @@ import org.bukkit.entity.Player;
  */
 public class IsoworldsLocations {
 
-    public static void teleport(Player player, String world) {
-        Block top = Bukkit.getServer().getWorld(world).getHighestBlockAt(0, 0);
-        Location go = new Location (Bukkit.getServer().getWorld(world), 0, 60, 0);
+    private static final IsoworldsBukkit plugin = IsoworldsBukkit.instance;
+
+    public static void teleport(Player player, String worldname) {
+        // Construction du point de respawn
+        Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
         Integer secours;
+        Location go = new Location(Bukkit.getServer().getWorld(worldname), 0, 60, 0);
+
+        IsoworldsLogger.severe("Y = " + top);
         try {
-            Double Y = top.getLocation().getY();
-            if (Y == null) {
-                Bukkit.getServer().getWorld(world).getBlockAt(go).setType(Material.DIRT);
-                go = new Location (Bukkit.getServer().getWorld(world), 0, 61, 0);
+            if (top <= 0) {
+                IsoworldsLogger.severe("1");
+                Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
+                go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
             } else {
-                secours = Bukkit.getServer().getWorld(world).getHighestBlockYAt(0,0);
-                go = new Location (Bukkit.getServer().getWorld(world), 0, secours, 0);
+                IsoworldsLogger.severe("2");
+                secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+                go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
+            }
+
+            // Téléportation du joueur
+            if (player.teleport(go)) {
+                player.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
+                plugin.cooldown.addPlayerCooldown(player, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
             }
         } catch (NullPointerException npe) {
-            Bukkit.getServer().getWorld(world).getBlockAt(go).setType(Material.DIRT);
-        }
-
-        // Téléportation du joueur
-        if (player.teleport(go)) {
-            IsoworldsUtils.cm("Le joueur a bien été téléporté !");
-        } else {
-            IsoworldsUtils.cm("Le joueur n'a pas pu être téléporté !");
+            //
+            Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
         }
     }
 }

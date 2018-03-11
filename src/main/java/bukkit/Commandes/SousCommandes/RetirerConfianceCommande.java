@@ -95,7 +95,5 @@ public class RetirerConfianceCommande {
         } // Gestion du kick offline à gérer dès que possible
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_RETIRER_CONFIANCE);
-        return;
-
     }
 }

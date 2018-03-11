@@ -83,11 +83,11 @@ public class CreationCommande {
             return;
         }
 
+        IsoworldsLocations.teleport(pPlayer, worldname);
+
         // Configuration du monde
         setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
 
-        IsoworldsLocations.teleport(pPlayer, worldname);
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
-        return;
     }
 }

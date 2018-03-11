@@ -8,10 +8,13 @@ import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
+import me.lucko.luckperms.LuckPerms;
+import me.lucko.luckperms.api.LuckPermsApi;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -210,7 +213,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
                 IsoworldsLogger.info("Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés");
                 IsoworldsLogger.warning("Fin de l'analyse");
             }
-        }), 600 * 1, 1200 * 1);
+        }), 600, 1200);
     }
 
     public static IsoworldsBukkit getInstance() {

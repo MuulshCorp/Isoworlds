@@ -39,10 +39,32 @@ public class IsoworldsListeners implements Listener {
 
         Player p = event.getPlayer();
         String worldname = (event.getPlayer().getWorld().getName());
-        Integer maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-        Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
 
-        p.teleport(top);
+        // Construction du point de respawn
+        Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+        Integer secours;
+        Location go = new Location(Bukkit.getServer().getWorld(worldname), 0, 60, 0);
+
+        IsoworldsLogger.severe("Y = " + top);
+        try {
+            if (top <= 0) {
+                IsoworldsLogger.severe("1");
+                Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
+                go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
+            } else {
+                IsoworldsLogger.severe("2");
+                secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+                go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
+            }
+
+            // Téléportation du joueur
+            if (p.teleport(go)) {
+            }
+        } catch (NullPointerException npe) {
+            //
+            Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
+        }
+
     }
 
     // Set autosave for a new loaded world to avoid crash ?

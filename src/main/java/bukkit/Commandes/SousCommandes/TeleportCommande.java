@@ -33,6 +33,5 @@ public class TeleportCommande {
         } else {
             IsoworldsLocations.teleport(Bukkit.getServer().getPlayer(args[0]), args[1]);
         }
-        return;
     }
 }

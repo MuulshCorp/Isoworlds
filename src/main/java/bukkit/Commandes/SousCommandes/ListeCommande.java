@@ -26,7 +26,7 @@ public class ListeCommande {
         ArrayList<World> worlds = new ArrayList<World>();
         Boolean check = false;
 
-        for(World world : Bukkit.getServer().getWorlds()) {
+        for (World world : Bukkit.getServer().getWorlds()) {
             if (world.getName() != null) {
                 if (world.getName().contains("-IsoWorld")) {
                     worlds.add(world);
@@ -39,7 +39,7 @@ public class ListeCommande {
             return;
         }
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "[Liste des IsoWorlds]");
-        for(World w : worlds ) {
+        for (World w : worlds) {
             String worldname = w.getName();
             String[] split = w.getName().split("-IsoWorld");
             UUID uuid = UUID.fromString(split[0]);
@@ -59,10 +59,7 @@ public class ListeCommande {
 
             int numOfEntities = w.getEntities().size();
             int loadedChunks = (w.getLoadedChunks().length);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + pname + " [" + status +"] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + pname + " [" + status + "] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
         }
-        return;
-
     }
-
 }

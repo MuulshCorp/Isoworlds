@@ -5,7 +5,7 @@
 
     <groupId>isolonice</groupId>
     <artifactId>isoworlds</artifactId>
-    <version>1.8.4.6-DEV-1</version>
+    <version>1.8.5-RELEASE</version>
     <packaging>jar</packaging>
 
     <name>isoworlds</name>
@@ -31,6 +31,12 @@
             <artifactId>bukkit</artifactId>
             <version>1.8-R0.1-SNAPSHOT</version>
             <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.lucko.luckperms</groupId>
+            <artifactId>luckperms-api</artifactId>
+            <version>4.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

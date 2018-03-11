@@ -3,19 +3,28 @@ package bukkit.Utils;
 import bukkit.IsoworldsBukkit;
 import common.ManageFiles;
 import common.Msg;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import me.lucko.luckperms.api.LuckPermsApi;
+import me.lucko.luckperms.api.Node;
+import me.lucko.luckperms.api.PermissionHolder;
+import me.lucko.luckperms.api.User;
+import me.lucko.luckperms.api.caching.PermissionData;
+import me.lucko.luckperms.api.manager.UserManager;
+import org.apache.commons.lang3.concurrent.ConcurrentException;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.scheduler.BukkitTask;
 
+import javax.swing.text.html.Option;
 import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Edwin on 20/10/2017.
@@ -241,6 +250,8 @@ public class IsoworldsUtils {
     public static void setWorldProperties(String worldname, Player pPlayer) {
 
         // Properties of IsoWorld
+        UUID player;
+        World world = Bukkit.getServer().getWorld(worldname);
         // Radius border 500
         int x;
         int y;
@@ -260,19 +271,15 @@ public class IsoworldsUtils {
             x = 250;
             y = 250;
         }
-        //Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
-        Bukkit.getServer().getWorld(worldname).setPVP(true);
+
+        IsoworldsLogger.severe("Size: " + x + " " + y);
         IsoworldsUtils.cmd("wb " + worldname + " set " + x + " " + y + " 0 0");
-        Block yLoc = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-        Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, yLoc.getY(), 0);
-        Bukkit.getServer().getWorld(worldname).setGameRuleValue("MobGriefing", "false");
 
-        // Spawn
-        //Location<World> neutral = new Location<World>(Sponge.getServer().getWorld(worldname).get(), 0, 0, 0);
-        //Location<World> firstspawn = IsoworldsLocations.getHighestLoc(neutral).orElse(null);
-        //worldProperties.setSpawnPosition(firstspawn.getBlockPosition()    );
+        Block yLoc = world.getHighestBlockAt(0, 0);
 
-        // Sauvegarde a faire ?
+        world.setPVP(true);
+        world.setSpawnLocation(0, yLoc.getY(), 0);
+        world.setGameRuleValue("MobGriefing", "false");
 
         IsoworldsUtils.cm("WorldProperties à jour");
 
@@ -508,9 +515,9 @@ public class IsoworldsUtils {
             PreparedStatement check = instance.database.prepare(CHECK);
 
             // UUID_P
-            check.setString(1, pPlayer.getUniqueId().toString());
+            check.setString(2, pPlayer.getUniqueId().toString());
             // NUMBER
-            check.setInt(2, number);
+            check.setInt(1, number);
             // Requête
             IsoworldsUtils.cm("Debug 3: " + check.toString());
             check.executeUpdate();

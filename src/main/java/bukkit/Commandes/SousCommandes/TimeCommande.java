@@ -63,11 +63,10 @@ public class TimeCommande {
                 pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre IsoWorld.");
                 return;
             }
-            // Update charges if not unlimited & positive
-            if (charges > 0) {
-                IsoworldsUtils.updateCharge(pPlayer, -1, Msg.keys.SQL);
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + charges + " charge(s)");
-            }
+
+            IsoworldsUtils.updateCharge(pPlayer, charges -1, Msg.keys.SQL);
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
+
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);
         }

@@ -88,11 +88,9 @@ public class BiomeCommande {
             }
         }
 
-        // Update charges if not unlimited & positive
-        if (charges > 0) {
-            IsoworldsUtils.updateCharge(pPlayer, charges -1, Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + charges + " charge(s)");
-        }
+        IsoworldsUtils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
+
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);

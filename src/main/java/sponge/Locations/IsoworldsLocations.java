@@ -1,8 +1,6 @@
 package sponge.Locations;
 
-import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
 
@@ -63,7 +61,7 @@ public class IsoworldsLocations {
 
             try {
                 if (top == null) {
-                    finalWorld.get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                    finalWorld.get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT);
                     go = new Location<>(spawn.getExtent(), 0, 61, 0);
                 } else {
                     secours = IsoworldsLocations.getHighestLoc(maxy).orElse(null);

@@ -64,7 +64,9 @@ public class TimeCommande {
                 return;
             }
 
-            IsoworldsUtils.updateCharge(pPlayer, charges -1, Msg.keys.SQL);
+            if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+                IsoworldsUtils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+            }
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
 
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());

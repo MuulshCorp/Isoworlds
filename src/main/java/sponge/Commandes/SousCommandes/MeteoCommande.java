@@ -212,7 +212,9 @@ public class MeteoCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-        IsoworldsUtils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+        if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+            IsoworldsUtils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+        }
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)
                         .append(Text.of(Text.builder(charges - 1 + " charge(s)").color(TextColors.GREEN))))).build()));

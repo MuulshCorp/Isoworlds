@@ -4,6 +4,9 @@ import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
 
+import org.spongepowered.api.data.DataContainer;
+import org.spongepowered.api.data.DataQuery;
+import org.spongepowered.api.data.persistence.DataFormats;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.entity.MoveEntityEvent;
 import org.spongepowered.api.scheduler.Task;
@@ -21,14 +24,18 @@ import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Created by Edwin on 08/10/2017.
@@ -36,6 +43,8 @@ import java.util.concurrent.TimeUnit;
 public class IsoworldsUtils {
 
     public static final IsoworldsSponge plugin = IsoworldsSponge.instance;
+
+    public static final DataQuery toId = DataQuery.of("SpongeData", "dimensionId");
 
     // ------------------------------------------------- USER MANIPULATION
 
@@ -210,7 +219,7 @@ public class IsoworldsUtils {
 
     // Create IsoWorld for pPlayer
     public static Boolean setIsoWorld(Player pPlayer, String messageErreur) {
-        String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`) VALUES (?, ?, ?, ?, ?)";
+        String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`, `DIMENSION_ID`) VALUES (?, ?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -228,6 +237,12 @@ public class IsoworldsUtils {
             insert.setString(4, plugin.servername);
             // STATUS
             insert.setInt(5, 0);
+            // DIMENSION_ID
+            int id = IsoworldsUtils.getNextDimensionId();
+            if (id == 0) {
+                return false;
+            }
+            insert.setInt(6, id);
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -335,7 +350,6 @@ public class IsoworldsUtils {
                     x = 500;
                 }
             }
-
 
 
             if (wp.isPresent()) {
@@ -476,6 +490,7 @@ public class IsoworldsUtils {
 
     // Check if pPlayer's IsoWorld is created on database
     public static Boolean isPresent(Player pPlayer, String messageErreur, Boolean load) {
+
         String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
         String check_p;
@@ -498,6 +513,50 @@ public class IsoworldsUtils {
                 setWorldProperties(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
                 if (!IsoworldsUtils.getStatus(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld", Msg.keys.SQL)) {
                     if (load) {
+
+                        // TEST
+                        Path levelSponge = Paths.get(ManageFiles.getPath() + IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld/" + "level_sponge.dat");
+                        if (Files.exists(levelSponge)) {
+                            DataContainer dc;
+                            boolean gz = false;
+
+                            // Find dat
+                            try (GZIPInputStream gzip = new GZIPInputStream(Files.newInputStream(levelSponge, StandardOpenOption.READ))) {
+                                dc = DataFormats.NBT.readFrom(gzip);
+                                gz = true;
+
+                                // get all id
+                                ArrayList allId = IsoworldsUtils.getAllDimensionId(Msg.keys.SQL);
+
+                                // get id
+                                int dimId = IsoworldsUtils.getDimensionId(pPlayer, Msg.keys.SQL);
+
+                                // Si non isoworld ou non défini
+                                if (dimId == 0) {
+                                    for (int i = 1000; i < Integer.MAX_VALUE; i++) {
+                                        if (!allId.contains(i)) {
+                                            IsoworldsUtils.setDimensionId(pPlayer, i, Msg.keys.SQL);
+                                            dimId = i;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                dc.set(toId, dimId);
+
+                                // define dat
+                                try (OutputStream os = getOutput(gz, levelSponge)) {
+                                    DataFormats.NBT.writeTo(os, dc);
+                                    os.flush();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         Sponge.getServer().loadWorld(IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
                     }
                 }
@@ -512,6 +571,15 @@ public class IsoworldsUtils {
             return false;
         }
         return false;
+    }
+
+    private static OutputStream getOutput(boolean gzip, Path file) throws IOException {
+        OutputStream os = Files.newOutputStream(file);
+        if (gzip) {
+            return new GZIPOutputStream(os, true);
+        }
+
+        return os;
     }
 
     // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
@@ -777,6 +845,89 @@ public class IsoworldsUtils {
         return null;
     }
 
+    // Get all trusted players of pPlayer's IsoWorld
+    public static Integer getDimensionId(Player pPlayer, String messageErreur) {
+        String CHECK = "SELECT `DIMENSION_ID` FROM `isoworlds` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String check_w;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // UUID _W
+            check_w = pPlayer.getUniqueId().toString() + "-IsoWorld";
+            check.setString(1, check_w);
+            // SERVEUR_ID
+            check.setString(2, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            if (rselect.next()) {
+                return rselect.getInt(1);
+            }
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
+            return 0;
+        }
+        return 0;
+    }
+
+    // Get all isoworlds dimension id
+    public static ArrayList getAllDimensionId(String messageErreur) {
+        String CHECK = "SELECT `DIMENSION_ID` FROM `isoworlds` WHERE `SERVEUR_ID` = ? ORDER BY `DIMENSION_ID` DESC";
+        String check_w;
+        ArrayList<Integer> dimList = new ArrayList<Integer>();
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // SERVEUR_ID
+            check.setString(1, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            while (rselect.next()) {
+                dimList.add(rselect.getInt("DIMENSION_ID"));
+            }
+            return dimList;
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            return dimList;
+        }
+    }
+
+    // set isoworld dimension ID
+    public static Boolean setDimensionId(Player pPlayer, Integer number, String messageErreur) {
+        String CHECK = "UPDATE `isoworlds` SET `DIMENSION_ID` = ? WHERE `UUID_W` = ?";
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // Number
+            check.setInt(1, number);
+            // UUID_P
+            check.setString(2, pPlayer.getUniqueId().toString() + "-IsoWorld");
+            // Requête
+            IsoworldsUtils.cm("Debug 3: " + check.toString());
+            check.executeUpdate();
+            return true;
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return false;
+        }
+    }
+
+    // get next dimensionID
+    public static Integer getNextDimensionId() {
+        // get all id
+        ArrayList allId = IsoworldsUtils.getAllDimensionId(Msg.keys.SQL);
+
+        for (int i = 1000; i < Integer.MAX_VALUE; i++) {
+            if (!allId.contains(i)) {
+                return i;
+            }
+        }
+        return 0;
+    }
 
     // Get charge of a player
     public static Integer getCharge(Player pPlayer, String messageErreur) {

@@ -275,11 +275,12 @@ public class IsoworldsUtils {
         IsoworldsLogger.severe("Size: " + x + " " + y);
         IsoworldsUtils.cmd("wb " + worldname + " set " + x + " " + y + " 0 0");
 
-        Block yLoc = world.getHighestBlockAt(0, 0);
-
-        world.setPVP(true);
-        world.setSpawnLocation(0, yLoc.getY(), 0);
-        world.setGameRuleValue("MobGriefing", "false");
+        if (world != null) {
+            Block yLoc = world.getHighestBlockAt(0, 0);
+            world.setPVP(true);
+            world.setSpawnLocation(0, yLoc.getY(), 0);
+            world.setGameRuleValue("MobGriefing", "false");
+        }
 
         IsoworldsUtils.cm("WorldProperties à jour");
 

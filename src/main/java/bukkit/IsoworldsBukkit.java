@@ -3,6 +3,7 @@ package bukkit;
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
 import bukkit.Locations.IsoworldsLocations;
+import bukkit.Utils.IsoWorldsResetDim;
 import bukkit.Utils.IsoworldsLogger;
 import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
@@ -67,6 +68,8 @@ public final class IsoworldsBukkit extends JavaPlugin {
                 IsoworldsLogger.warning("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
             }
         }
+
+        IsoWorldsResetDim.reset();
 
         // Purge map
         worlds.clear();

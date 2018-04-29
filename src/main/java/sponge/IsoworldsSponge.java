@@ -11,6 +11,7 @@ import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Listeners.IsoworldsListeners;
+import sponge.Utils.IsoWorldsResetDim;
 import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
 
@@ -33,7 +34,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -97,6 +97,7 @@ public class IsoworldsSponge {
             }
         }
 
+        IsoWorldsResetDim.reset();
         this.initServerName();
         this.initMySQL();
         // Set global status 1
@@ -122,7 +123,7 @@ public class IsoworldsSponge {
     }
 
     private void unload() {
-        int x = 15;
+        int x = 1;
         Task.builder().execute(() -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
@@ -171,7 +172,7 @@ public class IsoworldsSponge {
                                     IsoworldsLogger.severe("--- Anomalie détectée, unload interrompu et suppression de l'anomalie: " + world.getName() + " ---");
                                     Sponge.getServer().unloadWorld(world);
                                     Sponge.getServer().deleteWorld(world.getProperties());
-                                    IsoworldsLogger.severe("--- Anomalie: Corrigée, suppression effectuée avec succès de l'isoworld: "+ world.getName() + " ---");
+                                    IsoworldsLogger.severe("--- Anomalie: Corrigée, suppression effectuée avec succès de l'isoworld: " + world.getName() + " ---");
                                     continue;
                                 } else {
                                     if (!Sponge.getServer().unloadWorld(world)) {

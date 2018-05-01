@@ -33,7 +33,7 @@ public class IsoWorldsResetDim {
         //Next friday timestamp
         Date tempFriday = nextFriday.getTime();
         String nextFridayTimeStamp = String.valueOf((new Timestamp(tempFriday.getTime())).getTime() / 1000);
-        sponge.Utils.IsoworldsLogger.warning("--- Prochaine date de réinitialisation des dimensions: " + nextFriday.getTime());
+        IsoworldsLogger.warning("--- Prochaine date de réinitialisation des dimensions: " + nextFriday.getTime());
 
         String[] dims = new String[]{"exploration", "DIM-1", "DIM1"};
 
@@ -45,23 +45,28 @@ public class IsoWorldsResetDim {
                 File region = new File(ManageFiles.getPath() + "/" + dim + "/region");
 
                 if (!dimFile.exists()) {
+                    IsoworldsLogger.warning("--- Le dossier de réinitialisation pour la dimension " + dim + " n'éxiste pas");
+                    continue;
+                }
+
+                if (!resetFile.exists()) {
                     FileWriter out = new FileWriter(resetFile);
                     out.write(nextFridayTimeStamp);
                     out.close();
-                    sponge.Utils.IsoworldsLogger.warning("--- Le fichier de réinitialisation pour la dimension " + dim + " n'éxiste pas, création...");
+                    IsoworldsLogger.warning("--- Le fichier de réinitialisation pour la dimension " + dim + " n'éxiste pas, création...");
                 } else {
                     String nextResetDate = Files.readAllLines(Paths.get(resetFile.toURI())).get(0);
-                    sponge.Utils.IsoworldsLogger.warning("--- Timestamp enregistré dans le fichier: " + nextResetDate
+                    IsoworldsLogger.warning("--- Timestamp enregistré dans le fichier: " + nextResetDate
                             + " | Timestamp du jour: " + todayTimestamp.getTime() + " " + dim);
                     // Exploration
                     if (todayTimestamp.after(new Timestamp(Long.valueOf(nextResetDate)))) {
-                        sponge.Utils.IsoworldsLogger.warning("--- Démarrage de la réinitialisation pour la dimension " + dim);
+                        IsoworldsLogger.warning("--- Démarrage de la réinitialisation pour la dimension " + dim);
                         ManageFiles.deleteDir(region);
                         resetFile.delete();
                         FileWriter out = new FileWriter(resetFile);
                         out.write(nextFridayTimeStamp);
                         out.close();
-                        sponge.Utils.IsoworldsLogger.warning("--- Réinitialisation avec succès de la dimension " + dim);
+                        IsoworldsLogger.warning("--- Réinitialisation avec succès de la dimension " + dim);
                     }
                 }
 
@@ -69,6 +74,5 @@ public class IsoWorldsResetDim {
         } catch (IOException ie) {
             ie.printStackTrace();
         }
-
     }
 }

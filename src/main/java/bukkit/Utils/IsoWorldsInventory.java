@@ -480,7 +480,7 @@ public class IsoWorldsInventory implements Listener {
         });
 
         // Affiche la refonte si le monde est créé, sinon affiche la création
-        if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (IsoworldsUtils.iwExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             String[] list1 = new String[]{"Réinitialiser votre IsoWorld."};
             menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GOLD + "Refonte", list1);
         } else {

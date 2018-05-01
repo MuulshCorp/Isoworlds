@@ -45,6 +45,11 @@ public class IsoWorldsResetDim {
                 File region = new File(ManageFiles.getPath() + "/" + dim + "/region");
 
                 if (!dimFile.exists()) {
+                    IsoworldsLogger.warning("--- Le dossier de réinitialisation pour la dimension " + dim + " n'éxiste pas");
+                    continue;
+                }
+
+                if (!resetFile.exists()) {
                     FileWriter out = new FileWriter(resetFile);
                     out.write(nextFridayTimeStamp);
                     out.close();
@@ -69,6 +74,5 @@ public class IsoWorldsResetDim {
         } catch (IOException ie) {
             ie.printStackTrace();
         }
-
     }
 }

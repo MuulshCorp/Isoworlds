@@ -624,7 +624,7 @@ public class IsoworldsUtils {
             }
             return false;
         }
-        return true;
+        return false;
     }
 
     // COPY FOR CHARGERCOMMANDE
@@ -696,6 +696,34 @@ public class IsoworldsUtils {
                 return true;
             }
 
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(Msg.keys.SQL);
+            return false;
+        }
+        return false;
+    }
+
+    // Used for construction, check if isoworld is in database (don't care charged or not)
+    public static Boolean iwExists(String uuid, String messageErreur) {
+        String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String check_w;
+        String check_p;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+            // UUID _P
+            check_p = uuid;
+            check.setString(1, check_p);
+            // UUID_W
+            check_w = uuid + "-IsoWorld";
+            check.setString(2, check_w);
+            // SERVEUR_ID
+            check.setString(3, plugin.servername);
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            if (rselect.isBeforeFirst()) {
+                return true;
+            }
         } catch (Exception se) {
             se.printStackTrace();
             IsoworldsUtils.cm(Msg.keys.SQL);

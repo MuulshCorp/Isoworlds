@@ -2,7 +2,6 @@ package sponge.Utils;
 
 import common.Cooldown;
 import common.Msg;
-import org.hamcrest.core.Is;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Keys;
@@ -638,7 +637,7 @@ public class IsoWorldsInventory {
 
 
         // Affiche la refonte si le monde est créé, sinon affiche la création
-        if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (IsoworldsUtils.iwExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             List<Text> list1 = new ArrayList<Text>();
             list1.add(Text.of("Réinitialiser votre IsoWorld."));
             ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")

@@ -3,6 +3,7 @@ package bukkit;
 import bukkit.Commandes.IsoworldsCommandes;
 import bukkit.Listeners.IsoworldsListeners;
 import bukkit.Locations.IsoworldsLocations;
+import bukkit.Utils.IsoWorldsDimensionsALT;
 import bukkit.Utils.IsoWorldsResetDim;
 import bukkit.Utils.IsoworldsLogger;
 import bukkit.Utils.IsoworldsUtils;
@@ -69,6 +70,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
             }
         }
 
+        // Dim reset
         IsoWorldsResetDim.reset();
 
         // Purge map
@@ -105,6 +107,10 @@ public final class IsoworldsBukkit extends JavaPlugin {
 
         // Set global status 1
         IsoworldsUtils.setGlobalStatus(Msg.keys.SQL);
+
+        // Gen dim ALT
+
+        IsoWorldsDimensionsALT.generateDim();
 
     }
 

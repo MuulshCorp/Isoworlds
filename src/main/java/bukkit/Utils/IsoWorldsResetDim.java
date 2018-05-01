@@ -15,6 +15,9 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Created by Edwin on 29/04/2018.
+ */
 public class IsoWorldsResetDim {
     // reset worlds
     public static void reset() {
@@ -50,7 +53,6 @@ public class IsoWorldsResetDim {
             for (String dim : dims) {
                 File dimFile = new File(ManageFiles.getPath() + "/" + dim);
                 File resetFile = new File(ManageFiles.getPath() + "/" + dim + "/reset.txt");
-                File region = new File(ManageFiles.getPath() + "/" + dim + "/region");
 
                 if (!dimFile.exists()) {
                     IsoworldsLogger.warning("--- Le dossier de réinitialisation pour la dimension " + dim + " n'éxiste pas");
@@ -69,11 +71,11 @@ public class IsoWorldsResetDim {
                     // Exploration
                     if (todayTimestamp.after(new Timestamp(Long.valueOf(nextResetDate)))) {
                         IsoworldsLogger.warning("--- Démarrage de la réinitialisation pour la dimension " + dim);
-                        ManageFiles.deleteDir(region);
-                        resetFile.delete();
-                        FileWriter out = new FileWriter(resetFile);
-                        out.write(nextFridayTimeStamp);
-                        out.close();
+                        ManageFiles.deleteDir(dimFile);
+                        dimFile.mkdir();
+//                        FileWriter out = new FileWriter(resetFile);
+//                        out.write(nextFridayTimeStamp);
+//                        out.close();
                         IsoworldsLogger.warning("--- Réinitialisation avec succès de la dimension " + dim);
                     }
                 }

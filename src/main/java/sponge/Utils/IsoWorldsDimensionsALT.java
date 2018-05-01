@@ -34,15 +34,14 @@ public class IsoWorldsDimensionsALT {
 
     public static void generateDim() {
 
-        String[] dimsSkyblock = new String[]{"MS3", "SF3"};
+        String[] dimsSkyblock = new String[]{"MS3", "SF3", "AS2", "PO2", "PO2K"};
         String[] dims;
 
         // Si contient alors on met pas le minage
-        if (Arrays.asList(dimsSkyblock).contains(plugin.servername)) {
-            dims = new String[]{"exploration"};
-        } else {
+        if (!Arrays.asList(dimsSkyblock).contains(plugin.servername)) {
+
             dims = new String[]{"exploration", "minage"};
-        }
+
             for (String dim : dims) {
                 // Path dim
 
@@ -55,7 +54,7 @@ public class IsoWorldsDimensionsALT {
                 // Load world
                 Sponge.getGame().getServer().loadWorld(dim);
             }
-
+        }
     }
 
     private static void setWorldProperties(String worldname) {

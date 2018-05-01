@@ -80,6 +80,9 @@ public class IsoWorldsInventory implements Listener {
                 } else if (menuName.equals("Temps")) {
                     IsoworldsUtils.cm("[TRACKING-IW] Clic menu TEMPS: " + p.getName());
                     getMenuTemps(pPlayer).open(pPlayer);
+                } else if (menuName.equals("Warp")) {
+                    IsoworldsUtils.cm("[TRACKING-IW] Clic menu WARP: " + p.getName());
+                    getMenuWarp(pPlayer).open(pPlayer);
                 } else if (menuName.equals("Menu principal")) {
                     IsoworldsUtils.cm("[TRACKING-IW] Clic menu PRINCIPAL: " + p.getName());
                     MenuPrincipal(pPlayer).open(pPlayer);
@@ -100,6 +103,7 @@ public class IsoWorldsInventory implements Listener {
         String[] list5 = new String[]{"Gérez l'heure de votre IsoWorld"};
         String[] list6 = new String[]{"Gérez la pluie et le beau temps", "de votre IsoWorld"};
         String[] list7 = new String[]{"[" + charges + "]" + " charge(s) disponible(s)"};
+        String[] list8 = new String[]{"Rendez-vous sur les dimensions publiques"};
         //String[] list7 = new String[]{"Chargez-Déchargez votre IsoWorld"};
         //String[] list8 = new String[]{"Téléportez vous sur un IsoWorld [STAFF]"};
 
@@ -115,6 +119,7 @@ public class IsoWorldsInventory implements Listener {
         menu.addButton(menu.getRow(0), 3, new ItemStack(Material.LEAVES), ChatColor.GOLD + "Biome", list4);
         menu.addButton(menu.getRow(0), 4, new ItemStack(Material.WATCH), ChatColor.LIGHT_PURPLE + "Temps", list5);
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), ChatColor.YELLOW + "Météo", list6);
+        menu.addButton(menu.getRow(0), 6, new ItemStack(Material.COMPASS), ChatColor.DARK_GREEN + "Warp", list8);
         menu.addButton(menu.getRow(0), 8, new ItemStack(Material.LEVER), ChatColor.AQUA + "Charges", list7);
         //menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), ChatColor.RED + "Activation", list7);
         //menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), ChatColor.LIGHT_PURPLE + "Téléportation", list8);
@@ -668,6 +673,41 @@ public class IsoWorldsInventory implements Listener {
 
         return menu;
     }
+
+    // MENU WARP
+    @SuppressWarnings("deprecation")
+    public static IsoWorldsInventory getMenuWarp(Player pPlayer) {
+        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.DARK_GREEN + "IsoWorlds: Warp", 2, new onClick() {
+            @Override
+            public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
+                String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
+                if (menuName.contains("Minage")) {
+                    p.performCommand("iw warp minage");
+                    p.closeInventory();
+                } else if (menuName.contains("Exploration")) {
+                    p.performCommand("iw warp exploration");
+                    p.closeInventory();
+                } else if (menuName.contains("Menu principal")) {
+                    MenuPrincipal(pPlayer).open(pPlayer);
+                }
+
+                return true;
+            }
+        });
+        // Minage
+        String[] list1 = new String[]{"Exploitez les ressources (quarry...)", "Réinitialisé tous 1er du mois à 19h"};
+
+        // Exploration
+        String[] list2 = new String[]{"Explorez, combattez, enrichissez vous !", "Réinitialisé tous les vendredi à 19h"};
+
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.STONE_PICKAXE, 1), ChatColor.GREEN + "Minage", list1);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.MAP, 1), ChatColor.YELLOW + "Exploration", list2);
+
+        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");
+
+        return menu;
+    }
+
 
 
     public IsoWorldsInventory(String name, int size, onClick click) {

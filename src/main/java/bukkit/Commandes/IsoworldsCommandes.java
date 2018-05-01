@@ -32,15 +32,15 @@ public class IsoworldsCommandes implements CommandExecutor {
             } else if (arg.equals("maison") || arg.equals("home") || arg.equals("h")) {
                 MaisonCommande.Maison(sender, args);
                 return true;
-            //} else if (arg.equals("off") || arg.equals("desactiver") || arg.equals("désactiver") || arg.equals("décharger") || arg.equals("unload")) {
-            //    OffCommande.Off(sender, args);
-            //    return true;
-            //} else if (arg.equals("on") || arg.equals("charger") || arg.equals("activer") || arg.equals("load")) {
-            //    OnCommande.On(sender, args);
-            //    return true;
-            //} else if (arg.equals("teleport") || arg.equals("tp") || arg.equals("teleportation")) {
-            //    TeleportCommande.Teleport(sender, args);
-            //    return true;
+                //} else if (arg.equals("off") || arg.equals("desactiver") || arg.equals("désactiver") || arg.equals("décharger") || arg.equals("unload")) {
+                //    OffCommande.Off(sender, args);
+                //    return true;
+                //} else if (arg.equals("on") || arg.equals("charger") || arg.equals("activer") || arg.equals("load")) {
+                //    OnCommande.On(sender, args);
+                //    return true;
+                //} else if (arg.equals("teleport") || arg.equals("tp") || arg.equals("teleportation")) {
+                //    TeleportCommande.Teleport(sender, args);
+                //    return true;
             } else if (arg.equals("confiance") || arg.equals("trust") || arg.equals("a")) {
                 ConfianceCommande.Confiance(sender, args);
                 return true;
@@ -55,6 +55,9 @@ public class IsoworldsCommandes implements CommandExecutor {
                 return true;
             } else if (arg.equals("biome") || arg.equals("biomes") || arg.equals("b")) {
                 BiomeCommande.Biome(sender, args);
+                return true;
+            } else if (arg.equals("warp") || arg.equals("w")) {
+                WarpCommande.Warp(sender, args);
                 return true;
             } else {
                 return true;

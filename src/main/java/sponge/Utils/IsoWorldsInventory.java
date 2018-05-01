@@ -88,7 +88,7 @@ public class IsoWorldsInventory {
                         IsoworldsUtils.cm("[TRACKING-IW] Clic menu TEMPS: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, getMenuTemps(pPlayer));
                     } else if (menuName.equals("Warp")) {
-                        IsoworldsUtils.cm("[TRACKING-IW] Clic menu Warp: " + pPlayer.getName());
+                        IsoworldsUtils.cm("[TRACKING-IW] Clic menu WARP: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, getMenuWarp(pPlayer));
                     }
 

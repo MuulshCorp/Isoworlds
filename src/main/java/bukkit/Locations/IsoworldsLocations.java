@@ -35,6 +35,9 @@ public class IsoworldsLocations {
                 IsoworldsLogger.severe("2");
                 secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
                 go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
+                if (!go.getBlock().getType().isSolid()) {
+                    Bukkit.getServer().getWorld(worldname).getBlockAt(go.getBlockX(), go.getBlockY() -1, go.getBlockZ()).setType(Material.DIRT);
+                }
             }
 
             // Téléportation du joueur

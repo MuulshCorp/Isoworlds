@@ -14,15 +14,11 @@ import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.biome.BiomeType;
 import org.spongepowered.api.world.biome.BiomeTypes;
 import sponge.IsoworldsSponge;
-import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
-
-import static sponge.IsoworldsSponge.instance;
-import static sponge.Utils.IsoworldsUtils.isLocked;
 
 /**
  * Created by Edwin on 20/11/2017.

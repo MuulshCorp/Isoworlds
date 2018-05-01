@@ -24,18 +24,26 @@ public class IsoWorldsResetDim {
 
         //Next friday
         Calendar nextFriday = Calendar.getInstance();
+
+        int weekday = nextFriday.get(Calendar.DAY_OF_WEEK);
+        if (weekday != Calendar.FRIDAY)
+        {
+            // calculate how much to add
+            // the 2 is the difference between Saturday and Monday
+            int days = (Calendar.SATURDAY - weekday + 6) % 7;
+            nextFriday.add(Calendar.DAY_OF_YEAR, days);
+        }
         nextFriday.set(Calendar.HOUR_OF_DAY, 19);
         nextFriday.set(Calendar.MINUTE, 0);
         nextFriday.set(Calendar.SECOND, 0);
         nextFriday.set(Calendar.MILLISECOND, 0);
-        nextFriday.add(Calendar.DAY_OF_WEEK, 5);
 
         //Next friday timestamp
         Date tempFriday = nextFriday.getTime();
         String nextFridayTimeStamp = String.valueOf((new Timestamp(tempFriday.getTime())).getTime() / 1000);
         IsoworldsLogger.warning("--- Prochaine date de réinitialisation des dimensions: " + nextFriday.getTime());
 
-        String[] dims = new String[]{"exploration", "DIM-1", "DIM1"};
+        String[] dims = new String[]{"exploration", "DIM-1", "DIM1", "minage"};
 
         // Check if file exists
         try {

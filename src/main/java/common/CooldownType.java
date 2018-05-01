@@ -40,6 +40,9 @@ public interface CooldownType {
     String TELEPORT = "teleport";
     int TELEPORT_DELAY = 86400;
 
+    String WARP = "warp";
+    int WARP_DELAY = 10;
+
     String TIME = "time";
     int TIME_DELAY = 10;
 }

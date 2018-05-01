@@ -42,6 +42,9 @@ public class IsoworldsLocations {
     private static Optional<Integer> getHighestY(World w, Double x, Double z) {
         int y = w.getBlockMax().getY();
         while (isPassable(w, x, y, z)) {
+            if (!w.getBlock(x.intValue(), y, z.intValue()).getType().equals(BlockTypes.AIR)) {
+                return Optional.of(y);
+            }
             y = y - 1;
             if (y <= 0) {
                 return Optional.empty();
@@ -59,14 +62,17 @@ public class IsoworldsLocations {
             Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
             Location<World> secours;
             Location<World> go = new Location<>(spawn.getExtent(), 0, 60, 0);
+            Location<World> safeBlock;
 
             try {
                 if (top == null) {
-                    finalWorld.get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.of(NamedCause.simulated(player)));
+                    finalWorld.get().getLocation(go.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
                     go = new Location<>(spawn.getExtent(), 0, 61, 0);
                 } else {
                     secours = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
-                    go = new Location<>(spawn.getExtent(), 0, secours.getBlockY(), 0);
+                    go = new Location<>(spawn.getExtent(), 0, secours.getBlockY() + 1, 0);
+                    safeBlock = new Location<>(spawn.getExtent(), 0, secours.getBlockY(), 0);
+                    finalWorld.get().getLocation(safeBlock.getBlockPosition()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
                 }
             } catch (NullPointerException npe) {
                 npe.printStackTrace();

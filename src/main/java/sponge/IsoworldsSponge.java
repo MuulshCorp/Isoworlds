@@ -11,6 +11,7 @@ import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.Listeners.IsoworldsListeners;
+import sponge.Utils.IsoWorldsDimensionsALT;
 import sponge.Utils.IsoWorldsResetDim;
 import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
@@ -319,6 +320,9 @@ public class IsoworldsSponge {
         })
                 .delay(1, TimeUnit.SECONDS)
                 .name("Remet les IsoWorlds hors du SAS.").submit(instance);
+
+        // Create / load dimensions-ALT
+        IsoWorldsDimensionsALT.generateDim();
 
     }
 

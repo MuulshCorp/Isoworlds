@@ -42,6 +42,7 @@ public class IsoworldsCommande implements CommandExecutor {
                 .child(ListeCommande.getCommand(), "lister", "liste", "list", "l")
                 .child(RefonteCommande.getCommand(), "refonte", "refondre", "r")
                 .child(MaisonCommande.getCommand(), "maison", "home", "h")
+                .child(new WarpCommande(), "warp", "w")
                 .child(new ChargerCommande(), "on", "charger", "activer", "load")
                 .child(new DechargerCommande(), "off", "unload", "disable")
                 .child(new BiomeCommande(), "biome", "b")

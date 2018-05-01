@@ -624,7 +624,7 @@ public class IsoworldsUtils {
             }
             return false;
         }
-        return false;
+        return true;
     }
 
     // COPY FOR CHARGERCOMMANDE

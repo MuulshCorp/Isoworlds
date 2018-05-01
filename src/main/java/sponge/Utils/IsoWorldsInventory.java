@@ -87,6 +87,9 @@ public class IsoWorldsInventory {
                     } else if (menuName.equals("Temps")) {
                         IsoworldsUtils.cm("[TRACKING-IW] Clic menu TEMPS: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, getMenuTemps(pPlayer));
+                    } else if (menuName.equals("Warp")) {
+                        IsoworldsUtils.cm("[TRACKING-IW] Clic menu Warp: " + pPlayer.getName());
+                        closeOpenMenu(pPlayer, getMenuWarp(pPlayer));
                     }
 
                 })
@@ -113,11 +116,11 @@ public class IsoWorldsInventory {
         List<Text> list6 = new ArrayList<Text>();
         list6.add(Text.of("Chargez-Déchargez votre IsoWorld"));
         List<Text> list7 = new ArrayList<Text>();
-        list7.add(Text.of("[ " + charges + " ]" + " charge(s) disponible(s)"));
-        //List<Text> list7 = new ArrayList<Text>();
-        //list7.add(Text.of("Téléportez vous sur un IsoWorld [STAFF]"));
+        list7.add(Text.of("Rendez-vous sur les dimensions publiques"));
         List<Text> list8 = new ArrayList<Text>();
         list8.add(Text.of("Gérez l'heure de votre IsoWorld"));
+        List<Text> list9 = new ArrayList<Text>();
+        list9.add(Text.of("[ " + charges + " ]" + " charge(s) disponible(s)"));
 
 
         ItemStack item1 = ItemStack.builder().itemType(ItemTypes.DIAMOND_PICKAXE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Construction")
@@ -132,7 +135,9 @@ public class IsoWorldsInventory {
                 .color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
         ItemStack item6 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Météo")
                 .color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Charges")
+        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.COMPASS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Warp")
+                .color(TextColors.DARK_GREEN).build())).quantity(1).build();
+        ItemStack item9 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Charges")
                 .color(TextColors.AQUA).build())).quantity(1).build();
 
         //ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation")
@@ -148,7 +153,8 @@ public class IsoWorldsInventory {
         menu.query(SlotPos.of(3, 0)).set(item4);
         menu.query(SlotPos.of(4, 0)).set(item5);
         menu.query(SlotPos.of(5, 0)).set(item6);
-        menu.query(SlotPos.of(8, 0)).set(item7);
+        menu.query(SlotPos.of(6, 0)).set(item7);
+        menu.query(SlotPos.of(8, 0)).set(item9);
 
         // STAFF
         //if (pPlayer.hasPermission("isworlds.menu.activation")) {
@@ -930,6 +936,59 @@ public class IsoWorldsInventory {
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);
         menu.query(SlotPos.of(8, 0)).set(item3);
+
+        return menu;
+    }
+
+    public static Inventory getMenuWarp(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    String menuName = String.valueOf(clickInventoryEvent.getTransactions()
+                            .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
+                    clickInventoryEvent.setCancelled(true);
+                    if (menuName.contains("Exploration")) {
+                        commandMenu(pPlayer, "iw warp exploration");
+                        closeMenu(pPlayer);
+                    } else if (menuName.contains("Minage")) {
+                        commandMenu(pPlayer, "iw warp minage");
+                        closeMenu(pPlayer);
+                    } else if (menuName.contains("Menu principal")) {
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
+                    }
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Warp").color(TextColors.DARK_GREEN).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 2))
+                .build(instance);
+
+        // Minage
+        List<Text> list1 = new ArrayList<Text>();
+        list1.add(Text.of("Exploitez les ressources (quarry...)"));
+        list1.add(Text.of("Réinitialisé tous 1er du mois à 19h"));
+
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.STONE_PICKAXE).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Minage")
+                .color(TextColors.GREEN).build())).quantity(1).build();
+
+        // Exploration
+        List<Text> list2 = new ArrayList<Text>();
+        list2.add(Text.of("Explorez, combattez, enrichissez vous !"));
+        list2.add(Text.of("Réinitialisé tous les vendredi à 19h"));
+
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.FILLED_MAP).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Exploration")
+                .color(TextColors.YELLOW).build())).quantity(1).build();
+
+        // Menu principal
+        List<Text> list9 = new ArrayList<Text>();
+        list9.add(Text.of("Retour au menu principal"));
+
+        ItemStack item9 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+                .color(TextColors.RED).build())).quantity(1).build();
+
+        menu.query(SlotPos.of(0, 0)).set(item1);
+        menu.query(SlotPos.of(1, 0)).set(item2);
+        menu.query(SlotPos.of(8, 1)).set(item9);
 
         return menu;
     }

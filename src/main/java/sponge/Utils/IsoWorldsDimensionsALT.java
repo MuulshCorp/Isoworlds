@@ -9,6 +9,7 @@ import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
+import sponge.IsoworldsSponge;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -26,15 +28,23 @@ import java.util.zip.GZIPOutputStream;
  */
 public class IsoWorldsDimensionsALT {
 
+    private static final IsoworldsSponge plugin = IsoworldsSponge.instance;
+
     private static final DataQuery toId = DataQuery.of("SpongeData", "dimensionId");
 
     public static void generateDim() {
 
-        String[] dims = new String[]{"exploration", "minage"};
+        String[] dimsSkyblock = new String[]{"MS3", "SF3"};
+        String[] dims;
 
-
-        for (String dim : dims) {
-            // Path dim
+        // Si contient alors on met pas le minage
+        if (Arrays.asList(dimsSkyblock).contains(plugin.servername)) {
+            dims = new String[]{"exploration"};
+        } else {
+            dims = new String[]{"exploration", "minage"};
+        }
+            for (String dim : dims) {
+                // Path dim
 
                 // Set properties
                 setWorldProperties(dim);
@@ -44,7 +54,8 @@ public class IsoWorldsDimensionsALT {
 
                 // Load world
                 Sponge.getGame().getServer().loadWorld(dim);
-        }
+            }
+
     }
 
     private static void setWorldProperties(String worldname) {

@@ -955,6 +955,12 @@ public class IsoWorldsInventory {
                     } else if (menuName.contains("Minage")) {
                         commandMenu(pPlayer, "iw warp minage");
                         closeMenu(pPlayer);
+                    } else if (menuName.contains("End")) {
+                        commandMenu(pPlayer, "iw warp end");
+                        closeMenu(pPlayer);
+                    } else if (menuName.contains("Nether")) {
+                        commandMenu(pPlayer, "iw warp nether");
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -979,6 +985,22 @@ public class IsoWorldsInventory {
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.FILLED_MAP).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Exploration")
                 .color(TextColors.YELLOW).build())).quantity(1).build();
 
+        // End
+        List<Text> list3 = new ArrayList<Text>();
+        list3.add(Text.of("Un grondement sourd se fait entendre..."));
+        list3.add(Text.of("Réinitialisé tous les vendredi à 19h"));
+
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.ENDER_PEARL).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("End")
+                .color(TextColors.DARK_GRAY).build())).quantity(1).build();
+
+        // Nether
+        List<Text> list4 = new ArrayList<Text>();
+        list4.add(Text.of("Lieu très hostile !"));
+        list4.add(Text.of("Réinitialisé tous les vendredi à 19h"));
+
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.NETHER_STAR).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Nether")
+                .color(TextColors.DARK_RED).build())).quantity(1).build();
+
         // Menu principal
         List<Text> list9 = new ArrayList<Text>();
         list9.add(Text.of("Retour au menu principal"));
@@ -988,6 +1010,8 @@ public class IsoWorldsInventory {
 
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);
+        menu.query(SlotPos.of(2, 0)).set(item3);
+        menu.query(SlotPos.of(3, 0)).set(item4);
         menu.query(SlotPos.of(8, 1)).set(item9);
 
         return menu;

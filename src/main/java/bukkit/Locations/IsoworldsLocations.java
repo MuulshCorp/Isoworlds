@@ -20,6 +20,14 @@ public class IsoworldsLocations {
     private static final IsoworldsBukkit plugin = IsoworldsBukkit.instance;
 
     public static void teleport(Player player, String worldname) {
+
+        // Define dimension name
+        if (worldname.equals("end")) {
+            worldname = "DIM1";
+        } else if (worldname.equals("nether")) {
+            worldname = "DIM-1";
+        }
+
         // Construction du point de respawn
         Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
         Integer secours;

@@ -55,10 +55,25 @@ public class IsoworldsLocations {
 
     public static boolean teleport(Player player, String world) {
 
+        // Define dimension name
+        if (world.equals("end")) {
+            world = "DIM1";
+        } else if (world.equals("nether")) {
+            world = "DIM-1";
+        }
+
+        Location<World> maxy;
+
         Optional<World> finalWorld = plugin.getGame().getServer().getWorld(world);
         if (finalWorld.isPresent()) {
             Location<World> spawn = finalWorld.get().getSpawnLocation();
-            Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+
+            // If nether we start below to avoid rooftop
+            if (world.equals("DIM-1")) {
+                maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+            } else {
+                maxy = new Location<>(spawn.getExtent(), 0, 80, 0);
+            }
             Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
             Location<World> secours;
             Location<World> go = new Location<>(spawn.getExtent(), 0, 60, 0);

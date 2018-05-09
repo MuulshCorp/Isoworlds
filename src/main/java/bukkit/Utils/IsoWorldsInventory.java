@@ -687,6 +687,12 @@ public class IsoWorldsInventory implements Listener {
                 } else if (menuName.contains("Exploration")) {
                     p.performCommand("iw warp exploration");
                     p.closeInventory();
+                } else if (menuName.contains("End")) {
+                    p.performCommand("iw warp end");
+                    p.closeInventory();
+                } else if (menuName.contains("Nether")) {
+                    p.performCommand("iw warp nether");
+                    p.closeInventory();
                 } else if (menuName.contains("Menu principal")) {
                     MenuPrincipal(pPlayer).open(pPlayer);
                 }
@@ -700,8 +706,16 @@ public class IsoWorldsInventory implements Listener {
         // Exploration
         String[] list2 = new String[]{"Explorez, combattez, enrichissez vous !", "Réinitialisé tous les vendredi à 19h"};
 
+        // End
+        String[] list3 = new String[]{"Un grondement sourd se fait entendre...", "Réinitialisé tous les vendredi à 19h"};
+
+        // Nether
+        String[] list4 = new String[]{"Lieu très hostile !", "Réinitialisé tous les vendredi à 19h"};
+
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.STONE_PICKAXE, 1), ChatColor.GREEN + "Minage", list1);
         menu.addButton(menu.getRow(0), 1, new ItemStack(Material.MAP, 1), ChatColor.YELLOW + "Exploration", list2);
+        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.ENDER_PEARL, 1), ChatColor.DARK_GRAY + "End", list3);
+        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.NETHER_STAR, 1), ChatColor.DARK_RED + "Nether", list4);
 
         menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");
 

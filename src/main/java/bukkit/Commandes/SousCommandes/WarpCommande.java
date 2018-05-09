@@ -40,7 +40,7 @@ public class WarpCommande {
         for (String s : args) {
             IsoworldsUtils.cm(s);
         }
-        if (args[1].equals("exploration") || args[1].equals("minage")) {
+        if (args[1].equals("exploration") || args[1].equals("minage") || args[1].equals("end") || args[1].equals("nether")) {
             IsoworldsLocations.teleport(pPlayer, args[1]);
         } else {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce warp n'existe pas.");

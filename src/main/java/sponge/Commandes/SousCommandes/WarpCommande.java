@@ -40,7 +40,7 @@ public class WarpCommande implements CommandCallable {
             return CommandResult.success();
         }
 
-        if (arg[0].equals("minage") || arg[0].equals("exploration")) {
+        if (arg[0].equals("minage") || arg[0].equals("exploration") || arg[0].equals("end") || arg[0].equals("nether")) {
             // Téléportation du joueur
             if (IsoworldsLocations.teleport(pPlayer, arg[0])) {
                 pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)

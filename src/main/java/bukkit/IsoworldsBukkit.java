@@ -34,7 +34,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
     static Map<String, Integer> worlds = new HashMap<String, Integer>();
     public static Map<String, Integer> lock = new HashMap<String, Integer>();
     public Cooldown cooldown;
-    public common.Logger commonLogger;
+    private common.Logger commonLogger;
 
     @Override
     public void onEnable() {

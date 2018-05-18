@@ -9,6 +9,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.*;
 import bukkit.Utils.IsoworldsUtils;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -94,18 +95,31 @@ public class IsoworldsListeners implements Listener {
         }
     }
 
-//    // Used to redefine rules of the world
-//    public void onLoadWorld(WorldLoadEvent event) {
-//
-//        if (event.getWorld().getName().contains("-IsoWorld")) {
-//            String worldname = event.getWorld().getName();
-//            Bukkit.getServer().getWorld(worldname).setKeepSpawnInMemory(true);
-//            IsoworldsUtils.cmd("wb " + worldname + " set 250 250 0 0");
-//            Block y = Bukkit.getServer().getWorld(worldname).getHighestBlockAt(0, 0);
-//            Bukkit.getServer().getWorld(worldname).setSpawnLocation(0, y.getY(), 0);
-//            Bukkit.getServer().getWorld(worldname).setGameRuleValue(DefaultGameRules.MOB_GRIEFING, "false");
-//        }
-//    }
+    @EventHandler
+    // Anti grief spawn
+    public void onDestructSpawn(BlockBreakEvent event) {
+        Player p = event.getPlayer();
+        if (p.hasPermission("isoworlds.bypass.spawn")) {
+            return;
+        }
+
+        // If break in chunk of spawn layer 60, remove drop
+        Location eventLocation = new Location(Bukkit.getServer().getWorld(event.getBlock().getWorld().getName()), 0, 60, 0);
+
+        // Don't drop on isoworld plateform break
+        if (event.getBlock().getY() == 60 & event.getBlock().getLocation().distance(eventLocation) <= 2.0) {
+            if (event.getBlock().getType().name().equals("DIRT")) {
+                event.setCancelled(true);
+                event.getBlock().setType(Material.AIR);
+            }
+        }
+
+        // Don't break plateforme of nether/end spawn
+        if (event.getBlock().getY() == 60 || event.getBlock().getY() == 61 & event.getBlock().getLocation().distance(eventLocation) <= 3.0) {
+                event.setCancelled(true);
+        }
+
+    }
 
     @EventHandler
     public void onPlayerChangeWorld(PlayerTeleportEvent event) {

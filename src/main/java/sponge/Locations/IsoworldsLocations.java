@@ -65,12 +65,8 @@ public class IsoworldsLocations {
         if (finalWorld.isPresent()) {
             Location<World> spawn = finalWorld.get().getSpawnLocation();
 
-            // If nether we start below to avoid rooftop
-            if (world.equals("DIM-1")) {
-                maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-            } else {
-                maxy = new Location<>(spawn.getExtent(), 0, 80, 0);
-            }
+            maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+
             Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
             Location<World> secours;
             Location<World> go = new Location<>(spawn.getExtent(), 0, 60, 0);

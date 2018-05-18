@@ -4,7 +4,7 @@ package common;
  * Created by Edwin on 24/10/2017.
  */
 public class Msg {
-    public static interface keys {
+    public interface keys {
         String CREATION_IWORLD
                 = "Sijania concentre son pouvoir...";
         String TITRE_BIENVENUE_1

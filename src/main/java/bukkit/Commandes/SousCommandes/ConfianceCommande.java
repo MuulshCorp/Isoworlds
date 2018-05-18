@@ -11,8 +11,6 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import static bukkit.Utils.IsoworldsUtils.isLocked;
-
 /**
  * Created by Edwin on 20/10/2017.
  */

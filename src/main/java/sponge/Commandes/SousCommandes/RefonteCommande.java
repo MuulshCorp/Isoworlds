@@ -25,8 +25,6 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static sponge.Utils.IsoworldsUtils.isLocked;
-
 /**
  * Created by Edwin on 10/10/2017.
  */

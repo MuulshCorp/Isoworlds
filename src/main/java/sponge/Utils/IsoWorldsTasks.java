@@ -1,19 +1,12 @@
 package sponge.Utils;
 
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.world.DimensionType;
-import org.spongepowered.api.world.WorldArchetypes;
-import org.spongepowered.api.world.gamerule.DefaultGameRules;
-import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.IsoworldsSponge;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
 /**

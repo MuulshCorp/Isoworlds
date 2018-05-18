@@ -2,7 +2,6 @@ package bukkit.Commandes;
 
 import bukkit.Commandes.SousCommandes.*;
 import bukkit.Utils.IsoWorldsInventory;
-import bukkit.Utils.IsoworldsUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

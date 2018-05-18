@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static bukkit.Utils.IsoworldsUtils.isLocked;
-
 /**
  * Created by Edwin on 20/10/2017.
  */

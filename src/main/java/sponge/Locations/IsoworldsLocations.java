@@ -1,7 +1,6 @@
 package sponge.Locations;
 
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import sponge.IsoworldsSponge;
 import sponge.Utils.IsoworldsUtils;
 
@@ -14,8 +13,6 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.Optional;
-
-import static sponge.IsoworldsSponge.instance;
 
 /**
  * Created by Edwin on 08/10/2017.

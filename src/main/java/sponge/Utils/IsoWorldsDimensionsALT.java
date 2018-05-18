@@ -11,7 +11,6 @@ import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.IsoworldsSponge;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;

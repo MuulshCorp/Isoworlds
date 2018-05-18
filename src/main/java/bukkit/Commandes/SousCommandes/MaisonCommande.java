@@ -2,7 +2,6 @@ package bukkit.Commandes.SousCommandes;
 
 import bukkit.IsoworldsBukkit;
 import bukkit.Locations.IsoworldsLocations;
-import bukkit.Utils.IsoworldsLogger;
 import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
 import common.Msg;

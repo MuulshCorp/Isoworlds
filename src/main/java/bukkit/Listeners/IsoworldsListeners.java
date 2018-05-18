@@ -1,26 +1,17 @@
 package bukkit.Listeners;
 
 import bukkit.IsoworldsBukkit;
-import bukkit.Utils.IsoWorldsInventory;
 import bukkit.Utils.IsoworldsLogger;
 import common.ManageFiles;
 import common.Msg;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import bukkit.Utils.IsoworldsUtils;
-import org.bukkit.event.world.ChunkEvent;
-import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.spongepowered.api.world.gamerule.DefaultGameRules;
 
 import java.io.File;
 import java.sql.PreparedStatement;

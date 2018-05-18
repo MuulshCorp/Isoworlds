@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import static sponge.Utils.IsoworldsUtils.isLocked;
-
 /**
  * Created by Edwin on 10/10/2017.
  */

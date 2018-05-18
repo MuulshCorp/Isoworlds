@@ -7,8 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static bukkit.Utils.IsoworldsUtils.isLocked;
-
 /**
  * Created by Edwin on 20/10/2017.
  */

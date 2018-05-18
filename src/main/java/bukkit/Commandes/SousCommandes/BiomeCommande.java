@@ -11,8 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static bukkit.Utils.IsoworldsUtils.isLocked;
-
 /**
  * Created by Edwin on 20/11/2017.
  */

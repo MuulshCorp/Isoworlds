@@ -19,7 +19,6 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.io.*;
 
-import static sponge.Utils.IsoworldsUtils.isLocked;
 import static sponge.Utils.IsoworldsUtils.setWorldProperties;
 
 /**

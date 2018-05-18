@@ -2,14 +2,12 @@ package bukkit.Locations;
 
 import bukkit.IsoworldsBukkit;
 import bukkit.Utils.IsoworldsLogger;
-import bukkit.Utils.IsoworldsUtils;
 import common.Cooldown;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 /**

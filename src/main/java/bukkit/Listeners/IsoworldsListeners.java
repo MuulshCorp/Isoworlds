@@ -1,6 +1,7 @@
 package bukkit.Listeners;
 
 import bukkit.IsoworldsBukkit;
+import bukkit.Locations.IsoworldsLocations;
 import bukkit.Utils.IsoworldsLogger;
 import common.ManageFiles;
 import common.Msg;
@@ -31,31 +32,7 @@ public class IsoworldsListeners implements Listener {
         Player p = event.getPlayer();
         String worldname = (event.getPlayer().getWorld().getName());
 
-        // Construction du point de respawn
-        Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-        Integer secours;
-        Location go = new Location(Bukkit.getServer().getWorld(worldname), 0, 60, 0);
-
-        IsoworldsLogger.severe("Y = " + top);
-        try {
-            if (top <= 0) {
-                IsoworldsLogger.severe("1");
-                Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
-                go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
-            } else {
-                IsoworldsLogger.severe("2");
-                secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-                go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
-            }
-
-            // Téléportation du joueur
-            if (p.teleport(go)) {
-            }
-        } catch (NullPointerException npe) {
-            //
-            Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
-        }
-
+        IsoworldsLocations.teleport(p, worldname);
     }
 
     // Set autosave for a new loaded world to avoid crash ?
@@ -100,11 +77,8 @@ public class IsoworldsListeners implements Listener {
     public void onLogout(PlayerQuitEvent event) {
 
         Player p = event.getPlayer();
-        String worldname = ("Isolonice");
-        Integer maxy = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-        Location top = new Location(Bukkit.getServer().getWorld(worldname), 0, maxy, 0);
 
-        p.teleport(top);
+        IsoworldsLocations.teleport(p, "Isolonice");
         IsoworldsUtils.cm("Joueur téléporté au spawn");
     }
 

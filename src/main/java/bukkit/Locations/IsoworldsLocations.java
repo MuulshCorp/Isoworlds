@@ -45,34 +45,36 @@ public class IsoworldsLocations {
         IsoworldsLogger.severe("Y = " + top);
 
         try {
-            if (top <= 0) {
-                IsoworldsLogger.severe("1");
-                // Set dirt if liquid or air
-                if (safe == 0 && !Bukkit.getServer().getWorld(worldname).getBlockAt(go).getType().isSolid()) {
-                    // Build safe zone
-                    for (int x = -1; x < 1; x++) {
-                        for (int z = -1; z < 1; z++) {
-                            Bukkit.getServer().getWorld(worldname).getBlockAt(x, 60, z).setType(Material.DIRT);
+            // If spawn not built on 60 automatically
+            if (safe == 0) {
+                if (top <= 0) {
+                    IsoworldsLogger.severe("1");
+                    // Set dirt if liquid or air
+                    if (!Bukkit.getServer().getWorld(worldname).getBlockAt(go).getType().isSolid()) {
+                        // Build safe zone
+                        for (int x = -1; x < 1; x++) {
+                            for (int z = -1; z < 1; z++) {
+                                Bukkit.getServer().getWorld(worldname).getBlockAt(x, 60, z).setType(Material.DIRT);
+                            }
                         }
                     }
-                }
-                go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
-            } else {
-                IsoworldsLogger.severe("2");
-                secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-                go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
+                    go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
+                } else {
+                    IsoworldsLogger.severe("2");
+                    secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
+                    go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
 
-                // Set block if air or liquid
-                if (safe == 0 & !go.getBlock().getType().isSolid()) {
-                    // Build safe zone
-                    for (int x = -1; x < 1; x++) {
-                        for (int z = -1; z < 1; z++) {
-                            Bukkit.getServer().getWorld(worldname).getBlockAt(x, secours - 1, z).setType(Material.DIRT);
+                    // Set block if air or liquid
+                    if (!go.getBlock().getType().isSolid()) {
+                        // Build safe zone
+                        for (int x = -1; x < 1; x++) {
+                            for (int z = -1; z < 1; z++) {
+                                Bukkit.getServer().getWorld(worldname).getBlockAt(x, secours - 1, z).setType(Material.DIRT);
+                            }
                         }
                     }
+                    IsoworldsLogger.severe("2");
                 }
-
-                IsoworldsLogger.severe("2");
             }
 
             // Téléportation du joueur
@@ -80,6 +82,7 @@ public class IsoworldsLocations {
                 player.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
                 plugin.cooldown.addPlayerCooldown(player, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
             }
+
         } catch (NullPointerException npe) {
             //
             Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
@@ -94,9 +97,7 @@ public class IsoworldsLocations {
         for (int x = -2; x < 2; x++) {
             for (int y = 60; y < 65; y++) {
                 for (int z = -2; z < 2; z++) {
-                    if (Bukkit.getServer().getWorld(worldname).getBlockAt(x, y, z).getType() != Material.BEDROCK
-                            && Bukkit.getServer().getWorld(worldname).getBlockAt(x, y, z).getType() != Material.WALL_SIGN
-                            && Bukkit.getServer().getWorld(worldname).getBlockAt(x, y, z).getType() != Material.TORCH) {
+                    if (Bukkit.getServer().getWorld(worldname).getBlockAt(x, y, z).getType() != Material.BEDROCK) {
                         Bukkit.getServer().getWorld(worldname).getBlockAt(x, y, z).setType(Material.AIR);
                     }
                 }

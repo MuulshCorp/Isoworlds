@@ -2,7 +2,13 @@ package sponge.Listeners;
 
 import common.ManageFiles;
 import common.Msg;
+import org.spongepowered.api.block.BlockSnapshot;
+import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.data.Transaction;
+import org.spongepowered.api.data.property.block.MatterProperty;
 import org.spongepowered.api.entity.Transform;
+import org.spongepowered.api.event.block.ChangeBlockEvent;
+import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
@@ -47,11 +53,44 @@ public class IsoworldsListeners {
         Player p = event.getTargetEntity();
         String worldname = (p.getUniqueId() + "-IsoWorld");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
-        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+        Location<World> maxy = IsoworldsLocations.getHighestLoc(new Location<>(spawn.getExtent(), 0.500, 0, 0.500))
+                .orElse(new Location<>(spawn.getExtent(), 0.500, 61, 0));
 
-        Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), top.getPosition());
+        // Set dirt if liquid or air
+        if (!event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() -1, 0.500)
+                .getBlock() .getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
+            // Build safe zone
+            event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
+                    .setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+        }
+
+        Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), maxy.getPosition());
         event.setToTransform(t);
+    }
+
+    @Listener
+    // Anti grief spawn
+    public void onDestructSpawn(ChangeBlockEvent.Pre event, @First Player player) {
+//        Player p = player;
+//        if (p.hasPermission("isoworlds.bypass.spawn")) {
+//            return;
+//        }
+
+        // If break in chunk of spawn layer 60, remove drop
+        if (event.getLocations().get(0).getBlockX() == 0 & event.getLocations().get(0).getBlockZ() == 0) {
+            IsoworldsLogger.info("Break: Couche 60 !");
+            if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {
+                event.setCancelled(true);
+                IsoworldsLogger.info("Transaction: " + event.getLocations().get(0).toString());
+                event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+            }
+        }
+
+//        // Don't break plateforme of nether/end spawn
+//        if (event.getBlock().getY() == 60 || event.getBlock().getY() == 61 & event.getBlock().getLocation().distance(eventLocation) <= 3.0) {
+//            event.setCancelled(true);
+//        }
+
     }
 
     // On téléporte tous les joueurs à la déconnexion
@@ -60,7 +99,7 @@ public class IsoworldsListeners {
         Collection<Player> players = Sponge.getServer().getOnlinePlayers();
         String worldname = ("Isolonice");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+        Location<World> maxy = new Location<>(spawn.getExtent(), 0.500, 0, 0.500);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
 
         for (Player p : players) {
@@ -95,7 +134,7 @@ public class IsoworldsListeners {
         String worldname = ("Isolonice");
 
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+        Location<World> maxy = new Location<>(spawn.getExtent(), 0.500, 0, 0.500);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
         Transform<World> t = new Transform<World>(top);
         IsoworldsUtils.cm("DEBUG SPAWN 1" + t.toString());
@@ -107,7 +146,7 @@ public class IsoworldsListeners {
     public void onLogout(ClientConnectionEvent.Disconnect event) {
         String worldname = ("Isolonice");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+        Location<World> maxy = new Location<>(spawn.getExtent(), 0.500, 0, 0.500);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
         event.getTargetEntity().setLocationSafely(top);
         IsoworldsUtils.cm("Joueur téléporté au spawn");
@@ -151,7 +190,7 @@ public class IsoworldsListeners {
         String worldname = ("Isolonice");
         World world = event.getTargetWorld();
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0, 0, 0);
+        Location<World> maxy = new Location<>(spawn.getExtent(), 0.500, 0, 0.500);
         Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
 
         // Kick players

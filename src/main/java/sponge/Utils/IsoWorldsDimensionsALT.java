@@ -33,7 +33,7 @@ public class IsoWorldsDimensionsALT {
 
     public static void generateDim() {
 
-        String[] dimsSkyblock = new String[]{"MS3", "SF3", "AS2", "PO2", "PO2K"};
+        String[] dimsSkyblock = new String[]{"MS3", "SF3", "AS2", "PO2", "PO2K", "ITS"};
         String[] dims;
 
         // Si contient alors on met pas le minage

@@ -1,12 +1,10 @@
 package sponge.Listeners;
 
-import com.flowpowered.math.vector.Vector3d;
 import common.ManageFiles;
 import common.Msg;
 import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.data.property.block.MatterProperty;
-import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
+import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
@@ -47,45 +45,26 @@ public class IsoworldsListeners {
 
     @Listener
     public void onRespawnPlayerEvent(RespawnPlayerEvent event) {
-
         Player p = event.getTargetEntity();
         String worldname = (p.getUniqueId() + "-IsoWorld");
 
         // Teleport to spawn of own isoworld if is loaded
         if (Sponge.getServer().getWorld(worldname).isPresent() && Sponge.getServer().getWorld(worldname).get().isLoaded()) {
-            Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-            Location<World> maxy = IsoworldsLocations.getHighestLoc(new Location<>(spawn.getExtent(), 0.500, 0, 0.500))
-                    .orElse(new Location<>(spawn.getExtent(), 0.500, 61, 0));
-
-            // Set dirt if liquid or air
-            if (!event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
-                    .getBlock().getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
-                // Build safe zone
-                event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
-                        .setBlockType(BlockTypes.DIRT);
-            }
-
-            Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), maxy.getPosition());
-            event.setToTransform(t);
+            Task.builder().execute(new Runnable() {
+                @Override
+                public void run() {
+                    IsoworldsLocations.teleport(p, worldname);
+                }
+            }).delay(2, TimeUnit.MILLISECONDS).submit(instance);
         } else {
             // If own isoworld not loaded then go to default world
             if (Sponge.getServer().getWorld("Isolonice").isPresent()) {
-                World isolonice = Sponge.getServer().getWorld("Isolonice").get();
-                Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
-
-                Location<World> maxy = IsoworldsLocations.getHighestLoc(new Location<>(spawn.getExtent(), 0.500, 0, 0.500))
-                        .orElse(new Location<>(spawn.getExtent(), 0.500, 61, 0));
-
-                // Set dirt if liquid or air
-                if (!spawn.getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
-                        .getBlock().getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
-                    // Build safe zone
-                    spawn.getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
-                            .setBlockType(BlockTypes.DIRT);
-                }
-
-                Transform<World> t = new Transform<World>(isolonice, new Vector3d(0.500, maxy.getBlockY(), 0.500));
-                event.setToTransform(t);
+                Task.builder().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        IsoworldsLocations.teleport(p, "Isolonice");
+                    }
+                }).delay(2, TimeUnit.MILLISECONDS).submit(instance);
             }
         }
     }
@@ -94,7 +73,10 @@ public class IsoworldsListeners {
     // Anti grief spawn
     public void onDestructSpawn(ChangeBlockEvent.Pre event, @First Player player) {
 
-        Location<World> spawnLocation = IsoworldsLocations.getHighestLoc(new Location<>(event.getLocations().get(0).getExtent(), 0.500, 0, 0.500)).get();
+        String worldname = player.getWorld().getName();
+
+        Location<World> spawnLocation = IsoworldsLocations.getHighestLoc(new Location<>(event.getLocations().get(0).getExtent(),
+                IsoworldsLocations.getAxis(worldname).getX(), IsoworldsLocations.getAxis(worldname).getY(), IsoworldsLocations.getAxis(worldname).getZ())).get();
 
         Player p = player;
         if (p.hasPermission("isoworlds.bypass.spawn")) {
@@ -102,22 +84,22 @@ public class IsoworldsListeners {
         }
 
         // Don't break plateforme of nether/end spawn
-        if (player.getWorld().getName().equals("DIM1") || player.getWorld().getName().equals("DIM-1")) {
+        if (worldname.equals("DIM1") || worldname.equals("DIM-1")) {
 
             Location<World> loc = event.getLocations().get(0);
             IsoworldsLogger.info("Distance: " + event.getLocations().get(0).getY());
 
             if (event.getLocations().get(0).getBlockY() == 60 || event.getLocations().get(0).getBlockY() == 61) {
-                event.getLocations().get(0).setBlockType(BlockTypes.AIR);
+                event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
                 event.setCancelled(true);
             }
         }
 
         // If break in chunk of spawn layer 60, remove drop
-        if (event.getLocations().get(0).getBlockX() == 0 & event.getLocations().get(0).getBlockZ() == 0) {
+        if (event.getLocations().get(0).getBlockX() == IsoworldsLocations.getAxis(worldname).getX() & event.getLocations().get(0).getBlockZ() == IsoworldsLocations.getAxis(worldname).getZ()) {
             if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {
                 event.setCancelled(true);
-                event.getLocations().get(0).setBlockType(BlockTypes.AIR);
+                event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
             }
         }
     }
@@ -128,8 +110,10 @@ public class IsoworldsListeners {
         Collection<Player> players = Sponge.getServer().getOnlinePlayers();
         String worldname = ("Isolonice");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0.500, 0, 0.500);
-        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+        Location<World> maxy = new Location<>(spawn.getExtent(),
+                IsoworldsLocations.getAxis(worldname).getX(), IsoworldsLocations.getAxis(worldname).getY(), IsoworldsLocations.getAxis(worldname).getZ());
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy)
+                .orElse(new Location<>(spawn.getExtent(), IsoworldsLocations.getAxis(worldname).getX(), 61, IsoworldsLocations.getAxis(worldname).getZ()));
 
         for (Player p : players) {
             p.setLocation(top);
@@ -140,14 +124,10 @@ public class IsoworldsListeners {
     @Listener
     public void onConnect(ClientConnectionEvent.Join event) {
         // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
-        IsoworldsUtils.cm("TEST");
-        IsoworldsUtils.cm("TEST" + event.getTargetEntity().getName());
         if (IsoworldsUtils.firstTime(event.getTargetEntity(), Msg.keys.SQL) == null) {
-            IsoworldsUtils.cm("TEST2");
             Task.builder().execute(new Runnable() {
                 @Override
                 public void run() {
-                    IsoworldsUtils.cm("TEST");
                     event.getTargetEntity().sendMessage(Text.of(Text.builder("[IsoWorlds]").color(TextColors.GOLD)
                             .append(Text.of(Text.builder(" Sijania vous souhaite la bienvenue sur Isolonice !\n" +
                                     "Dans ce royaume, vous possédez votre propre monde nommé: IsoWorld.\n" +
@@ -163,12 +143,12 @@ public class IsoworldsListeners {
     public void onLogin(ClientConnectionEvent.Login event) {
         String worldname = ("Isolonice");
 
-        Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0.500, 0, 0.500);
-        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
-        Transform<World> t = new Transform<World>(top);
-        IsoworldsUtils.cm("DEBUG SPAWN 1" + t.toString());
-        event.setToTransform(t);
+        Task.builder().execute(new Runnable() {
+            @Override
+            public void run() {
+                IsoworldsLocations.teleport(event.getTargetUser().getPlayer().get(), worldname);
+            }
+        }).delay(1/5, TimeUnit.SECONDS).submit(instance);
     }
 
     // Logout event, tp spawn
@@ -176,8 +156,10 @@ public class IsoworldsListeners {
     public void onLogout(ClientConnectionEvent.Disconnect event) {
         String worldname = ("Isolonice");
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0.500, 0, 0.500);
-        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+        Location<World> maxy = new Location<>(spawn.getExtent(),
+                IsoworldsLocations.getAxis(worldname).getX(), IsoworldsLocations.getAxis(worldname).getY(), IsoworldsLocations.getAxis(worldname).getZ());
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy)
+                .orElse(new Location<>(spawn.getExtent(), IsoworldsLocations.getAxis(worldname).getX(), 61, IsoworldsLocations.getAxis(worldname).getZ()));
         event.getTargetEntity().setLocationSafely(top);
         IsoworldsUtils.cm("Joueur téléporté au spawn");
     }
@@ -212,8 +194,10 @@ public class IsoworldsListeners {
         String worldname = ("Isolonice");
         World world = event.getTargetWorld();
         Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = new Location<>(spawn.getExtent(), 0.500, 0, 0.500);
-        Location<World> top = IsoworldsLocations.getHighestLoc(maxy).orElse(null);
+        Location<World> maxy = new Location<>(spawn.getExtent(),
+                IsoworldsLocations.getAxis(worldname).getX(), IsoworldsLocations.getAxis(worldname).getY(), IsoworldsLocations.getAxis(worldname).getZ());
+        Location<World> top = IsoworldsLocations.getHighestLoc(maxy)
+                .orElse(new Location<>(spawn.getExtent(), IsoworldsLocations.getAxis(worldname).getX(), 61, IsoworldsLocations.getAxis(worldname).getZ()));
 
         // Kick players
         for (Player p : event.getTargetWorld().getPlayers()) {

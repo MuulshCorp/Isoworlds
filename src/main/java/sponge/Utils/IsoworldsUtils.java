@@ -23,7 +23,9 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
+import sponge.Locations.IsoworldsLocations;
 
+import javax.print.attribute.standard.MediaSize;
 import java.io.*;
 import java.nio.file.*;
 import java.sql.PreparedStatement;
@@ -358,7 +360,7 @@ public class IsoworldsUtils {
                 worldProperties.setGenerateSpawnOnLoad(false);
                 worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
                 worldProperties.setPVPEnabled(true);
-                worldProperties.setWorldBorderCenter(0, 0);
+                worldProperties.setWorldBorderCenter(IsoworldsLocations.getAxis(worldname).getX(), IsoworldsLocations.getAxis(worldname).getZ());
                 worldProperties.setWorldBorderDiameter(x);
                 worldProperties.setEnabled(false);
                 worldProperties.setEnabled(true);
@@ -377,7 +379,7 @@ public class IsoworldsUtils {
                 worldProperties.setGenerateSpawnOnLoad(false);
                 worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
                 worldProperties.setPVPEnabled(true);
-                worldProperties.setWorldBorderCenter(0, 0);
+                worldProperties.setWorldBorderCenter(IsoworldsLocations.getAxis(worldname).getX(), IsoworldsLocations.getAxis(worldname).getZ());
                 worldProperties.setWorldBorderDiameter(x);
                 Sponge.getServer().saveWorldProperties(worldProperties);
                 IsoworldsLogger.warning("Border nouveau: " + x);

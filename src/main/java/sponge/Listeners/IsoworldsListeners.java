@@ -75,9 +75,6 @@ public class IsoworldsListeners {
 
         String worldname = player.getWorld().getName();
 
-        Location<World> spawnLocation = IsoworldsLocations.getHighestLoc(new Location<>(event.getLocations().get(0).getExtent(),
-                IsoworldsLocations.getAxis(worldname).getX(), IsoworldsLocations.getAxis(worldname).getY(), IsoworldsLocations.getAxis(worldname).getZ())).get();
-
         Player p = player;
         if (p.hasPermission("isoworlds.bypass.spawn")) {
             return;

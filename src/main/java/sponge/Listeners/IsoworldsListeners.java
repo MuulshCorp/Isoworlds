@@ -87,7 +87,6 @@ public class IsoworldsListeners {
         if (worldname.equals("DIM1") || worldname.equals("DIM-1")) {
 
             Location<World> loc = event.getLocations().get(0);
-            IsoworldsLogger.info("Distance: " + event.getLocations().get(0).getY());
 
             if (event.getLocations().get(0).getBlockY() == 60 || event.getLocations().get(0).getBlockY() == 61) {
                 event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());

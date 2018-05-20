@@ -1,15 +1,11 @@
 package sponge.Locations;
 
 import org.spongepowered.api.data.property.block.MatterProperty;
-import org.spongepowered.api.event.cause.Cause;
 import sponge.IsoworldsSponge;
-import sponge.Utils.IsoworldsLogger;
 import sponge.Utils.IsoworldsUtils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.data.property.AbstractProperty;
-import org.spongepowered.api.data.property.block.PassableProperty;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -17,7 +13,6 @@ import org.spongepowered.api.world.World;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.IntToDoubleFunction;
 
 /**
  * Created by Edwin on 08/10/2017.
@@ -75,7 +70,7 @@ public class IsoworldsLocations {
                     // Set dirt if liquid or air
                     if (!finalWorld.get().getBlock(getAxis("x").intValue(), destination.getBlockY() - 1, getAxis("z").intValue()).getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
                         // Build safe zone
-                        finalWorld.get().getLocation(destination.getBlockX(), destination.getBlockY() - 1, destination.getBlockZ()).setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                        finalWorld.get().getLocation(destination.getBlockX(), destination.getBlockY() - 1, destination.getBlockZ()).setBlockType(BlockTypes.DIRT);
                     }
                 }
 
@@ -97,12 +92,14 @@ public class IsoworldsLocations {
 
     private static void buildSafeSpawn(String worldname, String casualName) {
 
+        Sponge.getServer().loadWorld(worldname);
+
         // Clear zone
         for (int x = -2; x < 2; x++) {
             for (int y = 60; y < 65; y++) {
                 for (int z = -2; z < 2; z++) {
                     if (Sponge.getServer().getWorld(worldname).get().getBlock(x, y, x).getType() != BlockTypes.BEDROCK) {
-                        Sponge.getServer().getWorld(worldname).get().setBlockType(x, y, z, BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                        Sponge.getServer().getWorld(worldname).get().setBlockType(x, y, z, BlockTypes.AIR);
                     }
                 }
             }
@@ -111,12 +108,12 @@ public class IsoworldsLocations {
         // Build safe zone
         for (int x = -2; x < 2; x++) {
             for (int z = -2; z < 2; z++) {
-                Sponge.getServer().getWorld(worldname).get().setBlockType(x, 60, z, BlockTypes.BEDROCK, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                Sponge.getServer().getWorld(worldname).get().setBlockType(x, 60, z, BlockTypes.BEDROCK);
             }
         }
 
         // Set sign
-        Sponge.getServer().getWorld(worldname).get().setBlockType(-2, 61, -2, BlockTypes.TORCH, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+        Sponge.getServer().getWorld(worldname).get().setBlockType(-2, 61, -2, BlockTypes.TORCH);
 
     }
 

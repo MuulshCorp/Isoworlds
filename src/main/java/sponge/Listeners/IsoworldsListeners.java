@@ -3,12 +3,10 @@ package sponge.Listeners;
 import com.flowpowered.math.vector.Vector3d;
 import common.ManageFiles;
 import common.Msg;
-import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.data.property.block.MatterProperty;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
-import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
@@ -64,7 +62,7 @@ public class IsoworldsListeners {
                     .getBlock().getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
                 // Build safe zone
                 event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
-                        .setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                        .setBlockType(BlockTypes.DIRT);
             }
 
             Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), maxy.getPosition());
@@ -83,7 +81,7 @@ public class IsoworldsListeners {
                         .getBlock().getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
                     // Build safe zone
                     spawn.getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
-                            .setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                            .setBlockType(BlockTypes.DIRT);
                 }
 
                 Transform<World> t = new Transform<World>(isolonice, new Vector3d(0.500, maxy.getBlockY(), 0.500));
@@ -110,7 +108,7 @@ public class IsoworldsListeners {
             IsoworldsLogger.info("Distance: " + event.getLocations().get(0).getY());
 
             if (event.getLocations().get(0).getBlockY() == 60 || event.getLocations().get(0).getBlockY() == 61) {
-                event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                event.getLocations().get(0).setBlockType(BlockTypes.AIR);
                 event.setCancelled(true);
             }
         }
@@ -119,7 +117,7 @@ public class IsoworldsListeners {
         if (event.getLocations().get(0).getBlockX() == 0 & event.getLocations().get(0).getBlockZ() == 0) {
             if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {
                 event.setCancelled(true);
-                event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                event.getLocations().get(0).setBlockType(BlockTypes.AIR);
             }
         }
     }

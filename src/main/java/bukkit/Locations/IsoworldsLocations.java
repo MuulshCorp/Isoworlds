@@ -1,13 +1,9 @@
 package bukkit.Locations;
 
 import bukkit.IsoworldsBukkit;
-import bukkit.Utils.IsoworldsLogger;
 import common.Cooldown;
 import common.Msg;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -66,6 +62,8 @@ public class IsoworldsLocations {
     }
 
     private static void buildSafeSpawn(String worldname, String casualName) {
+
+        Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
         // Clear zone
         for (int x = -2; x < 2; x++) {

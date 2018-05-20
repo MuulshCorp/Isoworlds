@@ -1,7 +1,6 @@
 package sponge.Commandes;
 
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import sponge.IsoworldsSponge;
 
 import sponge.Commandes.SousCommandes.*;
@@ -29,7 +28,7 @@ public class IsoworldsCommande implements CommandExecutor {
 
         //IsoworldsUtils.getHelp(pPlayer);
         // Ouverture du menu principal
-        pPlayer.openInventory(IsoWorldsInventory.menuPrincipal(pPlayer), Cause.of(NamedCause.simulated(pPlayer)));
+        pPlayer.openInventory(IsoWorldsInventory.menuPrincipal(pPlayer));
         return CommandResult.success();
     }
 

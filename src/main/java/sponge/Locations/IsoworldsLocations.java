@@ -55,18 +55,22 @@ public class IsoworldsLocations {
 
         if (finalWorld.isPresent()) {
 
-            // Actual spawn location
-            Location<World> spawn = finalWorld.get().getSpawnLocation();
-
-            // Max location, y is set blockmax later so don't care
-            maxy = IsoworldsLocations.getHighestLoc(new Location<>(spawn.getExtent(), getAxis("x"), 0, getAxis("z")))
-                    .orElse(new Location<>(spawn.getExtent(), getAxis("x"), 61, getAxis("z")));
-
-            Location<World> destination = new Location<>(spawn.getExtent(), getAxis("x"), maxy.getBlockY(), getAxis("z"));
-
             try {
+
+                // Actual spawn location
+                Location<World> spawn = finalWorld.get().getSpawnLocation();
+
+                // Set to 61 for official dimensions
+                Location<World> destination = new Location<>(spawn.getExtent(), getAxis("x"), 61, getAxis("z"));
+
                 // If dimensions if not autobuilt, return the same name so it can build isoworlds safe zone
                 if (getOfficialDimSpawn(worldname).equals(worldname)) {
+
+                    // Max location, y is set blockmax later so don't care
+                    maxy = IsoworldsLocations.getHighestLoc(new Location<>(spawn.getExtent(), getAxis("x"), 0, getAxis("z")))
+                            .orElse(new Location<>(spawn.getExtent(), getAxis("x"), 61, getAxis("z")));
+
+                    destination = new Location<>(spawn.getExtent(), getAxis("x"), maxy.getBlockY(), getAxis("z"));
 
                     // Set dirt if liquid or air
                     if (!finalWorld.get().getBlock(getAxis("x").intValue(), destination.getBlockY() - 1, getAxis("z").intValue()).getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
@@ -92,9 +96,6 @@ public class IsoworldsLocations {
     }
 
     private static void buildSafeSpawn(String worldname, String casualName) {
-        Optional<World> finalWorld = plugin.getGame().getServer().getWorld(worldname);
-        Location<World> spawn = finalWorld.get().getSpawnLocation();
-        Location<World> go = new Location<>(spawn.getExtent(), 0, 61, 0);
 
         // Clear zone
         for (int x = -2; x < 2; x++) {
@@ -115,18 +116,8 @@ public class IsoworldsLocations {
         }
 
         // Set sign
-        Sponge.getServer().getWorld(worldname).get().setBlockType(-1, 61, -2, BlockTypes.TORCH, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
-        Sponge.getServer().getWorld(worldname).get().setBlockType(-2, 61, -2, BlockTypes.WALL_SIGN, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+        Sponge.getServer().getWorld(worldname).get().setBlockType(-2, 61, -2, BlockTypes.TORCH, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
 
-
-//        Block block = Bukkit.getServer().getWorld(worldname).getBlockAt(-2, 61, -2);
-//        BlockState state = block.getState();
-//        Sign sign = (Sign) state;
-//
-//        sign.setLine(0, "Bienvenue");
-//        sign.setLine(1, "Prenez garde...");
-//        sign.setLine(2, "[" + casualName + "]");
-//        sign.update();
     }
 
     private static Double getAxis(String axis) {

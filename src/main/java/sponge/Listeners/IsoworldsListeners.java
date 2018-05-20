@@ -1,10 +1,10 @@
 package sponge.Listeners;
 
+import com.flowpowered.math.vector.Vector3d;
 import common.ManageFiles;
 import common.Msg;
-import org.spongepowered.api.block.BlockSnapshot;
+import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.data.property.block.MatterProperty;
 import org.spongepowered.api.entity.Transform;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
@@ -52,45 +52,76 @@ public class IsoworldsListeners {
 
         Player p = event.getTargetEntity();
         String worldname = (p.getUniqueId() + "-IsoWorld");
-        Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
-        Location<World> maxy = IsoworldsLocations.getHighestLoc(new Location<>(spawn.getExtent(), 0.500, 0, 0.500))
-                .orElse(new Location<>(spawn.getExtent(), 0.500, 61, 0));
 
-        // Set dirt if liquid or air
-        if (!event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() -1, 0.500)
-                .getBlock() .getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
-            // Build safe zone
-            event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
-                    .setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+        // Teleport to spawn of own isoworld if is loaded
+        if (Sponge.getServer().getWorld(worldname).isPresent() && Sponge.getServer().getWorld(worldname).get().isLoaded()) {
+            Location<World> spawn = Sponge.getServer().getWorld(worldname).get().getSpawnLocation();
+            Location<World> maxy = IsoworldsLocations.getHighestLoc(new Location<>(spawn.getExtent(), 0.500, 0, 0.500))
+                    .orElse(new Location<>(spawn.getExtent(), 0.500, 61, 0));
+
+            // Set dirt if liquid or air
+            if (!event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
+                    .getBlock().getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
+                // Build safe zone
+                event.getFromTransform().getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
+                        .setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+            }
+
+            Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), maxy.getPosition());
+            event.setToTransform(t);
+        } else {
+            // If own isoworld not loaded then go to default world
+            if (Sponge.getServer().getWorld("Isolonice").isPresent()) {
+                World isolonice = Sponge.getServer().getWorld("Isolonice").get();
+                Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
+
+                Location<World> maxy = IsoworldsLocations.getHighestLoc(new Location<>(spawn.getExtent(), 0.500, 0, 0.500))
+                        .orElse(new Location<>(spawn.getExtent(), 0.500, 61, 0));
+
+                // Set dirt if liquid or air
+                if (!spawn.getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
+                        .getBlock().getProperty(MatterProperty.class).get().getValue().toString().equals("SOLID")) {
+                    // Build safe zone
+                    spawn.getExtent().getLocation(0.500, maxy.getBlockY() - 1, 0.500)
+                            .setBlockType(BlockTypes.DIRT, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                }
+
+                Transform<World> t = new Transform<World>(isolonice, new Vector3d(0.500, maxy.getBlockY(), 0.500));
+                event.setToTransform(t);
+            }
         }
-
-        Transform<World> t = new Transform<World>(event.getFromTransform().getExtent(), maxy.getPosition());
-        event.setToTransform(t);
     }
 
     @Listener
     // Anti grief spawn
     public void onDestructSpawn(ChangeBlockEvent.Pre event, @First Player player) {
-//        Player p = player;
-//        if (p.hasPermission("isoworlds.bypass.spawn")) {
-//            return;
-//        }
 
-        // If break in chunk of spawn layer 60, remove drop
-        if (event.getLocations().get(0).getBlockX() == 0 & event.getLocations().get(0).getBlockZ() == 0) {
-            IsoworldsLogger.info("Break: Couche 60 !");
-            if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {
-                event.setCancelled(true);
-                IsoworldsLogger.info("Transaction: " + event.getLocations().get(0).toString());
+        Location<World> spawnLocation = IsoworldsLocations.getHighestLoc(new Location<>(event.getLocations().get(0).getExtent(), 0.500, 0, 0.500)).get();
+
+        Player p = player;
+        if (p.hasPermission("isoworlds.bypass.spawn")) {
+            return;
+        }
+
+        // Don't break plateforme of nether/end spawn
+        if (player.getWorld().getName().equals("DIM1") || player.getWorld().getName().equals("DIM-1")) {
+
+            Location<World> loc = event.getLocations().get(0);
+            IsoworldsLogger.info("Distance: " + event.getLocations().get(0).getY());
+
+            if (event.getLocations().get(0).getBlockY() == 60 || event.getLocations().get(0).getBlockY() == 61) {
                 event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                event.setCancelled(true);
             }
         }
 
-//        // Don't break plateforme of nether/end spawn
-//        if (event.getBlock().getY() == 60 || event.getBlock().getY() == 61 & event.getBlock().getLocation().distance(eventLocation) <= 3.0) {
-//            event.setCancelled(true);
-//        }
-
+        // If break in chunk of spawn layer 60, remove drop
+        if (event.getLocations().get(0).getBlockX() == 0 & event.getLocations().get(0).getBlockZ() == 0) {
+            if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {
+                event.setCancelled(true);
+                event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+            }
+        }
     }
 
     // On téléporte tous les joueurs à la déconnexion
@@ -124,6 +155,7 @@ public class IsoworldsListeners {
                                     "Dans ce royaume, vous possédez votre propre monde nommé: IsoWorld.\n" +
                                     "Vous êtes seul maître à bord, il est à vous et vous pouvez choisir qui peut y accéder.\n" +
                                     "Essayez dès maintenant via la commande: /iw").color(TextColors.GREEN))).build()));
+                    Sponge.getCommandManager().process(event.getTargetEntity(), "iw");
                 }
             }).delay(5, TimeUnit.SECONDS).submit(instance);
         }
@@ -175,14 +207,6 @@ public class IsoworldsListeners {
             IsoworldsLogger.info("LOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString());
         }
     }
-
-    // Cancel chunk generation
-    //@Listener
-    //public void onCreateChunk(ChunkPreGenerationEvent event) {
-    //    if (event.getTargetWorld().getName().contains("-IsoWorld")) {
-    //        event.getChunkPreGenerate().cancel();
-    //    }
-    //}
 
     // TP lors du unload d'un monde
     @Listener

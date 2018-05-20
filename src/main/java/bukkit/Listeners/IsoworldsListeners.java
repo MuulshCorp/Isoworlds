@@ -28,12 +28,24 @@ public class IsoworldsListeners implements Listener {
     private final IsoworldsBukkit instance = IsoworldsBukkit.getInstance();
 
     @EventHandler
-    public static void onRespawnPlayerEvent(PlayerRespawnEvent event) {
+    public void onRespawnPlayerEvent(PlayerRespawnEvent event) {
 
         Player p = event.getPlayer();
-        String worldname = (event.getPlayer().getWorld().getName());
+        String worldname = p.getUniqueId() + "-IsoWorld";
 
-        IsoworldsLocations.teleport(p, worldname);
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if (Bukkit.getServer().getWorld(worldname) != null) {
+                    IsoworldsLocations.teleport(p, worldname);
+                } else {
+                    IsoworldsLogger.info("SPAWN ISOLONICE");
+                    IsoworldsLocations.teleport(p, "Isolonice");
+                }
+            }
+
+        }.runTaskLater(this.instance, 1);
     }
 
     // Set autosave for a new loaded world to avoid crash ?
@@ -64,6 +76,7 @@ public class IsoworldsListeners implements Listener {
                     event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Vous êtes seul maître à bord, il est à vous !");
                     event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Pour commencer l'aventure entrez la commande: /iw");
                     event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Puis sélectionnez le premier menu (Construction)");
+                    event.getPlayer().performCommand("iw");
                 }
 
             }.runTaskLater(this.instance, 100);
@@ -106,6 +119,13 @@ public class IsoworldsListeners implements Listener {
         // If break in chunk of spawn layer 60, remove drop
         Location eventLocation = new Location(Bukkit.getServer().getWorld(event.getBlock().getWorld().getName()), 0, 60, 0);
 
+        // Don't break plateforme of nether/end spawn
+        if (event.getBlock().getWorld().getName().equals("DIM1") || event.getBlock().getWorld().getName().equals("DIM-1")) {
+            if (event.getBlock().getY() == 60 || event.getBlock().getY() == 61 & event.getBlock().getLocation().distance(eventLocation) <= 3.0) {
+                event.setCancelled(true);
+            }
+        }
+
         // Don't drop on isoworld plateform break
         if (event.getBlock().getY() == 60 & event.getBlock().getLocation().distance(eventLocation) <= 2.0) {
             if (event.getBlock().getType().name().equals("DIRT")) {
@@ -113,12 +133,6 @@ public class IsoworldsListeners implements Listener {
                 event.getBlock().setType(Material.AIR);
             }
         }
-
-        // Don't break plateforme of nether/end spawn
-        if (event.getBlock().getY() == 60 || event.getBlock().getY() == 61 & event.getBlock().getLocation().distance(eventLocation) <= 3.0) {
-                event.setCancelled(true);
-        }
-
     }
 
     @EventHandler

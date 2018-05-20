@@ -8,10 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Edwin on 21/10/2017.
@@ -22,76 +22,50 @@ public class IsoworldsLocations {
 
     public static void teleport(Player player, String worldname) {
 
-        // If spawn already built if = 1
-        int safe = 0;
-
-        // Define dimension name
-        if (worldname.equals("end")) {
-            worldname = "DIM1";
-            buildSafeSpawn(player, worldname, "END");
-            safe = 1;
-        } else if (worldname.equals("nether")) {
-            // Teleport to nether
-            worldname = "DIM-1";
-            buildSafeSpawn(player, worldname, "NETHER");
-            safe = 1;
-        }
-
         // Construction du point de respawn
-        Integer secours;
-        Location go = new Location(Bukkit.getServer().getWorld(worldname), 0, 60, 0);
-        Integer top = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-
-        IsoworldsLogger.severe("Y = " + top);
+        int maxy;
+        Location finalWorld = plugin.getServer().getWorld(getOfficialDimSpawn(worldname)).getSpawnLocation();
 
         try {
-            // If spawn not built on 60 automatically
-            if (safe == 0) {
-                if (top <= 0) {
-                    IsoworldsLogger.severe("1");
-                    // Set dirt if liquid or air
-                    if (!Bukkit.getServer().getWorld(worldname).getBlockAt(go).getType().isSolid()) {
-                        // Build safe zone
-                        for (int x = -1; x < 1; x++) {
-                            for (int z = -1; z < 1; z++) {
-                                Bukkit.getServer().getWorld(worldname).getBlockAt(x, 60, z).setType(Material.DIRT);
-                            }
-                        }
-                    }
-                    go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
-                } else {
-                    IsoworldsLogger.severe("2");
-                    secours = Bukkit.getServer().getWorld(worldname).getHighestBlockYAt(0, 0);
-                    go = new Location(Bukkit.getServer().getWorld(worldname), 0, secours, 0);
 
-                    // Set block if air or liquid
-                    if (!go.getBlock().getType().isSolid()) {
-                        // Build safe zone
-                        for (int x = -1; x < 1; x++) {
-                            for (int z = -1; z < 1; z++) {
-                                Bukkit.getServer().getWorld(worldname).getBlockAt(x, secours - 1, z).setType(Material.DIRT);
-                            }
-                        }
-                    }
-                    IsoworldsLogger.severe("2");
+            // Actual spawn location
+            Location spawn = finalWorld.getWorld().getSpawnLocation();
+
+            // Set to 61 for official dimensions
+            Location destination = new Location(spawn.getWorld(), getAxis("x"), 61, getAxis("z"));
+
+            // If dimensions if not autobuilt, return the same name so it can build isoworlds safe zone
+            if (getOfficialDimSpawn(worldname).equals(worldname)) {
+
+                // Max location, y is set blockmax later so don't care
+                maxy = spawn.getWorld().getHighestBlockYAt(getAxis("x").intValue(), getAxis("z").intValue());
+
+                if (maxy == 0) {
+                    maxy = 61;
+                }
+
+                destination = new Location(spawn.getWorld(), getAxis("x"), maxy, getAxis("z"));
+
+                // Set dirt if liquid or air
+                if (!finalWorld.getWorld().getBlockAt(getAxis("x").intValue(), destination.getBlockY() - 1, getAxis("z").intValue()).getType().isSolid()) {
+                    // Build safe zone
+                    finalWorld.getWorld().getBlockAt (destination.getBlockX(), destination.getBlockY() - 1, destination.getBlockZ()).setType(Material.DIRT);
                 }
             }
 
             // Téléportation du joueur
-            if (player.teleport(go)) {
+            if (player.teleport(destination)) {
                 player.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
                 plugin.cooldown.addPlayerCooldown(player, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
             }
 
         } catch (NullPointerException npe) {
-            //
-            Bukkit.getServer().getWorld(worldname).getBlockAt(go).setType(Material.DIRT);
+            npe.printStackTrace();
         }
 
     }
 
-    private static void buildSafeSpawn(Player player, String worldname, String casualName) {
-        Location go = new Location(Bukkit.getServer().getWorld(worldname), 0, 61, 0);
+    private static void buildSafeSpawn(String worldname, String casualName) {
 
         // Clear zone
         for (int x = -2; x < 2; x++) {
@@ -112,15 +86,42 @@ public class IsoworldsLocations {
         }
 
         // Set sign
-        Bukkit.getServer().getWorld(worldname).getBlockAt(-1, 61, -2).setType(Material.TORCH);
-        Bukkit.getServer().getWorld(worldname).getBlockAt(-2, 61, -2).setType(Material.WALL_SIGN);
-        Block block = Bukkit.getServer().getWorld(worldname).getBlockAt(-2, 61, -2);
-        BlockState state = block.getState();
-        Sign sign = (Sign) state;
+        Bukkit.getServer().getWorld(worldname).getBlockAt(-2, 61, -2).setType(Material.TORCH);
+    }
 
-        sign.setLine(0, "Bienvenue");
-        sign.setLine(1, "Prenez garde...");
-        sign.setLine(2, "[" + casualName + "]");
-        sign.update();
+    private static Double getAxis(String axis) {
+
+        // Define coordinate
+        Map<String, Double> spawn = new HashMap<String, Double>();
+
+        // INT THE SEA
+        if (plugin.servername.equals("ITS")) {
+            spawn.put("x", -1110.0);
+            spawn.put("y", 102.0);
+            spawn.put("z", 545.0);
+        } else {
+            spawn.put("x", 0.500);
+            spawn.put("y", 60.0);
+            spawn.put("z", 0.500);
+        }
+
+        return spawn.get(axis);
+    }
+
+    // Get name, null if not official
+    private static String getOfficialDimSpawn(String worldname) {
+
+        // Define dimension name
+        if (worldname.equals("end")) {
+            worldname = "DIM1";
+            buildSafeSpawn(worldname, "END");
+            return worldname;
+        } else if (worldname.equals("nether")) {
+            // Teleport to nether
+            worldname = "DIM-1";
+            buildSafeSpawn(worldname, "NETHER");
+            return worldname;
+        }
+        return worldname;
     }
 }

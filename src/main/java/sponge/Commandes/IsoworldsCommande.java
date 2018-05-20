@@ -29,7 +29,7 @@ public class IsoworldsCommande implements CommandExecutor {
 
         //IsoworldsUtils.getHelp(pPlayer);
         // Ouverture du menu principal
-        pPlayer.openInventory(IsoWorldsInventory.menuPrincipal(pPlayer), Cause.of(NamedCause.simulated(Player.class)));
+        pPlayer.openInventory(IsoWorldsInventory.menuPrincipal(pPlayer), Cause.of(NamedCause.simulated(pPlayer)));
         return CommandResult.success();
     }
 

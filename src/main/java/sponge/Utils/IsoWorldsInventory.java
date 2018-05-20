@@ -1033,7 +1033,7 @@ public class IsoWorldsInventory {
         Task.builder().execute(new Runnable() {
             @Override
             public void run() {
-                pPlayer.closeInventory(Cause.of(NamedCause.simulated(Player.class)));
+                pPlayer.closeInventory(Cause.of(NamedCause.simulated(pPlayer)));
                 pPlayer.openInventory(menuPrincipal(pPlayer), Cause.of(NamedCause.simulated(pPlayer)));
             }
         })

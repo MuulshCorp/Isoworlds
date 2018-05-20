@@ -83,8 +83,6 @@ public class IsoworldsListeners {
         // Don't break plateforme of nether/end spawn
         if (worldname.equals("DIM1") || worldname.equals("DIM-1")) {
 
-            Location<World> loc = event.getLocations().get(0);
-
             if (event.getLocations().get(0).getBlockY() == 60 || event.getLocations().get(0).getBlockY() == 61) {
                 event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
                 event.setCancelled(true);

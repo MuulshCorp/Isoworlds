@@ -36,7 +36,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static sponge.IsoworldsSponge.instance;
-import static sponge.Utils.IsoworldsUtils.isLocked;
 import static sponge.Utils.IsoworldsUtils.iwInProcess;
 import static sponge.Utils.IsoworldsUtils.setWorldProperties;
 
@@ -370,7 +369,6 @@ public class IsoWorldsInventory {
 
         int i = 0;
         int j = 0;
-        boolean check = false;
         ResultSet trusts = IsoworldsUtils.getTrusts(pPlayer, Msg.keys.SQL);
         List<String> players = new ArrayList<String>();
 

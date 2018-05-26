@@ -69,9 +69,6 @@ public class IsoWorldsResetDim {
                         IsoworldsLogger.warning("--- Démarrage de la réinitialisation pour la dimension " + dim);
                         ManageFiles.deleteDir(dimFile);
                         dimFile.mkdir();
-//                        FileWriter out = new FileWriter(resetFile);
-//                        out.write(nextFridayTimeStamp);
-//                        out.close();
                         IsoworldsLogger.warning("--- Réinitialisation avec succès de la dimension " + dim);
                     }
                 }

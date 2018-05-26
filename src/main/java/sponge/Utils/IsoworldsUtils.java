@@ -1,6 +1,5 @@
 package sponge.Utils;
 
-import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
 
@@ -8,7 +7,6 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.persistence.DataFormats;
 import org.spongepowered.api.entity.living.player.User;
-import org.spongepowered.api.event.entity.MoveEntityEvent;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.world.World;
@@ -25,7 +23,6 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 import sponge.Locations.IsoworldsLocations;
 
-import javax.print.attribute.standard.MediaSize;
 import java.io.*;
 import java.nio.file.*;
 import java.sql.PreparedStatement;
@@ -71,20 +68,6 @@ public class IsoworldsUtils {
     // Executer une commande sur le serveur
     public void cmds(String cmd) {
         Sponge.getCommandManager().process(Sponge.getServer().getConsole(), cmd);
-    }
-
-    // Titles
-    public static Title title(String message) {
-        Text text = Text.of(Text.builder(message).color(TextColors.AQUA).build());
-        Title title = Title.builder().title(Text.of(text)).build();
-        return title;
-    }
-
-    // SubTitle
-    public static Title subtitle(String message) {
-        Text text = Text.of(Text.builder(message).color(TextColors.GOLD).build());
-        Title subtitle = Title.builder().subtitle(Text.of(message)).build();
-        return subtitle;
     }
 
     // Tiltle with SubTitle
@@ -601,6 +584,7 @@ public class IsoworldsUtils {
                     // Déchargement au cas ou
                     if (Sponge.getServer().getWorld(worldname).isPresent()) {
                         Sponge.getServer().unloadWorld(Sponge.getServer().getWorld(worldname).get());
+                        IsoworldsLogger.warning(" --- Anomalie (@PUSHED: Déchargement du IsoWorld anormalement chargé: " + worldname + " ---");
                     }
                     // Suppression du dossier
                     ManageFiles.deleteDir(file);
@@ -632,7 +616,7 @@ public class IsoworldsUtils {
             return false;
 
         } else if (!IsoworldsUtils.getStatus(worldname, Msg.keys.SQL)) {
-            IsoworldsUtils.cm("ISOWORLD: " + worldname + " EN ETAT NON @PUSHED");
+            IsoworldsUtils.cm("ISOWORLD DISPONIBLE: " + worldname + " - ETAT NON @PUSHED");
 
             // Vérification si le dossier @PUSHED n'existe pas, on le supprime dans ce cas, anomalie
             if (file2.exists()) {
@@ -648,85 +632,6 @@ public class IsoworldsUtils {
             IsoworldsLogger.warning(" --- Anomalie (NI @PUSHED NI NON @PUSHE): IsoWorld: " + worldname + " ---");
             return false;
         }
-    }
-
-
-    // COPY FOR CHARGERCOMMANDE
-    // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
-
-    public static Boolean checkTagCharger(String worldname) {
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        Integer limit = 0;
-        // Vérification si monde en statut pushed
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (IsoworldsUtils.getStatus(worldname, Msg.keys.SQL)) {
-            // Création des chemins pour vérification
-            File file = new File(ManageFiles.getPath() + worldname);
-            File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
-            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
-
-
-            // Suppression si doublon (généré sans autorisation), on remove le non tag
-            if (file.exists() & file2.exists()) {
-                IsoworldsLogger.severe(" --- Anomalie: Dossier isoworld et isoworld tag tous deux présents pour: " + worldname + " ---");
-                ManageFiles.deleteDir(file);
-            }
-
-            if (file.exists()) {
-                IsoworldsUtils.setStatus(worldname, 0, Msg.keys.SQL);
-                // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
-                // Le script check ensutie
-                return true;
-            } else {
-                IsoworldsLogger.warning("--- IMPORT MANUEL IW EN COURS POUR: " + worldname);
-            }
-            if (file2.exists()) {
-                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
-                IsoworldsUtils.cm("--- PULL MANUEL OK POUR: " + worldname);
-                return false;
-            }
-            return false;
-        }
-        return true;
-    }
-
-    // COPY FOR CHARGERCOMMAND
-    // Check if pPlayer's IsoWorld is created on database
-    public static Boolean isPresentCharger(String uuid, String messageErreur, Boolean load) {
-        String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        String check_w;
-        String check_p;
-        try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
-
-            // UUID _P
-            check_p = uuid;
-            check.setString(1, check_p);
-            // UUID_W
-            check_w = uuid + "-IsoWorld";
-            check.setString(2, check_w);
-            // SERVEUR_ID
-            check.setString(3, plugin.servername);
-            // Requête
-            ResultSet rselect = check.executeQuery();
-
-            if (rselect.isBeforeFirst()) {
-                // Chargement si load = true
-                if (!IsoworldsUtils.getStatus(uuid + "-IsoWorld", Msg.keys.SQL)) {
-                    if (load) {
-                        setWorldPropertiesCharger(uuid + "-IsoWorld");
-                        Sponge.getServer().loadWorld(uuid + "-IsoWorld");
-                    }
-                }
-                return true;
-            }
-
-        } catch (Exception se) {
-            se.printStackTrace();
-            IsoworldsUtils.cm(Msg.keys.SQL);
-            return false;
-        }
-        return false;
     }
 
     // Used for construction, check if isoworld is in database (don't care charged or not)

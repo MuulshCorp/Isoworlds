@@ -584,51 +584,76 @@ public class IsoworldsUtils {
 
     // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
     public static Boolean checkTag(Player pPlayer, String worldname) {
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        Integer limit = 0;
-        // Vérification si monde en statut pushed
-        // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
+
+        // Création des chemins pour vérification
+        File file = new File(ManageFiles.getPath() + worldname);
+        File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
+
+        // Si vrai alors en état @PUSHED en bdd
         if (IsoworldsUtils.getStatus(worldname, Msg.keys.SQL)) {
-            IsoworldsUtils.cm("Debug 6");
-            // Création des chemins pour vérification
-            File file = new File(ManageFiles.getPath() + worldname);
-            File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
+            IsoworldsUtils.cm("ISOWORLD: " + worldname + " EN ETAT @PUSHED");
 
-
-            // Suppression si doublon (généré sans autorisation), on remove le non tag
-            if (file.exists() & file2.exists()) {
-                IsoworldsLogger.warning(" --- Anomalie: Dossier isoworld et isoworld tag tous deux présents pour: " + worldname + " ---");
-                ManageFiles.deleteDir(file);
+            // !! Gestion des anomalies !!
+            // Si le dossier sans tag et avec tag existe, alors il a été accédé par un moyen tier et on supprime le non TAG
+            if (file.exists()) {
+                if (file2.exists()) {
+                    IsoworldsLogger.warning(" --- Anomalie (@PUSHED: Dossier isoworld et isoworld tag tous deux présents pour: " + worldname + " ---");
+                    // Déchargement au cas ou
+                    if (Sponge.getServer().getWorld(worldname).isPresent()) {
+                        Sponge.getServer().unloadWorld(Sponge.getServer().getWorld(worldname).get());
+                    }
+                    // Suppression du dossier
+                    ManageFiles.deleteDir(file);
+                }
             }
 
-            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
-            if (file.exists()) {
-                IsoworldsUtils.cm("Debug 7");
-                IsoworldsUtils.setStatus(worldname, 0, Msg.keys.SQL);
-                // Si le dossier est en @PUSHED et qu'un joueur le demande alors on le passe en @PULL
-                // Le script check ensutie
-                return true;
-            } else {
+            // !! Démarrage de la procédure de récupération !!
+            // Si dossier @PUSHED alors on le met en @PULL pour lancer la procédure de récupération
+            if (file2.exists()) {
+                IsoworldsUtils.cm("PASSAGE EN @PULL: " + worldname);
+                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
+                IsoworldsUtils.cm("PASSAGE EN @PULL OK: " + worldname);
+
+                // Vérification pour savoir si le dossier existe pour permettre au joueur d'utiliser la cmd maison
+                // On retourne faux pour dire que le monde n'est pas disponible
+                // Le passage du statut à NON @PUSHED se fait dans la task
                 Task task = Task.builder()
                         .execute(new IsoWorldsTasks(pPlayer, file))
                         .async()
                         .interval(1, TimeUnit.SECONDS)
                         .name("Self-Cancelling Timer Task")
                         .submit(plugin);
+            } else {
+                // Gestion du cas ou le dossier IsoWorld ne serait pas présent alors qu'il est @PUSHED en bdd
+                IsoworldsLogger.warning(" --- Anomalie (@PUSHED): Dossier isoworld tag n'existe pas: " + worldname + " ---");
             }
+
+            // Retourner faux pour indiquer que le dossier n'existe pas, il doit être en procédure
+            return false;
+
+        } else if (!IsoworldsUtils.getStatus(worldname, Msg.keys.SQL)) {
+            IsoworldsUtils.cm("ISOWORLD: " + worldname + " EN ETAT NON @PUSHED");
+
+            // Vérification si le dossier @PUSHED n'existe pas, on le supprime dans ce cas, anomalie
             if (file2.exists()) {
-                IsoworldsUtils.cm("TEST 0");
-                ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
-                IsoworldsUtils.cm("PULL OK");
-                return false;
+                ManageFiles.deleteDir(file2);
+                IsoworldsUtils.cm(": " + worldname);
+                IsoworldsLogger.warning(" --- Anomalie (NON @PUSHED): Dossier isoworld et isoworld tag tous deux présents pour: " + worldname + " ---");
             }
+
+            // IsoWorld disponible, retour vrai
+            return true;
+        } else {
+            // Si ni @PUSHED ni NON @PUSHED en BDD alors on retourne faux car il doit y avoir un gros problème :)
+            IsoworldsLogger.warning(" --- Anomalie (NI @PUSHED NI NON @PUSHE): IsoWorld: " + worldname + " ---");
             return false;
         }
-        return true;
     }
+
 
     // COPY FOR CHARGERCOMMANDE
     // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
+
     public static Boolean checkTagCharger(String worldname) {
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
         Integer limit = 0;
@@ -786,6 +811,20 @@ public class IsoworldsUtils {
         } else {
             // On set lock
             plugin.lock.put(pPlayer.getUniqueId().toString() + ";" + className, 1);
+            return false;
+        }
+    }
+
+    // Vérifie si le lock est présent et renvoi vrai, sinon défini le lock et renvoi false
+    public static Boolean iwInProcess(Player pPlayer, String worldname) {
+        // Si le lock est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
+        if (checkLockFormat(worldname, worldname)) {
+            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+            return true;
+        } else {
+            // On set lock
+            plugin.lock.put(worldname + ";" + worldname, 1);
             return false;
         }
     }

@@ -36,6 +36,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static sponge.IsoworldsSponge.instance;
+import static sponge.Utils.IsoworldsUtils.isLocked;
+import static sponge.Utils.IsoworldsUtils.iwInProcess;
 import static sponge.Utils.IsoworldsUtils.setWorldProperties;
 
 /**
@@ -510,7 +512,7 @@ public class IsoWorldsInventory {
     }
 
     // CONFIANCE ACCESS
-    public static Inventory getMenuConfianceAccess(Player pPlayer) {
+    private static Inventory getMenuConfianceAccess(Player pPlayer) {
 
         Inventory menu = Inventory.builder()
                 .of(InventoryArchetypes.CHEST)
@@ -523,11 +525,6 @@ public class IsoWorldsInventory {
                     IsoworldsUtils.cm("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
                     clickInventoryEvent.setCancelled(true);
 
-                    //If the method return true then the command is in lock
-                    if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.CONFIANCE)) {
-                        return;
-                    }
-
                     // Si joueur, on ajoute le joueur
                     if (menuPlayer.contains("IsoWorld Accessible")) {
                         // Récupération UUID
@@ -536,22 +533,32 @@ public class IsoWorldsInventory {
                         Optional<User> user = IsoworldsUtils.getPlayerFromUUID(UUID.fromString(tmp[0]));
                         String worldname = user.get().getUniqueId().toString() + "-IsoWorld";
 
+
+                        // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
+                        if (iwInProcess(pPlayer, worldname)) {
+                            return;
+                        }
+
                         // Pull du IsoWorld
                         Task.builder().execute(new Runnable() {
                             @Override
                             public void run() {
                                 // Si monde présent en dossier ?
+                                // Removing iwInProcess in task
                                 if (IsoworldsUtils.checkTag(pPlayer, worldname)) {
                                     // Chargement du isoworld + tp
                                     setWorldProperties(worldname, pPlayer);
                                     Sponge.getServer().loadWorld(worldname);
-                                    IsoworldsLocations.teleport(pPlayer, user.get().getUniqueId().toString() + "-IsoWorld");
+                                    IsoworldsLocations.teleport(pPlayer, worldname);
                                     plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
                                 }
 
+                                // Supprime le lock (worldname, worldname uniquement pour les access confiance)
+                                plugin.lock.remove(worldname + ";" + worldname);
+
                             }
                         })
-                                .delay(10, TimeUnit.MILLISECONDS)
+                                .delay(1, TimeUnit.SECONDS)
                                 .name("Pull du IsoWorld.").submit(instance);
 
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));

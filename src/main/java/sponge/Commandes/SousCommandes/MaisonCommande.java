@@ -51,6 +51,8 @@ public class MaisonCommande implements CommandExecutor {
         }
 
         // Import / Export
+        // Faux si une procédure est en cours sur un IsoWorld en était @PUSHED en BDD
+        // Vrai si IsoWorld disponible
         if (!IsoworldsUtils.checkTag(pPlayer, worldname)) {
             return CommandResult.success();
         }

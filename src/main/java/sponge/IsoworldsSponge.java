@@ -89,8 +89,16 @@ public class IsoworldsSponge {
             ManageFiles.deleteDir(new File(f.getPath() + "/level_sponge.dat_old"));
             // Gestion des IsoWorlds non push, si ne contient pas de tag alors "PUSH-SAS" et on le renomme lors de la sortie
             if (ManageFiles.move(source + "/" + f.getName(), dest.getPath())) {
+                // Si le dossier n'est pas TAG et que le dossier de ce même nom avec TAG n'existe pas
                 if (!f.getName().contains("@PUSHED")) {
-                    ManageFiles.rename(ManageFiles.getPath() + "/ISOWORLDS-SAS/" + f.getName(), "@PUSH");
+                    // Si le isoworld possède pas de @PUSHED dans le dossier de base ou le SAS alors on supprime
+                    if ((new File(ManageFiles.getPath() + "ISOWORLDS-SAS/" + f.getName() + "@PUSHED").exists())
+                            || (new File(f.getPath() + f.getName() + "@PUSHED").exists())) {
+                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "ISOWORLDS-SAS/" + f.getName()));
+                        logger.info("[IsoWorlds-SAS: Anomalie sur le IsoWorld " + f.getName());
+                        continue;
+                    }
+                    ManageFiles.rename(ManageFiles.getPath() + "ISOWORLDS-SAS/" + f.getName(), "@PUSH");
                     logger.info("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
                 }
             } else {

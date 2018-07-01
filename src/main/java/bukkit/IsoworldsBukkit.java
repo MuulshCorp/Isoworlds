@@ -125,6 +125,13 @@ public final class IsoworldsBukkit extends JavaPlugin {
 
     private void everyMinutes() {
         int x = 15;
+
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
+            for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+                IsoworldsUtils.updatePlayTime(p, Msg.keys.SQL);
+            }
+        }), 0, 1200);
+
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
@@ -208,7 +215,7 @@ public final class IsoworldsBukkit extends JavaPlugin {
                 IsoworldsLogger.info("Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés");
                 IsoworldsLogger.warning("Fin de l'analyse");
             }
-        }), 600, 1200);
+        }), 0, 1200);
     }
 
     public static IsoworldsBukkit getInstance() {

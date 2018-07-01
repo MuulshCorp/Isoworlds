@@ -94,6 +94,14 @@ public class IsoWorldsInventory implements Listener {
 
         // Récupération nombre charge
         Integer charges = IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL);
+        Integer playtime = IsoworldsUtils.getPlayTime(pPlayer, Msg.keys.SQL);
+        String formatedPlayTime;
+
+        if (playtime > 60) {
+            formatedPlayTime = playtime / 60 + " Heure(s) et " + playtime % 60 + " minute(s)";
+        } else {
+            formatedPlayTime = playtime + " minute(s)";
+        }
 
         // Création item
         String[] list1 = new String[]{"Créez ou refondez votre IsoWorld"};
@@ -102,7 +110,7 @@ public class IsoWorldsInventory implements Listener {
         String[] list4 = new String[]{"Gérez le biome de vos chunks"};
         String[] list5 = new String[]{"Gérez l'heure de votre IsoWorld"};
         String[] list6 = new String[]{"Gérez la pluie et le beau temps", "de votre IsoWorld"};
-        String[] list7 = new String[]{"[" + charges + "]" + " charge(s) disponible(s)"};
+        String[] list7 = new String[]{ChatColor.YELLOW + "Charges: " + ChatColor.GREEN + charges + " disponible(s)", ChatColor.YELLOW + "Temps de jeu: " + ChatColor.GREEN + formatedPlayTime};
         String[] list8 = new String[]{"Rendez-vous sur les dimensions publiques"};
         //String[] list7 = new String[]{"Chargez-Déchargez votre IsoWorld"};
         //String[] list8 = new String[]{"Téléportez vous sur un IsoWorld [STAFF]"};
@@ -120,7 +128,7 @@ public class IsoWorldsInventory implements Listener {
         menu.addButton(menu.getRow(0), 4, new ItemStack(Material.WATCH), ChatColor.LIGHT_PURPLE + "Temps", list5);
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), ChatColor.YELLOW + "Météo", list6);
         menu.addButton(menu.getRow(0), 6, new ItemStack(Material.COMPASS), ChatColor.DARK_GREEN + "Warp", list8);
-        menu.addButton(menu.getRow(0), 8, new ItemStack(Material.LEVER), ChatColor.AQUA + "Charges", list7);
+        menu.addButton(menu.getRow(0), 8, new ItemStack(Material.LEVER), ChatColor.AQUA + "Statistiques", list7);
         //menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), ChatColor.RED + "Activation", list7);
         //menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), ChatColor.LIGHT_PURPLE + "Téléportation", list8);
 

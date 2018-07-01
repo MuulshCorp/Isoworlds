@@ -948,9 +948,9 @@ public class IsoworldsUtils {
         }
     }
 
-    // Create trust for uuidcible on pPlayer IsoWorld
+    // Init charges and playtime on first connect
     public static Boolean initCharges(Player pPlayer, String messageErreur) {
-        String INSERT = "INSERT INTO `players_info` (`UUID_P`, `charges`) VALUES (?, ?)";
+        String INSERT = "INSERT INTO `players_info` (`UUID_P`, `charges`, `playtimes`) VALUES (?, ?, ?)";
         Integer number;
         String Iuuid_p;
 
@@ -962,6 +962,8 @@ public class IsoworldsUtils {
             // Number
             number = 0;
             insert.setInt(2, number);
+            // PlayTime
+            insert.setInt(3, number);
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -990,5 +992,49 @@ public class IsoworldsUtils {
             return -1;
         }
         return charges;
+    }
+
+    // Ajoute une minute au compteur de temps du joueur
+    public static Boolean updatePlayTime(Player pPlayer, String messageErreur) {
+        String CHECK = "UPDATE `players_info` SET `playtimes` = `playtimes` + 1 WHERE `UUID_P` = ?";
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+
+            // UUID_P
+            check.setString(1, pPlayer.getUniqueId().toString());
+            // Requête
+            IsoworldsUtils.cm("Debug 3: " + check.toString());
+            check.executeUpdate();
+            return true;
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return false;
+        }
+    }
+
+    // Get charge of a player
+    public static Integer getPlayTime(Player pPlayer, String messageErreur) {
+        String CHECK = "SELECT `playtimes` FROM `players_info` WHERE `UUID_P` = ?";
+        ResultSet result;
+        Integer number;
+        try {
+            PreparedStatement check = plugin.database.prepare(CHECK);
+            // UUID _P
+            check.setString(1, pPlayer.getUniqueId().toString());
+            // Requête
+            ResultSet rselect = check.executeQuery();
+            while (rselect.next()) {
+                IsoworldsUtils.cm(rselect.toString());
+                IsoworldsUtils.cm("Debug playtime 1");
+                number = rselect.getInt(1);
+                return number;
+            }
+        } catch (Exception se) {
+            se.printStackTrace();
+            IsoworldsUtils.cm(messageErreur);
+            return null;
+        }
+        return 0;
     }
 }

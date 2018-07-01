@@ -101,6 +101,14 @@ public class IsoWorldsInventory {
 
         // Récupération nombre charge
         Integer charges = IsoworldsUtils.getCharge(pPlayer, Msg.keys.SQL);
+        Integer playtime = IsoworldsUtils.getPlayTime(pPlayer, Msg.keys.SQL);
+        String formatedPlayTime;
+
+        if (playtime > 60) {
+            formatedPlayTime = playtime / 60 + " Heure(s) et " + playtime % 60 + " minute(s)";
+        } else {
+            formatedPlayTime = playtime + " minute(s)";
+        }
 
         // Création item
         List<Text> list1 = new ArrayList<Text>();
@@ -121,7 +129,8 @@ public class IsoWorldsInventory {
         List<Text> list8 = new ArrayList<Text>();
         list8.add(Text.of("Gérez l'heure de votre IsoWorld"));
         List<Text> list9 = new ArrayList<Text>();
-        list9.add(Text.of("[ " + charges + " ]" + " charge(s) disponible(s)"));
+        list9.add(Text.of(Text.builder("Charges: ").color(TextColors.YELLOW).append(Text.of(Text.builder(charges + " disponible(s)").color(TextColors.GREEN))).build()));
+        list9.add(Text.of(Text.builder("Temps de jeu: ").color(TextColors.YELLOW).append(Text.of(Text.builder(formatedPlayTime).color(TextColors.GREEN))).build()));
 
 
         ItemStack item1 = ItemStack.builder().itemType(ItemTypes.DIAMOND_PICKAXE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Construction")
@@ -138,7 +147,7 @@ public class IsoWorldsInventory {
                 .color(TextColors.YELLOW).build())).quantity(1).build();
         ItemStack item7 = ItemStack.builder().itemType(ItemTypes.COMPASS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Warp")
                 .color(TextColors.DARK_GREEN).build())).quantity(1).build();
-        ItemStack item9 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Charges")
+        ItemStack item9 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Statistiques")
                 .color(TextColors.AQUA).build())).quantity(1).build();
 
         //ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation")

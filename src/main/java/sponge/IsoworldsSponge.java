@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.world.WorldArchetypes;
@@ -134,6 +135,14 @@ public class IsoworldsSponge {
     private void unload() {
         int x = 15;
 
+        // Update playtime
+        Task.builder().execute(() -> {
+            for (Player p : Sponge.getServer().getOnlinePlayers()) {
+                IsoworldsUtils.updatePlayTime(p, Msg.keys.SQL);
+            }
+        }).submit(this);
+
+        // IsoWorlds task unload
         Task.builder().execute(() -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             IsoworldsLogger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");

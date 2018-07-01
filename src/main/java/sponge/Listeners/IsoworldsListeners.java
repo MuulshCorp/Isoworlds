@@ -288,7 +288,6 @@ public class IsoworldsListeners {
         if (p.getWorld().getName().equals("Isolonice")) {
             event.setCancelled(true);
         }
-
     }
 
 }

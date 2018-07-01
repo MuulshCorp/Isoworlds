@@ -1003,7 +1003,6 @@ public class IsoworldsUtils {
             // UUID_P
             check.setString(1, pPlayer.getUniqueId().toString());
             // Requête
-            IsoworldsUtils.cm("Debug 3: " + check.toString());
             check.executeUpdate();
             return true;
         } catch (Exception se) {
@@ -1025,8 +1024,6 @@ public class IsoworldsUtils {
             // Requête
             ResultSet rselect = check.executeQuery();
             while (rselect.next()) {
-                IsoworldsUtils.cm(rselect.toString());
-                IsoworldsUtils.cm("Debug playtime 1");
                 number = rselect.getInt(1);
                 return number;
             }

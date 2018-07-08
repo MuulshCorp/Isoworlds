@@ -560,6 +560,8 @@ public class IsoworldsUtils {
             // Number
             number = 0;
             insert.setInt(2, number);
+            // PlayTime
+            insert.setInt(3, number);
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();

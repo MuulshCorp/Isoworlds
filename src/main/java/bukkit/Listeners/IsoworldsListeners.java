@@ -109,33 +109,6 @@ public class IsoworldsListeners implements Listener {
     }
 
     @EventHandler
-    // Anti grief spawn
-    public void onDestructSpawn(BlockBreakEvent event) {
-        Player p = event.getPlayer();
-        if (p.hasPermission("isoworlds.bypass.spawn")) {
-            return;
-        }
-
-        // If break in chunk of spawn layer 60, remove drop
-        Location eventLocation = new Location(Bukkit.getServer().getWorld(event.getBlock().getWorld().getName()), 0, 60, 0);
-
-        // Don't break plateforme of nether/end spawn
-        if (event.getBlock().getWorld().getName().equals("DIM1") || event.getBlock().getWorld().getName().equals("DIM-1")) {
-            if (event.getBlock().getY() == 60 || event.getBlock().getY() == 61 & event.getBlock().getLocation().distance(eventLocation) <= 3.0) {
-                event.setCancelled(true);
-            }
-        }
-
-        // Don't drop on isoworld plateform break
-        if (event.getBlock().getY() == 60 & event.getBlock().getLocation().distance(eventLocation) <= 2.0) {
-            if (event.getBlock().getType().name().equals("DIRT")) {
-                event.setCancelled(true);
-                event.getBlock().setType(Material.AIR);
-            }
-        }
-    }
-
-    @EventHandler
     public void onPlayerChangeWorld(PlayerTeleportEvent event) {
         final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
         String check_p;

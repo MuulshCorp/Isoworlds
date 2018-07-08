@@ -84,7 +84,7 @@ public class IsoworldsLocations {
         }
 
         // Set sign
-        Bukkit.getServer().getWorld(worldname).getBlockAt(-2, 61, -2).setType(Material.TORCH);
+        //Bukkit.getServer().getWorld(worldname).getBlockAt(-2, 61, -2).setType(Material.TORCH);
     }
 
     private static Double getAxis(String axis) {

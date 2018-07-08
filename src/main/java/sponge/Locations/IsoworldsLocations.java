@@ -118,7 +118,7 @@ public class IsoworldsLocations {
         }
 
         // Set sign
-        Sponge.getServer().getWorld(worldname).get().setBlockType(-2, 61, -2, BlockTypes.TORCH, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+        //Sponge.getServer().getWorld(worldname).get().setBlockType(-2, 61, -2, BlockTypes.TORCH, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
 
     }
 

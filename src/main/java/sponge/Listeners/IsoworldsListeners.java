@@ -80,15 +80,6 @@ public class IsoworldsListeners {
             return;
         }
 
-        // Don't break plateforme of nether/end spawn
-        if (worldname.equals("DIM1") || worldname.equals("DIM-1")) {
-
-            if (event.getLocations().get(0).getBlockY() == 60 || event.getLocations().get(0).getBlockY() == 61) {
-                event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
-                event.setCancelled(true);
-            }
-        }
-
         // If break in chunk of spawn layer 60, remove drop
         if (event.getLocations().get(0).getBlockX() == IsoworldsLocations.getAxis(worldname).getX() & event.getLocations().get(0).getBlockZ() == IsoworldsLocations.getAxis(worldname).getZ()) {
             if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {

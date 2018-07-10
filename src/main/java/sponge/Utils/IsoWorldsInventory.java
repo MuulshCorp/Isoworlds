@@ -642,11 +642,11 @@ public class IsoWorldsInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Création")) {
-                        commandMenu(pPlayer, "iw c");
-                        closeMenu(pPlayer);
+                        IsoworldsUtils.cm("[TRACKING-IW] Clic menu CREATION: " + pPlayer.getName());
+                        closeOpenMenu(pPlayer, getMenuCreation(pPlayer));
                     } else if (menuName.contains("Refonte")) {
-                        commandMenu(pPlayer, "iw r");
-                        closeMenu(pPlayer);
+                        IsoworldsUtils.cm("[TRACKING-IW] Clic menu REFONTE: " + pPlayer.getName());
+                        closeOpenMenu(pPlayer, getMenuCreation(pPlayer));
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -659,7 +659,7 @@ public class IsoWorldsInventory {
         // Affiche la refonte si le monde est créé, sinon affiche la création
         if (IsoworldsUtils.iwExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
             List<Text> list1 = new ArrayList<Text>();
-            list1.add(Text.of("Réinitialiser votre IsoWorld."));
+            list1.add(Text.of("Réinitialiser votre IsoWorld (choix du patern)."));
             ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
                     .color(TextColors.GOLD).build())).quantity(1).build();
             menu.query(SlotPos.of(0, 0)).set(item1);
@@ -678,6 +678,71 @@ public class IsoWorldsInventory {
                 .color(TextColors.RED).build())).quantity(1).build();
 
         menu.query(SlotPos.of(8, 0)).set(item2);
+
+        return menu;
+    }
+
+    // CREATION
+    public static Inventory getMenuCreation(Player pPlayer) {
+
+        Inventory menu = Inventory.builder()
+                .of(InventoryArchetypes.CHEST)
+                .listener(ClickInventoryEvent.class, clickInventoryEvent -> {
+                    // Code event
+                    String menuName = String.valueOf(clickInventoryEvent.getTransactions()
+                            .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
+
+                    clickInventoryEvent.setCancelled(true);
+                    if (menuName.contains("Normal")) {
+                        Sponge.getCommandManager().process(pPlayer, "iw c n");
+                    } else if (menuName.contains("Void")) {
+                        Sponge.getCommandManager().process(pPlayer, "iw c v");
+                    } else if (menuName.contains("Ocean")) {
+                        Sponge.getCommandManager().process(pPlayer, "iw c o");
+                    } else if (menuName.contains("Flat")) {
+                        Sponge.getCommandManager().process(pPlayer, "iw c f");
+                    } else if (menuName.contains("Menu principal")) {
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
+                    }
+
+                })
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Météo").color(TextColors.BLUE).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 3))
+                .build(instance);
+
+        List<Text> list1 = new ArrayList<Text>();
+        list1.add(Text.of("Génération terrain (Classique"));
+
+        List<Text> list2 = new ArrayList<Text>();
+        list2.add(Text.of("Génération vide (Totalement vide)"));
+
+        List<Text> list3 = new ArrayList<Text>();
+        list3.add(Text.of("Génération ocean (Plat avec uniquement de l'eau)"));
+
+        List<Text> list4 = new ArrayList<Text>();
+        list4.add(Text.of("Génération plate (Plat avec uniquement de la dirt)"));
+
+        List<Text> list5 = new ArrayList<Text>();
+        list5.add(Text.of("Retour au menu principal"));
+
+
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.YELLOW).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Normal]")
+                .color(TextColors.YELLOW).build())).quantity(1).build();
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.YELLOW).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Void")
+                .color(TextColors.YELLOW).build())).quantity(1).build();
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.YELLOW).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Ocean")
+                .color(TextColors.YELLOW).build())).quantity(1).build();
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.LIGHT_BLUE).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Flat")
+                .color(TextColors.BLUE).build())).quantity(1).build();
+
+        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+                .color(TextColors.RED).build())).quantity(1).build();
+
+        menu.query(SlotPos.of(0, 0)).set(item1);
+        menu.query(SlotPos.of(1, 0)).set(item2);
+        menu.query(SlotPos.of(2, 0)).set(item3);
+        menu.query(SlotPos.of(0, 1)).set(item4);
+        menu.query(SlotPos.of(1, 1)).set(item5);
 
         return menu;
     }

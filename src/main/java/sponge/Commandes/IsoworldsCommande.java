@@ -38,7 +38,7 @@ public class IsoworldsCommande implements CommandExecutor {
         return CommandSpec.builder()
                 .description(Text.of("Commande IsoWorlds, permet de créer/refondre/lister"))
                 .permission("isoworlds.default")
-                .child(CreationCommande.getCommand(), "creation", "créer", "creer", "create", "c")
+                .child(new CreationCommande(), "creation", "créer", "creer", "create", "c")
                 .child(ListeCommande.getCommand(), "lister", "liste", "list", "l")
                 .child(RefonteCommande.getCommand(), "refonte", "refondre", "r")
                 .child(MaisonCommande.getCommand(), "maison", "home", "h")

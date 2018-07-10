@@ -117,7 +117,7 @@ public class RefonteCommande implements CommandExecutor {
 
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY);
 
-        Sponge.getCommandManager().process(pPlayer, "iw creation");
+        Sponge.getCommandManager().process(pPlayer, "iw");
 
         return CommandResult.success();
     }

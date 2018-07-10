@@ -1,6 +1,10 @@
 package sponge.Commandes.SousCommandes;
 
 import common.Msg;
+import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.text.action.TextActions;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 import sponge.IsoworldsSponge;
 import sponge.Locations.IsoworldsLocations;
 import sponge.Utils.IsoworldsUtils;
@@ -10,14 +14,14 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
+import javax.annotation.Nullable;
 import java.io.*;
+import java.util.List;
+import java.util.Optional;
 
 import static sponge.Utils.IsoworldsUtils.setWorldProperties;
 
@@ -25,11 +29,11 @@ import static sponge.Utils.IsoworldsUtils.setWorldProperties;
  * Created by Edwin on 05/10/2017.
  */
 
-public class CreationCommande implements CommandExecutor {
+public class CreationCommande implements CommandCallable {
     private final IsoworldsSponge plugin = IsoworldsSponge.instance;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
+    public CommandResult process(CommandSource source, String args) throws CommandException {
 
         // Variables
         String fullpath = "";
@@ -39,6 +43,8 @@ public class CreationCommande implements CommandExecutor {
         fullpath = (ManageFiles.getPath() + IsoworldsUtils.PlayerToUUID(pPlayer) + "-IsoWorld");
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         IsoworldsUtils.cm("IsoWorld name: " + worldname);
+        String[] arg = args.split(" ");
+        int size = arg.length;
 
         // SELECT WORLD
         if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
@@ -52,8 +58,44 @@ public class CreationCommande implements CommandExecutor {
             return CommandResult.success();
         }
 
-        File sourceFile = new File(ManageFiles.getPath() + "PATERN");
+        // Vérifie le nb argument
+        if (size < 2) {
+            pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("IsoWorlds ").color(TextColors.AQUA)))
+                    .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
+                    .build()));
+
+            pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
+
+            // Soleil
+            Text isoworld = Text.of(Text.builder("Sijania vous propose 4 types de IsoWorld:").color(TextColors.AQUA).build());
+            pPlayer.sendMessage(isoworld);
+            Text iw = Text.of(Text.builder("- FLAT/OCEAN/NORMAL/VOID: ").color(TextColors.GOLD)
+                    .append(Text.of(Text.builder("/iw creation [TYPE]").color(TextColors.AQUA))).build());
+            pPlayer.sendMessage(iw);
+            return CommandResult.success();
+        }
+
+        File sourceFile;
+        switch (arg[1]) {
+            case ("n"):
+                sourceFile = new File(ManageFiles.getPath() + "PATERN-N/");
+                break;
+            case ("v"):
+                sourceFile = new File(ManageFiles.getPath() + "PATERN-V/");
+                break;
+            case ("o"):
+                sourceFile = new File(ManageFiles.getPath() + "PATERN-O/");
+                break;
+            case ("f"):
+                sourceFile = new File(ManageFiles.getPath() + "PATERN-F/");
+                break;
+            default:
+                return CommandResult.success();
+        }
+
         File destFile = new File(fullpath);
+
 
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
@@ -85,12 +127,28 @@ public class CreationCommande implements CommandExecutor {
         return CommandResult.success();
     }
 
-    // Constructeurs
-    public static CommandSpec getCommand() {
-        return CommandSpec.builder()
-                .description(Text.of("Commandes de création des iWorlds"))
-                .permission("isoworlds.creation")
-                .executor(new CreationCommande())
-                .build();
+    @Override
+    public List<String> getSuggestions(CommandSource source, String arguments, @Nullable Location<World> targetPosition) throws CommandException {
+        return null;
+    }
+
+    @Override
+    public boolean testPermission(CommandSource source) {
+        return false;
+    }
+
+    @Override
+    public Optional<Text> getShortDescription(CommandSource source) {
+        return null;
+    }
+
+    @Override
+    public Optional<Text> getHelp(CommandSource source) {
+        return null;
+    }
+
+    @Override
+    public Text getUsage(CommandSource source) {
+        return null;
     }
 }

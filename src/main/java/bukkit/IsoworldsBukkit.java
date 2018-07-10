@@ -184,26 +184,22 @@ public final class IsoworldsBukkit extends JavaPlugin {
                                     //Unload world
                                     Bukkit.getServer().unloadWorld(world, true);
 
-                                    // Ajout d'un délais pour éviter les crash si un autre mod essayait d'accéder au monde
-                                    Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> Bukkit.getScheduler().runTaskAsynchronously(IsoworldsBukkit.this.instance, () -> {
+                                    // On vérifie si le monde n'a pas été rechargé entre temps
+                                    if (Bukkit.getServer().getWorld(world.getName()) != null) {
+                                        worlds.remove(world.getName());
+                                        IsoworldsLogger.warning(world.getName() + " de nouveau actif après 1 seconde de déchargement, supprimé de l'analyse");
+                                        return;
+                                    }
 
-                                        // On vérifie si le monde n'a pas été rechargé entre temps
-                                        if (Bukkit.getServer().getWorld(world.getName()) != null) {
-                                            worlds.remove(world.getName());
-                                            IsoworldsLogger.warning(world.getName() + " de nouveau actif après 1 seconde de déchargement, supprimé de l'analyse");
-                                            return;
-                                        }
+                                    //Set pushed status bdd
+                                    IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
 
-                                        //Set pushed status bdd
-                                        IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
+                                    // Tag du dossier en push, delayed et suppression uid.session
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/uid.dat"));
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/session.lock"));
+                                    ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
 
-                                        // Tag du dossier en push, delayed et suppression uid.session
-                                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/uid.dat"));
-                                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/session.lock"));
-                                        ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
-
-                                        IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
-                                    }), 20);
+                                    IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
 
                                 }
                             } else {

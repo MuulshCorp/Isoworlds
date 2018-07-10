@@ -31,6 +31,7 @@ public class CreationCommande {
         String worldname = "";
         Player pPlayer = (Player) sender;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Integer len = args.length;
 
         // SELECT WORLD
         if (IsoworldsUtils.isPresent(pPlayer, Msg.keys.SQL, false)) {
@@ -47,8 +48,35 @@ public class CreationCommande {
             return;
         }
 
+        // Vérifie le nb argument
+        if (len < 2) {
+            pPlayer.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "IsoWorlds " + ChatColor.GOLD + "] ---------------------");
+            pPlayer.sendMessage(" ");
+            pPlayer.sendMessage(ChatColor.AQUA + "Sijania vous propose 4 types de IsoWorld:");
+            pPlayer.sendMessage(ChatColor.GOLD + "- FLAT/OCEAN/NORMAL/VOID: " + ChatColor.AQUA + "/iw creation " + ChatColor.GOLD + "[" + ChatColor.GREEN + "[TYPE]");
+            pPlayer.sendMessage(" ");
+            return;
+        }
+
         File deleteFile = new File(fullpath + "region");
-        File sourceFile = new File(ManageFiles.getPath() + "PATERN/");
+        File sourceFile;
+        switch (args[1]) {
+            case ("n"):
+                sourceFile = new File(ManageFiles.getPath() + "PATERN-N/");
+                break;
+            case ("v"):
+                sourceFile = new File(ManageFiles.getPath() + "PATERN-V/");
+                break;
+            case ("o"):
+                sourceFile = new File(ManageFiles.getPath() + "PATERN-O/");
+                break;
+            case ("f"):
+                sourceFile = new File(ManageFiles.getPath() + "PATERN-F/");
+                break;
+            default:
+                return;
+        }
+
         File destFile = new File(fullpath);
 
         try {

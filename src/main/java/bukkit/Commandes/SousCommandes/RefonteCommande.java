@@ -103,6 +103,6 @@ public class RefonteCommande {
         CommandSender newSender = pPlayer.getPlayer();
         //Start the lock for this command
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY);
-        CreationCommande.Creation(newSender, args);
+        pPlayer.performCommand("iw");
     }
 }

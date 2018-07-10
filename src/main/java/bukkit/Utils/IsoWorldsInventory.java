@@ -539,8 +539,8 @@ public class IsoWorldsInventory implements Listener {
         String[] list3 = new String[]{"Génération ocean (Plat avec uniquement de l'eau)"};
         String[] list4 = new String[]{"Génération plate (Plat avec uniquement de la dirt)"};
 
-        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.BROWN.getData()), ChatColor.GREEN + "Normal", list1);
-        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.WHITE.getData()), ChatColor.GREEN + "Void", list2);
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.WHITE.getData()), ChatColor.GREEN + "Normal", list1);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GREEN + "Void", list2);
         menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.BLUE.getData()), ChatColor.GREEN + "Ocean", list3);
         menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + "Flat", list4);
 

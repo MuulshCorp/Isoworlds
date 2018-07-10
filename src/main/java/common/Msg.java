@@ -36,7 +36,7 @@ public class Msg {
         String SUCCES_DECHARGEMENT
                 = "Sijania > Votre IsoWorld s'endort...";
         String SUCCES_REFONTE
-                = "Sijania > Mon pouvoir se vide... Mais, votre IsoWorld renaît de ses cendres";
+                = "Sijania > Mon pouvoir se vide... Mais, votre IsoWorld a été dissipé !";
         String SUCCES_RETIRER_CONFIANCE
                 = "Sijania > Ce joueur ressent une brûlure... La marque de confiance vient de lui être retirée !";
         String SUCCES_CREATION_1

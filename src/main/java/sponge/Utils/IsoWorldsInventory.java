@@ -646,7 +646,8 @@ public class IsoWorldsInventory {
                         closeOpenMenu(pPlayer, getMenuCreation(pPlayer));
                     } else if (menuName.contains("Refonte")) {
                         IsoworldsUtils.cm("[TRACKING-IW] Clic menu REFONTE: " + pPlayer.getName());
-                        closeOpenMenu(pPlayer, getMenuCreation(pPlayer));
+                        commandMenu(pPlayer, "iw r");
+                        closeMenu(pPlayer);
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -693,21 +694,22 @@ public class IsoWorldsInventory {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
 
                     clickInventoryEvent.setCancelled(true);
+
                     if (menuName.contains("Normal")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw c n");
+                        commandMenu(pPlayer, "iw c n");
                     } else if (menuName.contains("Void")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw c v");
+                        commandMenu(pPlayer, "iw c v");
                     } else if (menuName.contains("Ocean")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw c o");
+                        commandMenu(pPlayer, "iw c o");
                     } else if (menuName.contains("Flat")) {
-                        Sponge.getCommandManager().process(pPlayer, "iw c f");
+                        commandMenu(pPlayer, "iw c f");
                     } else if (menuName.contains("Menu principal")) {
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
 
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Météo").color(TextColors.BLUE).build())))
-                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 3))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Choix de la carte").color(TextColors.BLUE).build())))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 2))
                 .build(instance);
 
         List<Text> list1 = new ArrayList<Text>();
@@ -726,14 +728,14 @@ public class IsoWorldsInventory {
         list5.add(Text.of("Retour au menu principal"));
 
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.YELLOW).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Normal]")
-                .color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.YELLOW).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Void")
-                .color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.YELLOW).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Ocean")
-                .color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.LIGHT_BLUE).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Flat")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.WHITE).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Normal]")
+                .color(TextColors.WHITE).build())).quantity(1).build();
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Void")
+                .color(TextColors.RED).build())).quantity(1).build();
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.BLUE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Ocean")
                 .color(TextColors.BLUE).build())).quantity(1).build();
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Flat")
+                .color(TextColors.GREEN).build())).quantity(1).build();
 
         ItemStack item5 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
                 .color(TextColors.RED).build())).quantity(1).build();
@@ -741,8 +743,8 @@ public class IsoWorldsInventory {
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);
         menu.query(SlotPos.of(2, 0)).set(item3);
-        menu.query(SlotPos.of(0, 1)).set(item4);
-        menu.query(SlotPos.of(1, 1)).set(item5);
+        menu.query(SlotPos.of(3, 0)).set(item4);
+        menu.query(SlotPos.of(8, 1)).set(item5);
 
         return menu;
     }

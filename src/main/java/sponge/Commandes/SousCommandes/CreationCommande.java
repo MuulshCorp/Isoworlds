@@ -59,7 +59,7 @@ public class CreationCommande implements CommandCallable {
         }
 
         // Vérifie le nb argument
-        if (size < 2) {
+        if (size < 1) {
             pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("IsoWorlds ").color(TextColors.AQUA)))
                     .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
@@ -76,19 +76,25 @@ public class CreationCommande implements CommandCallable {
             return CommandResult.success();
         }
 
+        IsoworldsUtils.cm("DEBUGGGG: " + arg[0]);
+
         File sourceFile;
-        switch (arg[1]) {
+        switch (arg[0]) {
             case ("n"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN-N/");
+                IsoworldsUtils.cm("[TRACKING-IW] PATERN NORMAL: " + pPlayer.getName());
                 break;
             case ("v"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN-V/");
+                IsoworldsUtils.cm("[TRACKING-IW] PATERN VOID: " + pPlayer.getName());
                 break;
             case ("o"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN-O/");
+                IsoworldsUtils.cm("[TRACKING-IW] PATERN OCEAN: " + pPlayer.getName());
                 break;
             case ("f"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN-F/");
+                IsoworldsUtils.cm("[TRACKING-IW] PATERN FLAT: " + pPlayer.getName());
                 break;
             default:
                 return CommandResult.success();

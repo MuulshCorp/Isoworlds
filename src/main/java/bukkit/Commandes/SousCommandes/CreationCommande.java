@@ -63,19 +63,19 @@ public class CreationCommande {
         File sourceFile;
         switch (args[1]) {
             case ("n"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN-N/");
+                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
                 IsoworldsUtils.cm("[TRACKING-IW] PATERN NORMAL: " + pPlayer.getName());
                 break;
             case ("v"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN-V/");
+                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
                 IsoworldsUtils.cm("[TRACKING-IW] PATERN VOID: " + pPlayer.getName());
                 break;
             case ("o"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN-O/");
+                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
                 IsoworldsUtils.cm("[TRACKING-IW] PATERN OCEAN: " + pPlayer.getName());
                 break;
             case ("f"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN-F/");
+                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
                 IsoworldsUtils.cm("[TRACKING-IW] PATERN FLAT: " + pPlayer.getName());
                 break;
             default:

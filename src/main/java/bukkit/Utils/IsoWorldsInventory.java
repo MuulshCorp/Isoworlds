@@ -509,7 +509,7 @@ public class IsoWorldsInventory implements Listener {
     // MENU CREATION
     @SuppressWarnings("deprecation")
     public static IsoWorldsInventory getMenuCreation(Player pPlayer) {
-        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Météo", 2, new onClick() {
+        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Choix de la carte", 2, new onClick() {
             @Override
             public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
@@ -518,13 +518,13 @@ public class IsoWorldsInventory implements Listener {
                     p.performCommand("iw c n");
                     p.closeInventory();
                 } else if (menuName.contains("Void")) {
-                    p.performCommand("iw c v");
+                    p.performCommand("iw c n");
                     p.closeInventory();
                 } else if (menuName.contains("Ocean")) {
-                    p.performCommand("iw c o");
+                    p.performCommand("iw c n");
                     p.closeInventory();
                 } else if (menuName.contains("Flat")) {
-                    p.performCommand("iw c f");
+                    p.performCommand("iw c n");
                     p.closeInventory();
                 } else if (menuName.contains("Menu principal")) {
                     MenuPrincipal(pPlayer).open(pPlayer);
@@ -535,14 +535,14 @@ public class IsoWorldsInventory implements Listener {
         });
 
         String[] list1 = new String[]{"Génération terrain (Classique"};
-        String[] list2 = new String[]{"Génération vide (Totalement vide)"};
-        String[] list3 = new String[]{"Génération ocean (Plat avec uniquement de l'eau)"};
-        String[] list4 = new String[]{"Génération plate (Plat avec uniquement de la dirt)"};
+//        String[] list2 = new String[]{"Génération vide (Totalement vide)"};
+//        String[] list3 = new String[]{"Génération ocean (Plat avec uniquement de l'eau)"};
+//        String[] list4 = new String[]{"Génération plate (Plat avec uniquement de la dirt)"};
 
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.WHITE.getData()), ChatColor.GREEN + "Normal", list1);
-        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GREEN + "Void", list2);
-        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.BLUE.getData()), ChatColor.GREEN + "Ocean", list3);
-        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + "Flat", list4);
+//        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GREEN + "Void", list2);
+//        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.BLUE.getData()), ChatColor.GREEN + "Ocean", list3);
+//        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + "Flat", list4);
 
         menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");
 

@@ -485,6 +485,7 @@ public class IsoWorldsInventory implements Listener {
                 } else if (menuName.contains("Refonte")) {
                     IsoworldsUtils.cm("[TRACKING-IW] Clic menu REFONTE: " + p.getName());
                     p.performCommand("iw r");
+                    p.closeInventory();
                 } else if (menuName.contains("Menu principal")) {
                     MenuPrincipal(pPlayer).open(pPlayer);
                 }

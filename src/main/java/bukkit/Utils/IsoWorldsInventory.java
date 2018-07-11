@@ -484,7 +484,7 @@ public class IsoWorldsInventory implements Listener {
                     getMenuCreation(pPlayer).open(pPlayer);
                 } else if (menuName.contains("Refonte")) {
                     IsoworldsUtils.cm("[TRACKING-IW] Clic menu REFONTE: " + p.getName());
-                    getMenuCreation(pPlayer).open(pPlayer);
+                    p.performCommand("iw r");
                 } else if (menuName.contains("Menu principal")) {
                     MenuPrincipal(pPlayer).open(pPlayer);
                 }
@@ -509,7 +509,7 @@ public class IsoWorldsInventory implements Listener {
     // MENU CREATION
     @SuppressWarnings("deprecation")
     public static IsoWorldsInventory getMenuCreation(Player pPlayer) {
-        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Météo", 3, new onClick() {
+        IsoWorldsInventory menu = new IsoWorldsInventory(ChatColor.BLUE + "IsoWorlds: Météo", 2, new onClick() {
             @Override
             public boolean click(Player p, IsoWorldsInventory menu, Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());

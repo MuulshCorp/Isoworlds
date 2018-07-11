@@ -176,30 +176,26 @@ public final class IsoworldsBukkit extends JavaPlugin {
                                 if (check.exists()) {
                                     IsoworldsUtils.cm("debug 2");
 
+                                    // World name
+                                    String wname = world.getName();
+
                                     //Kick all players
                                     for (Player p : world.getPlayers()) {
                                         IsoworldsLocations.teleport(p, "Isolonice");
                                     }
 
                                     //Unload world
-                                    Bukkit.getServer().unloadWorld(world, true);
-
-                                    // On vérifie si le monde n'a pas été rechargé entre temps
-                                    if (Bukkit.getServer().getWorld(world.getName()) != null) {
-                                        worlds.remove(world.getName());
-                                        IsoworldsLogger.warning(world.getName() + " de nouveau actif après 1 seconde de déchargement, supprimé de l'analyse");
-                                        return;
-                                    }
+                                    Bukkit.getServer().unloadWorld(wname, true);
 
                                     //Set pushed status bdd
-                                    IsoworldsUtils.setStatus(world.getName(), 1, Msg.keys.SQL);
+                                    IsoworldsUtils.setStatus(wname, 1, Msg.keys.SQL);
 
                                     // Tag du dossier en push, delayed et suppression uid.session
-                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/uid.dat"));
-                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/session.lock"));
-                                    ManageFiles.rename(ManageFiles.getPath() + world.getName(), "@PUSH");
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + wname + "/uid.dat"));
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + wname + "/session.lock"));
+                                    ManageFiles.rename(ManageFiles.getPath() + wname, "@PUSH");
 
-                                    IsoworldsLogger.info("- " + world.getName() + " : PUSH avec succès");
+                                    IsoworldsLogger.info("- " + wname + " : PUSH avec succès");
 
                                 }
                             } else {

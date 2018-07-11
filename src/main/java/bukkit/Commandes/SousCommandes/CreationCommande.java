@@ -58,20 +58,25 @@ public class CreationCommande {
             return;
         }
 
+        IsoworldsUtils.cm("[TRACKING]: " + args[1]);
         File deleteFile = new File(fullpath + "region");
         File sourceFile;
         switch (args[1]) {
             case ("n"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN-N/");
+                IsoworldsUtils.cm("[TRACKING-IW] PATERN NORMAL: " + pPlayer.getName());
                 break;
             case ("v"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN-V/");
+                IsoworldsUtils.cm("[TRACKING-IW] PATERN VOID: " + pPlayer.getName());
                 break;
             case ("o"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN-O/");
+                IsoworldsUtils.cm("[TRACKING-IW] PATERN OCEAN: " + pPlayer.getName());
                 break;
             case ("f"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN-F/");
+                IsoworldsUtils.cm("[TRACKING-IW] PATERN FLAT: " + pPlayer.getName());
                 break;
             default:
                 return;

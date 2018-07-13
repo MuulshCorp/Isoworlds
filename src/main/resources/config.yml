@@ -1,7 +1,7 @@
 id: ""
 sql:
-  serveur: "176.31.106.17"
+  serveur: ""
   port: 3306
-  nom-bdd: "isoworlds"
-  utilisateur: "isoworlds"
-  mdp: "uaethrjsBhxlg7iG"
+  nom-bdd: ""
+  utilisateur: ""
+  mdp: ""

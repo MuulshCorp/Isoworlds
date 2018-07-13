@@ -2,17 +2,17 @@ name: Isoworlds
 version: @version@
 main: bukkit.IsoworldsBukkit
 authors: [Sythiel]
-description: Manager de mondes personnels
+description: Large scale personal world manager
 load: STARTUP
 website: https://isolonice.fr
 
 commands:
     iw:
-        description: Commande de base des isoworlds
+        description: Base command
         usage: /<iw> [creation][liste][maison][confiance][on][off][teleport]
         aliases: [isoworlds, isoworld]
 
 permissions:
     isoworlds.default:
-        description: Autoriser une utilisation des iworlds
+        description: Allow isoworlds usage
         defaut: true

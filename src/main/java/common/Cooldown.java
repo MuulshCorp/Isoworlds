@@ -1,11 +1,36 @@
+/*
+ * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ *
+ * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
+ * Copyright (c) contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package common;
 
-import bukkit.IsoworldsBukkit;
+import bukkit.MainBukkit;
 import org.bukkit.ChatColor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.IsoworldsSponge;
+import sponge.MainSponge;
+import sponge.util.Utils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +64,7 @@ public class Cooldown implements CooldownType {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.UNAVAILABLE_COMMAND + timerMessage).color(TextColors.AQUA))).build()));
 
-            IsoworldsSponge.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            MainSponge.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
 
             return false;
         }
@@ -55,7 +80,7 @@ public class Cooldown implements CooldownType {
         if (cooldown != null) {
             String timerMessage = this.getCooldownTimer(cooldown);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.UNAVAILABLE_COMMAND + timerMessage);
-            IsoworldsBukkit.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
+            MainBukkit.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
 
             return false;
         }
@@ -68,7 +93,7 @@ public class Cooldown implements CooldownType {
      * Sponge method
      */
     public Timestamp getPlayerLastCooldown(Player pPlayer, String type) {
-        String uuid_p = sponge.Utils.IsoworldsUtils.PlayerToUUID(pPlayer).toString();
+        String uuid_p = Utils.PlayerToUUID(pPlayer).toString();
 
         return getPlayerLastCooldown(uuid_p, type);
     }
@@ -120,7 +145,7 @@ public class Cooldown implements CooldownType {
      * Sponge method
      */
     public void addPlayerCooldown(Player pPlayer, String type, int delay) {
-        String uuid_p = sponge.Utils.IsoworldsUtils.PlayerToUUID(pPlayer).toString();
+        String uuid_p = Utils.PlayerToUUID(pPlayer).toString();
         addPlayerCooldown(uuid_p, type, delay);
     }
 

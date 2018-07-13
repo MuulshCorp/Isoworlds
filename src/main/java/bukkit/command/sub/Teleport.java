@@ -22,51 +22,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package common;
+package bukkit.command.sub;
 
-public interface CooldownType {
-    String BIOME = "biome";
-    int BIOME_DELAY = 10;
+import bukkit.MainBukkit;
+import bukkit.location.Locations;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-    String CONFIANCE = "confiance";
-    int CONFIANCE_DELAY = 10;
+public class Teleport {
 
-    String CREATION = "creation";
-    int CREATION_DELAY = 86400;
+    public static MainBukkit instance;
 
-    String LISTE = "liste";
-    int LISTE_DELAY = 86400;
+    @SuppressWarnings("deprecation")
+    public static void Teleport(CommandSender sender, String[] args) {
 
-    String MAISON = "maison";
-    int MAISON_DELAY = 10;
+        instance = MainBukkit.getInstance();
+        Player pPlayer = (Player) sender;
 
-    String METEO = "meteo";
-    int METEO_DELAY = 10;
+        if (args.length < 1 || args.length < 2) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Veuillez indiquer le joueur cible et le monde cible.");
+            return;
+        }
 
-    String OFF = "off";
-    int OFF_DELAY = 86400;
-
-    String ON = "on";
-    int ON_DELAY = 86400;
-
-    String REFONTE = "refonte";
-    int REFONTE_DELAY = 86400;
-
-    String RETIRERCONFIANCE = "retirerconfiance";
-    int RETIRERCONFIANCE_DELAY = 10;
-
-    String AJOUTERCONFIANCE = "ajouterconfiance";
-    int AJOUTERCONFIANCE_DELAY = 10;
-
-    String ACCESCONFIANCE = "accesconfiance";
-    int ACCESCONFIANCE_DELAY = 10;
-
-    String TELEPORT = "teleport";
-    int TELEPORT_DELAY = 86400;
-
-    String WARP = "warp";
-    int WARP_DELAY = 10;
-
-    String TIME = "time";
-    int TIME_DELAY = 10;
+        if (!Bukkit.getServer().getPlayer(args[0]).isOnline()) {
+            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Le joueur indiqué n'est pas connecté, ou vous avez mal entré son pseudonyme.");
+            return;
+        } else {
+            Locations.teleport(Bukkit.getServer().getPlayer(args[0]), args[1]);
+        }
+    }
 }

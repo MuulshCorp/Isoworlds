@@ -8,8 +8,6 @@
     <version>1.9.3.3-BETA</version>
     <packaging>jar</packaging>
 
-    <name>isoworlds</name>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -48,7 +46,6 @@
     </dependencies>
 
     <build>
-        <finalName>test</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

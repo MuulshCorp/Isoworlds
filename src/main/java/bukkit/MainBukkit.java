@@ -150,7 +150,7 @@ public final class MainBukkit extends JavaPlugin {
             }
         }), 0, 1200);
 
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(MainBukkit.this.instance, () -> {
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTask(MainBukkit.this.instance, () -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             Logger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
             if (worlds.isEmpty()) {
@@ -200,33 +200,27 @@ public final class MainBukkit extends JavaPlugin {
                                     // Save before unload
                                     Bukkit.getServer().getWorld(wname).save();
 
-                                    // Delaying unload
-                                    Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> Bukkit.getScheduler().runTaskAsynchronously(MainBukkit.this.instance, () -> {
+                                    //Kick all players
+                                    for (Player p : world.getPlayers()) {
+                                        Locations.teleport(p, "Isolonice");
+                                    }
 
-                                        //Kick all players
-                                        for (Player p : world.getPlayers()) {
-                                            Locations.teleport(p, "Isolonice");
-                                        }
+                                    //Unload world
+                                    if (!Bukkit.getServer().unloadWorld(wname, false)) {
+                                        Utils.cm("Unloading of world failed");
+                                    }
 
-                                        //Unload world
-                                        if (!Bukkit.getServer().unloadWorld(wname, false)) {
-                                            Utils.cm("Unloading of world failed");
-                                        }
+                                    //Set pushed status bdd
+                                    Utils.setStatus(wname, 1, Msg.keys.SQL);
 
-                                        //Set pushed status bdd
-                                        Utils.setStatus(wname, 1, Msg.keys.SQL);
-
-                                        // Tag du dossier en push, delayed et suppression uid.session
-                                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + wname + "/uid.dat"));
-                                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + wname + "/session.lock"));
+                                    // Tag du dossier en push, delayed et suppression uid.session
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + wname + "/uid.dat"));
+                                    ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + wname + "/session.lock"));
 
 
-                                        ManageFiles.rename(ManageFiles.getPath() + wname, "@PUSH");
+                                    ManageFiles.rename(ManageFiles.getPath() + wname, "@PUSH");
 
-                                        Logger.info("- " + wname + " : PUSH avec succès");
-
-                                    }), 20);
-
+                                    Logger.info("- " + wname + " : PUSH avec succès");
                                 }
                             } else {
                                 // Sinon on continue la boucle

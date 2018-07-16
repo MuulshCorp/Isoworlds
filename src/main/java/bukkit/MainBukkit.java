@@ -27,9 +27,10 @@ package bukkit;
 import bukkit.command.Commands;
 import bukkit.listener.Listeners;
 import bukkit.location.Locations;
-import bukkit.util.DimsAlt;
-import bukkit.util.Logger;
-import bukkit.util.Utils;
+import bukkit.util.action.DimAltAction;
+import bukkit.util.action.PlayTimeAction;
+import bukkit.util.action.StorageAction;
+import bukkit.util.console.Logger;
 import common.*;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -122,11 +123,10 @@ public final class MainBukkit extends JavaPlugin {
         Logger.info("IsoWorlds connecté avec succès à la base de données !");
 
         // Set global status 1
-        Utils.setGlobalStatus(Msg.keys.SQL);
+        StorageAction.setGlobalStatus(Msg.keys.SQL);
 
         // Gen dim ALT
-
-        DimsAlt.generateDim();
+        DimAltAction.generateDim();
 
     }
 
@@ -142,11 +142,11 @@ public final class MainBukkit extends JavaPlugin {
     }
 
     private void everyMinutes() {
-        int x = 15;
+        int x = getConfig().getInt("max-inactive-time");
 
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(MainBukkit.this.instance, () -> {
             for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                Utils.updatePlayTime(p, Msg.keys.SQL);
+                PlayTimeAction.updatePlayTime(p, Msg.keys.SQL);
             }
         }), 0, 1200);
 
@@ -187,12 +187,12 @@ public final class MainBukkit extends JavaPlugin {
                             worlds.remove(world.getName());
 
                             // Vérification du statut du monde, si il est push ou non
-                            if (!Utils.getStatus(world.getName(), Msg.keys.SQL)) {
-                                Utils.cm("debug 1");
+                            if (!StorageAction.getStatus(world.getName(), Msg.keys.SQL)) {
+                                Logger.info("debug 1");
                                 File check = new File(ManageFiles.getPath() + world.getName());
                                 // Si le dossier existe alors on met le statut à 1 (push)
                                 if (check.exists()) {
-                                    Utils.cm("debug 2");
+                                    Logger.info("debug 2");
 
                                     // World name
                                     String wname = world.getName();
@@ -207,17 +207,15 @@ public final class MainBukkit extends JavaPlugin {
 
                                     //Unload world
                                     if (!Bukkit.getServer().unloadWorld(wname, false)) {
-                                        Utils.cm("Unloading of world failed");
+                                        Logger.info("Unloading of world failed");
                                     }
 
                                     //Set pushed status bdd
-                                    Utils.setStatus(wname, 1, Msg.keys.SQL);
+                                    StorageAction.setStatus(wname, 1, Msg.keys.SQL);
 
                                     // Tag du dossier en push, delayed et suppression uid.session
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + wname + "/uid.dat"));
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + wname + "/session.lock"));
-
-
                                     ManageFiles.rename(ManageFiles.getPath() + wname, "@PUSH");
 
                                     Logger.info("- " + wname + " : PUSH avec succès");
@@ -263,7 +261,6 @@ public final class MainBukkit extends JavaPlugin {
             }
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 }

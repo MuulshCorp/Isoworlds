@@ -22,9 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package bukkit.util;
+package bukkit.util.action;
 
 import bukkit.MainBukkit;
+import bukkit.util.console.Command;
+import bukkit.util.console.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -32,7 +34,7 @@ import org.bukkit.block.Block;
 
 import java.util.Arrays;
 
-public class DimsAlt {
+public class DimAltAction {
 
     private static final MainBukkit plugin = MainBukkit.instance;
 
@@ -73,7 +75,7 @@ public class DimsAlt {
         World world = Bukkit.getServer().getWorld(worldname);
 
         Logger.severe("Size: " + 3000 + " " + 3000);
-        Utils.cmd("wb " + worldname + " set " + 3000 + " " + 3000 + " 0 0");
+        Command.sendCmd("wb " + worldname + " set " + 3000 + " " + 3000 + " 0 0");
 
         if (world != null) {
             Block yLoc = world.getHighestBlockAt(0, 0);
@@ -82,6 +84,6 @@ public class DimsAlt {
             world.setGameRuleValue("MobGriefing", "false");
             world.setAutoSave(true);
         }
-        Utils.cm("WorldProperties à jour");
+        Logger.info("WorldProperties à jour");
     }
 }

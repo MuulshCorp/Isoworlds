@@ -25,7 +25,9 @@
 package bukkit.command.sub;
 
 import bukkit.MainBukkit;
-import bukkit.util.Utils;
+import bukkit.util.action.ChargeAction;
+import bukkit.util.action.IsoWorldsAction;
+import bukkit.util.console.Logger;
 import common.Cooldown;
 import common.Msg;
 import org.bukkit.ChatColor;
@@ -42,7 +44,6 @@ public class Biome {
         // Variables
         instance = MainBukkit.getInstance();
         Player pPlayer = (Player) sender;
-        Utils.cm("check");
         Integer len = args.length;
         org.bukkit.block.Biome biome;
 
@@ -52,13 +53,13 @@ public class Biome {
         }
 
         // If got charges
-        int charges = Utils.checkCharge(pPlayer, Msg.keys.SQL);
+        int charges = ChargeAction.checkCharge(pPlayer, Msg.keys.SQL);
         if (charges == -1) {
             return;
         }
 
         // SELECT WORLD
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
@@ -67,11 +68,6 @@ public class Biome {
         if (len < 1) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vous requiert un nom de biome dans votre commande.");
             return;
-        }
-        // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
-        // si le biome indiqué existe et on l'applique
-        for (String s : args) {
-            Utils.cm(s);
         }
 
         switch (args[1]) {
@@ -102,9 +98,12 @@ public class Biome {
                 return;
         }
 
+        // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
+        // si le biome indiqué existe et on l'applique
+
         Chunk chunk = pPlayer.getLocation().getChunk();
-        Utils.cm("Biomes" + org.bukkit.block.Biome.values().toString());
-        Utils.cm("COORDINATES: X: " + chunk.getX() + " Z: " + chunk.getZ());
+        Logger.info("Biomes" + org.bukkit.block.Biome.values().toString());
+        Logger.info("COORDINATES: X: " + chunk.getX() + " Z: " + chunk.getZ());
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 final Block block = chunk.getBlock(x, 0, z);
@@ -113,7 +112,7 @@ public class Biome {
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-            Utils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+            ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
         }
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
 

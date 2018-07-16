@@ -1,6 +1,31 @@
-package bukkit.util;
+/*
+ * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ *
+ * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
+ * Copyright (c) contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package bukkit.util.action;
 
 import bukkit.MainBukkit;
+import bukkit.util.console.Logger;
 import common.Msg;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,10 +33,7 @@ import org.bukkit.entity.Player;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-/**
- * Created by Edwin on 16/07/2018.
- */
-public class Charge {
+public class ChargeAction {
 
     private static final MainBukkit instance = MainBukkit.getInstance();
 
@@ -31,65 +53,19 @@ public class Charge {
             // Requête
             ResultSet rselect = check.executeQuery();
             while (rselect.next()) {
-                Utils.cm(rselect.toString());
-                Utils.cm("Debug charge 1");
+                Logger.info(rselect.toString());
+                Logger.info("Debug charge 1");
                 number = rselect.getInt(1);
-                Utils.cm("number: " + number);
+                Logger.info("number: " + number);
                 return number;
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Utils.cm(messageErreur);
+            Logger.severe(messageErreur);
             return null;
         }
         initCharges(pPlayer, Msg.keys.SQL);
         return 0;
-    }
-
-    // Ajoute des charges à un joueur, succès = true
-    public static Boolean updateCharge(Player pPlayer, Integer number, String messageErreur) {
-        String CHECK = "UPDATE `players_info` SET `charges` = ? WHERE `UUID_P` = ?";
-        try {
-            PreparedStatement check = instance.database.prepare(CHECK);
-
-            // UUID_P
-            check.setString(2, pPlayer.getUniqueId().toString());
-            // NUMBER
-            check.setInt(1, number);
-            // Requête
-            Utils.cm("Debug 3: " + check.toString());
-            check.executeUpdate();
-            return true;
-        } catch (Exception se) {
-            se.printStackTrace();
-            Utils.cm(messageErreur);
-            return false;
-        }
-    }
-
-    // Init charges and playtime on first connect
-    public static Boolean initCharges(Player pPlayer, String messageErreur) {
-        String INSERT = "INSERT INTO `players_info` (`UUID_P`, `charges`, `playtimes`) VALUES (?, ?, ?)";
-        Integer number;
-        String Iuuid_p;
-
-        try {
-            PreparedStatement insert = instance.database.prepare(INSERT);
-            // UUID_P
-            Iuuid_p = pPlayer.getUniqueId().toString();
-            insert.setString(1, Iuuid_p);
-            // Number
-            number = 0;
-            insert.setInt(2, number);
-            // PlayTime
-            insert.setInt(3, number);
-            insert.executeUpdate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Utils.cm(Msg.keys.SQL);
-            return false;
-        }
-        return true;
     }
 
     // Vérifie les charges, retire si en possède sinon return false avec message
@@ -111,5 +87,51 @@ public class Charge {
             return -1;
         }
         return charges;
+    }
+
+    // Ajoute des charges à un joueur, succès = true
+    public static Boolean updateCharge(Player pPlayer, Integer number, String messageErreur) {
+        String CHECK = "UPDATE `players_info` SET `charges` = ? WHERE `UUID_P` = ?";
+        try {
+            PreparedStatement check = instance.database.prepare(CHECK);
+
+            // UUID_P
+            check.setString(2, pPlayer.getUniqueId().toString());
+            // NUMBER
+            check.setInt(1, number);
+            // Requête
+            Logger.info("Debug 3: " + check.toString());
+            check.executeUpdate();
+            return true;
+        } catch (Exception se) {
+            se.printStackTrace();
+            Logger.severe(messageErreur);
+            return false;
+        }
+    }
+
+    // Init charges and playtime on first connect
+    private static Boolean initCharges(Player pPlayer, String messageErreur) {
+        String INSERT = "INSERT INTO `players_info` (`UUID_P`, `charges`, `playtimes`) VALUES (?, ?, ?)";
+        Integer number;
+        String Iuuid_p;
+
+        try {
+            PreparedStatement insert = instance.database.prepare(INSERT);
+            // UUID_P
+            Iuuid_p = pPlayer.getUniqueId().toString();
+            insert.setString(1, Iuuid_p);
+            // Number
+            number = 0;
+            insert.setInt(2, number);
+            // PlayTime
+            insert.setInt(3, number);
+            insert.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.severe(Msg.keys.SQL);
+            return false;
+        }
+        return true;
     }
 }

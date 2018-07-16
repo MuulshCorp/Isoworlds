@@ -26,7 +26,6 @@ package sponge.command.sub;
 
 import com.google.common.collect.Iterables;
 import sponge.MainSponge;
-import sponge.util.Utils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -42,6 +41,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.World;
+import sponge.util.action.StatAction;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -102,7 +102,7 @@ public class ListWorlds implements CommandExecutor {
             Text name = Text.of(Text.builder(pname + " [" + status +"] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities)
                     .color(TextColors.GREEN)
                     .append(Text.builder(" | TPS: " + Sponge.getServer().getTicksPerSecond())
-                            .color(Utils.getTPS(Sponge.getServer().getTicksPerSecond()).getColor()).build())
+                            .color(StatAction.getTPS(Sponge.getServer().getTicksPerSecond()).getColor()).build())
                     .onClick(TextActions.runCommand("/iw teleport " + pPlayer.getName().toString() + " " + worldname))
                     .onHover(TextActions.showText(Text.of(worldname))).build());
             pPlayer.sendMessage(name);

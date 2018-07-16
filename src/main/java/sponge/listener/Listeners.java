@@ -37,8 +37,8 @@ import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
 import org.spongepowered.api.scheduler.Task;
 import sponge.location.Locations;
-import sponge.util.Logger;
-import sponge.util.Utils;
+import sponge.util.action.ChargeAction;
+import sponge.util.console.Logger;
 import sponge.MainSponge;
 
 import org.spongepowered.api.Sponge;
@@ -122,14 +122,14 @@ public class Listeners {
 
         for (Player p : players) {
             p.setLocation(top);
-            Utils.cm("TP DECO: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
+            Logger.info("TP DECO: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
         }
     }
 
     @Listener
     public void onConnect(ClientConnectionEvent.Join event) {
         // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
-        if (Utils.firstTime(event.getTargetEntity(), Msg.keys.SQL) == null) {
+        if (ChargeAction.firstTime(event.getTargetEntity(), Msg.keys.SQL) == null) {
             Task.builder().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -166,7 +166,7 @@ public class Listeners {
         Location<World> top = Locations.getHighestLoc(maxy)
                 .orElse(new Location<>(spawn.getExtent(), Locations.getAxis(worldname).getX(), 61, Locations.getAxis(worldname).getZ()));
         event.getTargetEntity().setLocationSafely(top);
-        Utils.cm("Joueur téléporté au spawn");
+        Logger.info("Joueur téléporté au spawn");
     }
 
     // Debug load world
@@ -207,7 +207,7 @@ public class Listeners {
         // Kick players
         for (Player p : event.getTargetWorld().getPlayers()) {
             p.setLocation(top);
-            Utils.cm("TP UNLOAD: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
+            Logger.info("TP UNLOAD: " + p.getName() + " : " + top.getExtent().getName().toLowerCase());
         }
 
         // Check if file exist, to detect mirrors
@@ -234,7 +234,7 @@ public class Listeners {
         String check_p;
         String check_w;
 
-        Utils.cm("[TRACKING-IW] Téléporation: " + pPlayer.getName() + " [FROM: " + event.getFromTransform().toString() + "] - [TO: " + event.getToTransform().toString() + "] - [CAUSE: "
+        Logger.info("[TRACKING-IW] Téléporation: " + pPlayer.getName() + " [FROM: " + event.getFromTransform().toString() + "] - [TO: " + event.getToTransform().toString() + "] - [CAUSE: "
                 + event.getCause().toString() + "]");
 
         String eventworld = event.getToTransform().getExtent().getName();
@@ -261,7 +261,7 @@ public class Listeners {
                 // Requête
                 check.setString(3, plugin.servername);
                 ResultSet rselect = check.executeQuery();
-                Utils.cm("Monde event: " + eventworld);
+                Logger.info("Monde event: " + eventworld);
                 if (pPlayer.hasPermission("isoworlds.bypass.teleport")) {
                     return;
                 }

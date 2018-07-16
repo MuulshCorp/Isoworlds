@@ -24,10 +24,12 @@
  */
 package bukkit.command.sub;
 
+import bukkit.util.action.IsoWorldsAction;
+import bukkit.util.action.TrustAction;
+import bukkit.util.console.Logger;
 import common.ManageFiles;
 import bukkit.MainBukkit;
 import bukkit.location.Locations;
-import bukkit.util.Utils;
 import common.Msg;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -35,8 +37,6 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-
-import static bukkit.util.Utils.setWorldProperties;
 
 public class Create {
 
@@ -52,7 +52,7 @@ public class Create {
         Integer len = args.length;
 
         // SELECT WORLD
-        if (Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
@@ -62,7 +62,7 @@ public class Create {
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         // Check si le monde existe déjà
         if (Bukkit.getServer().getWorld(worldname) != null) {
-            Utils.cm("Le monde existe déjà");
+            Logger.warning("Le monde existe déjà");
             return;
         }
 
@@ -76,25 +76,25 @@ public class Create {
             return;
         }
 
-        Utils.cm("[TRACKING]: " + args[1]);
+        Logger.tracking(args[1]);
         File deleteFile = new File(fullpath + "region");
         File sourceFile;
         switch (args[1]) {
             case ("n"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Utils.cm("[TRACKING-IW] PATERN NORMAL: " + pPlayer.getName());
+                Logger.tracking("PATERN NORMAL: " + pPlayer.getName());
                 break;
             case ("v"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Utils.cm("[TRACKING-IW] PATERN VOID: " + pPlayer.getName());
+                Logger.tracking("PATERN VOID: " + pPlayer.getName());
                 break;
             case ("o"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Utils.cm("[TRACKING-IW] PATERN OCEAN: " + pPlayer.getName());
+                Logger.tracking("PATERN OCEAN: " + pPlayer.getName());
                 break;
             case ("f"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Utils.cm("[TRACKING-IW] PATERN FLAT: " + pPlayer.getName());
+                Logger.tracking("PATERN FLAT: " + pPlayer.getName());
                 break;
             default:
                 return;
@@ -106,7 +106,7 @@ public class Create {
             Bukkit.getServer().createWorld(new WorldCreator(worldname));
         } catch (Exception ie) {
             ie.printStackTrace();
-            Utils.cm(Msg.keys.SQL);
+            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
         }
 
@@ -117,7 +117,7 @@ public class Create {
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
-            Utils.cm(Msg.keys.FICHIERS);
+            Logger.severe(Msg.keys.FICHIERS);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.FICHIERS);
             return;
         }
@@ -125,19 +125,19 @@ public class Create {
         Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
         // INSERT
-        if (!Utils.setIsoWorld(pPlayer, Msg.keys.SQL)) {
+        if (!IsoWorldsAction.setIsoWorld(pPlayer, Msg.keys.SQL)) {
             return;
         }
 
         // INSERT TRUST
-        if (!Utils.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+        if (!TrustAction.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
             return;
         }
 
         Locations.teleport(pPlayer, worldname);
 
         // Configuration du monde
-        setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
+        IsoWorldsAction.setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
     }

@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sponge.util;
+package sponge.util.task;
 
 import common.Msg;
 import org.spongepowered.api.entity.living.player.Player;
@@ -30,18 +30,19 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.MainSponge;
+import sponge.util.Utils;
 
 import java.io.File;
 import java.util.function.Consumer;
 
-public class PullTask implements Consumer<Task> {
+public class Pull implements Consumer<Task> {
 
     private int check = 60;
     private Player pPlayer;
     private File file;
     private final MainSponge plugin = MainSponge.instance;
 
-    public PullTask(Player pPlayer, File file) {
+    public Pull(Player pPlayer, File file) {
 
         this.pPlayer = pPlayer;
         this.file = file;

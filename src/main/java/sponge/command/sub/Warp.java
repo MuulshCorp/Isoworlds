@@ -37,7 +37,7 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.MainSponge;
 import sponge.location.Locations;
-import sponge.util.Utils;
+import sponge.util.console.Logger;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -52,7 +52,7 @@ public class Warp implements CommandCallable {
         Player pPlayer = (Player) source;
         String[] arg = args.split(" ");
 
-        Utils.cm(arg[0]);
+        Logger.info(arg[0]);
 
         //If the method return true then the command is in lock
         if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.WARP)) {

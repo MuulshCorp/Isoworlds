@@ -38,7 +38,9 @@ import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.biome.BiomeType;
 import org.spongepowered.api.world.biome.BiomeTypes;
 import sponge.MainSponge;
-import sponge.util.Utils;
+import sponge.util.action.ChargeAction;
+import sponge.util.action.IsoWorldsAction;
+import sponge.util.console.Logger;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -55,7 +57,7 @@ public class Biome implements CommandCallable {
         String[] arg = args.split(" ");
         BiomeType biome;
 
-        Utils.cm(arg[0]);
+        Logger.info(arg[0]);
 
         //If the method return true then the command is in lock
         if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
@@ -63,13 +65,13 @@ public class Biome implements CommandCallable {
         }
 
         // If got charges
-        int charges = Utils.checkCharge(pPlayer, Msg.keys.SQL);
+        int charges = ChargeAction.checkCharge(pPlayer, Msg.keys.SQL);
         if (charges == -1) {
             return CommandResult.success();
         }
 
         // SELECT WORLD
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
@@ -113,7 +115,7 @@ public class Biome implements CommandCallable {
 
         // Définition biome
         Location loc = pPlayer.getLocation();
-        Utils.cm("LOCATION " + loc);
+        Logger.info("LOCATION " + loc);
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
@@ -127,7 +129,7 @@ public class Biome implements CommandCallable {
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-            Utils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+            ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
         }
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)

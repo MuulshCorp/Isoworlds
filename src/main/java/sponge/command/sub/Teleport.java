@@ -24,15 +24,9 @@
  */
 package sponge.command.sub;
 
-/**
- * Created by Edwin on 14/10/2017.
- */
-
 import common.Msg;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.MainSponge;
 import sponge.location.Locations;
-import sponge.util.Utils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
@@ -43,16 +37,15 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import sponge.util.action.IsoWorldsAction;
+import sponge.util.action.LockAction;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-import static sponge.util.Utils.isLocked;
 
 public class Teleport implements CommandCallable {
-
-    private final MainSponge plugin = MainSponge.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
@@ -63,7 +56,7 @@ public class Teleport implements CommandCallable {
         length = arg.length;
 
         // Check if world exists
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, true)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
             return CommandResult.success();
@@ -77,13 +70,10 @@ public class Teleport implements CommandCallable {
         }
 
         // Si la méthode renvoi vrai alors on return car le lock est défini, sinon elle le set auto
-        if (isLocked(pPlayer, String.class.getName())) {
+        if (LockAction.isLocked(pPlayer, String.class.getName())) {
             return CommandResult.success();
         }
 
-        Utils.cm("Total arguments" + length);
-        Utils.cm("Total arguments2" + args);
-        Utils.cm("Total arguments3" + arg);
         if (length != 2) {
             Text message = Text.of(Msg.keys.INVALIDE_JOUEUR);
             pPlayer.sendMessage(message);

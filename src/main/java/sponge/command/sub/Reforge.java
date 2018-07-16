@@ -28,7 +28,6 @@ import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
 import sponge.MainSponge;
-import sponge.util.Utils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -42,6 +41,9 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.*;
 import org.spongepowered.api.world.storage.WorldProperties;
+import sponge.util.action.IsoWorldsAction;
+import sponge.util.action.StatAction;
+import sponge.util.console.Logger;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -69,7 +71,7 @@ public class Reforge implements CommandExecutor {
         }
 
         // SELECT WORLD
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
@@ -92,8 +94,8 @@ public class Reforge implements CommandExecutor {
             }
         }
         confirm.remove(pPlayer.getUniqueId().toString());
-        fullpath = (ManageFiles.getPath() + Utils.PlayerToUUID(pPlayer) + "-IsoWorld");
-        worldname = (Utils.PlayerToUUID(pPlayer) + "-IsoWorld");
+        fullpath = (ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
+        worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
         File sourceDir = new File(ManageFiles.getPath() + worldname);
         File destDir = new File(ManageFiles.getPath() + "/IsoWorlds-REFONTE/" + worldname);
         destDir.mkdir();
@@ -119,7 +121,7 @@ public class Reforge implements CommandExecutor {
         WorldProperties world = optionalWorld.get();
         try {
             if (Sponge.getServer().deleteWorld(world).get()) {
-                Utils.cm("Le monde: " + worldname + " a bien été supprimé");
+                Logger.info("Le monde: " + worldname + " a bien été supprimé");
             }
         } catch (InterruptedException | ExecutionException ie) {
             ie.printStackTrace();
@@ -127,7 +129,7 @@ public class Reforge implements CommandExecutor {
 
 
         // DELETE WORLD
-        if (!Utils.deleteIsoWorld(pPlayer, Msg.keys.SQL)) {
+        if (!IsoWorldsAction.deleteIsoWorld(pPlayer, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();

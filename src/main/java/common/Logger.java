@@ -24,8 +24,6 @@
  */
 package common;
 
-import sponge.util.Utils;
-
 public class Logger {
     private final String type;
 
@@ -35,9 +33,9 @@ public class Logger {
 
     void log(String message) {
         if (this.type.equals("sponge")) {
-            Utils.cm(message);
+            sponge.util.console.Logger.info(message);
         } else if (this.type.equals("bukkit")) {
-            bukkit.util.Utils.cm("[IsoWorlds]: " + message);
+            bukkit.util.console.Logger.info(message);
         }
     }
 }

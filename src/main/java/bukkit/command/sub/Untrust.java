@@ -25,7 +25,9 @@
 package bukkit.command.sub;
 
 import bukkit.MainBukkit;
-import bukkit.util.Utils;
+import bukkit.util.action.IsoWorldsAction;
+import bukkit.util.action.TrustAction;
+import bukkit.util.console.Logger;
 import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -60,13 +62,13 @@ public class Untrust {
 
         try {
             // SELECT WORLD
-            if (!Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+            if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
                 pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 return;
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Utils.cm(Msg.keys.SQL);
+            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
@@ -93,13 +95,13 @@ public class Untrust {
         }
 
         // CHECK AUTORISATIONS
-        if (!Utils.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
             return;
         }
 
         // DELETE AUTORISATION
-        if (!Utils.deleteTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.deleteTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }

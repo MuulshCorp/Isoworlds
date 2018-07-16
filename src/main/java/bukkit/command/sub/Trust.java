@@ -25,7 +25,8 @@
 package bukkit.command.sub;
 
 import bukkit.MainBukkit;
-import bukkit.util.Utils;
+import bukkit.util.action.IsoWorldsAction;
+import bukkit.util.action.TrustAction;
 import common.Cooldown;
 import common.Msg;
 import org.bukkit.Bukkit;
@@ -53,7 +54,7 @@ public class Trust {
         }
 
         // SELECT WORLD
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
@@ -65,25 +66,19 @@ public class Trust {
 
         // Getting uuidcible
         if (Bukkit.getServer().getPlayer(args[1]) == null) {
-            Utils.cm("ARG: " + args[1]);
             uuidcible = Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId();
-            Utils.cm("OFFLINE");
         } else {
-            Utils.cm("ARG: " + args[1]);
             uuidcible = Bukkit.getServer().getPlayer(args[1]).getUniqueId();
-            Utils.cm("ONLINE");
         }
 
-        Utils.cm("CONFIANCE: " + uuidcible);
-
         // CHECK AUTORISATIONS
-        if (Utils.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (TrustAction.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
             return;
         }
 
         // INSERT
-        if (!Utils.setTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.setTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
             return;
         }
 

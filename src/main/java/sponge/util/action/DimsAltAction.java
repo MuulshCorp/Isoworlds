@@ -22,7 +22,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sponge.util;
+/*
+ * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ *
+ * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
+ * Copyright (c) contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package sponge.util.action;
 
 import common.ManageFiles;
 import org.spongepowered.api.Sponge;
@@ -34,6 +58,7 @@ import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.MainSponge;
+import sponge.util.console.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,7 +71,7 @@ import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class DimsAlt {
+public class DimsAltAction {
 
     private static final MainSponge plugin = MainSponge.instance;
 
@@ -87,7 +112,7 @@ public class DimsAlt {
         try {
             if (wp.isPresent()) {
                 worldProperties = wp.get();
-                Utils.cm("WOLRD PROPERTIES: déjà présent");
+                Logger.info("WOLRD PROPERTIES: déjà présent");
                 worldProperties.setKeepSpawnLoaded(true);
                 worldProperties.setLoadOnStartup(true);
                 worldProperties.setGenerateSpawnOnLoad(false);
@@ -105,7 +130,7 @@ public class DimsAlt {
                 Logger.warning("Border nouveau: " + 6000);
             } else {
                 worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
-                Utils.cm("WOLRD PROPERTIES: non présents, création...");
+                Logger.info("WOLRD PROPERTIES: non présents, création...");
                 worldProperties.setKeepSpawnLoaded(true);
                 worldProperties.setLoadOnStartup(true);
                 worldProperties.setGenerateSpawnOnLoad(false);
@@ -116,7 +141,7 @@ public class DimsAlt {
                 Sponge.getServer().saveWorldProperties(worldProperties);
                 Logger.warning("Border nouveau: " + 6000);
             }
-            Utils.cm("WorldProperties à jour");
+            Logger.info("WorldProperties à jour");
 
         } catch (IOException ie) {
             ie.printStackTrace();

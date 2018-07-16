@@ -28,13 +28,13 @@ import com.flowpowered.math.vector.Vector3d;
 import org.spongepowered.api.data.property.block.MatterProperty;
 import org.spongepowered.api.event.cause.Cause;
 import sponge.MainSponge;
-import sponge.util.Utils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import sponge.util.console.Logger;
 
 import java.util.Optional;
 
@@ -101,9 +101,9 @@ public class Locations {
 
                 // Téléportation du joueur
                 if (player.setLocationSafely(destination)) {
-                    Utils.cm("Le joueur a bien été téléporté !");
+                    Logger.info("Le joueur a bien été téléporté !");
                 } else {
-                    Utils.cm("Le joueur n'a pas pu être téléporté !");
+                    Logger.info("Le joueur n'a pas pu être téléporté !");
                     return false;
                 }
 

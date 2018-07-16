@@ -22,11 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sponge.util;
+package sponge.util.console;
 
 
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.title.Title;
 import sponge.MainSponge;
 
 public class Logger {
@@ -58,6 +59,14 @@ public class Logger {
                 .append(Text.of(Text.builder("IW").color(TextColors.GOLD)
                         .append(Text.of(Text.builder("] ").color(TextColors.WHITE)
                                 .append(Text.builder(s).color(TextColors.AQUA).build())))))));
+    }
+
+    // Tiltle with SubTitle
+    public static Title titleSubtitle(String title, String subtitle) {
+        Text Titre = Text.of(Text.builder(title).color(TextColors.GOLD).build());
+        Text SousTitre = Text.of(Text.builder(subtitle).color(TextColors.AQUA).build());
+        Title ready = (Title) Title.of(Titre, SousTitre);
+        return ready;
     }
 
     public static void tag() {

@@ -30,7 +30,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.MainSponge;
-import sponge.util.Utils;
+import sponge.util.action.StatAction;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,7 +93,7 @@ public class Cooldown implements CooldownType {
      * Sponge method
      */
     public Timestamp getPlayerLastCooldown(Player pPlayer, String type) {
-        String uuid_p = Utils.PlayerToUUID(pPlayer).toString();
+        String uuid_p = StatAction.PlayerToUUID(pPlayer).toString();
 
         return getPlayerLastCooldown(uuid_p, type);
     }
@@ -145,7 +145,7 @@ public class Cooldown implements CooldownType {
      * Sponge method
      */
     public void addPlayerCooldown(Player pPlayer, String type, int delay) {
-        String uuid_p = Utils.PlayerToUUID(pPlayer).toString();
+        String uuid_p = StatAction.PlayerToUUID(pPlayer).toString();
         addPlayerCooldown(uuid_p, type, delay);
     }
 

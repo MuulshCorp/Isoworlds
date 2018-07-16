@@ -30,7 +30,6 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.MainSponge;
 import sponge.location.Locations;
-import sponge.util.Utils;
 import common.ManageFiles;
 
 import org.spongepowered.api.Sponge;
@@ -40,16 +39,17 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import sponge.util.action.IsoWorldsAction;
+import sponge.util.action.StatAction;
+import sponge.util.action.TrustAction;
+import sponge.util.console.Logger;
 
 import javax.annotation.Nullable;
 import java.io.*;
 import java.util.List;
 import java.util.Optional;
 
-import static sponge.util.Utils.setWorldProperties;
-
 public class Create implements CommandCallable {
-    private final MainSponge plugin = MainSponge.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
@@ -58,15 +58,16 @@ public class Create implements CommandCallable {
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
-        Utils.coloredMessage(pPlayer, Msg.keys.CREATION_IWORLD);
-        fullpath = (ManageFiles.getPath() + Utils.PlayerToUUID(pPlayer) + "-IsoWorld");
+        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+                .append(Text.of(Text.builder(Msg.keys.CREATION_IWORLD).color(TextColors.AQUA))).build()));
+        fullpath = (ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
-        Utils.cm("IsoWorld name: " + worldname);
+        Logger.info("IsoWorld name: " + worldname);
         String[] arg = args.split(" ");
         int size = arg.length;
 
         // SELECT WORLD
-        if (Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
@@ -95,25 +96,25 @@ public class Create implements CommandCallable {
             return CommandResult.success();
         }
 
-        Utils.cm("DEBUGGGG: " + arg[0]);
+        Logger.info("DEBUGGGG: " + arg[0]);
 
         File sourceFile;
         switch (arg[0]) {
             case ("n"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Utils.cm("[TRACKING-IW] PATERN NORMAL: " + pPlayer.getName());
+                Logger.tracking("PATERN NORMAL: " + pPlayer.getName());
                 break;
             case ("v"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Utils.cm("[TRACKING-IW] PATERN VOID: " + pPlayer.getName());
+                Logger.tracking("PATERN VOID: " + pPlayer.getName());
                 break;
             case ("o"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Utils.cm("[TRACKING-IW] PATERN OCEAN: " + pPlayer.getName());
+                Logger.tracking("PATERN OCEAN: " + pPlayer.getName());
                 break;
             case ("f"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Utils.cm("[TRACKING-IW] PATERN FLAT: " + pPlayer.getName());
+                Logger.tracking("PATERN FLAT: " + pPlayer.getName());
                 break;
             default:
                 return CommandResult.success();
@@ -126,17 +127,17 @@ public class Create implements CommandCallable {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
             ie.printStackTrace();
-            Utils.coloredMessage(pPlayer, Msg.keys.SQL);
+            Logger.severe(Msg.keys.SQL);
             return CommandResult.success();
         }
 
         // Création properties
-        setWorldProperties(worldname, pPlayer);
+        IsoWorldsAction.setWorldProperties(worldname, pPlayer);
 
         // INSERT
-        if (Utils.setIsoWorld(pPlayer, Msg.keys.SQL)) {
+        if (IsoWorldsAction.setIsoWorld(pPlayer, Msg.keys.SQL)) {
             // INSERT TRUST
-            if (Utils.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+            if (TrustAction.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
                 // Chargement
                 Sponge.getGame().getServer().loadWorld(worldname);
 
@@ -144,7 +145,7 @@ public class Create implements CommandCallable {
                         .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
                 // Téléport
                 Locations.teleport(pPlayer, worldname);
-                pPlayer.sendTitle(Utils.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
+                pPlayer.sendTitle(Logger.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
             }
         }
         return CommandResult.success();

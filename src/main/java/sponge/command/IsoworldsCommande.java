@@ -37,8 +37,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-
-import sponge.util.Inventories;
+import sponge.util.inventory.MainInv;
 
 public class IsoworldsCommande implements CommandExecutor {
 
@@ -50,7 +49,7 @@ public class IsoworldsCommande implements CommandExecutor {
 
         //IsoworldsUtils.getHelp(pPlayer);
         // Ouverture du menu principal
-        pPlayer.openInventory(Inventories.menuPrincipal(pPlayer),  Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+        pPlayer.openInventory(MainInv.menuPrincipal(pPlayer),  Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
         return CommandResult.success();
     }
 

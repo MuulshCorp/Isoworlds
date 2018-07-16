@@ -26,14 +26,14 @@ package bukkit.command.sub;
 
 import bukkit.MainBukkit;
 import bukkit.location.Locations;
-import bukkit.util.Utils;
+import bukkit.util.action.IsoWorldsAction;
+import bukkit.util.action.LockAction;
+import bukkit.util.action.StorageAction;
 import common.Cooldown;
 import common.Msg;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import static bukkit.util.Utils.isLocked;
 
 public class Home {
 
@@ -57,12 +57,12 @@ public class Home {
         worldname = (pPlayer.getUniqueId() + "-IsoWorld");
 
         // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
-        if (isLocked(pPlayer, "checkTag")) {
+        if (LockAction.isLocked(pPlayer, "checkTag")) {
             return;
         }
 
         // Import / Export
-        if (!Utils.checkTag(pPlayer, worldname)) {
+        if (!StorageAction.checkTag(pPlayer, worldname)) {
             return;
         }
 
@@ -70,7 +70,7 @@ public class Home {
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // SELECT WORLD (load it if need)
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, true)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }

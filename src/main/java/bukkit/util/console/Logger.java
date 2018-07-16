@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package bukkit.util;
+package bukkit.util.console;
 
 import bukkit.MainBukkit;
 import org.bukkit.ChatColor;

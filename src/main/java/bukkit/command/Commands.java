@@ -25,7 +25,7 @@
 package bukkit.command;
 
 import bukkit.command.sub.*;
-import bukkit.util.Inventories;
+import bukkit.util.inventory.MainInv;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -82,7 +82,7 @@ public class Commands implements CommandExecutor {
                 return true;
             }
         } else {
-            Inventories.MenuPrincipal(pPlayer).open(pPlayer);
+            MainInv.MenuPrincipal(pPlayer).open(pPlayer);
             //IsoworldsUtils.getHelp(sender);
             return true;
         }

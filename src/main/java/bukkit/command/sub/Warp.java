@@ -26,7 +26,7 @@ package bukkit.command.sub;
 
 import bukkit.MainBukkit;
 import bukkit.location.Locations;
-import bukkit.util.Utils;
+import bukkit.util.console.Logger;
 import common.Cooldown;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -55,7 +55,7 @@ public class Warp {
         // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
         // si le biome indiqué existe et on l'applique
         for (String s : args) {
-            Utils.cm(s);
+            Logger.info(s);
         }
         if (args[1].equals("exploration") || args[1].equals("minage") || args[1].equals("end") || args[1].equals("nether")) {
             Locations.teleport(pPlayer, args[1]);

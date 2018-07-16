@@ -24,13 +24,8 @@
  */
 package sponge.command.sub;
 
-/**
- * Created by Edwin on 14/10/2017.
- */
-
 import common.Msg;
 import sponge.MainSponge;
-import sponge.util.Utils;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
@@ -46,6 +41,8 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import sponge.util.action.IsoWorldsAction;
+import sponge.util.action.TrustAction;
 
 import javax.annotation.Nullable;
 
@@ -71,7 +68,7 @@ public class UnTrust implements CommandCallable {
         }
 
         // SELECT WORLD
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
@@ -90,7 +87,8 @@ public class UnTrust implements CommandCallable {
             }
 
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                Utils.coloredMessage(pPlayer, Msg.keys.INVALIDE_JOUEUR);
+                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
+                        .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
@@ -101,14 +99,14 @@ public class UnTrust implements CommandCallable {
         }
 
         // CHECK AUTORISATIONS
-        if (!Utils.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_TRUST_2).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         // DELETE AUTORISATION
-        if (!Utils.deleteTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.deleteTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();

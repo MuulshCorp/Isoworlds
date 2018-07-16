@@ -26,6 +26,9 @@ package bukkit.command.sub;
 
 import bukkit.MainBukkit;
 
+import bukkit.util.action.ChargeAction;
+import bukkit.util.action.IsoWorldsAction;
+import bukkit.util.console.Logger;
 import common.Cooldown;
 import common.Msg;
 import org.bukkit.Bukkit;
@@ -33,7 +36,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import bukkit.util.Utils;
 
 public class Weather {
 
@@ -52,12 +54,12 @@ public class Weather {
         }
 
         // If got charges
-        int charges = Utils.checkCharge(pPlayer, Msg.keys.SQL);
+        int charges = ChargeAction.checkCharge(pPlayer, Msg.keys.SQL);
         if (charges == -1) {
             return;
         }
 
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
             return;
         }
@@ -78,7 +80,7 @@ public class Weather {
                 return;
             }
             World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
-            Utils.cm("Weather world: " + weather.getName());
+            Logger.info("Weather world: " + weather.getName());
             if (args[1].equals("pluie") || args[1].equals("rain")) {
                 weather.setStorm(true);
                 weather.setWeatherDuration(num);
@@ -94,7 +96,7 @@ public class Weather {
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-            Utils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+            ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
         }
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
 

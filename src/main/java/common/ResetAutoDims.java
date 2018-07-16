@@ -24,7 +24,7 @@
  */
 package common;
 
-import bukkit.util.Logger;
+import bukkit.util.console.Logger;
 
 import java.io.File;
 import java.io.FileWriter;

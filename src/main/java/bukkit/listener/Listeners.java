@@ -26,7 +26,8 @@ package bukkit.listener;
 
 import bukkit.MainBukkit;
 import bukkit.location.Locations;
-import bukkit.util.Logger;
+import bukkit.util.action.ChargeAction;
+import bukkit.util.console.Logger;
 import common.ManageFiles;
 import common.Msg;
 import org.bukkit.*;
@@ -34,7 +35,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
-import bukkit.util.Utils;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -85,7 +85,7 @@ public class Listeners implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
-        if (Utils.getCharge(event.getPlayer(), Msg.keys.SQL) == null) {
+        if (ChargeAction.getCharge(event.getPlayer(), Msg.keys.SQL) == null) {
             new BukkitRunnable() {
 
                 @Override
@@ -102,7 +102,7 @@ public class Listeners implements Listener {
         }
 
         String world = event.getPlayer().getWorld().getName();
-        Utils.cm("DEBUG1: " + world);
+        Logger.info("DEBUG1: " + world);
     }
 
     // Logout event, tp spawn
@@ -112,7 +112,7 @@ public class Listeners implements Listener {
         Player p = event.getPlayer();
 
         Locations.teleport(p, "Isolonice");
-        Utils.cm("Joueur téléporté au spawn");
+        Logger.info("Joueur téléporté au spawn");
     }
 
     @EventHandler
@@ -136,7 +136,7 @@ public class Listeners implements Listener {
         Location worldFrom = event.getFrom();
         Player pPlayer = event.getPlayer();
 
-        Utils.cm("[TRACKING-IW] Téléporation: " + pPlayer.getName() + " [FROM: " + worldFrom.toString() + "] - [TO: " + worldTo.toString() + "] - [CAUSE: "
+        Logger.info("Téléporation: " + pPlayer.getName() + " [FROM: " + worldFrom.toString() + "] - [TO: " + worldTo.toString() + "] - [CAUSE: "
                 + event.getCause().toString() + "]");
         if (worldTo.toString().equals(worldFrom.toString())) {
             return;

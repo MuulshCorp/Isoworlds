@@ -28,7 +28,6 @@ import common.Cooldown;
 import common.Msg;
 import sponge.MainSponge;
 import sponge.location.Locations;
-import sponge.util.Utils;
 
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -39,8 +38,10 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-
-import static sponge.util.Utils.isLocked;
+import sponge.util.action.IsoWorldsAction;
+import sponge.util.action.LockAction;
+import sponge.util.action.StatAction;
+import sponge.util.action.StorageAction;
 
 public class Home implements CommandExecutor {
 
@@ -52,7 +53,7 @@ public class Home implements CommandExecutor {
         // Variables
         String worldname = "";
         Player pPlayer = (Player) source;
-        worldname = (Utils.PlayerToUUID(pPlayer) + "-IsoWorld");
+        worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
 
         //If the method return true then the command is in lock
         if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.MAISON)) {
@@ -60,14 +61,14 @@ public class Home implements CommandExecutor {
         }
 
         // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
-        if (isLocked(pPlayer, "checkTag")) {
+        if (LockAction.isLocked(pPlayer, "checkTag")) {
             return CommandResult.success();
         }
 
         // Import / Export
         // Faux si une procédure est en cours sur un IsoWorld en était @PUSHED en BDD
         // Vrai si IsoWorld disponible
-        if (!Utils.checkTag(pPlayer, worldname)) {
+        if (!StorageAction.checkTag(pPlayer, worldname)) {
             return CommandResult.success();
         }
 
@@ -75,7 +76,7 @@ public class Home implements CommandExecutor {
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // SELECT WORLD (load if need)
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, true)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, true)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();

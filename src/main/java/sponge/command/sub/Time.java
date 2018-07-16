@@ -24,15 +24,10 @@
  */
 package sponge.command.sub;
 
-/**
- * Created by Edwin on 09/11/2017.
- */
-
 import common.Cooldown;
 import common.Msg;
 import org.spongepowered.api.text.action.TextActions;
 import sponge.MainSponge;
-import sponge.util.Utils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -43,6 +38,9 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import sponge.util.action.ChargeAction;
+import sponge.util.action.IsoWorldsAction;
+import sponge.util.action.StatAction;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -56,7 +54,7 @@ public class Time implements CommandCallable {
 
         // SQL Variables
         Player pPlayer = (Player) source;
-        String worldname = (Utils.PlayerToUUID(pPlayer) + "-IsoWorld");
+        String worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
         String[] arg = args.split(" ");
         int size = arg.length;
 
@@ -66,13 +64,13 @@ public class Time implements CommandCallable {
         }
 
         // If got charges
-        int charges = Utils.checkCharge(pPlayer, Msg.keys.SQL);
+        int charges = ChargeAction.checkCharge(pPlayer, Msg.keys.SQL);
         if (charges == -1) {
             return CommandResult.success();
         }
 
         // Check if world exists
-        if (!Utils.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
             return CommandResult.success();
@@ -135,7 +133,7 @@ public class Time implements CommandCallable {
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-            Utils.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+            ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
         }
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)

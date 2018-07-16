@@ -34,9 +34,11 @@ import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.listener.Listeners;
-import sponge.util.DimsAlt;
-import sponge.util.Logger;
-import sponge.util.Utils;
+import sponge.util.action.DimsAltAction;
+import sponge.util.action.IsoWorldsAction;
+import sponge.util.action.PlayTimeAction;
+import sponge.util.action.StorageAction;
+import sponge.util.console.Logger;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -130,7 +132,7 @@ public class MainSponge {
         this.initServerName();
         this.initMySQL();
         // Set global status 1
-        Utils.setGlobalStatus(Msg.keys.SQL);
+        StorageAction.setGlobalStatus(Msg.keys.SQL);
 
         // --------------
 
@@ -157,7 +159,7 @@ public class MainSponge {
         // Update playtime
         Task.builder().execute(() -> {
             for (Player p : Sponge.getServer().getOnlinePlayers()) {
-                Utils.updatePlayTime(p, Msg.keys.SQL);
+                PlayTimeAction.updatePlayTime(p, Msg.keys.SQL);
             }
         }).submit(this);
 
@@ -206,7 +208,7 @@ public class MainSponge {
                             try {
                                 world.save();
                                 // If is mirrored then unload + remove then return
-                                if (Utils.isMirrored(world.getName()) == 1) {
+                                if (StorageAction.isMirrored(world.getName()) == 1) {
                                     Logger.severe("--- Anomalie détectée, unload interrompu et suppression de l'anomalie: " + world.getName() + " ---");
                                     Sponge.getServer().unloadWorld(world);
                                     Sponge.getServer().deleteWorld(world.getProperties());
@@ -227,13 +229,13 @@ public class MainSponge {
                             worlds.remove(world.getName());
 
                             // Vérification du statut du monde, si il est push ou non
-                            if (!Utils.getStatus(world.getName(), Msg.keys.SQL)) {
-                                Utils.cm("debug 1");
+                            if (!StorageAction.getStatus(world.getName(), Msg.keys.SQL)) {
+                                Logger.info("debug 1");
                                 File check = new File(ManageFiles.getPath() + world.getName());
                                 // Si le dossier existe alors on met le statut à 1 (push)
                                 if (check.exists()) {
-                                    Utils.cm("debug 2");
-                                    Utils.setStatus(world.getName(), 1, Msg.keys.SQL);
+                                    Logger.info("debug 2");
+                                    StorageAction.setStatus(world.getName(), 1, Msg.keys.SQL);
 
                                     // Suppression ID
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));
@@ -357,7 +359,7 @@ public class MainSponge {
                 .name("Remet les IsoWorlds hors du SAS.").submit(instance);
 
         // Create / load dimensions-ALT
-        DimsAlt.generateDim();
+        DimsAltAction.generateDim();
 
     }
 

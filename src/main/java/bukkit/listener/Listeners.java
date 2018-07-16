@@ -122,7 +122,7 @@ public class Listeners implements Listener {
         if (p.hasPermission("isoworlds.bypass.spawn")) {
             return;
         }
-        if (p.getLocation().getWorld().equals("Isolonice")) {
+        if (p.getLocation().getWorld().getName().equals("Isolonice")) {
             event.setCancelled(true);
         }
     }

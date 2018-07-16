@@ -100,6 +100,10 @@ public class Listeners {
             return;
         }
 
+        if (worldname.equals("Isolonice")) {
+            event.setCancelled(true);
+        }
+
         // If break in chunk of spawn layer 60, remove drop
         if (event.getLocations().get(0).getBlockX() == Locations.getAxis(worldname).getX() & event.getLocations().get(0).getBlockZ() == Locations.getAxis(worldname).getZ()) {
             if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {

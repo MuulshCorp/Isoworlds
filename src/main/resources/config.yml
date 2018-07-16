@@ -1,7 +1,10 @@
-id: ""
+id: "SRV_NAME"
+main-worldname: "Isolonice"
+main-spawn-coordinate: "0;60;0"
+inactivity-world-delay: "15"
 sql:
-  serveur: ""
+  serveur: "IP_ADDRESS"
   port: 3306
-  nom-bdd: ""
-  utilisateur: ""
-  mdp: ""
+  nom-bdd: "DATABASE_NAME"
+  utilisateur: "DATABASE_USERNAME"
+  mdp: "PASSWORD"

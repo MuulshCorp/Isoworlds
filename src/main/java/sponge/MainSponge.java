@@ -296,8 +296,11 @@ public class MainSponge {
                 Logger.warning("Fichier de configuration non trouvé, création en cours...");
                 this.configuration.createNewFile();
                 this.configurationNode = ((CommentedConfigurationNode) this.configurationLoader.load());
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).setValue("isoworlds");
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_host"}).setValue("IP ADDRESS");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).setValue("SRV_NAME");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "main_worldname"}).setValue("WORLD_NAME");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "main_spawn_coordinates"}).setValue("0;60;0");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "inactivity_world_delay"}).setValue("MINUTES_BEFORE_UNLOAD");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_host"}).setValue("IP_ADDRESS");
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_port"}).setValue(3306);
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_database"}).setValue("DATABASE_NAME");
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_username"}).setValue("DATABASE_USERNAME");

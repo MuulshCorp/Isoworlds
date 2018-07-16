@@ -65,7 +65,7 @@ import java.util.concurrent.TimeUnit;
         name = "IsoWorlds",
         description = "Large scale personal world manager",
         url = "https://isolonice.fr",
-        version = "1.9.3.3-BETA",
+        version = "1.9.3.4-BETA",
         authors = {
                 "Sythiel"
         }

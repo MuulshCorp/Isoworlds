@@ -84,7 +84,7 @@ public class TrustDeleteInv {
 
         int i = 0;
         int j = 0;
-        ResultSet trusts = TrustAction.getTrusts(pPlayer, Msg.keys.SQL);
+        ResultSet trusts = TrustAction.getTrusts(pPlayer.getUniqueId().toString());
         try {
             while (trusts.next()) {
                 // Récupération du nom du joueur

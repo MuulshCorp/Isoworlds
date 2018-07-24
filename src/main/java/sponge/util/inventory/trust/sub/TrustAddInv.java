@@ -85,7 +85,7 @@ public class TrustAddInv {
 
             int i = 0;
             int j = 0;
-            ResultSet trusts = TrustAction.getTrusts(pPlayer, Msg.keys.SQL);
+            ResultSet trusts = TrustAction.getTrusts(pPlayer.getUniqueId().toString());
             List<String> players = new ArrayList<String>();
 
             // Récupération joueurs trust dans un tableau

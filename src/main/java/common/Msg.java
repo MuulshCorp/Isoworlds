@@ -26,6 +26,20 @@ package common;
 
 public class Msg {
     public interface keys {
+        // ISOWORLD
+        String ISOWORLD_NOT_FOUND
+                = "Sijania > Je ne puis trouver votre IsoWorld.";
+        String NOT_IN_A_ISOWORLD
+                = "Vous devez vous trouver dans un IsoWorld";
+
+        // TRUST
+        String NOT_TRUSTED
+                = "Vous ne possédez pas les permissions sur cet IsoWorld";
+
+        // CHARGE
+        String CHARGE_USED
+                = "Vous venez d'utiliser une charge";
+
         String CREATION_IWORLD
                 = "Sijania concentre son pouvoir...";
         String TITRE_BIENVENUE_1
@@ -34,8 +48,7 @@ public class Msg {
                 = "Sijania > Cet IsoWorld est désormais votre.";
         String EXISTE_IWORLD
                 = "Sijania > Votre IsoWorld est déjà constitué, pourquoi en vouloir un deuxième ?";
-        String EXISTE_PAS_IWORLD
-                = "Sijania > Je ne puis trouver votre IsoWorld.";
+
         String EXISTE_TRUST
                 = "Sijania > Votre marque de confiance est déjà présente sur ce joueur.";
         String EXISTE_PAS_TRUST
@@ -86,5 +99,8 @@ public class Msg {
                 = "[Erreur 3]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
         String UNAVAILABLE_COMMAND = "Sijania > Mon énergie doit se recharger..., vous pourrez retenter dans";
 
+        // BIOME
+        String BIOME_NOT_FOUND = "Veuillez entrer le nom d'un biome existant";
+        String BIOME_CHANGED = "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)";
     }
 }

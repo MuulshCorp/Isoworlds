@@ -138,7 +138,7 @@ public class Main {
 
             Logger.tag();   /* Affiche le tag / version au lancement */
             PluginContainer pdf = Sponge.getPluginManager().getPlugin("Isoworlds").get();
-            Logger.info("Chargement de la version Sponge: " + pdf.getVersion().orElse("Inconnue") + " | Auteur: " + pdf.getAuthors() + " | Site: " + pdf.getUrl().orElse("Inconnue"));
+            Logger.info("Chargement de la version Sponge: " + pdf.getVersion().orElse("Non définie") + " Auteur: " + pdf.getAuthors() + " Site: " + pdf.getUrl());
 
             Logger.info("Lecture de la configuration...");
             this.initServerName();

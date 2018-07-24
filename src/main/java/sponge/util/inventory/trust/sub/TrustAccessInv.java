@@ -127,7 +127,7 @@ public class TrustAccessInv {
 
         int i = 0;
         int j = 0;
-        ResultSet trusts = TrustAction.getAccess(pPlayer, Msg.keys.SQL);
+        ResultSet trusts = TrustAction.getAccess(pPlayer.getUniqueId().toString());
         try {
             while (trusts.next()) {
                 // Récupération uuid

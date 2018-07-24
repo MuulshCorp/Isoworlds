@@ -40,7 +40,9 @@ import org.spongepowered.api.world.biome.BiomeTypes;
 import sponge.Main;
 import sponge.util.action.ChargeAction;
 import sponge.util.action.IsoWorldsAction;
+import sponge.util.action.TrustAction;
 import sponge.util.console.Logger;
+import sponge.util.message.Message;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -70,18 +72,14 @@ public class Biome implements CommandCallable {
             return CommandResult.success();
         }
 
-        // SELECT WORLD
-        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
-            return CommandResult.success();
+        // Check if actual world is an isoworld
+        if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
         }
 
-        // Check if is in isoworld
-        if (!world.getName().equals(pPlayer.getUniqueId() + "-IsoWorld")) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania indique que vous devez être présent dans votre monde pour changer de biome.").color(TextColors.AQUA))).build()));
-            return CommandResult.success();
+        // Check if player is trusted
+        if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
         }
 
         switch (arg[0]) {

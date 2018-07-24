@@ -24,36 +24,26 @@
  */
 package sponge.util.action;
 
-import common.Msg;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import sponge.Main;
-import sponge.util.console.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 public class TrustAction {
 
-    public static final Main plugin = Main.instance;
+    private static final Main plugin = Main.instance;
 
-    // Get all IsoWorlds that trusted pPlayer
-    public static ResultSet getAccess(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `uuid_w` FROM `autorisations` WHERE `uuid_w` = ? AND `server_id` = ?";
-        String check_p;
+    // Get all isoworlds allowed for a player
+    public static ResultSet getAccess(String playeruuid) {
+        String CHECK = "SELECT `uuid_w` FROM `autorisations` WHERE `uuid_p` = ? AND `server_id` = ?";
         ResultSet result = null;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
-
-            // UUID _P
-            check_p = StatAction.PlayerToUUID(pPlayer).toString();
-            check.setString(1, check_p);
-            // SERVEUR_ID
+            check.setString(1, playeruuid);
+            // Server id
             check.setString(2, plugin.servername);
-            // Requête
+            // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
                 result = rselect;
@@ -61,28 +51,25 @@ public class TrustAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.info(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
-            return result;
+            return null;
         }
-        return result;
+        return null;
     }
 
     // Get all trusted players of pPlayer's IsoWorld
-    public static ResultSet getTrusts(Player pPlayer, String messageErreur) {
+    public static ResultSet getTrusts(String worldname) {
         String CHECK = "SELECT `uuid_p` FROM `autorisations` WHERE `uuid_w` = ? AND `server_id` = ?";
-        String check_w;
         ResultSet result = null;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
-
-            // UUID _W
-            check_w = pPlayer.getUniqueId().toString() + "-IsoWorld";
-            check.setString(1, check_w);
-            // SERVEUR_ID
+            // World name
+            if (!worldname.contains("-IsoWorld")) {
+                worldname = (worldname + "-IsoWorld");
+            }
+            check.setString(1, worldname);
+            // Server id
             check.setString(2, plugin.servername);
-            // Requête
+            // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
                 result = rselect;
@@ -90,28 +77,24 @@ public class TrustAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
-            return result;
+            return null;
         }
-        return result;
+        return null;
     }
 
-    // Create trust for uuidcible on pPlayer IsoWorld
-    public static Boolean setTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
+    // Add playeruuid to worldname trusts
+    public static Boolean setTrust(String worldname, String playeruuid) {
         String INSERT = "INSERT INTO `autorisations` (`uuid_p`, `uuid_w`, `date_time`, `server_id`) VALUES (?, ?, ?, ?)";
-        String Iuuid_w;
-        String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try {
             PreparedStatement insert = plugin.database.prepare(INSERT);
-            // UUID_P
-            Iuuid_p = uuidcible.toString();
-            insert.setString(1, Iuuid_p);
-            // UUID_W
-            Iuuid_w = ((pPlayer.getUniqueId()) + "-IsoWorld");
-            insert.setString(2, Iuuid_w);
+            // Player uuid
+            insert.setString(1, playeruuid);
+            // World name
+            if (!worldname.contains("-IsoWorld")) {
+                worldname = (worldname + "-IsoWorld");
+            }
+            insert.setString(2, worldname);
             // Date
             insert.setString(3, (timestamp.toString()));
             // Serveur_id
@@ -119,67 +102,56 @@ public class TrustAction {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
         return true;
     }
 
-    // Delete trust uuid of pPlayer's IsoWorld
-    public static Boolean deleteTrust(Player pPlayer, UUID uuid, String messageErreur) {
-        String Iuuid_p;
-        String Iuuid_w;
+    // Delete playeruuid from worldname trusts
+    public static Boolean deleteTrust(String worldname, String playeruuid) {
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         try {
             PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
-            Iuuid_p = uuid.toString();
-            Iuuid_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
+            // World name
+            if (!worldname.contains("-IsoWorld")) {
+                worldname = (worldname + "-IsoWorld");
+            }
 
             // delete autorisation
-            delete_autorisations.setString(1, Iuuid_p);
-            delete_autorisations.setString(2, Iuuid_w);
+            delete_autorisations.setString(1, playeruuid);
+            delete_autorisations.setString(2, worldname);
             delete_autorisations.setString(3, plugin.servername);
 
             // execute
             delete_autorisations.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
         return true;
     }
 
-    // Check if uuid cible is trusted on pPlayer's IsoWorld
-    public static Boolean isTrusted(Player pPlayer, UUID uuidcible, String messageErreur) {
-
+    // Check if playeruuid is trusted on worldname
+    public static Boolean isTrusted(String worldname, String playeruuid) {
         String CHECK = "SELECT * FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
-        String check_w;
-        String check_p;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
-            // UUID _P
-            check_p = uuidcible.toString();
-            check.setString(1, check_p);
-            // UUID_W
-            check_w = (pPlayer.getUniqueId() + "-IsoWorld");
-            check.setString(2, check_w);
-            // SERVEUR_ID
+            // Player uuid
+            check.setString(1, playeruuid);
+            // World name
+            if (!worldname.contains("-IsoWorld")) {
+                worldname = (worldname + "-IsoWorld");
+            }
+            check.setString(2, worldname);
+            // Server id
             check.setString(3, plugin.servername);
-            // Requête
+            // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
                 return true;
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(messageErreur).color(TextColors.AQUA))).build()));
             return false;
         }
         return false;

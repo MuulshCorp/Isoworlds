@@ -26,11 +26,10 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 import bukkit.util.action.ChargeAction;
-import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.console.Logger;
+import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -58,15 +57,14 @@ public class Biome {
             return;
         }
 
-        // SELECT WORLD
-        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
-            return;
+        // Check if actual world is an isoworld
+        if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
         }
 
         // Vérification taille args et retour si biome non indiqué
         if (len < 1) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vous requiert un nom de biome dans votre commande.");
+            pPlayer.sendMessage(Message.error(Msg.keys.BIOME_NOT_FOUND));
             return;
         }
 
@@ -94,7 +92,7 @@ public class Biome {
                 break;
             // Biome VOID not in 1.7.10
             default:
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce biome n'existe pas.");
+                pPlayer.sendMessage(Message.error(Msg.keys.BIOME_NOT_FOUND));
                 return;
         }
 
@@ -114,9 +112,8 @@ public class Biome {
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
         }
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
-
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)");
+        pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
+        pPlayer.sendMessage(Message.success(Msg.keys.BIOME_CHANGED));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
     }

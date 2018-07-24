@@ -110,7 +110,7 @@ public class Cooldown implements CooldownType {
      * Return all the occurences for a given player, type (ex: refonte) with date greater than now
      */
     private Timestamp getPlayerLastCooldown(String uuid_p, String type) {
-        String query = "SELECT * FROM `player_cooldown` WHERE `uuid_p` = ? AND `type` = ? AND `date` > ? AND `server_id` = ?";
+        String query = "SELECT * FROM `players_cooldown` WHERE `uuid_p` = ? AND `type` = ? AND `date` > ? AND `server_id` = ?";
         try {
             PreparedStatement check = this.database.prepare(query);
 
@@ -157,7 +157,7 @@ public class Cooldown implements CooldownType {
     }
 
     private void addPlayerCooldown(String uuid_p, String type, int delay) {
-        String query = "INSERT INTO `player_cooldown` (`uuid_p`, `date`, `type`, `server_id`) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO `players_cooldown` (`uuid_p`, `date`, `type`, `server_id`) VALUES (?, ?, ?, ?)";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() + (delay * 1000));
         try {
             PreparedStatement insert = this.database.prepare(query);

@@ -53,7 +53,7 @@ public class IsoWorldsAction {
             // Date
             insert.setString(3, (timestamp.toString()));
             // Serveur_id
-            insert.setString(4, Manager.getInstance().getServername());
+            insert.setString(4, servername);
             // Status of iw
             insert.setInt(5, 0);
             insert.executeUpdate();
@@ -78,7 +78,7 @@ public class IsoWorldsAction {
 
             // delete autorisations
             delete_autorisations.setString(1, Iuuid_w);
-            delete_autorisations.setString(2,servername);
+            delete_autorisations.setString(2, servername);
 
             // delete isoworld
             delete_iworlds.setString(1, Iuuid_p);
@@ -240,7 +240,7 @@ public class IsoWorldsAction {
             check_w = (check_p + "-IsoWorld");
             check.setString(2, check_w);
             // Server id
-            check.setString(3, instance.servername);
+            check.setString(3, servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
@@ -279,7 +279,7 @@ public class IsoWorldsAction {
             check_w = (check_p + "-IsoWorld");
             check.setString(2, check_w);
             // Server id
-            check.setString(3, instance.servername);
+            check.setString(3, servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {

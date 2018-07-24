@@ -35,6 +35,7 @@ import java.sql.Timestamp;
 public class TrustAction {
 
     private static final Mysql database = Manager.getInstance().getMysql();
+    private static final String servername = Manager.getInstance().getServername();
 
     // Get all isoworlds allowed for a player
     public static ResultSet getAccess(String playeruuid) {
@@ -70,7 +71,7 @@ public class TrustAction {
             }
             check.setString(1, worldname);
             // Server id
-            check.setString(2, MainInterface.servername);
+            check.setString(2, servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
@@ -100,7 +101,7 @@ public class TrustAction {
             // Date
             insert.setString(3, (timestamp.toString()));
             // Serveur_id
-            insert.setString(4, MainInterface.servername);
+            insert.setString(4, servername);
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -146,7 +147,7 @@ public class TrustAction {
             }
             check.setString(2, worldname);
             // Server id
-            check.setString(3, MainInterface.servername);
+            check.setString(3, servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {

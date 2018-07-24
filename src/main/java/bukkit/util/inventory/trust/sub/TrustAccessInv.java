@@ -27,10 +27,10 @@ package bukkit.util.inventory.trust.sub;
 import bukkit.location.Locations;
 import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.action.StorageAction;
-import bukkit.util.action.TrustAction;
 import bukkit.util.console.Logger;
 import bukkit.util.inventory.MainInv;
 import common.Msg;
+import common.action.TrustAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -76,7 +76,7 @@ public class TrustAccessInv implements Listener {
 
         int i = 0;
         int j = 0;
-        ResultSet trusts = TrustAction.getAccess(pPlayer, Msg.keys.SQL);
+        ResultSet trusts = TrustAction.getAccess(pPlayer.getUniqueId().toString());
         try {
             while (trusts.next()) {
                 // Récupération uuid

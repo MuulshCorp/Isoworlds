@@ -24,12 +24,11 @@
  */
 package sponge.util.task.PlayerStatistic;
 
-import common.Msg;
+import common.action.PlayTimeAction;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import sponge.Main;
-import sponge.util.action.PlayTimeAction;
 
 public class PlayTime {
 
@@ -37,7 +36,7 @@ public class PlayTime {
     public static void IncreasePlayTime() {
         Task.builder().execute(() -> {
             for (Player p : Sponge.getServer().getOnlinePlayers()) {
-                PlayTimeAction.updatePlayTime(p, Msg.keys.SQL);
+                PlayTimeAction.updatePlayTime(p.getUniqueId().toString());
             }
         }).submit(Main.instance);
     }

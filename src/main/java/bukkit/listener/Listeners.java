@@ -26,10 +26,11 @@ package bukkit.listener;
 
 import bukkit.Main;
 import bukkit.location.Locations;
-import bukkit.util.action.ChargeAction;
 import bukkit.util.console.Logger;
+import bukkit.util.message.Message;
 import common.ManageFiles;
 import common.Msg;
+import common.action.ChargeAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -85,7 +86,7 @@ public class Listeners implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
-        if (ChargeAction.getCharge(event.getPlayer(), Msg.keys.SQL) == null) {
+        if (ChargeAction.firstTime(event.getPlayer().getUniqueId().toString()) == null) {
             new BukkitRunnable() {
 
                 @Override
@@ -182,7 +183,7 @@ public class Listeners implements Listener {
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+                pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             }
 
         }

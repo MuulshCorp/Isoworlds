@@ -25,6 +25,8 @@
 package sponge.util.inventory;
 
 import common.Msg;
+import common.action.ChargeAction;
+import common.action.PlayTimeAction;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.SkullTypes;
@@ -43,8 +45,6 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.location.Locations;
-import sponge.util.action.ChargeAction;
-import sponge.util.action.PlayTimeAction;
 import sponge.util.console.Logger;
 import sponge.util.inventory.biome.BiomeInv;
 import sponge.util.inventory.build.BuildInv;
@@ -116,8 +116,8 @@ public class MainInv {
                 .build(instance);
 
         // Récupération nombre charge
-        Integer charges = ChargeAction.getCharge(pPlayer, Msg.keys.SQL);
-        Integer playtime = PlayTimeAction.getPlayTime(pPlayer, Msg.keys.SQL);
+        Integer charges = ChargeAction.getCharge(pPlayer);
+        Integer playtime = PlayTimeAction.getPlayTime(pPlayer.getUniqueId().toString());
         String formatedPlayTime;
 
         if (playtime > 60) {

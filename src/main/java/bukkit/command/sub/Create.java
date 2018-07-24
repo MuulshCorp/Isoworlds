@@ -25,12 +25,12 @@
 package bukkit.command.sub;
 
 import bukkit.util.action.IsoWorldsAction;
-import bukkit.util.action.TrustAction;
 import bukkit.util.console.Logger;
 import common.ManageFiles;
 import bukkit.Main;
 import bukkit.location.Locations;
 import common.Msg;
+import common.action.TrustAction;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -130,7 +130,7 @@ public class Create {
         }
 
         // INSERT TRUST
-        if (!TrustAction.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+        if (!TrustAction.setTrust(pPlayer.getUniqueId().toString(), pPlayer.getUniqueId().toString())) {
             return;
         }
 

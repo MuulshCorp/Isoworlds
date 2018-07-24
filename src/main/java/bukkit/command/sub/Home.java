@@ -29,6 +29,7 @@ import bukkit.location.Locations;
 import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.action.LockAction;
 import bukkit.util.action.StorageAction;
+import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
 import org.bukkit.*;
@@ -71,7 +72,7 @@ public class Home {
 
         // SELECT WORLD (load it if need)
         if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, true)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;
         }
 

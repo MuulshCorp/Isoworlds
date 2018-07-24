@@ -26,6 +26,7 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 import bukkit.util.action.IsoWorldsAction;
+import bukkit.util.message.Message;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
@@ -92,7 +93,7 @@ public class Reforge {
         destDir.mkdir();
 
         if (Bukkit.getServer().getWorld(worldname) == null) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;
         }
 

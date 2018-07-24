@@ -25,7 +25,7 @@
 package sponge.util.inventory.trust.sub;
 
 import common.Cooldown;
-import common.Msg;
+import common.action.TrustAction;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
@@ -50,7 +50,6 @@ import sponge.location.Locations;
 import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.StatAction;
 import sponge.util.action.StorageAction;
-import sponge.util.action.TrustAction;
 import sponge.util.console.Logger;
 import sponge.util.inventory.MainInv;
 

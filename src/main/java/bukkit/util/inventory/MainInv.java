@@ -24,8 +24,6 @@
  */
 package bukkit.util.inventory;
 
-import bukkit.util.action.ChargeAction;
-import bukkit.util.action.PlayTimeAction;
 import bukkit.util.inventory.biome.BiomeInv;
 import bukkit.util.inventory.build.BuildInv;
 import bukkit.util.inventory.enable.EnableInv;
@@ -36,6 +34,8 @@ import bukkit.util.inventory.trust.TrustInv;
 import bukkit.util.inventory.warp.WarpInv;
 import bukkit.util.inventory.weather.WeatherInv;
 import common.Msg;
+import common.action.ChargeAction;
+import common.action.PlayTimeAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -112,8 +112,8 @@ public class MainInv implements Listener {
         });
 
         // Récupération nombre charge
-        Integer charges = ChargeAction.getCharge(pPlayer, Msg.keys.SQL);
-        Integer playtime = PlayTimeAction.getPlayTime(pPlayer, Msg.keys.SQL);
+        Integer charges = ChargeAction.getCharge(pPlayer);
+        Integer playtime = PlayTimeAction.getPlayTime(pPlayer.getUniqueId().toString());
         String formatedPlayTime;
 
         if (playtime > 60) {

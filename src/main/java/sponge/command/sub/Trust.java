@@ -26,6 +26,7 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
+import common.action.TrustAction;
 import sponge.Main;
 
 import org.spongepowered.api.Sponge;
@@ -43,7 +44,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.util.action.IsoWorldsAction;
-import sponge.util.action.TrustAction;
+import sponge.util.message.Message;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -73,8 +74,7 @@ public class Trust implements CommandCallable {
 
         // SELECT WORLD
         if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
 
@@ -104,14 +104,14 @@ public class Trust implements CommandCallable {
         }
 
         // CHECK AUTORISATIONS
-        if (TrustAction.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_TRUST).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         // INSERT
-        if (!TrustAction.setTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.setTrust(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "confiance");
             return CommandResult.success();
         }

@@ -24,7 +24,7 @@
  */
 package sponge.util.inventory.trust.sub;
 
-import common.Msg;
+import common.action.TrustAction;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.RepresentedPlayerData;
@@ -44,7 +44,6 @@ import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.util.action.StatAction;
-import sponge.util.action.TrustAction;
 import sponge.util.console.Logger;
 import sponge.util.inventory.MainInv;
 

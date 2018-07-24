@@ -22,9 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sponge.util.action;
+package common.action;
 
-import sponge.Main;
+import common.MainInterface;
+import common.Manager;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,17 +33,17 @@ import java.sql.Timestamp;
 
 public class TrustAction {
 
-    private static final Main plugin = Main.instance;
+    private static final MainInterface instance = Manager.getInstance();
 
     // Get all isoworlds allowed for a player
     public static ResultSet getAccess(String playeruuid) {
         String CHECK = "SELECT `uuid_w` FROM `autorisations` WHERE `uuid_p` = ? AND `server_id` = ?";
         ResultSet result = null;
         try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
+            PreparedStatement check = instance.database.prepare(CHECK);
             check.setString(1, playeruuid);
             // Server id
-            check.setString(2, plugin.servername);
+            check.setString(2, instance.servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
@@ -61,14 +62,14 @@ public class TrustAction {
         String CHECK = "SELECT `uuid_p` FROM `autorisations` WHERE `uuid_w` = ? AND `server_id` = ?";
         ResultSet result = null;
         try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
+            PreparedStatement check = instance.database.prepare(CHECK);
             // World name
             if (!worldname.contains("-IsoWorld")) {
                 worldname = (worldname + "-IsoWorld");
             }
             check.setString(1, worldname);
             // Server id
-            check.setString(2, plugin.servername);
+            check.setString(2, instance.servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
@@ -87,7 +88,7 @@ public class TrustAction {
         String INSERT = "INSERT INTO `autorisations` (`uuid_p`, `uuid_w`, `date_time`, `server_id`) VALUES (?, ?, ?, ?)";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try {
-            PreparedStatement insert = plugin.database.prepare(INSERT);
+            PreparedStatement insert = instance.database.prepare(INSERT);
             // Player uuid
             insert.setString(1, playeruuid);
             // World name
@@ -98,7 +99,7 @@ public class TrustAction {
             // Date
             insert.setString(3, (timestamp.toString()));
             // Serveur_id
-            insert.setString(4, plugin.servername);
+            insert.setString(4, instance.servername);
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -111,7 +112,7 @@ public class TrustAction {
     public static Boolean deleteTrust(String worldname, String playeruuid) {
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         try {
-            PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
+            PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
             // World name
             if (!worldname.contains("-IsoWorld")) {
                 worldname = (worldname + "-IsoWorld");
@@ -120,7 +121,7 @@ public class TrustAction {
             // delete autorisation
             delete_autorisations.setString(1, playeruuid);
             delete_autorisations.setString(2, worldname);
-            delete_autorisations.setString(3, plugin.servername);
+            delete_autorisations.setString(3, instance.servername);
 
             // execute
             delete_autorisations.executeUpdate();
@@ -135,7 +136,7 @@ public class TrustAction {
     public static Boolean isTrusted(String worldname, String playeruuid) {
         String CHECK = "SELECT * FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         try {
-            PreparedStatement check = plugin.database.prepare(CHECK);
+            PreparedStatement check = instance.database.prepare(CHECK);
             // Player uuid
             check.setString(1, playeruuid);
             // World name
@@ -144,7 +145,7 @@ public class TrustAction {
             }
             check.setString(2, worldname);
             // Server id
-            check.setString(3, plugin.servername);
+            check.setString(3, instance.servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {

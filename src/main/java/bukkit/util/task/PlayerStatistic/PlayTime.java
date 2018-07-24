@@ -25,8 +25,8 @@
 package bukkit.util.task.PlayerStatistic;
 
 import bukkit.Main;
-import bukkit.util.action.PlayTimeAction;
 import common.Msg;
+import common.action.PlayTimeAction;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -36,7 +36,7 @@ public class PlayTime {
     public static void IncreasePlayTime() {
         Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                PlayTimeAction.updatePlayTime(p, Msg.keys.SQL);
+                PlayTimeAction.updatePlayTime(p.getUniqueId().toString());
             }
         }), 0, 1200);
     }

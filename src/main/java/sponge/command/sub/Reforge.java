@@ -44,6 +44,7 @@ import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.StatAction;
 import sponge.util.console.Logger;
+import sponge.util.message.Message;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -72,8 +73,7 @@ public class Reforge implements CommandExecutor {
 
         // SELECT WORLD
         if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
 
@@ -100,8 +100,7 @@ public class Reforge implements CommandExecutor {
         File destDir = new File(ManageFiles.getPath() + "/IsoWorlds-REFONTE/" + worldname);
         destDir.mkdir();
         if (!Sponge.getServer().getWorld(worldname).isPresent()) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
         if (Sponge.getServer().getWorld(worldname).get().isLoaded()) {

@@ -42,6 +42,7 @@ import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.LockAction;
 import sponge.util.action.StatAction;
 import sponge.util.action.StorageAction;
+import sponge.util.message.Message;
 
 public class Home implements CommandExecutor {
 
@@ -77,8 +78,7 @@ public class Home implements CommandExecutor {
 
         // SELECT WORLD (load if need)
         if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, true)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
 

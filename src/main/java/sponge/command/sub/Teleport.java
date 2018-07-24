@@ -39,6 +39,7 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.LockAction;
+import sponge.util.message.Message;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -57,8 +58,7 @@ public class Teleport implements CommandCallable {
 
         // Check if world exists
         if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, true)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
 

@@ -26,6 +26,7 @@ package sponge.listener;
 
 import common.ManageFiles;
 import common.Msg;
+import common.action.ChargeAction;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.cause.Cause;
@@ -37,7 +38,6 @@ import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
 import org.spongepowered.api.scheduler.Task;
 import sponge.location.Locations;
-import sponge.util.action.ChargeAction;
 import sponge.util.console.Logger;
 import sponge.Main;
 
@@ -51,6 +51,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import sponge.util.message.Message;
 
 import java.io.File;
 import java.sql.PreparedStatement;
@@ -133,7 +134,7 @@ public class Listeners {
     @Listener
     public void onConnect(ClientConnectionEvent.Join event) {
         // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
-        if (ChargeAction.firstTime(event.getTargetEntity(), Msg.keys.SQL) == null) {
+        if (ChargeAction.firstTime(event.getTargetEntity().getUniqueId().toString()) == null) {
             Task.builder().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -284,8 +285,7 @@ public class Listeners {
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.AQUA))).build()));
+                pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             }
 
         }

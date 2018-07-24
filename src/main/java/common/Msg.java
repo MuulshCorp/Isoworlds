@@ -39,6 +39,8 @@ public class Msg {
         // CHARGE
         String CHARGE_USED
                 = "Vous venez d'utiliser une charge";
+        String CHARGE_EMPTY
+                = "Vous ne possédez plus de charge";
 
         String CREATION_IWORLD
                 = "Sijania concentre son pouvoir...";

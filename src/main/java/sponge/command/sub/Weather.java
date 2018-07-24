@@ -26,6 +26,7 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
+import common.action.ChargeAction;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.world.weather.Weathers;
 import sponge.Main;
@@ -39,9 +40,9 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-import sponge.util.action.ChargeAction;
 import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.StatAction;
+import sponge.util.message.Message;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -67,15 +68,14 @@ public class Weather implements CommandCallable {
         }
 
         // If got charges
-        int charges = ChargeAction.checkCharge(pPlayer, Msg.keys.SQL);
+        int charges = ChargeAction.checkCharge(pPlayer);
         if (charges == -1) {
             return CommandResult.success();
         }
 
         // Check if world exists
         if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_IWORLD).color(TextColors.RED))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
 
@@ -232,7 +232,7 @@ public class Weather implements CommandCallable {
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-            ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+            ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)

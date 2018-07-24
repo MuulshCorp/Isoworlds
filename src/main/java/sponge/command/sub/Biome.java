@@ -26,6 +26,8 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
+import common.action.ChargeAction;
+import common.action.TrustAction;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -38,9 +40,6 @@ import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.biome.BiomeType;
 import org.spongepowered.api.world.biome.BiomeTypes;
 import sponge.Main;
-import sponge.util.action.ChargeAction;
-import sponge.util.action.IsoWorldsAction;
-import sponge.util.action.TrustAction;
 import sponge.util.console.Logger;
 import sponge.util.message.Message;
 
@@ -67,7 +66,7 @@ public class Biome implements CommandCallable {
         }
 
         // If got charges
-        int charges = ChargeAction.checkCharge(pPlayer, Msg.keys.SQL);
+        int charges = ChargeAction.checkCharge(pPlayer);
         if (charges == -1) {
             return CommandResult.success();
         }
@@ -127,7 +126,7 @@ public class Biome implements CommandCallable {
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-            ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+            ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
         pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)

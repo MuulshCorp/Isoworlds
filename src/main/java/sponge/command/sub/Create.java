@@ -25,6 +25,7 @@
 package sponge.command.sub;
 
 import common.Msg;
+import common.action.TrustAction;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -40,7 +41,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.StatAction;
-import sponge.util.action.TrustAction;
 import sponge.util.console.Logger;
 
 import javax.annotation.Nullable;
@@ -136,7 +136,7 @@ public class Create implements CommandCallable {
         // INSERT
         if (IsoWorldsAction.setIsoWorld(pPlayer, Msg.keys.SQL)) {
             // INSERT TRUST
-            if (TrustAction.setTrust(pPlayer, pPlayer.getUniqueId(), Msg.keys.SQL)) {
+            if (TrustAction.setTrust(pPlayer.getUniqueId().toString(), pPlayer.getUniqueId().toString())) {
                 // Chargement
                 Sponge.getGame().getServer().loadWorld(worldname);
 

@@ -26,11 +26,12 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 
-import bukkit.util.action.ChargeAction;
 import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.console.Logger;
+import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
+import common.action.ChargeAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -53,13 +54,13 @@ public class Time {
         }
 
         // If got charges
-        int charges = ChargeAction.checkCharge(pPlayer, Msg.keys.SQL);
+        int charges = ChargeAction.checkCharge(pPlayer);
         if (charges == -1) {
             return;
         }
 
         if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]" + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;
         }
 
@@ -85,7 +86,7 @@ public class Time {
             }
 
             if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-                ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+                ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
             }
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
 

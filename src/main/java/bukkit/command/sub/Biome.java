@@ -25,11 +25,11 @@
 package bukkit.command.sub;
 
 import bukkit.Main;
-import bukkit.util.action.ChargeAction;
 import bukkit.util.console.Logger;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
+import common.action.ChargeAction;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -52,7 +52,7 @@ public class Biome {
         }
 
         // If got charges
-        int charges = ChargeAction.checkCharge(pPlayer, Msg.keys.SQL);
+        int charges = ChargeAction.checkCharge(pPlayer);
         if (charges == -1) {
             return;
         }
@@ -110,7 +110,7 @@ public class Biome {
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
-            ChargeAction.updateCharge(pPlayer, charges - 1, Msg.keys.SQL);
+            ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
         pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
         pPlayer.sendMessage(Message.success(Msg.keys.BIOME_CHANGED));

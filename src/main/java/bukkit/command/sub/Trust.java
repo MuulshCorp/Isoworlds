@@ -26,9 +26,10 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 import bukkit.util.action.IsoWorldsAction;
-import bukkit.util.action.TrustAction;
+import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
+import common.action.TrustAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -55,7 +56,7 @@ public class Trust {
 
         // SELECT WORLD
         if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_IWORLD);
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;
         }
 
@@ -72,13 +73,13 @@ public class Trust {
         }
 
         // CHECK AUTORISATIONS
-        if (TrustAction.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
             return;
         }
 
         // INSERT
-        if (!TrustAction.setTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.setTrust(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
             return;
         }
 

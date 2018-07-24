@@ -26,9 +26,9 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 import bukkit.util.action.IsoWorldsAction;
-import bukkit.util.action.TrustAction;
 import bukkit.util.console.Logger;
 import common.Msg;
+import common.action.TrustAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -95,13 +95,13 @@ public class Untrust {
         }
 
         // CHECK AUTORISATIONS
-        if (!TrustAction.isTrusted(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
             return;
         }
 
         // DELETE AUTORISATION
-        if (!TrustAction.deleteTrust(pPlayer, uuidcible, Msg.keys.SQL)) {
+        if (!TrustAction.deleteTrust(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }

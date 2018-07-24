@@ -25,7 +25,7 @@
 package sponge.command.sub;
 
 import com.google.common.collect.Iterables;
-import sponge.MainSponge;
+import sponge.Main;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -49,7 +49,7 @@ import java.util.UUID;
 
 public class ListWorlds implements CommandExecutor {
 
-    private final MainSponge plugin = MainSponge.instance;
+    private final Main plugin = Main.instance;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {

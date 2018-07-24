@@ -24,13 +24,13 @@
  */
 package bukkit.util.action;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class LockAction {
 
-    private static final MainBukkit instance = MainBukkit.getInstance();
+    private static final Main instance = Main.getInstance();
 
     // Vérifie si le lock est présent et renvoi vrai, sinon défini le lock et renvoi false
     public static Boolean isLocked(Player pPlayer, String className) {

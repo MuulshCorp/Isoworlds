@@ -25,7 +25,7 @@
 package sponge.util.action;
 
 import org.spongepowered.api.entity.living.player.Player;
-import sponge.MainSponge;
+import sponge.Main;
 import sponge.util.console.Logger;
 
 import java.sql.PreparedStatement;
@@ -33,11 +33,11 @@ import java.sql.ResultSet;
 
 public class PlayTimeAction {
 
-    public static final MainSponge plugin = MainSponge.instance;
+    public static final Main plugin = Main.instance;
 
     // Ajoute une minute au compteur de temps du joueur
     public static Boolean updatePlayTime(Player pPlayer, String messageErreur) {
-        String CHECK = "UPDATE `players_info` SET `playtimes` = `playtimes` + 1 WHERE `UUID_P` = ?";
+        String CHECK = "UPDATE `players_info` SET `playtimes` = `playtimes` + 1 WHERE `uuid_p` = ?";
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
@@ -55,7 +55,7 @@ public class PlayTimeAction {
 
     // Get charge of a player
     public static Integer getPlayTime(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `playtimes` FROM `players_info` WHERE `UUID_P` = ?";
+        String CHECK = "SELECT `playtimes` FROM `players_info` WHERE `uuid_p` = ?";
         ResultSet result;
         Integer number;
         try {

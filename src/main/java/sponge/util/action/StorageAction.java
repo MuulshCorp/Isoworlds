@@ -31,9 +31,9 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.MainSponge;
+import sponge.Main;
 import sponge.util.console.Logger;
-import sponge.util.task.Pull;
+import sponge.util.task.SAS.Pull;
 
 import java.io.File;
 import java.sql.PreparedStatement;
@@ -44,7 +44,7 @@ import static sponge.util.action.LockAction.checkLockFormat;
 
 public class StorageAction {
 
-    public static final MainSponge plugin = MainSponge.instance;
+    public static final Main plugin = Main.instance;
 
     // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
     public static Boolean checkTag(Player pPlayer, String worldname) {
@@ -117,7 +117,7 @@ public class StorageAction {
 
     // Check status of a IsoWorld, if is Pushed return true, else return false
     public static Boolean getStatus(String world, String messageErreur) {
-        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
@@ -152,7 +152,7 @@ public class StorageAction {
 
     // Set global status
     public static Boolean setGlobalStatus(String messageErreur) {
-        String CHECK = "UPDATE `isoworlds` SET `STATUS` = 1 WHERE `SERVEUR_ID` = ?";
+        String CHECK = "UPDATE `isoworlds` SET `status` = 1 WHERE `server_id` = ?";
         String check_w;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
@@ -173,7 +173,7 @@ public class StorageAction {
     // Set status of IsoWorld (1 for Pushed, 0 for Present)
     // It returns true if pushed, false si envoyé ou à envoyer
     public static void setStatus(String world, Integer status, String messageErreur) {
-        String CHECK = "UPDATE `isoworlds` SET `STATUS` = ? WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "UPDATE `isoworlds` SET `status` = ? WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);

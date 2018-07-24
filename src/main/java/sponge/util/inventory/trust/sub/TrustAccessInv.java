@@ -45,7 +45,7 @@ import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.MainSponge;
+import sponge.Main;
 import sponge.location.Locations;
 import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.StatAction;
@@ -61,11 +61,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static sponge.MainSponge.instance;
+import static sponge.Main.instance;
 
 public class TrustAccessInv {
 
-    private static final MainSponge plugin = MainSponge.instance;
+    private static final Main plugin = Main.instance;
 
     public static Inventory getInv(Player pPlayer) {
 

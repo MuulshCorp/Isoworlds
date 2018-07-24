@@ -22,135 +22,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package bukkit;
+package bukkit.util.task.SAS;
 
-import bukkit.command.Commands;
-import bukkit.listener.Listeners;
+import bukkit.Main;
 import bukkit.location.Locations;
-import bukkit.util.action.DimAltAction;
-import bukkit.util.action.PlayTimeAction;
 import bukkit.util.action.StorageAction;
 import bukkit.util.console.Logger;
-import common.*;
+import common.ManageFiles;
+import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public final class MainBukkit extends JavaPlugin {
-    public static MainBukkit instance;
-    private java.util.logging.Logger logger;
-    public Mysql database;
-    public String servername;
-    FileConfiguration config = getConfig();
-    static Map<String, Integer> worlds = new HashMap<String, Integer>();
-    public static Map<String, Integer> lock = new HashMap<String, Integer>();
-    public Cooldown cooldown;
-    private common.Logger commonLogger;
+public class Push {
 
-    @Override
-    public void onEnable() {
-        this.instance = this;
+    public static void PushProcess() {
 
-        // Affiche le tag / version au lancement
-        Logger.tag();
-        PluginDescriptionFile pdf = getDescription();
-        Logger.info("Chargement de la version Bukkit: " + pdf.getVersion() + " Auteur: " + pdf.getAuthors() + " Site: " + pdf.getWebsite());
-        Logger.info("Lecture de la configuration...");
+        Map<String, Integer> worlds = new HashMap<String, Integer>();
+        int x = Main.getInstance().getConfig().getInt("inactivity_before_world_unload");
 
-        this.createConfig();
-        this.servername = getConfig().getString("id");
-
-        // Check if ISOWORLDS-SAS exists
-        File checkSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");
-        if (!checkSAS.exists()) {
-            checkSAS.mkdir();
-            Logger.info("Dossier ISOWORLDS-SAS crée !");
-        }
-
-        File source = new File(ManageFiles.getPath());
-        // Retourne la liste des isoworld tag
-        for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
-            ManageFiles.deleteDir(new File(f.getPath() + "/uid.dat"));
-            ManageFiles.deleteDir(new File(f.getPath() + "/session.lock"));
-            // Gestion des IsoWorlds non push, on les tag à @PUSH si pas de tag @PUSHED
-            if (!f.getName().contains("@PUSHED")) {
-                ManageFiles.rename(ManageFiles.getPath() + "/" + f.getName(), "@PUSH");
-                Logger.warning("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
-            }
-        }
-
-        // Dim reset
-        ResetAutoDims.reset();
-
-        // Purge map
-        worlds.clear();
-        lock.clear();
-
-        Bukkit.getServer().getPluginManager().registerEvents(new Listeners(), this);
-
-        this.getCommand("iw").setExecutor(new Commands());
-
-        this.database = new Mysql(
-                getConfig().getString("sql.serveur"),
-                getConfig().getInt("sql.port"),
-                getConfig().getString("sql.nom-bdd"),
-                getConfig().getString("sql.utilisateur"),
-                getConfig().getString("sql.mdp"), true
-        );
-
-        Logger.info("Connexion à la base de données...");
-        try {
-            this.database.connect();
-        } catch (Exception ex) {
-            Logger.severe("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
-            ex.printStackTrace();
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        this.commonLogger = new common.Logger("bukkit");
-        this.cooldown = new Cooldown(this.database, this.servername, "bukkit", this.commonLogger);
-        Logger.info("Démarrage des tâches...");
-        everyMinutes();
-        Logger.info("IsoWorlds connecté avec succès à la base de données !");
-
-        // Set global status 1
-        StorageAction.setGlobalStatus(Msg.keys.SQL);
-
-        // Gen dim ALT
-        DimAltAction.generateDim();
-
-    }
-
-    @Override
-    public void onDisable() {
-        Logger.info("IsoWorlds désactivé !");
-        Bukkit.getScheduler().cancelTasks(this);
-        this.instance = null;
-        this.servername = null;
-        this.database = null;
-        this.logger = null;
-
-    }
-
-    private void everyMinutes() {
-        int x = getConfig().getInt("max-inactive-time");
-
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTaskAsynchronously(MainBukkit.this.instance, () -> {
-            for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                PlayTimeAction.updatePlayTime(p, Msg.keys.SQL);
-            }
-        }), 0, 1200);
-
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getScheduler().runTask(MainBukkit.this.instance, () -> {
+        Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getScheduler().runTask(Main.instance, () -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
             Logger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
             if (worlds.isEmpty()) {
@@ -241,26 +136,5 @@ public final class MainBukkit extends JavaPlugin {
                 Logger.warning("Fin de l'analyse");
             }
         }), 0, 1200);
-    }
-
-    public static MainBukkit getInstance() {
-        return instance;
-    }
-
-    private void createConfig() {
-        try {
-            if (!getDataFolder().exists()) {
-                getDataFolder().mkdirs();
-            }
-            File file = new File(getDataFolder(), "config.yml");
-            if (!file.exists()) {
-                Logger.warning("Fichier de configuration non trouvé, création en cours...");
-                saveDefaultConfig();
-            } else {
-                Logger.info("Lecture de la configuration...");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

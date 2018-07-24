@@ -24,7 +24,7 @@
  */
 package bukkit.command.sub;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.util.action.ChargeAction;
 import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.console.Logger;
@@ -38,11 +38,11 @@ import org.bukkit.entity.Player;
 
 public class Biome {
 
-    public static MainBukkit instance;
+    public static Main instance;
 
     public static void Biome(CommandSender sender, String[] args) {
         // Variables
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
         Player pPlayer = (Player) sender;
         Integer len = args.length;
         org.bukkit.block.Biome biome;

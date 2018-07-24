@@ -54,7 +54,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static sponge.MainSponge.instance;
+import static sponge.Main.instance;
 
 public class TrustDeleteInv {
 

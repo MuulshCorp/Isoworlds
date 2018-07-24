@@ -1,34 +1,34 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
- *
- * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
- * Copyright (c) contributors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
+* This file is part of IsoWorlds, licensed under the MIT License (MIT).
+*
+* Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
+* Copyright (c) contributors
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+* THE SOFTWARE.
+*/
 package sponge.util.action;
 
 import common.Msg;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.MainSponge;
+import sponge.Main;
 import sponge.util.console.Logger;
 
 import java.sql.PreparedStatement;
@@ -36,28 +36,30 @@ import java.sql.ResultSet;
 
 public class ChargeAction {
 
-    public static final MainSponge plugin = MainSponge.instance;
+    public static final Main plugin = Main.instance;
 
     // Get charge of a player
     public static Integer getCharge(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `charges` FROM `players_info` WHERE `UUID_P` = ?";
+        String CHECK = "SELECT `charges` FROM `players_info` WHERE `uuid_p` = ?";
         ResultSet result;
         Integer number;
+        // If unlimited
+        if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+            return 1;
+        }
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
             // UUID _P
             check.setString(1, pPlayer.getUniqueId().toString());
             // Requête
             ResultSet rselect = check.executeQuery();
-            while (rselect.next()) {
-                Logger.info(rselect.toString());
-                Logger.info("Debug charge 1");
+            if (rselect.next()) {
                 number = rselect.getInt(1);
                 return number;
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
+            bukkit.util.console.Logger.severe(messageErreur);
             return null;
         }
         initCharges(pPlayer, Msg.keys.SQL);
@@ -66,7 +68,7 @@ public class ChargeAction {
 
     // Vérifie les charges, retire si en possède sinon return false avec message
     public static Integer checkCharge(Player pPlayer, String messageErreur) {
-        Integer charges = ChargeAction.getCharge(pPlayer, Msg.keys.SQL);
+        Integer charges = getCharge(pPlayer, Msg.keys.SQL);
         Integer newCharges;
 
         if (charges == null) {
@@ -87,7 +89,7 @@ public class ChargeAction {
 
     // Ajoute des charges à un joueur, succès = true
     public static Boolean updateCharge(Player pPlayer, Integer number, String messageErreur) {
-        String CHECK = "UPDATE `players_info` SET `charges` = ? WHERE `UUID_P` = ?";
+        String CHECK = "UPDATE `players_info` SET `charges` = ? WHERE `uuid_p` = ?";
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
@@ -101,14 +103,13 @@ public class ChargeAction {
             return true;
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
             return false;
         }
     }
 
     // Get charge of a player
     public static Integer firstTime(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `charges` FROM `players_info` WHERE `UUID_P` = ?";
+        String CHECK = "SELECT `charges` FROM `players_info` WHERE `uuid_p` = ?";
         ResultSet result;
         Integer number;
         try {
@@ -125,7 +126,6 @@ public class ChargeAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
             return null;
         }
         return null;
@@ -133,7 +133,7 @@ public class ChargeAction {
 
     // Init charges and playtime on first connect
     public static Boolean initCharges(Player pPlayer, String messageErreur) {
-        String INSERT = "INSERT INTO `players_info` (`UUID_P`, `charges`, `playtimes`) VALUES (?, ?, ?)";
+        String INSERT = "INSERT INTO `players_info` (`uuid_p`, `charges`, `playtimes`) VALUES (?, ?, ?)";
         Integer number;
         String Iuuid_p;
 
@@ -150,7 +150,6 @@ public class ChargeAction {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             return false;
         }
         return true;

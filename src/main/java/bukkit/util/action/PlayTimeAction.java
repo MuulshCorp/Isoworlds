@@ -24,8 +24,7 @@
  */
 package bukkit.util.action;
 
-import bukkit.MainBukkit;
-import bukkit.util.console.Logger;
+import bukkit.Main;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
@@ -33,11 +32,11 @@ import java.sql.ResultSet;
 
 public class PlayTimeAction {
 
-    private static final MainBukkit instance = MainBukkit.getInstance();
+    private static final Main instance = Main.getInstance();
 
     // Ajoute une minute au compteur de temps du joueur
     public static Boolean updatePlayTime(Player pPlayer, String messageErreur) {
-        String CHECK = "UPDATE `players_info` SET `playtimes` = `playtimes` + 1 WHERE `UUID_P` = ?";
+        String CHECK = "UPDATE `players_info` SET `playtimes` = `playtimes` + 1 WHERE `uuid_p` = ?";
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
 
@@ -48,14 +47,13 @@ public class PlayTimeAction {
             return true;
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
             return false;
         }
     }
 
     // Get charge of a player
     public static Integer getPlayTime(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `playtimes` FROM `players_info` WHERE `UUID_P` = ?";
+        String CHECK = "SELECT `playtimes` FROM `players_info` WHERE `uuid_p` = ?";
         ResultSet result;
         Integer number;
         try {
@@ -70,7 +68,6 @@ public class PlayTimeAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.info(messageErreur);
             return null;
         }
         return 0;

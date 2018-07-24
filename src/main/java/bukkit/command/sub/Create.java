@@ -28,7 +28,7 @@ import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.action.TrustAction;
 import bukkit.util.console.Logger;
 import common.ManageFiles;
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.location.Locations;
 import common.Msg;
 import org.bukkit.*;
@@ -40,12 +40,12 @@ import java.io.IOException;
 
 public class Create {
 
-    static MainBukkit instance;
+    static Main instance;
 
     public static void Creation(CommandSender sender, String[] args) {
 
         // Variables
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) sender;
@@ -136,8 +136,10 @@ public class Create {
 
         Locations.teleport(pPlayer, worldname);
 
-        // Configuration du monde
-        IsoWorldsAction.setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
+        // Set delayed world properties as WB doesn't know the newly created iw
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, () -> Bukkit.getScheduler().runTask(Main.instance, () -> {
+            IsoWorldsAction.setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
+        }), 60);
 
         pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
     }

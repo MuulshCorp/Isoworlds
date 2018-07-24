@@ -28,10 +28,10 @@ package sponge.util.console;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
-import sponge.MainSponge;
+import sponge.Main;
 
 public class Logger {
-    private static final MainSponge instance = MainSponge.instance;
+    private static final Main instance = Main.instance;
 
     public static void info(String s) {
         instance.getGame().getServer().getConsole().sendMessage(Text.of(Text.builder("[").color(TextColors.WHITE)
@@ -70,12 +70,12 @@ public class Logger {
     }
 
     public static void tag() {
-        instance.getGame().getServer().getConsole().sendMessage(Text.of(Text.builder("[IW]: ").color(TextColors.GOLD) + " _____          __          __           _      _      "));
-        instance.getGame().getServer().getConsole().sendMessage(Text.of(Text.builder("[IW]: ").color(TextColors.GOLD) + "|_   _|         \\ \\        / /          | |    | |     "));
-        instance.getGame().getServer().getConsole().sendMessage(Text.of(Text.builder("[IW]: ").color(TextColors.GOLD) + "  | |   ___   ___\\ \\  /\\  / /___   _ __ | |  __| | ___ "));
-        instance.getGame().getServer().getConsole().sendMessage(Text.of(Text.builder("[IW]: ").color(TextColors.GOLD) + "  | |  / __| / _ \\\\ \\/  \\/ // _ \\ | '__|| | / _` |/ __|"));
-        instance.getGame().getServer().getConsole().sendMessage(Text.of(Text.builder("[IW]: ").color(TextColors.GOLD) + " _| |_ \\__ \\| (_) |\\  /\\  /| (_) || |   | || (_| |\\__ \\"));
-        instance.getGame().getServer().getConsole().sendMessage(Text.of(Text.builder("[IW]: ").color(TextColors.GOLD) + "|_____||___/ \\___/  \\/  \\/  \\___/ |_|   |_| \\__,_||___/"));
+        warning(" _____          __          __           _      _      ");
+        warning("|_   _|         \\ \\        / /          | |    | |     ");
+        warning("  | |   ___   ___\\ \\  /\\  / /___   _ __ | |  __| | ___ ");
+        warning("  | |  / __| / _ \\\\ \\/  \\/ // _ \\ | '__|| | / _` |/ __|");
+        warning(" _| |_ \\__ \\| (_) |\\  /\\  /| (_) || |   | || (_| |\\__ \\");
+        warning("|_____||___/ \\___/  \\/  \\/  \\___/ |_|   |_| \\__,_||___/");
     }
 
 }

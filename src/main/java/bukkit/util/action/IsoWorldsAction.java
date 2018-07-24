@@ -24,7 +24,7 @@
  */
 package bukkit.util.action;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.util.console.Command;
 import bukkit.util.console.Logger;
 import common.Msg;
@@ -42,11 +42,11 @@ import java.util.UUID;
 
 public class IsoWorldsAction {
 
-    private static final MainBukkit instance = MainBukkit.getInstance();
+    private static final Main instance = Main.getInstance();
 
     // Create IsoWorld for pPlayer
     public static Boolean setIsoWorld(Player pPlayer, String messageErreur) {
-        String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`) VALUES (?, ?, ?, ?, ?)";
+        String INSERT = "INSERT INTO `isoworlds` (`uuid_p`, `uuid_w`, `date_time`, `server_id`, `status`) VALUES (?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -67,7 +67,6 @@ public class IsoWorldsAction {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
@@ -78,8 +77,8 @@ public class IsoWorldsAction {
     public static Boolean deleteIsoWorld(Player pPlayer, String messageErreur) {
         String Iuuid_p;
         String Iuuid_w;
-        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        String DELETE_IWORLDS = "DELETE FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `uuid_w` = ? AND `server_id` = ?";
+        String DELETE_IWORLDS = "DELETE FROM `isoworlds` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         try {
             PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
             PreparedStatement delete_iworlds = instance.database.prepare(DELETE_IWORLDS);
@@ -100,7 +99,6 @@ public class IsoWorldsAction {
             delete_iworlds.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
@@ -147,8 +145,8 @@ public class IsoWorldsAction {
 
     // Check if iworld exists
     public static Boolean isPresent(Player pPlayer, String messageErreur, Boolean load) {
-        MainBukkit instance;
-        instance = MainBukkit.getInstance();
+        Main instance;
+        instance = Main.getInstance();
         String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
         String check_w;
         String check_p;
@@ -180,7 +178,6 @@ public class IsoWorldsAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             return false;
         }
         return false;
@@ -188,7 +185,7 @@ public class IsoWorldsAction {
 
     // Used for construction, check if isoworld is in database (don't care charged or not)
     public static Boolean iwExists(String uuid, String messageErreur) {
-        String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT * FROM `isoworlds` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         String check_p;
         try {
@@ -208,7 +205,6 @@ public class IsoWorldsAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             return false;
         }
         return false;

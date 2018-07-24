@@ -24,9 +24,9 @@
  */
 package bukkit.util.action;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.util.console.Logger;
-import bukkit.util.task.Pull;
+import bukkit.util.task.SAS.Pull;
 import common.ManageFiles;
 import common.Msg;
 import org.bukkit.entity.Player;
@@ -38,11 +38,11 @@ import java.sql.ResultSet;
 
 public class StorageAction {
 
-    private static final MainBukkit instance = MainBukkit.getInstance();
+    private static final Main instance = Main.getInstance();
 
     // Set global status
     public static Boolean setGlobalStatus(String messageErreur) {
-        String CHECK = "UPDATE `isoworlds` SET `STATUS` = 1 WHERE `SERVEUR_ID` = ?";
+        String CHECK = "UPDATE `isoworlds` SET `status` = 1 WHERE `server_id` = ?";
         String check_w;
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
@@ -51,10 +51,8 @@ public class StorageAction {
             check.setString(1, instance.servername);
             // Requête
             check.executeUpdate();
-            Logger.info(check.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.severe(messageErreur);
             return false;
         }
         return true;
@@ -63,7 +61,7 @@ public class StorageAction {
     // Set status of IsoWorld (1 for Pushed, 0 for Present)
     // It returns true if pushed, false si envoyé ou à envoyer
     public static Boolean setStatus(String world, Integer status, String messageErreur) {
-        String CHECK = "UPDATE `isoworlds` SET `STATUS` = ? WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "UPDATE `isoworlds` SET `status` = ? WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
@@ -76,11 +74,9 @@ public class StorageAction {
             // SERVEUR_ID
             check.setString(3, instance.servername);
             // Requête
-            Logger.info("Debug 3: " + check.toString());
             check.executeUpdate();
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
             return false;
         }
         return false;
@@ -90,14 +86,12 @@ public class StorageAction {
     public static Boolean checkTag(Player pPlayer, String worldname) {
         // Vérification si monde en statut pushed
         if (getStatus(worldname, Msg.keys.SQL)) {
-            Logger.info("Debug 6");
             // Création des chemins pour vérification
             File file = new File(ManageFiles.getPath() + worldname);
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
             // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
 
             if (file.exists()) {
-                Logger.info("Debug 7");
                 setStatus(worldname, 0, Msg.keys.SQL);
                 // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
                 // Le script check ensutie
@@ -108,7 +102,6 @@ public class StorageAction {
             }
 
             if (file2.exists()) {
-                Logger.info("TEST 0");
                 ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
                 Logger.info("PULL OK");
                 return false;
@@ -120,7 +113,7 @@ public class StorageAction {
 
     // Check status of a IsoWorld, if is Pushed return true, else return false
     public static Boolean getStatus(String world, String messageErreur) {
-        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
             PreparedStatement check = instance.database.prepare(CHECK);
@@ -132,22 +125,11 @@ public class StorageAction {
             check.setString(2, instance.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
-            Logger.info(check.toString());
-            Logger.info("Debug 8");
-            while (rselect.next()) {
-                Logger.info(rselect.toString());
-                Logger.info("Debug 9");
-                if (rselect.getInt(1) == 1) {
-                    Logger.info("Debug 10");
-                    return true;
-                } else {
-                    return false;
-                }
-
+            if (rselect.next()) {
+                return (rselect.getInt(1) == 1 ? true : false);
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
             return false;
         }
         return false;

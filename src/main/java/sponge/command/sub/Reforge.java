@@ -27,7 +27,7 @@ package sponge.command.sub;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
-import sponge.MainSponge;
+import sponge.Main;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Reforge implements CommandExecutor {
 
-    private final MainSponge plugin = MainSponge.instance;
+    private final Main plugin = Main.instance;
     final static Map<String, Timestamp> confirm = new HashMap<String, Timestamp>();
 
     @Override

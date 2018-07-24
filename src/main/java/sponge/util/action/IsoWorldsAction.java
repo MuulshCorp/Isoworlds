@@ -38,7 +38,7 @@ import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.WorldArchetypes;
 import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
-import sponge.MainSponge;
+import sponge.Main;
 import sponge.location.Locations;
 import sponge.util.console.Logger;
 
@@ -60,12 +60,12 @@ import java.util.zip.GZIPOutputStream;
 
 public class IsoWorldsAction {
 
-    public static final MainSponge plugin = MainSponge.instance;
+    public static final Main plugin = Main.instance;
     public static final DataQuery toId = DataQuery.of("SpongeData", "dimensionId");
 
     // Create IsoWorld for pPlayer
     public static Boolean setIsoWorld(Player pPlayer, String messageErreur) {
-        String INSERT = "INSERT INTO `isoworlds` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`, `STATUS`, `DIMENSION_ID`) VALUES (?, ?, ?, ?, ?, ?)";
+        String INSERT = "INSERT INTO `isoworlds` (`uuid_p`, `uuid_w`, `date_time`, `server_id`, `status`, `dimension_id`) VALUES (?, ?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -104,8 +104,8 @@ public class IsoWorldsAction {
     public static Boolean deleteIsoWorld(Player pPlayer, String messageErreur) {
         String Iuuid_p;
         String Iuuid_w;
-        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
-        String DELETE_IWORLDS = "DELETE FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `uuid_w` = ? AND `server_id` = ?";
+        String DELETE_IWORLDS = "DELETE FROM `isoworlds` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         try {
             PreparedStatement delete_autorisations = plugin.database.prepare(DELETE_AUTORISATIONS);
             PreparedStatement delete_iworlds = plugin.database.prepare(DELETE_IWORLDS);
@@ -226,7 +226,7 @@ public class IsoWorldsAction {
     // Check if pPlayer's IsoWorld is created on database
     public static Boolean isPresent(Player pPlayer, String messageErreur, Boolean load) {
 
-        String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT * FROM `isoworlds` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         String check_p;
         try {
@@ -310,7 +310,7 @@ public class IsoWorldsAction {
 
     // Used for construction, check if isoworld is in database (don't care charged or not)
     public static Boolean iwExists(String uuid, String messageErreur) {
-        String CHECK = "SELECT * FROM `isoworlds` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT * FROM `isoworlds` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         String check_p;
         try {
@@ -338,7 +338,7 @@ public class IsoWorldsAction {
 
     // Get all isoworlds dimension id
     public static ArrayList getAllDimensionId(String messageErreur) {
-        String CHECK = "SELECT `DIMENSION_ID` FROM `isoworlds` WHERE `SERVEUR_ID` = ? ORDER BY `DIMENSION_ID` DESC";
+        String CHECK = "SELECT `DIMENSION_ID` FROM `isoworlds` WHERE `server_id` = ? ORDER BY `dimension_id` DESC";
         String check_w;
         ArrayList<Integer> dimList = new ArrayList<Integer>();
         try {
@@ -349,7 +349,7 @@ public class IsoWorldsAction {
             // Requête
             ResultSet rselect = check.executeQuery();
             while (rselect.next()) {
-                dimList.add(rselect.getInt("DIMENSION_ID"));
+                dimList.add(rselect.getInt("dimension_id"));
             }
             return dimList;
         } catch (Exception se) {
@@ -361,7 +361,7 @@ public class IsoWorldsAction {
 
     // Get all trusted players of pPlayer's IsoWorld
     public static Integer getDimensionId(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `DIMENSION_ID` FROM `isoworlds` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT `dimension_id` FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
@@ -401,7 +401,7 @@ public class IsoWorldsAction {
 
     // set isoworld dimension ID
     public static Boolean setDimensionId(Player pPlayer, Integer number, String messageErreur) {
-        String CHECK = "UPDATE `isoworlds` SET `DIMENSION_ID` = ? WHERE `UUID_W` = ?";
+        String CHECK = "UPDATE `isoworlds` SET `dimension_id` = ? WHERE `uuid_w` = ?";
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
 

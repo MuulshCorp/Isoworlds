@@ -187,4 +187,44 @@ public class Mysql {
         PreparedStatement state = getConnection().prepareStatement(query);
         return state;
     }
+
+    public void setStructure() {
+        try {
+            this.prepare("CREATE TABLE IF NOT EXISTS autorisations ("
+                    + "uuid_p varchar(60) NOT NULL, "
+                    + "uuid_w varchar(60) NOT NULL, "
+                    + "date_time varchar(30) NOT NULL, "
+                    + "server_id varchar(30) NOT NULL, "
+                    + "PRIMARY KEY (date_time));").executeUpdate();
+
+            this.prepare("CREATE TABLE IF NOT EXISTS isoworlds ("
+                    + "uuid_p varchar(60) NOT NULL, "
+                    + "uuid_w varchar(60) NOT NULL, "
+                    + "date_time varchar(30) NOT NULL, "
+                    + "server_id varchar(30) NOT NULL, "
+                    + "status int(1) NOT NULL, "
+                    + "dimension_id int(11) DEFAULT 0, "
+                    + "PRIMARY KEY (date_time));").executeUpdate();
+
+            this.prepare("CREATE TABLE IF NOT EXISTS players_info ("
+                    + "id int(11) NOT NULL AUTO_INCREMENT, "
+                    + "uuid_p varchar(255) NOT NULL, "
+                    + "charges int(6) NOT NULL DEFAULT 0, "
+                    + "playtimes int(4) NOT NULL, "
+                    + "PRIMARY KEY (id), "
+                    + "UNIQUE KEY id_2 (id), "
+                    + "KEY id (id));").executeUpdate();
+
+            this.prepare("CREATE TABLE IF NOT EXISTS players_cooldown ("
+                    + "id int(11) NOT NULL AUTO_INCREMENT, "
+                    + "UUID_P varchar(60) NOT NULL, "
+                    + "date_time timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(), "
+                    + "cooldown_type varchar(60) NOT NULL, "
+                    + "server_id varchar(60) NOT NULL, "
+                    + "PRIMARY KEY (id));").executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

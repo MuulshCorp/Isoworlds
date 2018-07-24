@@ -25,7 +25,7 @@
 package sponge.command.sub;
 
 import common.Msg;
-import sponge.MainSponge;
+import sponge.Main;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
@@ -50,7 +50,7 @@ import java.util.*;
 
 public class UnTrust implements CommandCallable {
 
-    private final MainSponge plugin = MainSponge.instance;
+    private final Main plugin = Main.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {

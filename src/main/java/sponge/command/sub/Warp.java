@@ -35,7 +35,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-import sponge.MainSponge;
+import sponge.Main;
 import sponge.location.Locations;
 import sponge.util.console.Logger;
 
@@ -45,7 +45,7 @@ import java.util.Optional;
 
 public class Warp implements CommandCallable {
 
-    private final MainSponge plugin = MainSponge.instance;
+    private final Main plugin = Main.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {

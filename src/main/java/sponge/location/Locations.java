@@ -27,7 +27,7 @@ package sponge.location;
 import com.flowpowered.math.vector.Vector3d;
 import org.spongepowered.api.data.property.block.MatterProperty;
 import org.spongepowered.api.event.cause.Cause;
-import sponge.MainSponge;
+import sponge.Main;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockTypes;
@@ -40,7 +40,7 @@ import java.util.Optional;
 
 public class Locations {
 
-    private static final MainSponge plugin = MainSponge.instance;
+    private static final Main plugin = Main.instance;
 
     public static Optional<Location<World>> getHighestLoc(Location<World> loc) {
         Optional<Integer> y = getHighestY(loc.getExtent(), loc.getX(), loc.getZ(), loc.getBlockY());
@@ -143,22 +143,7 @@ public class Locations {
     }
 
     public static Vector3d getAxis(String worldname) {
-
-        Vector3d vector;
-
-        // INT THE SEA
-        // If Y is set at 0 then it's auto and will find max, if not it stay the same value
-        if (plugin.servername.equals("ITS")) {
-            if (worldname.contains("-IsoWorld") || worldname.equals("Isolonice")) {
-                vector = new Vector3d(-1110.500, 102.0, 545.500);
-            } else {
-                vector = new Vector3d(0.500, 0.0, 0.500);
-            }
-        } else {
-            vector = new Vector3d(0.500, 0.0, 0.500);
-        }
-
-        return vector;
+        return (new Vector3d(0.500, 0.0, 0.500));
     }
 
     // Get name, null if not official

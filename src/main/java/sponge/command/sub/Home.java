@@ -26,7 +26,7 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
-import sponge.MainSponge;
+import sponge.Main;
 import sponge.location.Locations;
 
 import org.spongepowered.api.command.CommandException;
@@ -45,7 +45,7 @@ import sponge.util.action.StorageAction;
 
 public class Home implements CommandExecutor {
 
-    private final MainSponge plugin = MainSponge.instance;
+    private final Main plugin = Main.instance;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {

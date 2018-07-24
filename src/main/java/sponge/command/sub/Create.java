@@ -28,7 +28,6 @@ import common.Msg;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-import sponge.MainSponge;
 import sponge.location.Locations;
 import common.ManageFiles;
 

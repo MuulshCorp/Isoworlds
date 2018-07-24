@@ -28,7 +28,7 @@ import common.Cooldown;
 import common.Msg;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.world.weather.Weathers;
-import sponge.MainSponge;
+import sponge.Main;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -50,7 +50,7 @@ import static java.lang.Integer.parseInt;
 
 public class Weather implements CommandCallable {
 
-    private final MainSponge plugin = MainSponge.instance;
+    private final Main plugin = Main.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {

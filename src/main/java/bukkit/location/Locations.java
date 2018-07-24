@@ -24,7 +24,7 @@
  */
 package bukkit.location;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import common.Cooldown;
 import common.Msg;
 import org.bukkit.*;
@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class Locations {
 
-    private static final MainBukkit plugin = MainBukkit.instance;
+    private static final Main plugin = Main.instance;
 
     public static void teleport(Player player, String worldname) {
 

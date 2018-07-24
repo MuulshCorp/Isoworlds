@@ -22,35 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package bukkit.command.sub;
+package sponge.util.task.PlayerStatistic;
 
-import bukkit.Main;
-import bukkit.location.Locations;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import common.Msg;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.scheduler.Task;
+import sponge.Main;
+import sponge.util.action.PlayTimeAction;
 
-public class Teleport {
+public class PlayTime {
 
-    public static Main instance;
-
-    @SuppressWarnings("deprecation")
-    public static void Teleport(CommandSender sender, String[] args) {
-
-        instance = Main.getInstance();
-        Player pPlayer = (Player) sender;
-
-        if (args.length < 1 || args.length < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Veuillez indiquer le joueur cible et le monde cible.");
-            return;
-        }
-
-        if (!Bukkit.getServer().getPlayer(args[0]).isOnline()) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Le joueur indiqué n'est pas connecté, ou vous avez mal entré son pseudonyme.");
-            return;
-        } else {
-            Locations.teleport(Bukkit.getServer().getPlayer(args[0]), args[1]);
-        }
+    // Update playtime
+    public static void IncreasePlayTime() {
+        Task.builder().execute(() -> {
+            for (Player p : Sponge.getServer().getOnlinePlayers()) {
+                PlayTimeAction.updatePlayTime(p, Msg.keys.SQL);
+            }
+        }).submit(Main.instance);
     }
 }

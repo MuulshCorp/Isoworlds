@@ -24,7 +24,7 @@
  */
 package bukkit.util.action;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.util.console.Command;
 import bukkit.util.console.Logger;
 import org.bukkit.Bukkit;
@@ -36,7 +36,7 @@ import java.util.Arrays;
 
 public class DimAltAction {
 
-    private static final MainBukkit plugin = MainBukkit.instance;
+    private static final Main plugin = Main.instance;
 
     public static void generateDim() {
         // Remove files
@@ -81,7 +81,6 @@ public class DimAltAction {
             Block yLoc = world.getHighestBlockAt(0, 0);
             world.setPVP(false);
             world.setSpawnLocation(0, yLoc.getY(), 0);
-            world.setGameRuleValue("MobGriefing", "false");
             world.setAutoSave(true);
         }
         Logger.info("WorldProperties à jour");

@@ -24,7 +24,7 @@
  */
 package bukkit.command.sub;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -36,11 +36,11 @@ import java.util.UUID;
 
 public class ListWorlds {
 
-    public static MainBukkit instance;
+    public static Main instance;
 
     public static void Liste(CommandSender sender, String[] args) {
 
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
         Player pPlayer = (Player) sender;
         ArrayList<World> worlds = new ArrayList<World>();
         Boolean check = false;

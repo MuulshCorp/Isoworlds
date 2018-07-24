@@ -24,7 +24,7 @@
  */
 package bukkit.command.sub;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.location.Locations;
 import bukkit.util.console.Logger;
 import common.Cooldown;
@@ -34,11 +34,11 @@ import org.bukkit.entity.Player;
 
 public class Warp {
 
-    public static MainBukkit instance;
+    public static Main instance;
 
     public static void Warp(CommandSender sender, String[] args) {
         // Variables
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 

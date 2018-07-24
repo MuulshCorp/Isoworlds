@@ -39,7 +39,7 @@ import org.spongepowered.api.scheduler.Task;
 import sponge.location.Locations;
 import sponge.util.action.ChargeAction;
 import sponge.util.console.Logger;
-import sponge.MainSponge;
+import sponge.Main;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
@@ -58,10 +58,10 @@ import java.sql.ResultSet;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static sponge.MainSponge.instance;
+import static sponge.Main.instance;
 
 public class Listeners {
-    private final MainSponge plugin = instance;
+    private final Main plugin = instance;
 
     @Listener
     public void onRespawnPlayerEvent(RespawnPlayerEvent event) {

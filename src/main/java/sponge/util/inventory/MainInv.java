@@ -59,7 +59,7 @@ import sponge.util.inventory.weather.WeatherInv;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static sponge.MainSponge.instance;
+import static sponge.Main.instance;
 
 public class MainInv {
 

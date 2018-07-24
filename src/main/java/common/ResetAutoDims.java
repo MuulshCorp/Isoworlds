@@ -24,8 +24,6 @@
  */
 package common;
 
-import bukkit.util.console.Logger;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,7 +35,9 @@ import java.util.Date;
 
 public class ResetAutoDims {
     // reset worlds
-    public static void reset() {
+    public static void reset(String type) {
+
+        Logger logger = new common.Logger(type);
 
         //Date du jour
         Timestamp todayTimestamp = new Timestamp(System.currentTimeMillis() / 1000);
@@ -61,7 +61,7 @@ public class ResetAutoDims {
         //Next friday timestamp
         Date tempFriday = nextFriday.getTime();
         String nextFridayTimeStamp = String.valueOf((new Timestamp(tempFriday.getTime())).getTime() / 1000);
-        Logger.warning("--- Prochaine date de réinitialisation des dimensions: " + nextFriday.getTime());
+        logger.log("--- Prochaine date de réinitialisation des dimensions: " + nextFriday.getTime());
 
         String[] dims = new String[]{"exploration", "DIM-1", "DIM1", "minage"};
 
@@ -72,7 +72,7 @@ public class ResetAutoDims {
                 File resetFile = new File(ManageFiles.getPath() + "/" + dim + "/reset.txt");
 
                 if (!dimFile.exists()) {
-                    Logger.warning("--- Le dossier de réinitialisation pour la dimension " + dim + " n'éxiste pas");
+                    logger.log("--- Le dossier de réinitialisation pour la dimension " + dim + " n'éxiste pas");
                     continue;
                 }
 
@@ -80,23 +80,22 @@ public class ResetAutoDims {
                     FileWriter out = new FileWriter(resetFile);
                     out.write(nextFridayTimeStamp);
                     out.close();
-                    Logger.warning("--- Le fichier de réinitialisation pour la dimension " + dim + " n'éxiste pas, création...");
+                    logger.log("--- Le fichier de réinitialisation pour la dimension " + dim + " n'éxiste pas, création...");
                 } else {
                     String nextResetDate = Files.readAllLines(Paths.get(resetFile.toURI())).get(0);
-                    Logger.warning("--- Timestamp enregistré dans le fichier: " + nextResetDate
+                    logger.log("--- Timestamp enregistré dans le fichier: " + nextResetDate
                             + " | Timestamp du jour: " + todayTimestamp.getTime() + " " + dim);
                     // Exploration
                     if (todayTimestamp.after(new Timestamp(Long.valueOf(nextResetDate)))) {
-                        Logger.warning("--- Démarrage de la réinitialisation pour la dimension " + dim);
+                        logger.log("--- Démarrage de la réinitialisation pour la dimension " + dim);
                         ManageFiles.deleteDir(dimFile);
                         dimFile.mkdir();
 //                        FileWriter out = new FileWriter(resetFile);
 //                        out.write(nextFridayTimeStamp);
 //                        out.close();
-                        Logger.warning("--- Réinitialisation avec succès de la dimension " + dim);
+                        logger.log("--- Réinitialisation avec succès de la dimension " + dim);
                     }
                 }
-
             }
         } catch (IOException ie) {
             ie.printStackTrace();

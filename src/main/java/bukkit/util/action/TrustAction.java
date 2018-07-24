@@ -24,9 +24,7 @@
  */
 package bukkit.util.action;
 
-import bukkit.MainBukkit;
-import bukkit.util.console.Logger;
-import common.Msg;
+import bukkit.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -37,11 +35,11 @@ import java.util.UUID;
 
 public class TrustAction {
 
-    private static final MainBukkit instance = MainBukkit.getInstance();
+    private static final Main instance = Main.getInstance();
 
     // Get all IsoWorlds that trusted pPlayer
     public static ResultSet getAccess(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `UUID_W` FROM `autorisations` WHERE `UUID_P` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT `uuid_w` FROM `autorisations` WHERE `uuid_p` = ? AND `server_id` = ?";
         String check_p;
         ResultSet result = null;
         try {
@@ -60,7 +58,6 @@ public class TrustAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return result;
         }
@@ -69,7 +66,7 @@ public class TrustAction {
 
     // Get all trusted players of pPlayer's IsoWorld
     public static ResultSet getTrusts(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `UUID_P` FROM `autorisations` WHERE `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT `uuid_p` FROM `autorisations` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         ResultSet result = null;
         try {
@@ -88,7 +85,6 @@ public class TrustAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return result;
         }
@@ -97,7 +93,7 @@ public class TrustAction {
 
     // Create trust for uuidcible on pPlayer IsoWorld
     public static Boolean setTrust(Player pPlayer, UUID uuidcible, String messageErreur) {
-        String INSERT = "INSERT INTO `autorisations` (`UUID_P`, `UUID_W`, `DATE_TIME`, `SERVEUR_ID`) VALUES (?, ?, ?, ?)";
+        String INSERT = "INSERT INTO `autorisations` (`uuid_p`, `uuid_w`, `date_time`, `server_id`) VALUES (?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -116,7 +112,6 @@ public class TrustAction {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
@@ -127,7 +122,7 @@ public class TrustAction {
     public static Boolean deleteTrust(Player pPlayer, UUID uuid, String messageErreur) {
         String Iuuid_p;
         String Iuuid_w;
-        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         try {
             PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
             Iuuid_p = uuid.toString();
@@ -142,7 +137,6 @@ public class TrustAction {
             delete_autorisations.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + messageErreur);
             return false;
         }
@@ -152,7 +146,7 @@ public class TrustAction {
     // Check if uuid cible is trusted on pPlayer's IsoWorld
     public static Boolean isTrusted(Player pPlayer, UUID uuidcible, String messageErreur) {
 
-        String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        String CHECK = "SELECT * FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         String check_p;
         try {
@@ -172,7 +166,6 @@ public class TrustAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.BLUE + messageErreur);
             return false;
         }

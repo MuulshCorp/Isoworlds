@@ -27,11 +27,11 @@ package sponge.util.action;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.MainSponge;
+import sponge.Main;
 
 public class LockAction {
 
-    public static final MainSponge plugin = MainSponge.instance;
+    public static final Main plugin = Main.instance;
 
     // Vérifie si le lock est présent et renvoi vrai, sinon défini le lock et renvoi false
     public static Boolean isLocked(Player pPlayer, String className) {

@@ -55,9 +55,8 @@ import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.persistence.DataFormats;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.WorldArchetypes;
-import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
-import sponge.MainSponge;
+import sponge.Main;
 import sponge.util.console.Logger;
 
 import java.io.IOException;
@@ -73,7 +72,7 @@ import java.util.zip.GZIPOutputStream;
 
 public class DimsAltAction {
 
-    private static final MainSponge plugin = MainSponge.instance;
+    private static final Main plugin = Main.instance;
 
     private static final DataQuery toId = DataQuery.of("SpongeData", "dimensionId");
 
@@ -116,7 +115,6 @@ public class DimsAltAction {
                 worldProperties.setKeepSpawnLoaded(true);
                 worldProperties.setLoadOnStartup(true);
                 worldProperties.setGenerateSpawnOnLoad(false);
-                worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
                 worldProperties.setPVPEnabled(false);
                 worldProperties.setWorldBorderCenter(0, 0);
                 worldProperties.setWorldBorderDiameter(6000);
@@ -134,7 +132,6 @@ public class DimsAltAction {
                 worldProperties.setKeepSpawnLoaded(true);
                 worldProperties.setLoadOnStartup(true);
                 worldProperties.setGenerateSpawnOnLoad(false);
-                worldProperties.setGameRule(DefaultGameRules.MOB_GRIEFING, "false");
                 worldProperties.setPVPEnabled(false);
                 worldProperties.setWorldBorderCenter(0, 0);
                 worldProperties.setWorldBorderDiameter(6000);

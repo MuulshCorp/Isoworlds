@@ -24,11 +24,11 @@
  */
 package bukkit.util.console;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import org.bukkit.ChatColor;
 
 public class Logger {
-    private static final MainBukkit plugin = MainBukkit.instance;
+    private static final Main plugin = Main.instance;
 
     public static void info(String s) {
         plugin.getServer().getConsoleSender().sendMessage("[" + ChatColor.GOLD + "IW" + ChatColor.WHITE + "] " + ChatColor.GREEN + s);

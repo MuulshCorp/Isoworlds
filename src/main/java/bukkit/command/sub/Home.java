@@ -24,7 +24,7 @@
  */
 package bukkit.command.sub;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.location.Locations;
 import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.action.LockAction;
@@ -37,12 +37,12 @@ import org.bukkit.entity.Player;
 
 public class Home {
 
-    public static MainBukkit instance;
+    public static Main instance;
 
     @SuppressWarnings("deprecation")
     public static void Maison(CommandSender sender, String[] args) {
 
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
 
         // Variables
         String worldname = "";

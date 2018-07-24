@@ -41,7 +41,7 @@ import sponge.util.inventory.MainInv;
 import java.util.ArrayList;
 import java.util.List;
 
-import static sponge.MainSponge.instance;
+import static sponge.Main.instance;
 
 public class HomeInv {
 

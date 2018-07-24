@@ -24,7 +24,7 @@
  */
 package bukkit.command.sub;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.action.TrustAction;
 import bukkit.util.console.Logger;
@@ -42,12 +42,12 @@ public class Untrust {
     static final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
     static final String REMOVE = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
 
-    public static MainBukkit instance;
+    public static Main instance;
 
     @SuppressWarnings("deprecation")
     public static void RetirerConfiance(CommandSender sender, String[] args) {
 
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
         // SQL Variables
         Player pPlayer = (Player) sender;
         UUID uuidcible;

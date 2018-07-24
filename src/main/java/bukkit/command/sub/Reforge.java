@@ -24,7 +24,7 @@
  */
 package bukkit.command.sub;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.util.action.IsoWorldsAction;
 import common.Cooldown;
 import common.ManageFiles;
@@ -47,14 +47,14 @@ import java.util.concurrent.TimeUnit;
 public class Reforge {
 
     private final static Map<String, Timestamp> confirm = new HashMap<>();
-    public static MainBukkit instance;
+    public static Main instance;
 
     public static void Refonte(CommandSender sender, String[] args) {
         // Variables
         String fullpath = "";
         String worldname;
         Player pPlayer = (Player) sender;
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         //If the method return true then the command is in lock

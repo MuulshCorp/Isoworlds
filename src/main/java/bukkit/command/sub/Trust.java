@@ -24,7 +24,7 @@
  */
 package bukkit.command.sub;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.action.TrustAction;
 import common.Cooldown;
@@ -38,12 +38,12 @@ import java.util.UUID;
 
 public class Trust {
 
-    public static MainBukkit instance;
+    public static Main instance;
 
     @SuppressWarnings("deprecation")
     public static void Confiance(CommandSender sender, String[] args) {
 
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
         Player pPlayer = (Player) sender;
         UUID uuidcible;
         Integer len = args.length;

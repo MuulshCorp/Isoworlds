@@ -24,7 +24,7 @@
  */
 package bukkit.listener;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.location.Locations;
 import bukkit.util.action.ChargeAction;
 import bukkit.util.console.Logger;
@@ -44,7 +44,7 @@ import java.sql.ResultSet;
 
 public class Listeners implements Listener {
 
-    private final MainBukkit instance = MainBukkit.getInstance();
+    private final Main instance = Main.getInstance();
 
     @EventHandler
     public void onRespawnPlayerEvent(PlayerRespawnEvent event) {
@@ -118,6 +118,7 @@ public class Listeners implements Listener {
     @EventHandler
     // Anti grief spawn
     public void onInteractSpawn(PlayerInteractEvent event) {
+
         Player p = event.getPlayer();
         if (p.hasPermission("isoworlds.bypass.spawn")) {
             return;
@@ -129,7 +130,7 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerChangeWorld(PlayerTeleportEvent event) {
-        final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
+        final String CHECK = "SELECT * FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ?";
         String check_p;
         String check_w;
         Location worldTo = event.getTo();

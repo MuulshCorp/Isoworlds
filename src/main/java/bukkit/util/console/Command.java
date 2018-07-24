@@ -24,12 +24,12 @@
  */
 package bukkit.util.console;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import org.bukkit.Bukkit;
 
 public class Command {
 
-    private static final MainBukkit plugin = MainBukkit.instance;
+    private static final Main plugin = Main.instance;
 
     public static void sendCmd(String cmd) {
         plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);

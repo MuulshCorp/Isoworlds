@@ -24,7 +24,7 @@
  */
 package bukkit.util.action;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import bukkit.util.console.Logger;
 import common.Msg;
 import org.bukkit.ChatColor;
@@ -35,11 +35,11 @@ import java.sql.ResultSet;
 
 public class ChargeAction {
 
-    private static final MainBukkit instance = MainBukkit.getInstance();
+    private static final Main instance = Main.getInstance();
 
     // Get charge of a player
     public static Integer getCharge(Player pPlayer, String messageErreur) {
-        String CHECK = "SELECT `charges` FROM `players_info` WHERE `UUID_P` = ?";
+        String CHECK = "SELECT `charges` FROM `players_info` WHERE `uuid_p` = ?";
         ResultSet result;
         Integer number;
         // If unlimited
@@ -52,11 +52,8 @@ public class ChargeAction {
             check.setString(1, pPlayer.getUniqueId().toString());
             // Requête
             ResultSet rselect = check.executeQuery();
-            while (rselect.next()) {
-                Logger.info(rselect.toString());
-                Logger.info("Debug charge 1");
+            if (rselect.next()) {
                 number = rselect.getInt(1);
-                Logger.info("number: " + number);
                 return number;
             }
         } catch (Exception se) {
@@ -100,19 +97,17 @@ public class ChargeAction {
             // NUMBER
             check.setInt(1, number);
             // Requête
-            Logger.info("Debug 3: " + check.toString());
             check.executeUpdate();
             return true;
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
             return false;
         }
     }
 
     // Init charges and playtime on first connect
     private static Boolean initCharges(Player pPlayer, String messageErreur) {
-        String INSERT = "INSERT INTO `players_info` (`UUID_P`, `charges`, `playtimes`) VALUES (?, ?, ?)";
+        String INSERT = "INSERT INTO `players_info` (`uuid_p`, `charges`, `playtimes`) VALUES (?, ?, ?)";
         Integer number;
         String Iuuid_p;
 
@@ -129,7 +124,6 @@ public class ChargeAction {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             return false;
         }
         return true;

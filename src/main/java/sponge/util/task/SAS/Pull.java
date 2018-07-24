@@ -22,15 +22,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sponge.util.task;
+package sponge.util.task.SAS;
 
 import common.Msg;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.MainSponge;
-import sponge.util.Utils;
+import sponge.Main;
+import sponge.util.action.StorageAction;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -40,7 +40,7 @@ public class Pull implements Consumer<Task> {
     private int check = 60;
     private Player pPlayer;
     private File file;
-    private final MainSponge plugin = MainSponge.instance;
+    private final Main plugin = Main.instance;
 
     public Pull(Player pPlayer, File file) {
 
@@ -70,7 +70,7 @@ public class Pull implements Consumer<Task> {
         // Si le dossier existe, alors on repasse le statut à 0 en BDD (présent)
         } else if (file.exists()) {
             // Passage du IsoWorld en statut présent
-            Utils.setStatus(file.getName(), 0, Msg.keys.SQL);
+            StorageAction.setStatus(file.getName(), 0, Msg.keys.SQL);
 
             // Notification au joueur que le IsoWorld est disponible
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)

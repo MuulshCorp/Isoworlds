@@ -46,7 +46,7 @@ import sponge.util.inventory.build.sub.CreateInv;
 import java.util.ArrayList;
 import java.util.List;
 
-import static sponge.MainSponge.instance;
+import static sponge.Main.instance;
 
 public class BuildInv {
 

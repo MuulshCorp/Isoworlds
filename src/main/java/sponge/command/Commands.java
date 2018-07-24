@@ -26,7 +26,7 @@ package sponge.command;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.cause.Cause;
-import sponge.MainSponge;
+import sponge.Main;
 
 import sponge.command.sub.*;
 import org.spongepowered.api.command.CommandException;
@@ -39,21 +39,19 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import sponge.util.inventory.MainInv;
 
-public class IsoworldsCommande implements CommandExecutor {
+public class Commands implements CommandExecutor {
 
-    private final MainSponge plugin = MainSponge.instance;
+    private final Main plugin = Main.instance;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         Player pPlayer = (Player) source;
 
-        //IsoworldsUtils.getHelp(pPlayer);
         // Ouverture du menu principal
         pPlayer.openInventory(MainInv.menuPrincipal(pPlayer),  Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
         return CommandResult.success();
     }
 
-    // Constructeurs
     public static CommandSpec getCommand() {
         return CommandSpec.builder()
                 .description(Text.of("Commande IsoWorlds, permet de créer/refondre/lister"))
@@ -68,7 +66,7 @@ public class IsoworldsCommande implements CommandExecutor {
                 .child(new UnTrust(), "retirer", "supprimer", "untrust", "remove")
                 .child(new Weather(), "meteo", "weather", "m", "météo")
                 .child(new Time(), "time", "temps", "t", "cycle")
-                .executor(new IsoworldsCommande())
+                .executor(new Commands())
                 .build();
     }
 }

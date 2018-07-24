@@ -22,9 +22,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package bukkit.util.task;
+package bukkit.util.task.SAS;
 
-import bukkit.MainBukkit;
+import bukkit.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -35,13 +35,13 @@ public class Pull extends BukkitRunnable {
     private int check = 20;
     private Player pPlayer;
     private File file;
-    public static MainBukkit instance;
+    public static Main instance;
 
 
     public Pull(Player pPlayer, File file) {
         this.pPlayer = pPlayer;
         this.file = file;
-        instance = MainBukkit.getInstance();
+        instance = Main.getInstance();
     }
 
     @Override

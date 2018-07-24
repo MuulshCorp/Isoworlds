@@ -41,7 +41,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Main extends JavaPlugin {
+public final class Main extends JavaPlugin implements MainInterface {
     public static Main instance;
     private java.util.logging.Logger logger;
     public Mysql database;
@@ -132,6 +132,7 @@ public final class Main extends JavaPlugin {
         // Gen dim ALT
         DimAltAction.generateDim();
 
+        Manager.instance = Main.getInstance();
     }
 
     @Override
@@ -164,5 +165,10 @@ public final class Main extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Mysql getMysql() {
+        return this.database;
     }
 }

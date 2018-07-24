@@ -64,7 +64,7 @@ import java.util.Map;
         }
 )
 
-public class Main {
+public class Main implements MainInterface {
     public static Main instance;
     public final common.Logger commonLogger;
     private org.slf4j.Logger logger;
@@ -162,6 +162,7 @@ public class Main {
         // Start push action (unload task with tag)
         Push.PushProcess((Integer) this.configurationNode.getNode(new Object[]{"IsoWorlds", "inactivity_before_world_unload"}).getValue());
         PlayTime.IncreasePlayTime();    /* Start playtime task */
+        Manager.instance = Main.instance;
     }
 
     @Listener
@@ -232,5 +233,10 @@ public class Main {
         } catch (NullPointerException npe) {
             npe.printStackTrace();
         }
+    }
+
+    @Override
+    public Mysql getMysql() {
+        return this.database;
     }
 }

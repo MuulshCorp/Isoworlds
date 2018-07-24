@@ -24,7 +24,8 @@
  */
 package bukkit.util.action;
 
-import bukkit.Main;
+import common.MainInterface;
+import common.Manager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -35,7 +36,7 @@ import java.util.UUID;
 
 public class TrustAction {
 
-    private static final Main instance = Main.getInstance();
+    private static final MainInterface instance = Manager.getInstance();
 
     // Get all IsoWorlds that trusted pPlayer
     public static ResultSet getAccess(Player pPlayer, String messageErreur) {
@@ -43,7 +44,7 @@ public class TrustAction {
         String check_p;
         ResultSet result = null;
         try {
-            PreparedStatement check = instance.database.prepare(CHECK);
+            PreparedStatement check = instance.getMysql().prepare(CHECK);
 
             // UUID _P
             check_p = pPlayer.getUniqueId().toString();
@@ -70,7 +71,7 @@ public class TrustAction {
         String check_w;
         ResultSet result = null;
         try {
-            PreparedStatement check = instance.database.prepare(CHECK);
+            PreparedStatement check = instance.getMysql().prepare(CHECK);
 
             // UUID _W
             check_w = pPlayer.getUniqueId().toString() + "-IsoWorld";
@@ -98,7 +99,7 @@ public class TrustAction {
         String Iuuid_p;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try {
-            PreparedStatement insert = instance.database.prepare(INSERT);
+            PreparedStatement insert = instance.getMysql().prepare(INSERT);
             // UUID_P
             Iuuid_p = uuidcible.toString();
             insert.setString(1, Iuuid_p);
@@ -124,7 +125,7 @@ public class TrustAction {
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         try {
-            PreparedStatement delete_autorisations = instance.database.prepare(DELETE_AUTORISATIONS);
+            PreparedStatement delete_autorisations = instance.getMysql().prepare(DELETE_AUTORISATIONS);
             Iuuid_p = uuid.toString();
             Iuuid_w = (pPlayer.getUniqueId().toString() + "-IsoWorld");
 
@@ -150,7 +151,7 @@ public class TrustAction {
         String check_w;
         String check_p;
         try {
-            PreparedStatement check = instance.database.prepare(CHECK);
+            PreparedStatement check = instance.getMysql().prepare(CHECK);
             // UUID _P
             check_p = uuidcible.toString();
             check.setString(1, check_p);

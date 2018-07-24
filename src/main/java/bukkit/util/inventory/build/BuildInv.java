@@ -24,17 +24,17 @@
  */
 package bukkit.util.inventory.build;
 
-import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.inventory.MainInv;
 import bukkit.util.inventory.build.sub.CreateInv;
 import common.Msg;
+import common.action.IsoWorldsAction;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import sponge.util.console.Logger;
+import bukkit.util.console.Logger;
 
 public class BuildInv implements Listener {
 
@@ -59,7 +59,7 @@ public class BuildInv implements Listener {
         });
 
         // Affiche la refonte si le monde est créé, sinon affiche la création
-        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
             String[] list1 = new String[]{"Réinitialiser votre IsoWorld (Choix du patern)."};
             menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GOLD + "Refonte", list1);
         } else {

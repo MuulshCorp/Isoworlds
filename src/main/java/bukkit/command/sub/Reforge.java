@@ -25,11 +25,11 @@
 package bukkit.command.sub;
 
 import bukkit.Main;
-import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
+import common.action.IsoWorldsAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -64,7 +64,7 @@ public class Reforge {
         }
 
         // SELECT WORLD
-        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
@@ -114,7 +114,7 @@ public class Reforge {
         ManageFiles.deleteDir(remove);
 
         // DELETE WORLD
-        if (!IsoWorldsAction.deleteIsoWorld(pPlayer, Msg.keys.SQL)) {
+        if (!IsoWorldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }

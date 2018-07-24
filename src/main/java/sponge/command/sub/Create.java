@@ -25,6 +25,7 @@
 package sponge.command.sub;
 
 import common.Msg;
+import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.world.Location;
@@ -39,7 +40,6 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.StatAction;
 import sponge.util.console.Logger;
 
@@ -66,7 +66,7 @@ public class Create implements CommandCallable {
         int size = arg.length;
 
         // SELECT WORLD
-        if (IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (IsoWorldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();
@@ -134,7 +134,7 @@ public class Create implements CommandCallable {
         IsoWorldsAction.setWorldProperties(worldname, pPlayer);
 
         // INSERT
-        if (IsoWorldsAction.setIsoWorld(pPlayer, Msg.keys.SQL)) {
+        if (IsoWorldsAction.setIsoWorld(pPlayer.getUniqueId().toString())) {
             // INSERT TRUST
             if (TrustAction.setTrust(pPlayer.getUniqueId().toString(), pPlayer.getUniqueId().toString())) {
                 // Chargement

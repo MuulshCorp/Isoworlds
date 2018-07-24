@@ -25,7 +25,6 @@
 package sponge.util.action;
 
 import common.ManageFiles;
-import common.Msg;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
@@ -54,7 +53,7 @@ public class StorageAction {
         File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
 
         // Si vrai alors en état @PUSHED en bdd
-        if (StorageAction.getStatus(worldname, Msg.keys.SQL)) {
+        if (StorageAction.getStatus(worldname)) {
             Logger.info("ISOWORLD: " + worldname + " EN ETAT @PUSHED");
 
             // !! Gestion des anomalies !!
@@ -96,7 +95,7 @@ public class StorageAction {
             // Retourner faux pour indiquer que le dossier n'existe pas, il doit être en procédure
             return false;
 
-        } else if (!StorageAction.getStatus(worldname, Msg.keys.SQL)) {
+        } else if (!StorageAction.getStatus(worldname)) {
             Logger.info("ISOWORLD DISPONIBLE: " + worldname + " - ETAT NON @PUSHED");
 
             // Vérification si le dossier @PUSHED n'existe pas, on le supprime dans ce cas, anomalie
@@ -116,7 +115,7 @@ public class StorageAction {
     }
 
     // Check status of a IsoWorld, if is Pushed return true, else return false
-    public static Boolean getStatus(String world, String messageErreur) {
+    public static Boolean getStatus(String world) {
         String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
@@ -131,7 +130,7 @@ public class StorageAction {
             ResultSet rselect = check.executeQuery();
             Logger.info(check.toString());
             Logger.info("Debug 8");
-            while (rselect.next()) {
+            if (rselect.next()) {
                 Logger.info(rselect.toString());
                 Logger.info("Debug 9");
                 if (rselect.getInt(1) == 1) {
@@ -144,14 +143,13 @@ public class StorageAction {
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
             return false;
         }
         return false;
     }
 
     // Set global status
-    public static Boolean setGlobalStatus(String messageErreur) {
+    public static Boolean setGlobalStatus() {
         String CHECK = "UPDATE `isoworlds` SET `status` = 1 WHERE `server_id` = ?";
         String check_w;
         try {
@@ -164,7 +162,6 @@ public class StorageAction {
             Logger.info(check.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.severe(messageErreur);
             return false;
         }
         return true;

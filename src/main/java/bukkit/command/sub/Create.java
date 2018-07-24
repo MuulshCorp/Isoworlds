@@ -24,12 +24,12 @@
  */
 package bukkit.command.sub;
 
-import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.console.Logger;
 import common.ManageFiles;
 import bukkit.Main;
 import bukkit.location.Locations;
 import common.Msg;
+import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -52,7 +52,7 @@ public class Create {
         Integer len = args.length;
 
         // SELECT WORLD
-        if (IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (IsoWorldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
             return;
         }
@@ -125,7 +125,7 @@ public class Create {
         Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
         // INSERT
-        if (!IsoWorldsAction.setIsoWorld(pPlayer, Msg.keys.SQL)) {
+        if (!IsoWorldsAction.setIsoWorld(pPlayer.getUniqueId().toString())) {
             return;
         }
 

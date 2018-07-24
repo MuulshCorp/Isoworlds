@@ -100,7 +100,7 @@ public class Main implements MainInterface {
         this.initServerName();
         this.initMySQL();
         // Set global status 1
-        StorageAction.setGlobalStatus(Msg.keys.SQL);
+        StorageAction.setGlobalStatus();
 
         registerEvents();
         logger.info("Chargement des IsoWorlds...");
@@ -238,5 +238,15 @@ public class Main implements MainInterface {
     @Override
     public Mysql getMysql() {
         return this.database;
+    }
+
+    @Override
+    public String getServername() {
+        return this.servername;
+    }
+
+    @Override
+    public Map<String, Integer> getLock() {
+        return lock;
     }
 }

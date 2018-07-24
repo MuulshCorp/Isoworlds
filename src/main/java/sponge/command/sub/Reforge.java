@@ -27,6 +27,7 @@ package sponge.command.sub;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
+import common.action.IsoWorldsAction;
 import sponge.Main;
 
 import org.spongepowered.api.Sponge;
@@ -41,7 +42,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.*;
 import org.spongepowered.api.world.storage.WorldProperties;
-import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.StatAction;
 import sponge.util.console.Logger;
 import sponge.util.message.Message;
@@ -72,7 +72,7 @@ public class Reforge implements CommandExecutor {
         }
 
         // SELECT WORLD
-        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
@@ -128,7 +128,7 @@ public class Reforge implements CommandExecutor {
 
 
         // DELETE WORLD
-        if (!IsoWorldsAction.deleteIsoWorld(pPlayer, Msg.keys.SQL)) {
+        if (!IsoWorldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
             return CommandResult.success();

@@ -1,6 +1,6 @@
 name: Isoworlds
 version: @version@
-main: bukkit.MainBukkit
+main: bukkit.Main
 authors: [Sythiel]
 description: Large scale personal world manager
 load: STARTUP

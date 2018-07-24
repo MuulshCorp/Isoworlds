@@ -25,6 +25,7 @@
 package sponge.util.inventory.build;
 
 import common.Msg;
+import common.action.IsoWorldsAction;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.living.player.Player;
@@ -38,7 +39,6 @@ import org.spongepowered.api.item.inventory.property.InventoryTitle;
 import org.spongepowered.api.item.inventory.property.SlotPos;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.util.action.IsoWorldsAction;
 import sponge.util.console.Logger;
 import sponge.util.inventory.MainInv;
 import sponge.util.inventory.build.sub.CreateInv;
@@ -76,7 +76,7 @@ public class BuildInv {
 
 
         // Affiche la refonte si le monde est créé, sinon affiche la création
-        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString(), Msg.keys.SQL)) {
+        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
             List<Text> list1 = new ArrayList<Text>();
             list1.add(Text.of("Réinitialiser votre IsoWorld (choix du patern)."));
             ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")

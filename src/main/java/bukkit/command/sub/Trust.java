@@ -25,10 +25,10 @@
 package bukkit.command.sub;
 
 import bukkit.Main;
-import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
+import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,7 +55,7 @@ public class Trust {
         }
 
         // SELECT WORLD
-        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;
         }

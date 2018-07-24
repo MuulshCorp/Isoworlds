@@ -112,7 +112,7 @@ public class Push {
                             worlds.remove(world.getName());
 
                             // Vérification du statut du monde, si il est push ou non
-                            if (!StorageAction.getStatus(world.getName(), Msg.keys.SQL)) {
+                            if (!StorageAction.getStatus(world.getName())) {
                                 Logger.info("debug 1");
                                 File check = new File(ManageFiles.getPath() + world.getName());
                                 // Si le dossier existe alors on met le statut à 1 (push)

@@ -26,6 +26,7 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
+import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import sponge.Main;
 
@@ -43,7 +44,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-import sponge.util.action.IsoWorldsAction;
 import sponge.util.message.Message;
 
 import javax.annotation.Nullable;
@@ -73,7 +73,7 @@ public class Trust implements CommandCallable {
         }
 
         // SELECT WORLD
-        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, false)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }

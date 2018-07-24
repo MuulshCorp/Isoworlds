@@ -83,7 +83,7 @@ public final class Main extends JavaPlugin implements MainInterface {
         }
 
         // Dim reset
-        ResetAutoDims.reset("sponge");
+        ResetAutoDims.reset("bukkit");
 
         // Register listeners
         Bukkit.getServer().getPluginManager().registerEvents(new Listeners(), this);
@@ -127,7 +127,7 @@ public final class Main extends JavaPlugin implements MainInterface {
         PlayTime.IncreasePlayTime();
 
         // Set global status 1
-        StorageAction.setGlobalStatus(Msg.keys.SQL);
+        StorageAction.setGlobalStatus();
 
         // Gen dim ALT
         DimAltAction.generateDim();
@@ -170,5 +170,15 @@ public final class Main extends JavaPlugin implements MainInterface {
     @Override
     public Mysql getMysql() {
         return this.database;
+    }
+
+    @Override
+    public String getServername() {
+        return this.servername;
+    }
+
+    @Override
+    public Map<String, Integer> getLock() {
+        return lock;
     }
 }

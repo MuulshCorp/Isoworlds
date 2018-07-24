@@ -26,6 +26,7 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
+import common.action.IsoWorldsAction;
 import sponge.Main;
 import sponge.location.Locations;
 
@@ -38,7 +39,6 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.LockAction;
 import sponge.util.action.StatAction;
 import sponge.util.action.StorageAction;
@@ -77,7 +77,7 @@ public class Home implements CommandExecutor {
         plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // SELECT WORLD (load if need)
-        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, true)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, true)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }

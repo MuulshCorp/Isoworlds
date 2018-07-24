@@ -25,6 +25,7 @@
 package sponge.util.inventory.trust.sub;
 
 import common.Cooldown;
+import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
@@ -47,7 +48,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.Main;
 import sponge.location.Locations;
-import sponge.util.action.IsoWorldsAction;
 import sponge.util.action.StatAction;
 import sponge.util.action.StorageAction;
 import sponge.util.console.Logger;

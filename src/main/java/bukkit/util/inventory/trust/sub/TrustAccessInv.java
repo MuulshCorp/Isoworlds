@@ -25,11 +25,10 @@
 package bukkit.util.inventory.trust.sub;
 
 import bukkit.location.Locations;
-import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.action.StorageAction;
 import bukkit.util.console.Logger;
 import bukkit.util.inventory.MainInv;
-import common.Msg;
+import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;

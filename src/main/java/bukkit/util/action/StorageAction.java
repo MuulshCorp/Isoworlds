@@ -41,7 +41,7 @@ public class StorageAction {
     private static final Main instance = Main.getInstance();
 
     // Set global status
-    public static Boolean setGlobalStatus(String messageErreur) {
+    public static Boolean setGlobalStatus() {
         String CHECK = "UPDATE `isoworlds` SET `status` = 1 WHERE `server_id` = ?";
         String check_w;
         try {
@@ -60,7 +60,7 @@ public class StorageAction {
 
     // Set status of IsoWorld (1 for Pushed, 0 for Present)
     // It returns true if pushed, false si envoyé ou à envoyer
-    public static Boolean setStatus(String world, Integer status, String messageErreur) {
+    public static Boolean setStatus(String world, Integer status) {
         String CHECK = "UPDATE `isoworlds` SET `status` = ? WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
@@ -85,14 +85,14 @@ public class StorageAction {
     // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
     public static Boolean checkTag(Player pPlayer, String worldname) {
         // Vérification si monde en statut pushed
-        if (getStatus(worldname, Msg.keys.SQL)) {
+        if (getStatus(worldname)) {
             // Création des chemins pour vérification
             File file = new File(ManageFiles.getPath() + worldname);
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
             // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
 
             if (file.exists()) {
-                setStatus(worldname, 0, Msg.keys.SQL);
+                setStatus(worldname, 0);
                 // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
                 // Le script check ensutie
                 return true;
@@ -112,7 +112,7 @@ public class StorageAction {
     }
 
     // Check status of a IsoWorld, if is Pushed return true, else return false
-    public static Boolean getStatus(String world, String messageErreur) {
+    public static Boolean getStatus(String world) {
         String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {

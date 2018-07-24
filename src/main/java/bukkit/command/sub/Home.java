@@ -26,12 +26,12 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 import bukkit.location.Locations;
-import bukkit.util.action.IsoWorldsAction;
 import bukkit.util.action.LockAction;
 import bukkit.util.action.StorageAction;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
+import common.action.IsoWorldsAction;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -71,7 +71,7 @@ public class Home {
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // SELECT WORLD (load it if need)
-        if (!IsoWorldsAction.isPresent(pPlayer, Msg.keys.SQL, true)) {
+        if (!IsoWorldsAction.isPresent(pPlayer, true)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;
         }

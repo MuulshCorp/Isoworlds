@@ -34,7 +34,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.biome.BiomeType;
@@ -49,19 +48,18 @@ import java.util.Optional;
 
 public class Biome implements CommandCallable {
 
-    private final Main plugin = Main.instance;
+    private final Main instance = Main.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
         Player pPlayer = (Player) source;
-        World world = pPlayer.getWorld();
         String[] arg = args.split(" ");
         BiomeType biome;
 
         Logger.info(arg[0]);
 
         //If the method return true then the command is in lock
-        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.BIOME)) {
             return CommandResult.success();
         }
 
@@ -110,10 +108,8 @@ public class Biome implements CommandCallable {
                 return CommandResult.success();
         }
 
-        // Définition biome
+        // Setup every blocks of chunk to the clicked biome
         Location loc = pPlayer.getLocation();
-        Logger.info("LOCATION " + loc);
-
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 loc.getExtent().setBiome(
@@ -128,14 +124,11 @@ public class Biome implements CommandCallable {
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
-        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)
-                        .append(Text.of(Text.builder(charges - 1 + " charge(s)").color(TextColors.GREEN))))).build()));
 
-        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9 ou F3 + G)").color(TextColors.AQUA))).build()));
+        pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
+        pPlayer.sendMessage(Message.success(Msg.keys.BIOME_CHANGED));
 
-        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
 
         return CommandResult.success();
     }

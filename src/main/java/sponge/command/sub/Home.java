@@ -46,54 +46,46 @@ import sponge.util.message.Message;
 
 public class Home implements CommandExecutor {
 
-    private final Main plugin = Main.instance;
+    public static final Main instance = Main.instance;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-
-        // Variables
         String worldname = "";
         Player pPlayer = (Player) source;
         worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
 
-        //If the method return true then the command is in lock
-        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.MAISON)) {
+        //If return true then the command is in lock
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.MAISON)) {
             return CommandResult.success();
         }
 
-        // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
+        // If return true then lock is enabled for import, else setting it
         if (LockAction.isLocked(pPlayer, "checkTag")) {
             return CommandResult.success();
         }
 
-        // Import / Export
-        // Faux si une procédure est en cours sur un IsoWorld en était @PUSHED en BDD
-        // Vrai si IsoWorld disponible
+        // Pull / Push
+        // False if processing on isoworld as @PUSHED state in database
+        // True if IsoWorld avalable
         if (!StorageAction.checkTag(pPlayer, worldname)) {
             return CommandResult.success();
         }
 
-        // Supprime le lock
-        plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
+        // Removing lock
+        instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
-        // SELECT WORLD (load if need)
+        // Check if IsoWorld exists and load it if need (true)
         if (!IsoWorldsAction.isPresent(pPlayer, true)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
 
-        // Construction du point de respawn
-
-        // Téléportation du joueur
+        // Teleport player
         if (Locations.teleport(pPlayer, worldname)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION + pPlayer.getName()).color(TextColors.AQUA))).build()));
-        } else {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.").color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.SUCCES_TELEPORTATION));
         }
 
-        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.MAISON, Cooldown.MAISON_DELAY);
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.MAISON, Cooldown.MAISON_DELAY);
 
         return CommandResult.success();
     }

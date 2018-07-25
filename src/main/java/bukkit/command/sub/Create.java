@@ -25,6 +25,7 @@
 package bukkit.command.sub;
 
 import bukkit.util.console.Logger;
+import bukkit.util.message.Message;
 import common.ManageFiles;
 import bukkit.Main;
 import bukkit.location.Locations;
@@ -40,74 +41,67 @@ import java.io.IOException;
 
 public class Create {
 
-    static Main instance;
-
     public static void Creation(CommandSender sender, String[] args) {
-
-        // Variables
-        instance = Main.getInstance();
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 
-        // SELECT WORLD
+        // Check if isoworld exists in database
         if (IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_ALREADY_EXISTS));
             return;
         }
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.CREATION_IWORLD);
+        // Create message
+        pPlayer.sendMessage(Message.success(Msg.keys.CREATING_ISOWORLD);
+
         fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-IsoWorld/");
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
-        // Check si le monde existe déjà
+
+        // Check if isoworld exists
         if (Bukkit.getServer().getWorld(worldname) != null) {
-            Logger.warning("Le monde existe déjà");
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_ALREADY_EXISTS));
             return;
         }
 
-        // Vérifie le nb argument
+        // Check arg lenght en send patern types message
         if (len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "IsoWorlds " + ChatColor.GOLD + "] ---------------------");
-            pPlayer.sendMessage(" ");
-            pPlayer.sendMessage(ChatColor.AQUA + "Sijania vous propose 4 types de IsoWorld:");
-            pPlayer.sendMessage(ChatColor.GOLD + "- FLAT/OCEAN/NORMAL/VOID: " + ChatColor.AQUA + "/iw creation " + ChatColor.GOLD + "[" + ChatColor.GREEN + "[TYPE]");
-            pPlayer.sendMessage(" ");
+            pPlayer.sendMessage(Message.error(Msg.keys.HEADER_ISOWORLD));
+            pPlayer.sendMessage(Message.error(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.error(Msg.keys.PATERN_TYPES));
+            pPlayer.sendMessage(Message.error(Msg.keys.PATERN_TYPES_DETAIL));
+            pPlayer.sendMessage(Message.error(Msg.keys.SPACE_LINE));
             return;
         }
 
         Logger.tracking(args[1]);
-        File deleteFile = new File(fullpath + "region");
         File sourceFile;
         switch (args[1]) {
             case ("n"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Logger.tracking("PATERN NORMAL: " + pPlayer.getName());
                 break;
             case ("v"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Logger.tracking("PATERN VOID: " + pPlayer.getName());
                 break;
             case ("o"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Logger.tracking("PATERN OCEAN: " + pPlayer.getName());
                 break;
             case ("f"):
                 sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Logger.tracking("PATERN FLAT: " + pPlayer.getName());
                 break;
             default:
                 return;
         }
 
+        // Bukkit doesn't remove folder with delete method, we do it manually (sponge deleting itself)
         File destFile = new File(fullpath);
+        File deleteFile = new File(fullpath + "region");
 
         try {
             Bukkit.getServer().createWorld(new WorldCreator(worldname));
         } catch (Exception ie) {
             ie.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
         }
 
         // Remove - unload - copy - load
@@ -117,19 +111,16 @@ public class Create {
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
-            Logger.severe(Msg.keys.FICHIERS);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.FICHIERS);
+            ie.printStackTrace();
             return;
         }
 
         Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
-        // INSERT
         if (!IsoWorldsAction.setIsoWorld(pPlayer.getUniqueId().toString())) {
             return;
         }
 
-        // INSERT TRUST
         if (!TrustAction.setTrust(pPlayer.getUniqueId().toString(), pPlayer.getUniqueId().toString())) {
             return;
         }
@@ -141,6 +132,7 @@ public class Create {
             IsoWorldsAction.setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
         }), 60);
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_CREATION_1);
+        pPlayer.sendMessage(Message.success(Msg.keys.ISOWORLD_SUCCESS_CREATE));
+        pPlayer.sendMessage(Message.success(Msg.keys.WELCOME_1) + Msg.keys.WELCOME_2);
     }
 }

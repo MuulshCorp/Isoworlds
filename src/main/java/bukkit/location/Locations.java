@@ -25,6 +25,7 @@
 package bukkit.location;
 
 import bukkit.Main;
+import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
 import org.bukkit.*;
@@ -72,7 +73,7 @@ public class Locations {
 
             // Téléportation du joueur
             if (player.teleport(destination)) {
-                player.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
+                player.sendMessage(Message.error(Msg.keys.SUCCES_TELEPORTATION));
                 plugin.cooldown.addPlayerCooldown(player, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
             }
 

@@ -30,6 +30,7 @@ import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
 import common.action.ChargeAction;
+import common.action.TrustAction;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -40,7 +41,6 @@ public class Biome {
     public static Main instance;
 
     public static void Biome(CommandSender sender, String[] args) {
-        // Variables
         instance = Main.getInstance();
         Player pPlayer = (Player) sender;
         Integer len = args.length;
@@ -62,10 +62,15 @@ public class Biome {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
         }
 
-        // Vérification taille args et retour si biome non indiqué
+        // Check lenght arg
         if (len < 1) {
             pPlayer.sendMessage(Message.error(Msg.keys.BIOME_NOT_FOUND));
             return;
+        }
+
+        // Check if player is trusted
+        if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
         }
 
         switch (args[1]) {
@@ -96,12 +101,8 @@ public class Biome {
                 return;
         }
 
-        // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
-        // si le biome indiqué existe et on l'applique
-
+        // Setup every blocks of chunk to the clicked biome
         Chunk chunk = pPlayer.getLocation().getChunk();
-        Logger.info("Biomes" + org.bukkit.block.Biome.values().toString());
-        Logger.info("COORDINATES: X: " + chunk.getX() + " Z: " + chunk.getZ());
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 final Block block = chunk.getBlock(x, 0, z);
@@ -112,6 +113,7 @@ public class Biome {
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
+
         pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
         pPlayer.sendMessage(Message.success(Msg.keys.BIOME_CHANGED));
 

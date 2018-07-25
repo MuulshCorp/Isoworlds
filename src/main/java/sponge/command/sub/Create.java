@@ -24,6 +24,7 @@
  */
 package sponge.command.sub;
 
+import sponge.util.message.Message;
 import common.Msg;
 import common.action.IsoWorldsAction;
 import common.action.TrustAction;
@@ -52,51 +53,41 @@ public class Create implements CommandCallable {
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
-
-        // Variables
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
-        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder(Msg.keys.CREATION_IWORLD).color(TextColors.AQUA))).build()));
+
+        // Check if isoworld exists in database
+        if (IsoWorldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_ALREADY_EXISTS));
+            return CommandResult.success();
+        }
+
+        // Create message
+        pPlayer.sendMessage(Message.success(Msg.keys.CREATING_ISOWORLD));
+
         fullpath = (ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
-        Logger.info("IsoWorld name: " + worldname);
         String[] arg = args.split(" ");
         int size = arg.length;
 
-        // SELECT WORLD
-        if (IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
-            return CommandResult.success();
-        }
-
-        // Check si le monde existe déjà
+        // Check properties exists
         if (Sponge.getServer().getWorldProperties(worldname).isPresent()) {
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_ALREADY_EXISTS));
             return CommandResult.success();
         }
 
-        // Vérifie le nb argument
+        // Check arg lenght en send patern types message
         if (size < 1) {
-            pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("IsoWorlds ").color(TextColors.AQUA)))
-                    .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
-                    .build()));
-
-            pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
-
-            // Soleil
-            Text isoworld = Text.of(Text.builder("Sijania vous propose 4 types de IsoWorld:").color(TextColors.AQUA).build());
-            pPlayer.sendMessage(isoworld);
-            Text iw = Text.of(Text.builder("- FLAT/OCEAN/NORMAL/VOID: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("/iw creation [TYPE]").color(TextColors.AQUA))).build());
-            pPlayer.sendMessage(iw);
+            pPlayer.sendMessage(Message.error(Msg.keys.HEADER_ISOWORLD));
+            pPlayer.sendMessage(Message.error(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.error(Msg.keys.PATERN_TYPES));
+            pPlayer.sendMessage(Message.error(Msg.keys.PATERN_TYPES_DETAIL));
+            pPlayer.sendMessage(Message.error(Msg.keys.SPACE_LINE));
             return CommandResult.success();
         }
 
-        Logger.info("DEBUGGGG: " + arg[0]);
-
+        Logger.tracking(arg[0]);
         File sourceFile;
         switch (arg[0]) {
             case ("n"):
@@ -121,30 +112,28 @@ public class Create implements CommandCallable {
 
         File destFile = new File(fullpath);
 
-
         try {
             ManageFiles.copyFileOrFolder(sourceFile, destFile);
         } catch (IOException ie) {
             ie.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
             return CommandResult.success();
         }
 
-        // Création properties
+        //  Create world properties
         IsoWorldsAction.setWorldProperties(worldname, pPlayer);
 
-        // INSERT
         if (IsoWorldsAction.setIsoWorld(pPlayer.getUniqueId().toString())) {
-            // INSERT TRUST
             if (TrustAction.setTrust(pPlayer.getUniqueId().toString(), pPlayer.getUniqueId().toString())) {
-                // Chargement
+                // Loading
                 Sponge.getGame().getServer().loadWorld(worldname);
 
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.SUCCES_CREATION_1).color(TextColors.AQUA))).build()));
-                // Téléport
+                pPlayer.sendMessage(Message.success(Msg.keys.ISOWORLD_SUCCESS_CREATE));
+
+                // Teleport
                 Locations.teleport(pPlayer, worldname);
-                pPlayer.sendTitle(Logger.titleSubtitle(Msg.keys.TITRE_BIENVENUE_1 + pPlayer.getName(), Msg.keys.TITRE_BIENVENUE_2));
+
+                // Welcome title (only sponge)
+                pPlayer.sendTitle(Logger.titleSubtitle(Msg.keys.WELCOME_1 + pPlayer.getName(), Msg.keys.WELCOME_2));
             }
         }
         return CommandResult.success();

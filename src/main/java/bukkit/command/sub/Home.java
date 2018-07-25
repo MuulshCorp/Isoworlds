@@ -37,39 +37,35 @@ import org.bukkit.entity.Player;
 
 public class Home {
 
-    public static Main instance;
+    public static final Main instance = Main.instance;
 
     @SuppressWarnings("deprecation")
     public static void Maison(CommandSender sender, String[] args) {
-
-        instance = Main.getInstance();
-
-        // Variables
         String worldname = "";
-        Player pPlayer;
-        pPlayer = (Player) sender;
+        Player pPlayer = (Player) sender;
+        worldname = (pPlayer.getUniqueId() + "-IsoWorld");
 
         //If the method return true then the command is in lock
         if (!instance.cooldown.isAvailable(pPlayer, Cooldown.MAISON)) {
             return;
         }
 
-        worldname = (pPlayer.getUniqueId() + "-IsoWorld");
-
-        // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
+        // If return true then lock is enabled for import, else setting it
         if (LockAction.isLocked(pPlayer, "checkTag")) {
             return;
         }
 
-        // Import / Export
+        // Pull / Push
+        // False if processing on isoworld as @PUSHED state in database
+        // True if IsoWorld avalable
         if (!StorageAction.checkTag(pPlayer, worldname)) {
             return;
         }
 
-        // Supprime le lock
+        // Removing lock
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
-        // SELECT WORLD (load it if need)
+        // Check if IsoWorld exists and load it if needed (true)
         if (!IsoWorldsAction.isPresent(pPlayer, true)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;

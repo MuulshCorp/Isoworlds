@@ -51,27 +51,25 @@ public class Reforge {
     public static Main instance;
 
     public static void Refonte(CommandSender sender, String[] args) {
-        // Variables
         String fullpath = "";
         String worldname;
         Player pPlayer = (Player) sender;
         instance = Main.getInstance();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        //If the method return true then the command is in lock
         if (!instance.cooldown.isAvailable(pPlayer, Cooldown.REFONTE)) {
             return;
         }
 
-        // SELECT WORLD
+        // Check is IsoWorld exists in database
         if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;
         }
 
-        // Confirmation
+        // Confirmation message (2 times cmd)
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.CONFIRMATION);
+            pPlayer.sendMessage(Message.error(Msg.keys.CONFIRMATION));
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             return;
         } else {
@@ -79,16 +77,14 @@ public class Reforge {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
             if (minutes >= 1) {
                 confirm.remove(pPlayer.getUniqueId().toString());
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.CONFIRMATION);
+                pPlayer.sendMessage(Message.error(Msg.keys.CONFIRMATION));
                 return;
             }
         }
 
         confirm.remove(pPlayer.getUniqueId().toString());
 
-        fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-IsoWorld");
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
-        File sourceDir = new File(ManageFiles.getPath() + worldname);
         File destDir = new File(ManageFiles.getPath() + "/IsoWorlds-REFONTE/" + worldname);
         destDir.mkdir();
 
@@ -103,25 +99,24 @@ public class Reforge {
             Location overworld = new Location(Bukkit.getServer().getWorld("Isolonice"), 0, maxY, 0);
             for (Player player : colPlayers) {
                 player.teleport(overworld);
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.REFONTE_KICK);
+                pPlayer.sendMessage(Message.error(Msg.keys.REFORGE_KICK));
             }
-            World world = Bukkit.getServer().getWorld(worldname);
             Bukkit.getServer().unloadWorld(Bukkit.getServer().getWorld(worldname), true);
         }
 
-        //iWorldsUtils.deleteDir(sourceDir);
+        // Deleting process
         File remove = new File((ManageFiles.getPath() + worldname));
         ManageFiles.deleteDir(remove);
-
-        // DELETE WORLD
         if (!IsoWorldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
+            pPlayer.sendMessage(Message.error(Msg.keys.FAIL_REFORGE_ISOWORLD));
             return;
         }
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
-        //Start the lock for this command
+        pPlayer.sendMessage(Message.success(Msg.keys.SUCCES_REFORGE));
+
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY);
+
+        // Open menu to player
         pPlayer.performCommand("iw");
     }
 }

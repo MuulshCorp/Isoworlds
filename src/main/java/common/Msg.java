@@ -29,27 +29,49 @@ public class Msg {
         // ISOWORLD
         String ISOWORLD_NOT_FOUND
                 = "Sijania > Je ne puis trouver votre IsoWorld.";
+        String ISOWORLD_ALREADY_EXISTS
+                = "Vous possédez déjà un IsoWorld";
+        String ISOWORLD_SUCCESS_CREATE
+                = "Vous possédez déjà un IsoWorld";
         String NOT_IN_A_ISOWORLD
                 = "Vous devez vous trouver dans un IsoWorld";
+        String CREATING_ISOWORLD
+                = "IsoWorld en cours de création";
+        String PATERN_TYPES
+                = "4 types de IsoWorld sont disponibles:";
+        String PATERN_TYPES_DETAIL
+                = "- Plat - Océan - Normal - Vide";
+        String HEADER_ISOWORLD
+                = "--------------------- [ IsoWorlds ] ---------------------";
+        String WELCOME_1
+                = "Bienvenue, ";
+        String WELCOME_2
+                = "Sijania > Cet IsoWorld est désormais votre.";
+        String SPACE_LINE
+                = " ";
+        String CONFIRMATION
+                = "Veuillez de nouveau entrer la commande pour confirmer";
+        String REFORGE_KICK
+                = "Sijania entame une destruction entière de l'IsoWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection";
+        String SUCCES_TELEPORTATION
+                = "Sijania > Vous êtes de confiance, continuez votre chemin...";
+        String FAIL_REFORGE_ISOWORLD
+                = "Echec de la refonte de votre IsoWorld";
+        String SUCCES_REFORGE
+                = "Sijania > Mon pouvoir se vide... Mais, votre IsoWorld a été dissipé !";
 
         // TRUST
         String NOT_TRUSTED
                 = "Vous ne possédez pas les permissions sur cet IsoWorld";
+        String KICK_TRUST
+                = "Vous venez d'être téléporté hors du IsoWorld sur lequel vous vous trouviez";
+
 
         // CHARGE
         String CHARGE_USED
                 = "Vous venez d'utiliser une charge";
         String CHARGE_EMPTY
                 = "Vous ne possédez plus de charge";
-
-        String CREATION_IWORLD
-                = "Sijania concentre son pouvoir...";
-        String TITRE_BIENVENUE_1
-                = "Bienvenue, ";
-        String TITRE_BIENVENUE_2
-                = "Sijania > Cet IsoWorld est désormais votre.";
-        String EXISTE_IWORLD
-                = "Sijania > Votre IsoWorld est déjà constitué, pourquoi en vouloir un deuxième ?";
 
         String EXISTE_TRUST
                 = "Sijania > Votre marque de confiance est déjà présente sur ce joueur.";
@@ -59,10 +81,7 @@ public class Msg {
                 = "Sijania > Vous n'avez posé aucune marque de confiance sur ce joueur...";
         String INVALIDE_JOUEUR
                 = "Sijania > Est-ce bien un joueur ?";
-        String INVALIDE_ISOWORLD
-                = "Sijania > Je ne reconnais pas cet IsoWorld...";
-        String SUCCES_TELEPORTATION
-                = "Sijania > Vous êtes de confiance, continuez votre chemin...";
+
         String SUCCES_TRUST
                 = "Sijania > Votre marque de confiance vient d'être posée sur ce joueur, il peut désormais fouler vos terres.";
         String SUCCES_METEO
@@ -71,8 +90,7 @@ public class Msg {
                 = "Sijania > Votre IsoWorld s'est reveillé";
         String SUCCES_DECHARGEMENT
                 = "Sijania > Votre IsoWorld s'endort...";
-        String SUCCES_REFONTE
-                = "Sijania > Mon pouvoir se vide... Mais, votre IsoWorld a été dissipé !";
+
         String SUCCES_RETIRER_CONFIANCE
                 = "Sijania > Ce joueur ressent une brûlure... La marque de confiance vient de lui être retirée !";
         String SUCCES_CREATION_1
@@ -83,14 +101,8 @@ public class Msg {
                 = "Sijania > Ce joueur n'est pas reveillé...";
         String ON_JOUEUR
                 = "Sijania > Ce joueur est présent.";
-        String CONFIRMATION
-                = "Veuillez de nouveau entrer la commande pour confirmer";
-        String REFONTE_KICK
-                = "Sijania entame une destruction entière de l'IsoWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection";
         String DENY_SELF_REMOVE
                 = "Sijania > Vous ne pouvez retirer vos droit de ma création...";
-        String KICK_TRUST
-                = "Sijania > Votre marque de confiance vient d'être retirée par le maître de l'IsoWorld dans lequel vous vous trouviez. Ce sanctuaire vous est désormais interdit.";
         String DENY_TELEPORT
                 = "Sijania > Vous ne pouvez pénétrer ce sanctuaire sans une marque de confiance.";
         String SQL

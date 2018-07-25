@@ -59,46 +59,42 @@ public class Reforge implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-
-        // Variables
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String fullpath = "";
         String worldname = "";
         Player pPlayer = (Player) source;
 
-        //If the method return true then the command is in lock
         if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.REFONTE)) {
             return CommandResult.success();
         }
 
-        // SELECT WORLD
+        // Check is IsoWorld exists in database
         if (!IsoWorldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
         }
 
-        // Confirmation
+        // Confirmation message (2 times cmd)
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
+            pPlayer.sendMessage(Message.error(Msg.keys.CONFIRMATION));
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         } else {
             long millis = timestamp.getTime() - (confirm.get(pPlayer.getUniqueId().toString()).getTime());
             long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
             if (minutes >= 1) {
                 confirm.remove(pPlayer.getUniqueId().toString());
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.CONFIRMATION).color(TextColors.AQUA))).build()));
+                pPlayer.sendMessage(Message.error(Msg.keys.CONFIRMATION));
                 return CommandResult.success();
             }
         }
+
         confirm.remove(pPlayer.getUniqueId().toString());
-        fullpath = (ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
+
         worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
-        File sourceDir = new File(ManageFiles.getPath() + worldname);
         File destDir = new File(ManageFiles.getPath() + "/IsoWorlds-REFONTE/" + worldname);
         destDir.mkdir();
+
         if (!Sponge.getServer().getWorld(worldname).isPresent()) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
@@ -108,37 +104,29 @@ public class Reforge implements CommandExecutor {
             Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
             for (Player player : colPlayers) {
                 player.setLocation(spawn);
-                player.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.REFONTE_KICK).color(TextColors.AQUA))).build()));
+                pPlayer.sendMessage(Message.error(Msg.keys.REFORGE_KICK));
             }
-            World world = Sponge.getServer().getWorld(worldname).get();
-            Sponge.getServer().unloadWorld(world);
+            Sponge.getServer().unloadWorld(Sponge.getServer().getWorld(worldname).get());
         }
 
-        //iWorldsUtils.deleteDir(sourceDir);
+        // Deleting process
         Optional<WorldProperties> optionalWorld = Sponge.getServer().getWorldProperties(worldname);
         WorldProperties world = optionalWorld.get();
         try {
-            if (Sponge.getServer().deleteWorld(world).get()) {
-                Logger.info("Le monde: " + worldname + " a bien été supprimé");
-            }
+            Sponge.getServer().deleteWorld(world).get();
         } catch (InterruptedException | ExecutionException ie) {
             ie.printStackTrace();
         }
-
-
-        // DELETE WORLD
         if (!IsoWorldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_IWORLD).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.FAIL_REFORGE_ISOWORLD));
             return CommandResult.success();
         }
 
-        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder(Msg.keys.SUCCES_REFONTE).color(TextColors.AQUA))).build()));
+        pPlayer.sendMessage(Message.success(Msg.keys.SUCCES_REFORGE));
 
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY);
 
+        // Open menu to player
         Sponge.getCommandManager().process(pPlayer, "iw");
 
         return CommandResult.success();

@@ -93,14 +93,19 @@ public class Main implements MainInterface {
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
 
+        // ****** MODULES ******
+
         // ISOWORLDS-SAS move iw to folder sas
         PreventLoadingAtStart.move();
         // Reset auto atl dim process
         ResetAutoDims.reset("sponge");
-        this.initServerName();
-        this.initMySQL();
         // Set global status 1
         StorageAction.setGlobalStatus();
+
+        // *********************
+
+        this.initServerName();
+        this.initMySQL();
 
         registerEvents();
         logger.info("Chargement des IsoWorlds...");
@@ -136,7 +141,7 @@ public class Main implements MainInterface {
                 this.configurationLoader.save(this.configurationNode);
             }
 
-            Logger.tag();   /* Affiche le tag / version au lancement */
+            Logger.tag();
             PluginContainer pdf = Sponge.getPluginManager().getPlugin("Isoworlds").get();
             Logger.info("Chargement de la version Sponge: " + pdf.getVersion().orElse("Non définie") + " Auteur: " + pdf.getAuthors() + " Site: " + pdf.getUrl());
 
@@ -159,9 +164,16 @@ public class Main implements MainInterface {
         Logger.info("[CONFIG] main_world_spawn_coordinate: " + this.configurationNode.getNode(new Object[]{"IsoWorlds", "main_world_spawn_coordinates"}).getValue());
         Logger.info("[CONFIG] inactivity_before_world_unload: " + this.configurationNode.getNode(new Object[]{"IsoWorlds", "inactivity_before_world_unload"}).getValue());
 
+        // ****** MODULES ******
+
         // Start push action (unload task with tag)
         Push.PushProcess((Integer) this.configurationNode.getNode(new Object[]{"IsoWorlds", "inactivity_before_world_unload"}).getValue());
-        PlayTime.IncreasePlayTime();    /* Start playtime task */
+        // Start playtime task
+        PlayTime.IncreasePlayTime();
+
+        // *********************
+
+        // Init manager
         Manager.instance = Main.instance;
     }
 

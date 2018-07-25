@@ -82,8 +82,24 @@ public final class Main extends JavaPlugin implements MainInterface {
             }
         }
 
-        // Dim reset
+        // ****** MODULES ******
+
+        // Gen alt dims (Mining, Exploration
+        DimAltAction.generateDim();
+
+        // Auto reset process alt dims (every x days) (Nether, End, Mining, Exploration)
         ResetAutoDims.reset("bukkit");
+
+        // Start push action (unload task with tag)
+        Push.PushProcess();
+
+        // Start playtime task
+        PlayTime.IncreasePlayTime();
+
+        // Set global status 1
+        StorageAction.setGlobalStatus();
+
+        // ********************
 
         // Register listeners
         Bukkit.getServer().getPluginManager().registerEvents(new Listeners(), this);
@@ -119,18 +135,6 @@ public final class Main extends JavaPlugin implements MainInterface {
         Logger.info("[CONFIG] main-worldname: " + getConfig().getString("main-worldname"));
         Logger.info("[CONFIG] main-world-spawn-coordinate: " + getConfig().getString("main-world-spawn-coordinate"));
         Logger.info("[CONFIG] inactivity-before-world-unload: " + getConfig().getInt("inactivity-before-world-unload"));
-
-        // Start push action (unload task with tag)
-        Push.PushProcess();
-
-        // Start playtime task
-        PlayTime.IncreasePlayTime();
-
-        // Set global status 1
-        StorageAction.setGlobalStatus();
-
-        // Gen dim ALT
-        DimAltAction.generateDim();
 
         Manager.instance = Main.getInstance();
     }

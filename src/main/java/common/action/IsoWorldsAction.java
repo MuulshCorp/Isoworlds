@@ -104,6 +104,7 @@ public class IsoWorldsAction {
         // Radius border 500
         int x;
         int y;
+        // Radius border 1000
         if (pPlayer.hasPermission("isoworlds.size.1000")) {
             x = 1000;
             y = 1000;
@@ -111,7 +112,7 @@ public class IsoWorldsAction {
         } else if (pPlayer.hasPermission("isoworlds.size.750")) {
             x = 750;
             y = 750;
-            // Radius border 1000
+            // Radius border 500
         } else if (pPlayer.hasPermission("isoworlds.size.500")) {
             x = 500;
             y = 500;
@@ -148,28 +149,28 @@ public class IsoWorldsAction {
             Optional<User> user = StatAction.getPlayerFromUUID(UUID.fromString(username));
             if (!username.equals(pPlayer.getUniqueId().toString())) {
                 // Global
-                // Radius border 500
+                // Radius border 1000
                 if (user.get().hasPermission("isoworlds.size.1000")) {
                     x = 2000;
                     // Radius border 750
                 } else if (user.get().hasPermission("isoworlds.size.750")) {
                     x = 1500;
-                    // Radius border 1000
+                    // Radius border 500
                 } else if (user.get().hasPermission("isoworlds.size.500")) {
                     x = 1000;
-                    // Radius border default
+                    // Radius border default 250
                 } else {
                     x = 500;
                 }
             } else {
                 // Global
-                // Radius border 500
+                // Radius border 1000
                 if (pPlayer.hasPermission("isoworlds.size.1000")) {
                     x = 2000;
                     // Radius border 750
                 } else if (pPlayer.hasPermission("isoworlds.size.750")) {
                     x = 1500;
-                    // Radius border 1000
+                    // Radius border 500
                 } else if (pPlayer.hasPermission("isoworlds.size.500")) {
                     x = 1000;
                     // Radius border default

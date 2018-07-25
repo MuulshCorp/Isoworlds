@@ -79,8 +79,6 @@ public class Listeners implements Listener {
                 Logger.info("- Isoworld setAutoSave to TRUE");
             }
         }.runTaskLater(this.instance, 20);
-
-
     }
 
     @EventHandler

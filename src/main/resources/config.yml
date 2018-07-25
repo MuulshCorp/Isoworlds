@@ -1,7 +1,54 @@
-id: "SRV_NAME"
-main-worldname: "Isolonice"
-main-world-spawn-coordinate: "0;60;0"
-inactivity-before-world-unload: 15
+# Server name stored in database, feel free. Example: (AgrarianSkies2 : AS2)
+Id: "DEV"
+
+# Main world name (not folder name), used to teleport players on login/logout and build safe spawn (avoid death)
+MainWorld: "Isolonice"
+
+# Default spawn position is 0,60,0
+MainWorldSpawnCoordinate: "0;60;0"
+
+# Differents modules, if enabled then adjust parameters if not (disabled) skip them
+Modules:
+  # This module will unload every inactive IsoWorlds for a given time (check every minutes)
+  # One unload, plugin will add @PUSH to worlds forldername
+  # Then the storage module will push them to the backup storage defined by IsoWorlds-SAS (script on github)
+  # If automatic unload is disabled, storage still works on restarts (push every isoworlds on backup storage at start)
+  AutomaticUnload: enabled
+    InactivityTime: 15
+
+  # This module will handle backup storage (script on github), isoworlds will be pushed at server start and worlds unload
+  Storage: enabled
+
+  # This module creates automatically alt dimensions (Mining, Exploration) (Warps access on IsoWorlds menu)
+  DimensionAlt: enabled
+    Mining: true
+    Exploration: true
+
+  # Generate a bedrock plateform on nether/end (0,60,0 default if no Y safe position found)
+  # Clean 3*3 if filled, check at every warp action
+  SafePlateform: enabled
+
+  # Generate 1*1 dirt on IsoWorlds spawn if the spawn coordinate is empty (Y axis), to avoid death
+  # Breaking this dirt doesn't drop
+  # If Y axis is not empty then it will teleport the player on the highest solid position
+  # Handle lava and water
+  SafeSpawn:
+
+  # This module disable player's interaction on main world spawn
+  SpawnProtection: enabled
+
+  # This module define world borders (plugin WorldBorder needed, for bukkit only)
+  Border: enabled
+    # 250*250, 500*500, 750*750, 1000*1000
+    DefaultRadiusSize: 250
+    SmallRadiusSize: 500
+    MediumRadiusSize: 750
+    LargeRadiusSize: 1000
+
+  # This module will count playtime of players (by simply adding 1 every minutes if player is online)
+  PlayTime: enabled
+
+# SQL server, this configuration is needed as we don't handle sqlite atm
 sql:
   server: "IP_ADDRESS"
   port: 3306

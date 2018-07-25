@@ -43,7 +43,7 @@ public class Push {
     public static void PushProcess() {
 
         Map<String, Integer> worlds = new HashMap<String, Integer>();
-        int x = Main.getInstance().getConfig().getInt("inactivity_before_world_unload");
+        int x = Main.getInstance().getConfig().getInt("inactivity-before-world-unload");
 
         Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getScheduler().runTask(Main.instance, () -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois

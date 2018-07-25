@@ -55,7 +55,7 @@ public class Pull implements Consumer<Task> {
         // Message de démarrage process
         if (check == 60) {
             // Notification au joueur qu'il doit patienter
-            pPlayer.sendMessage(Message.error(Msg.keys.PROCESSING_PULL));
+            pPlayer.sendMessage(Message.success(Msg.keys.PROCESSING_PULL));
 
         }
         check --;
@@ -72,7 +72,7 @@ public class Pull implements Consumer<Task> {
             // Passage du IsoWorld en statut présent
             StorageAction.setStatus(file.getName(), 0);
             // Notification au joueur que le IsoWorld est disponible
-            pPlayer.sendMessage(Message.error(Msg.keys.SUCCESS_PULL));
+            pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_PULL));
             // Suppression du TAG pour permettre l'utilisation de la commande maison et confiance access
             plugin.lock.remove(file.getName() + ";" + file.getName());
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");

@@ -24,11 +24,11 @@
  */
 package sponge.util.task.SAS;
 
-import bukkit.configuration.Configuration;
 import common.ManageFiles;
 import org.slf4j.Logger;
 import org.spongepowered.api.scheduler.Task;
 import sponge.Main;
+import sponge.configuration.Configuration;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;

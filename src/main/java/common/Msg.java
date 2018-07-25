@@ -56,7 +56,7 @@ public class Msg {
         String FAIL_REFORGE_ISOWORLD
                 = "Echec de la refonte de ton IsoWorld, retente et demande aux staff si c'est sans succès";
         String SUCCES_REFORGE
-                = "Ton IsoWorld a été reforgé avec succès !";
+                = "Ton IsoWorld peut maintenant être reforgé !";
         String PROCESSING_PULL
                 = "Ton IsoWorld est en cours de transfert sur ce serveur, temps estimé: 60 secondes";
         String FAIL_PULL
@@ -84,7 +84,7 @@ public class Msg {
 
         // TIME
         String TIME_CHANGE_SUCCESS
-                = "Le temps de cet IsoWorld vient d'être changé par: ";
+                = "Le temps de cet IsoWorld vient d'être changé par:";
         String TIME_TYPES
                 = "2 types de temps sont disponibles:";
         String TIME_TYPES_DETAIL
@@ -92,7 +92,7 @@ public class Msg {
 
         // WEATHER
         String WEATHER_CHANGE_SUCCESS
-                = "Le temps de cet IsoWorld vient d'être changé par: ";
+                = "Le temps de cet IsoWorld vient d'être changé par:";
         String WEATHER_TYPES
                 = "3 types de climat sont disponibles:";
         String WEATHER_TYPES_DETAIL
@@ -109,6 +109,6 @@ public class Msg {
         String BIOME_CHANGED = "Tu viens de changer le biome du chunk dans lequel tu te trouves avec succès !";
 
         // UTILS
-        String UNAVAILABLE_COMMAND = "Commande inconnue";
+        String UNAVAILABLE_COMMAND = "Commande indisponible pendant: ";
     }
 }

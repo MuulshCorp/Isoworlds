@@ -63,11 +63,13 @@ public class Time {
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            return;
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            return;
         }
 
         if (len < 2) {
@@ -78,21 +80,17 @@ public class Time {
             pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
             return;
         } else {
-            World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
-            Logger.tracking("Time world: " + weather.getName());
+            World time = pPlayer.getWorld();
+            Logger.tracking("Time world: " + time.getName());
             if (args[1].equals("jour") || args[1].equals("day")) {
-                weather.setTime(0);
-                pPlayer.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS));
-                return;
+                time.setTime(0);
             } else if (args[1].equals("nuit") || args[1].equals("night")) {
-                weather.setTime(12000);
-                pPlayer.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS));
-                return;
+                time.setTime(12000);
             }
 
             // Send message to all players
-            for (Player p : Bukkit.getServer().getWorld(worldname).getPlayers()) {
-                p.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS + pPlayer.getName()));
+            for (Player p : pPlayer.getWorld().getPlayers()) {
+                p.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS + " " + pPlayer.getName()));
             }
 
             if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {

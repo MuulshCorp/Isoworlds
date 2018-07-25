@@ -24,6 +24,7 @@
  */
 package sponge.util.inventory.trust;
 
+import common.action.IsoWorldsAction;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.living.player.Player;
@@ -62,9 +63,13 @@ public class TrustInv {
                     Logger.info("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
                     clickInventoryEvent.setCancelled(true);
                     if (menuName.contains("Ajouter")) {
-                        MainInv.closeOpenMenu(pPlayer, TrustAddInv.getInv(pPlayer));
+                        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+                            MainInv.closeOpenMenu(pPlayer, TrustAddInv.getInv(pPlayer));
+                        }
                     } else if (menuName.contains("Retirer")) {
-                        MainInv.closeOpenMenu(pPlayer, TrustDeleteInv.getInv(pPlayer));
+                        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+                            MainInv.closeOpenMenu(pPlayer, TrustDeleteInv.getInv(pPlayer));
+                        }
                     } else if (menuName.contains("Mes accès")) {
                         MainInv.closeOpenMenu(pPlayer, TrustAccessInv.getInv(pPlayer));
                     } else if (menuName.contains("Menu principal")) {

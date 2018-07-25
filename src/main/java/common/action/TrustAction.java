@@ -135,7 +135,7 @@ public class TrustAction {
     }
 
     // Check if playeruuid is trusted on worldname
-    public static Boolean isTrusted(String worldname, String playeruuid) {
+    public static Boolean isTrusted(String playeruuid, String worldname) {
         String CHECK = "SELECT * FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         try {
             PreparedStatement check = database.prepare(CHECK);

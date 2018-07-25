@@ -27,7 +27,7 @@ package sponge;
 import com.google.inject.Inject;
 
 import common.*;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.plugin.PluginContainer;
 import sponge.configuration.Configuration;
 import sponge.listener.Listeners;
@@ -41,8 +41,6 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameInitializationEvent;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import sponge.command.*;
 import sponge.util.task.PlayerStatistic.PlayTime;
@@ -93,14 +91,6 @@ public class Main implements IMain {
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
-
-        // ****** MODULES ******
-
-        // ISOWORLDS-SAS move iw to folder sas
-        PreventLoadingAtStart.move();
-        // Reset auto atl dim process
-        ResetAutoDims.reset("sponge");
-        // *********************
 
         this.initServerName();
         this.initMySQL();
@@ -207,7 +197,19 @@ public class Main implements IMain {
         Logger.info("[CONFIG] main_world_spawn_coordinate: " + Configuration.getMainWorldSpawnCoordinate());
         Logger.info("[CONFIG] inactivity_before_world_unload: " + Configuration.getInactivityTime());
 
+        // Init manager
+        Manager.instance = Main.instance;
+    }
+
+    @Listener
+    public void onPostInit(GameAboutToStartServerEvent event) {
         // ****** MODULES ******
+
+        // ISOWORLDS-SAS move iw to folder sas
+        PreventLoadingAtStart.move();
+        // Reset auto atl dim process
+        ResetAutoDims.reset("sponge");
+        // *********************
 
         // Storage
         if (Configuration.getStorage()) {
@@ -224,9 +226,6 @@ public class Main implements IMain {
         }
 
         // *********************
-
-        // Init manager
-        Manager.instance = Main.instance;
     }
 
     @Listener
@@ -242,10 +241,6 @@ public class Main implements IMain {
             DimsAltAction.generateDim();
         }
         // *********************
-    }
-
-    public CommentedConfigurationNode rootNode() {
-        return this.configurationNode;
     }
 
     private void registerEvents() {

@@ -49,7 +49,7 @@ public class Pull extends BukkitRunnable {
     @Override
     public void run() {
         if (check == 20) {
-            pPlayer.sendMessage(Message.error(Msg.keys.PROCESSING_PULL));
+            pPlayer.sendMessage(Message.success(Msg.keys.PROCESSING_PULL));
         }
         check --;
         if (check < 1) {
@@ -58,7 +58,7 @@ public class Pull extends BukkitRunnable {
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
             cancel();
         } else if (file.exists()) {
-            pPlayer.sendMessage(Message.error(Msg.keys.SUCCESS_PULL));
+            pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_PULL));
             instance.lock.remove(file.getName() + ";" + file.getName());
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
             cancel();

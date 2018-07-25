@@ -76,11 +76,13 @@ public class Weather implements CommandCallable {
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            return CommandResult.success();
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            return CommandResult.success();
         }
 
         if (size == 1) {
@@ -93,14 +95,14 @@ public class Weather implements CommandCallable {
 
         } else if (size == 3) {
             if (arg[0].equals("soleil") || arg[0].equals("sun")) {
-                Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.CLEAR, parseInt(arg[1]));
+                pPlayer.getWorld().setWeather(Weathers.CLEAR, parseInt(arg[1]));
             } else if (arg[0].equals("pluie") || arg[0].equals("rain")) {
-                Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.RAIN, parseInt(arg[1]));
+                pPlayer.getWorld().setWeather(Weathers.RAIN, parseInt(arg[1]));
             } else if (arg[0].equals("orage") || arg[0].equals("storm")) {
-                Sponge.getServer().getWorld(arg[2]).get().setWeather(Weathers.THUNDER_STORM, parseInt(arg[1]));
+                pPlayer.getWorld().setWeather(Weathers.THUNDER_STORM, parseInt(arg[1]));
             }
             // Message pour tous les joueurs
-            for (Player p : Sponge.getServer().getWorld(arg[2]).get().getPlayers()) {
+            for (Player p : pPlayer.getWorld().getPlayers()) {
                 p.sendMessage(Message.success(Msg.keys.WEATHER_CHANGE_SUCCESS + pPlayer.getName()));
             }
         } else {

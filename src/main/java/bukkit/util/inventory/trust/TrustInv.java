@@ -28,6 +28,7 @@ import bukkit.util.inventory.MainInv;
 import bukkit.util.inventory.trust.sub.TrustAccessInv;
 import bukkit.util.inventory.trust.sub.TrustAddInv;
 import bukkit.util.inventory.trust.sub.TrustDeleteInv;
+import common.action.IsoWorldsAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -42,9 +43,14 @@ public class TrustInv implements Listener {
             public boolean click(Player p, MainInv menu, MainInv.Row row, int slot, ItemStack item) {
                 String menuName = row.getRowItem(slot).getItemMeta().getDisplayName();
                 if (menuName.contains("Ajouter")) {
-                    TrustAddInv.getInv(pPlayer).open(pPlayer);
+                    // Check if player has iw
+                    if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+                        TrustAddInv.getInv(pPlayer).open(pPlayer);
+                    }
                 } else if (menuName.contains("Retirer")) {
-                    TrustDeleteInv.getInv(pPlayer).open(pPlayer);
+                    if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+                        TrustDeleteInv.getInv(pPlayer).open(pPlayer);
+                    }
                 } else if (menuName.contains("Mes accès")) {
                     TrustAccessInv.getInv(pPlayer).open(pPlayer);
                 } else if (menuName.contains("Menu principal")) {

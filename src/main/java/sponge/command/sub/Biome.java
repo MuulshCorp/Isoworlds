@@ -72,11 +72,13 @@ public class Biome implements CommandCallable {
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            return CommandResult.success();
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            return CommandResult.success();
         }
 
         switch (arg[0]) {

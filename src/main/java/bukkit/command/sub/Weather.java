@@ -26,15 +26,12 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 
-import bukkit.util.console.Logger;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
 import common.action.ChargeAction;
-import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -65,11 +62,13 @@ public class Weather {
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            return;
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            return;
         }
 
         if (len < 3) {
@@ -85,8 +84,7 @@ public class Weather {
             } catch (NumberFormatException e) {
                 return;
             }
-            World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
-            Logger.info("Weather world: " + weather.getName());
+            World weather = pPlayer.getWorld();
             if (args[1].equals("pluie") || args[1].equals("rain")) {
                 weather.setStorm(true);
                 weather.setWeatherDuration(num);
@@ -95,8 +93,8 @@ public class Weather {
                 weather.setWeatherDuration(num);
                 // Message pour tous les joueurs
             }
-            for (Player p : Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").getPlayers()) {
-                p.sendMessage(Message.success(Msg.keys.WEATHER_CHANGE_SUCCESS + pPlayer.getName()));
+            for (Player p : pPlayer.getWorld().getPlayers()) {
+                p.sendMessage(Message.success(Msg.keys.WEATHER_CHANGE_SUCCESS + " " + pPlayer.getName()));
             }
         }
 

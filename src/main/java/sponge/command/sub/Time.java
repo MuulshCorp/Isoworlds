@@ -27,9 +27,7 @@ package sponge.command.sub;
 import common.Cooldown;
 import common.Msg;
 import common.action.ChargeAction;
-import common.action.IsoWorldsAction;
 import common.action.TrustAction;
-import org.spongepowered.api.text.action.TextActions;
 import sponge.Main;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
@@ -38,7 +36,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.util.action.StatAction;
@@ -73,11 +70,13 @@ public class Time implements CommandCallable {
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            return CommandResult.success();
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
             pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            return CommandResult.success();
         }
 
         if (size == 0) {
@@ -89,19 +88,17 @@ public class Time implements CommandCallable {
             return CommandResult.success();
         } else if (size == 1) {
             if (arg[0].equals("jour") || arg[0].equals("day")) {
-                Sponge.getServer().getWorld(worldname).get().getProperties().setWorldTime(0);
-                pPlayer.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS));
+                pPlayer.getWorld().getProperties().setWorldTime(0);
             } else if (arg[0].equals("nuit") || arg[0].equals("night")) {
-                Sponge.getServer().getWorld(worldname).get().getProperties().setWorldTime(12000);
-                pPlayer.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS));
+                pPlayer.getWorld().getProperties().setWorldTime(12000);
             }
         } else {
             return CommandResult.success();
         }
 
         // Send message to all players
-        for (Player p : Sponge.getServer().getWorld(worldname).get().getPlayers()) {
-            p.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS + pPlayer.getName()));
+        for (Player p : pPlayer.getWorld().getPlayers()) {
+            p.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS + " " + pPlayer.getName()));
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {

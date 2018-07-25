@@ -242,7 +242,7 @@ public class Listeners {
 
     @Listener
     public void onPlayerChangeWorld(MoveEntityEvent.Teleport event, @Getter("getTargetEntity") Player pPlayer) {
-        final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ? AND `SERVEUR_ID` = ?";
+        final String CHECK = "SELECT * FROM `autorisations` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         String check_p;
         String check_w;
 
@@ -255,7 +255,6 @@ public class Listeners {
         File checkFolder = new File(ManageFiles.getPath() + eventworld);
         if (!checkFolder.exists() & eventworld.contains("IsoWorld")) {
             event.setCancelled(true);
-            Logger.warning("Isoworld non actif, téléporation annulée !");
             return;
         }
 
@@ -286,8 +285,6 @@ public class Listeners {
                     return;
                 } else {
                     event.setCancelled(true);
-                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(Msg.keys.DENY_TELEPORT).color(TextColors.AQUA))).build()));
                 }
 
             } catch (Exception se) {

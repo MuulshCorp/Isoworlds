@@ -24,7 +24,6 @@
  */
 package sponge.util.inventory;
 
-import common.Msg;
 import common.action.ChargeAction;
 import common.action.PlayTimeAction;
 import org.spongepowered.api.Sponge;

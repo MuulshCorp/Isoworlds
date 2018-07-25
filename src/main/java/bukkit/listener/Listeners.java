@@ -25,6 +25,7 @@
 package bukkit.listener;
 
 import bukkit.Main;
+import bukkit.configuration.Configuration;
 import bukkit.location.Locations;
 import bukkit.util.console.Logger;
 import bukkit.util.message.Message;
@@ -118,13 +119,18 @@ public class Listeners implements Listener {
     // Anti grief spawn
     public void onInteractSpawn(PlayerInteractEvent event) {
 
-        Player p = event.getPlayer();
-        if (p.hasPermission("isoworlds.bypass.spawn")) {
-            return;
+        // ****** MODULES ******
+        // Spawn Protection
+        if (Configuration.getSpawnProtection()) {
+            Player p = event.getPlayer();
+            if (p.hasPermission("isoworlds.bypass.spawn")) {
+                return;
+            }
+            if (p.getLocation().getWorld().getName().equals("Isolonice")) {
+                event.setCancelled(true);
+            }
         }
-        if (p.getLocation().getWorld().getName().equals("Isolonice")) {
-            event.setCancelled(true);
-        }
+        // *********************
     }
 
     @EventHandler

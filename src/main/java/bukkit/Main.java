@@ -25,6 +25,7 @@
 package bukkit;
 
 import bukkit.command.Commands;
+import bukkit.configuration.Configuration;
 import bukkit.listener.Listeners;
 import bukkit.util.action.DimAltAction;
 import bukkit.util.action.StorageAction;
@@ -35,13 +36,14 @@ import common.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import sun.security.krb5.Config;
 
 import java.io.File;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Main extends JavaPlugin implements MainInterface {
+public final class Main extends JavaPlugin implements IMain {
     public static Main instance;
     private java.util.logging.Logger logger;
     public Mysql database;
@@ -76,30 +78,14 @@ public final class Main extends JavaPlugin implements MainInterface {
             ManageFiles.deleteDir(new File(f.getPath() + "/uid.dat"));
             ManageFiles.deleteDir(new File(f.getPath() + "/session.lock"));
             // Gestion des IsoWorlds non push, on les tag à @PUSH si pas de tag @PUSHED
-            if (!f.getName().contains("@PUSHED")) {
-                ManageFiles.rename(ManageFiles.getPath() + "/" + f.getName(), "@PUSH");
-                Logger.warning("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
+            // Tag IsoWorlds @PUSH if Storage config enabled
+            if (Configuration.getStorage()) {
+                if (!f.getName().contains("@PUSHED")) {
+                    ManageFiles.rename(ManageFiles.getPath() + "/" + f.getName(), "@PUSH");
+                    Logger.warning("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
+                }
             }
         }
-
-        // ****** MODULES ******
-
-        // Gen alt dims (Mining, Exploration
-        DimAltAction.generateDim();
-
-        // Auto reset process alt dims (every x days) (Nether, End, Mining, Exploration)
-        ResetAutoDims.reset("bukkit");
-
-        // Start push action (unload task with tag)
-        Push.PushProcess();
-
-        // Start playtime task
-        PlayTime.IncreasePlayTime();
-
-        // Set global status 1
-        StorageAction.setGlobalStatus();
-
-        // ********************
 
         // Register listeners
         Bukkit.getServer().getPluginManager().registerEvents(new Listeners(), this);
@@ -131,12 +117,39 @@ public final class Main extends JavaPlugin implements MainInterface {
         this.cooldown = new Cooldown(this.database, this.servername, "bukkit", this.commonLogger);
 
         // Log configs
-        Logger.info("[CONFIG] id: " + getConfig().getString("id"));
-        Logger.info("[CONFIG] main-worldname: " + getConfig().getString("main-worldname"));
-        Logger.info("[CONFIG] main-world-spawn-coordinate: " + getConfig().getString("main-world-spawn-coordinate"));
-        Logger.info("[CONFIG] inactivity-before-world-unload: " + getConfig().getInt("inactivity-before-world-unload"));
+        Logger.info("[CONFIG] id: " + Configuration.getId());
+        Logger.info("[CONFIG] main-worldname: " + Configuration.getMainWorld());
+        Logger.info("[CONFIG] main-world-spawn-coordinate: " + Configuration.getMainWorldSpawnCoordinate());
+        Logger.info("[CONFIG] inactivity-before-world-unload: " + Configuration.getInactivityTime());
 
         Manager.instance = Main.getInstance();
+
+        // ****** MODULES ******
+
+        // DimensionAlt
+        if (Configuration.getDimensionAlt()) {
+            // Gen alt dims (Mining, Exploration
+            DimAltAction.generateDim();
+        }
+
+        // Auto reset process alt dims (every x days) (Nether, End, Mining, Exploration)
+        ResetAutoDims.reset("bukkit");
+
+        // Storage
+        if (Configuration.getStorage()) {
+            // Start push action (unload task with tag)
+            Push.PushProcess(Configuration.getInactivityTime());
+            // Set global status 1
+            StorageAction.setGlobalStatus();
+        }
+
+        // PlayTime
+        if (Configuration.getPlayTime()) {
+            // Start playtime task
+            PlayTime.IncreasePlayTime();
+        }
+
+        // ********************
     }
 
     @Override

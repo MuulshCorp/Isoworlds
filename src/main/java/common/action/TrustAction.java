@@ -24,7 +24,7 @@
  */
 package common.action;
 
-import common.MainInterface;
+import common.IMain;
 import common.Manager;
 import common.Mysql;
 
@@ -45,7 +45,7 @@ public class TrustAction {
             PreparedStatement check = database.prepare(CHECK);
             check.setString(1, playeruuid);
             // Server id
-            check.setString(2, MainInterface.servername);
+            check.setString(2, IMain.servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
@@ -123,7 +123,7 @@ public class TrustAction {
             // delete autorisation
             delete_autorisations.setString(1, playeruuid);
             delete_autorisations.setString(2, worldname);
-            delete_autorisations.setString(3, MainInterface.servername);
+            delete_autorisations.setString(3, IMain.servername);
 
             // execute
             delete_autorisations.executeUpdate();

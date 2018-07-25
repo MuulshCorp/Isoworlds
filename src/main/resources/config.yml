@@ -13,32 +13,39 @@ Modules:
   # Once unload, plugin will add @PUSH to worlds forldername
   # Then the storage module will push them to the backup storage defined by IsoWorlds-SAS (script on github)
   # If automatic unload is disabled, storage still works on restarts (push every isoworlds on backup storage at start)
-  AutomaticUnload: enabled
+  AutomaticUnload:
+    Enabled: true
     InactivityTime: 15
 
   # This module will handle backup storage (script on github), isoworlds will be pushed at server start and worlds unload
-  Storage: enabled
+  Storage:
+    Enabled: true
 
   # This module creates automatically alt dimensions (Mining, Exploration) (Warps access on IsoWorlds menu)
-  DimensionAlt: enabled
-    Mining: enabled
-    Exploration: enabled
+  DimensionAlt:
+    Enabled: true
+    Mining: true
+    Exploration: true
 
   # Generate a bedrock plateform on nether/end (0,60,0 default if no Y safe position found)
   # Clean 3*3 if filled, check at every warp action
-  SafePlateform: enabled
+  SafePlateform:
+    Enabled: true
 
   # Generate 1*1 dirt on IsoWorlds spawn if the spawn coordinate is empty (Y axis), to avoid death
   # Breaking this dirt doesn't drop
   # If Y axis is not empty then it will teleport the player on the highest solid position
   # Handle lava and water
-  SafeSpawn: enabled
+  SafeSpawn:
+    Enabled: true
 
   # This module disable player's interaction on main world spawn
-  SpawnProtection: enabled
+  SpawnProtection:
+    Enabled: true
 
   # This module define world borders (plugin WorldBorder needed, for bukkit only)
-  Border: enabled
+  Border:
+    Enabled: true
     # 250*250, 500*500, 750*750, 1000*1000
     DefaultRadiusSize: 250
     SmallRadiusSize: 500
@@ -46,7 +53,8 @@ Modules:
     LargeRadiusSize: 1000
 
   # This module will count playtime of players (by simply adding 1 every minutes if player is online)
-  PlayTime: enabled
+  PlayTime:
+    Enabled: true
 
 # MySQL server, this configuration is needed as we don't handle sqlite atm
 sql:

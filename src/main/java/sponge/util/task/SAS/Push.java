@@ -29,6 +29,7 @@ import common.Msg;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.world.World;
+import sponge.Main;
 import sponge.util.action.StorageAction;
 import sponge.util.console.Logger;
 
@@ -160,6 +161,6 @@ public class Push {
             }
         }).interval(1, TimeUnit.MINUTES).
                 name("Analyse des IsoWorlds vides...").
-                submit(sponge.Main.instance);
+                submit(Main.instance);
     }
 }

@@ -151,7 +151,6 @@ public class StorageAction {
     // Set global status
     public static Boolean setGlobalStatus() {
         String CHECK = "UPDATE `isoworlds` SET `status` = 1 WHERE `server_id` = ?";
-        String check_w;
         try {
             PreparedStatement check = plugin.database.prepare(CHECK);
 
@@ -159,7 +158,6 @@ public class StorageAction {
             check.setString(1, plugin.servername);
             // Requête
             ResultSet rselect = check.executeQuery();
-            Logger.info(check.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;

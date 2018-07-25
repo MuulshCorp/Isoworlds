@@ -29,7 +29,6 @@ import bukkit.location.Locations;
 import bukkit.util.action.StorageAction;
 import bukkit.util.console.Logger;
 import common.ManageFiles;
-import common.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -40,10 +39,10 @@ import java.util.Map;
 
 public class Push {
 
-    public static void PushProcess() {
+    public static void PushProcess(Integer time) {
 
         Map<String, Integer> worlds = new HashMap<String, Integer>();
-        int x = Main.getInstance().getConfig().getInt("inactivity-before-world-unload");
+        int x = time;
 
         Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getScheduler().runTask(Main.instance, () -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois

@@ -37,6 +37,7 @@ import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
 import org.spongepowered.api.scheduler.Task;
+import sponge.configuration.Configuration;
 import sponge.location.Locations;
 import sponge.util.console.Logger;
 import sponge.Main;
@@ -94,24 +95,29 @@ public class Listeners {
     // Anti grief spawn
     public void onDestructSpawn(ChangeBlockEvent.Pre event, @First Player player) {
 
-        String worldname = player.getWorld().getName();
+        // ****** MODULES ******
+        // Spawn Protection
+        if (Configuration.getSpawnProtection()) {
+            String worldname = player.getWorld().getName();
 
-        Player p = player;
-        if (p.hasPermission("isoworlds.bypass.spawn")) {
-            return;
-        }
+            Player p = player;
+            if (p.hasPermission("isoworlds.bypass.spawn")) {
+                return;
+            }
 
-        if (worldname.equals("Isolonice")) {
-            event.setCancelled(true);
-        }
-
-        // If break in chunk of spawn layer 60, remove drop
-        if (event.getLocations().get(0).getBlockX() == Locations.getAxis(worldname).getX() & event.getLocations().get(0).getBlockZ() == Locations.getAxis(worldname).getZ()) {
-            if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {
+            if (worldname.equals("Isolonice")) {
                 event.setCancelled(true);
-                event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+            }
+
+            // If break in chunk of spawn layer 60, remove drop
+            if (event.getLocations().get(0).getBlockX() == Locations.getAxis(worldname).getX() & event.getLocations().get(0).getBlockZ() == Locations.getAxis(worldname).getZ()) {
+                if (event.getLocations().get(0).getBlock().getType() == BlockTypes.DIRT) {
+                    event.setCancelled(true);
+                    event.getLocations().get(0).setBlockType(BlockTypes.AIR, Cause.source(Sponge.getPluginManager().fromInstance(plugin).get()).build());
+                }
             }
         }
+        // *********************
     }
 
     // On téléporte tous les joueurs à la déconnexion
@@ -158,7 +164,7 @@ public class Listeners {
             public void run() {
                 Locations.teleport(event.getTargetUser().getPlayer().get(), worldname);
             }
-        }).delay(1/5, TimeUnit.SECONDS).submit(instance);
+        }).delay(1 / 5, TimeUnit.SECONDS).submit(instance);
     }
 
     // Logout event, tp spawn

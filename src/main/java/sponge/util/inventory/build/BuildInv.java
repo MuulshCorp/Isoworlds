@@ -24,7 +24,6 @@
  */
 package sponge.util.inventory.build;
 
-import common.Msg;
 import common.action.IsoWorldsAction;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.DyeColors;

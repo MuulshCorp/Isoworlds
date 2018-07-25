@@ -24,10 +24,41 @@
  */
 package common;
 
-public class Manager {
-    public static IMain instance;
+public interface IConfiguration {
 
-    public static IMain getInstance() {
-        return instance;
-    }
+    String getId();
+
+    String getMainWorld();
+
+    String getMainWorldSpawnCoordinate();
+
+    boolean getAutomaticUnload();
+
+    Integer getInactivityTime();
+
+    boolean getStorage();
+
+    boolean getDimensionAlt();
+
+    boolean getMining();
+
+    boolean getExploration();
+
+    boolean getSafePlateform();
+
+    boolean getSafeSpawn();
+
+    boolean getSpawnProtection();
+
+    boolean getBorder();
+
+    Integer getDefaultRadiusSize();
+
+    Integer getSmallRadiusSize();
+
+    Integer getMediumRadiusSize();
+
+    Integer getLargeRadiusSize();
+
+    boolean getPlayTime();
 }

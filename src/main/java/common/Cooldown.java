@@ -35,7 +35,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
-public class Cooldown implements CooldownType {
+public class Cooldown implements ICooldown {
     private final Logger logger;
     private Mysql database;
     private String servername;

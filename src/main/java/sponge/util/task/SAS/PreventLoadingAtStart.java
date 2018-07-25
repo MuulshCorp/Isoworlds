@@ -24,6 +24,7 @@
  */
 package sponge.util.task.SAS;
 
+import bukkit.configuration.Configuration;
 import common.ManageFiles;
 import org.slf4j.Logger;
 import org.spongepowered.api.scheduler.Task;
@@ -58,7 +59,10 @@ public class PreventLoadingAtStart {
                         logger.info("[IsoWorlds-SAS: Anomalie sur le IsoWorld " + f.getName());
                         continue;
                     }
-                    ManageFiles.rename(ManageFiles.getPath() + "ISOWORLDS-SAS/" + f.getName(), "@PUSH");
+                    // Tag IsoWorlds @PUSH if Storage config enabled
+                    if (Configuration.getStorage()) {
+                        ManageFiles.rename(ManageFiles.getPath() + "ISOWORLDS-SAS/" + f.getName(), "@PUSH");
+                    }
                     logger.info("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
                 }
             } else {

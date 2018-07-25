@@ -1,10 +1,10 @@
 package common.action;
 
 import bukkit.Main;
+import bukkit.configuration.Configuration;
 import bukkit.util.action.StorageAction;
 import bukkit.util.console.Command;
 import bukkit.util.console.Logger;
-import common.MainInterface;
 import common.Manager;
 import common.Msg;
 import common.Mysql;
@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.world.WorldArchetypes;
-import org.spongepowered.api.world.gamerule.DefaultGameRules;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.location.Locations;
 import sponge.util.action.StatAction;
@@ -101,29 +100,35 @@ public class IsoWorldsAction {
 
         // Properties of IsoWorld
         World world = Bukkit.getServer().getWorld(worldname);
-        // Radius border 500
-        int x;
-        int y;
-        // Radius border 1000
-        if (pPlayer.hasPermission("isoworlds.size.1000")) {
-            x = 1000;
-            y = 1000;
-            // Radius border 750
-        } else if (pPlayer.hasPermission("isoworlds.size.750")) {
-            x = 750;
-            y = 750;
-            // Radius border 500
-        } else if (pPlayer.hasPermission("isoworlds.size.500")) {
-            x = 500;
-            y = 500;
-            // Radius border default
-        } else {
-            x = 250;
-            y = 250;
-        }
 
-        Logger.severe("Size: " + x + " " + y);
-        Command.sendCmd("wb " + worldname + " set " + x + " " + y + " 0 0");
+        // ****** MODULES ******
+        // Border
+        if (sponge.configuration.Configuration.getBorder()) {
+            // Radius border 500
+            int x;
+            int y;
+            // Radius border 1000
+            if (pPlayer.hasPermission("isoworlds.size.1000")) {
+                x = Configuration.getLargeRadiusSize();
+                y = Configuration.getLargeRadiusSize();
+                // Radius border 750
+            } else if (pPlayer.hasPermission("isoworlds.size.750")) {
+                x = Configuration.getMediumRadiusSize();
+                y = Configuration.getMediumRadiusSize();
+                // Radius border 500
+            } else if (pPlayer.hasPermission("isoworlds.size.500")) {
+                x = Configuration.getSmallRadiusSize();
+                y = Configuration.getSmallRadiusSize();
+                // Radius border default
+            } else {
+                x = Configuration.getDefaultRadiusSize();
+                y = Configuration.getDefaultRadiusSize();
+            }
+
+            Logger.severe("Size: " + x + " " + y);
+            Command.sendCmd("wb " + worldname + " set " + x + " " + y + " 0 0");
+        }
+        // *********************
 
         if (world != null) {
             Block yLoc = world.getHighestBlockAt(0, 0);
@@ -144,6 +149,7 @@ public class IsoWorldsAction {
 
         try {
             // Deal with permission of owner only
+
             int x;
             String username = worldname.split("-IsoWorld")[0];
             Optional<User> user = StatAction.getPlayerFromUUID(UUID.fromString(username));
@@ -151,31 +157,31 @@ public class IsoWorldsAction {
                 // Global
                 // Radius border 1000
                 if (user.get().hasPermission("isoworlds.size.1000")) {
-                    x = 2000;
+                    x = (sponge.configuration.Configuration.getLargeRadiusSize() * 2);
                     // Radius border 750
                 } else if (user.get().hasPermission("isoworlds.size.750")) {
-                    x = 1500;
+                    x = (sponge.configuration.Configuration.getMediumRadiusSize() * 2);
                     // Radius border 500
                 } else if (user.get().hasPermission("isoworlds.size.500")) {
-                    x = 1000;
+                    x = (sponge.configuration.Configuration.getSmallRadiusSize() * 2);
                     // Radius border default 250
                 } else {
-                    x = 500;
+                    x = (sponge.configuration.Configuration.getDefaultRadiusSize() * 2);
                 }
             } else {
                 // Global
                 // Radius border 1000
                 if (pPlayer.hasPermission("isoworlds.size.1000")) {
-                    x = 2000;
+                    x = (sponge.configuration.Configuration.getLargeRadiusSize() * 2);
                     // Radius border 750
                 } else if (pPlayer.hasPermission("isoworlds.size.750")) {
-                    x = 1500;
+                    x = (sponge.configuration.Configuration.getMediumRadiusSize() * 2);
                     // Radius border 500
                 } else if (pPlayer.hasPermission("isoworlds.size.500")) {
-                    x = 1000;
+                    x = (sponge.configuration.Configuration.getSmallRadiusSize() * 2);
                     // Radius border default
                 } else {
-                    x = 500;
+                    x = (sponge.configuration.Configuration.getDefaultRadiusSize() * 2);
                 }
             }
 
@@ -187,17 +193,26 @@ public class IsoWorldsAction {
                 worldProperties.setLoadOnStartup(false);
                 worldProperties.setGenerateSpawnOnLoad(false);
                 worldProperties.setPVPEnabled(true);
-                worldProperties.setWorldBorderCenter(Locations.getAxis(worldname).getX(), Locations.getAxis(worldname).getZ());
-                worldProperties.setWorldBorderDiameter(x);
+                // ****** MODULES ******
+                // Border
+                if (Configuration.getBorder()) {
+                    worldProperties.setWorldBorderCenter(Locations.getAxis(worldname).getX(), Locations.getAxis(worldname).getZ());
+                    worldProperties.setWorldBorderDiameter(x);
+                }
+                // *********************
                 worldProperties.setEnabled(false);
                 worldProperties.setEnabled(true);
                 Sponge.getServer().saveWorldProperties(worldProperties);
+                // ****** MODULES ******
                 // Border
-                Optional<org.spongepowered.api.world.World> world = Sponge.getServer().getWorld(worldname);
-                if (world.isPresent()) {
-                    world.get().getWorldBorder().setDiameter(x);
+                if (Configuration.getBorder()) {
+                    Optional<org.spongepowered.api.world.World> world = Sponge.getServer().getWorld(worldname);
+                    if (world.isPresent()) {
+                        world.get().getWorldBorder().setDiameter(x);
+                    }
+                    sponge.util.console.Logger.warning("Border nouveau: " + x);
                 }
-                sponge.util.console.Logger.warning("Border nouveau: " + x);
+                // *********************
             } else {
                 worldProperties = Sponge.getServer().createWorldProperties(worldname, WorldArchetypes.OVERWORLD);
                 sponge.util.console.Logger.info("WOLRD PROPERTIES: non présents, création...");
@@ -205,10 +220,15 @@ public class IsoWorldsAction {
                 worldProperties.setLoadOnStartup(false);
                 worldProperties.setGenerateSpawnOnLoad(false);
                 worldProperties.setPVPEnabled(true);
-                worldProperties.setWorldBorderCenter(Locations.getAxis(worldname).getX(), Locations.getAxis(worldname).getZ());
-                worldProperties.setWorldBorderDiameter(x);
-                Sponge.getServer().saveWorldProperties(worldProperties);
-                sponge.util.console.Logger.warning("Border nouveau: " + x);
+                // ****** MODULES ******
+                // Border
+                if (Configuration.getBorder()) {
+                    worldProperties.setWorldBorderCenter(Locations.getAxis(worldname).getX(), Locations.getAxis(worldname).getZ());
+                    worldProperties.setWorldBorderDiameter(x);
+                    Sponge.getServer().saveWorldProperties(worldProperties);
+                    sponge.util.console.Logger.warning("Border nouveau: " + x);
+                }
+                // *********************
             }
             sponge.util.console.Logger.info("WorldProperties à jour");
 

@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import common.*;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.PluginContainer;
+import sponge.configuration.Configuration;
 import sponge.listener.Listeners;
 import sponge.util.action.DimsAltAction;
 import sponge.util.action.StorageAction;
@@ -64,7 +65,7 @@ import java.util.Map;
         }
 )
 
-public class Main implements MainInterface {
+public class Main implements IMain {
     public static Main instance;
     public final common.Logger commonLogger;
     private org.slf4j.Logger logger;
@@ -99,9 +100,6 @@ public class Main implements MainInterface {
         PreventLoadingAtStart.move();
         // Reset auto atl dim process
         ResetAutoDims.reset("sponge");
-        // Set global status 1
-        StorageAction.setGlobalStatus();
-
         // *********************
 
         this.initServerName();
@@ -137,52 +135,52 @@ public class Main implements MainInterface {
                         setComment("Default spawn position is 0,60,0");
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules"}).
                         setComment("Differents modules, if enabled then adjust parameters if not (disabled) skip them");
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "AutomaticUnload"}).setValue("enabled").
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "AutomaticUnload", "Enabled"}).setValue(true).
                         setComment("This module will unload every inactive IsoWorlds for a given time (check every minutes)\n"
-                        + "Once unload, plugin will add @PUSH to worlds forldername\n"
-                        + "Then the storage module will push them to the backup storage defined by IsoWorlds-SAS (script on github)\n"
-                        + "If automatic unload is disabled, storage still works on restarts (push every isoworlds on backup storage at start)");
+                                + "Once unload, plugin will add @PUSH to worlds forldername\n"
+                                + "Then the storage module will push them to the backup storage defined by IsoWorlds-SAS (script on github)\n"
+                                + "If automatic unload is disabled, storage still works on restarts (push every isoworlds on backup storage at start)");
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "AutomaticUnload", "InactivityTime"}).setValue(15);
 
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Storage"}).setValue("enabled").
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Storage", "Enabled"}).setValue(true).
                         setComment("This module will handle backup storage (script on github), isoworlds will be pushed at server start and worlds unload");
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt"}).setValue("enabled").
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt", "Enabled"}).setValue(true).
                         setComment("This module creates automatically alt dimensions (Mining, Exploration) (Warps access on IsoWorlds menu)");
 
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt", "Mining"}).setValue("enabled");
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt", "Exploration"}).setValue("enabled");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt", "Mining"}).setValue(true);
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt", "Exploration"}).setValue(true);
 
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SafePlateform"}).setValue("enabled").
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SafePlateform", "Enabled"}).setValue(true).
                         setComment("Generate a bedrock plateform on nether/end (0,60,0 default if no Y safe position found)\n"
-                        + "Clean 3*3 if filled, check at every warp action");
+                                + "Clean 3*3 if filled, check at every warp action");
 
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SafeSpawn"}).setValue("enabled").
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SafeSpawn", "Enabled"}).setValue(true).
                         setComment("Generate 1*1 dirt on IsoWorlds spawn if the spawn coordinate is empty (Y axis), to avoid death\n"
-                        + "Breaking this dirt doesn't drop\n"
-                        + "If Y axis is not empty then it will teleport the player on the highest solid position\n"
-                        + "Handle lava and water");
+                                + "Breaking this dirt doesn't drop\n"
+                                + "If Y axis is not empty then it will teleport the player on the highest solid position\n"
+                                + "Handle lava and water");
 
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SpawnProtection"}).setValue("enabled").
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SpawnProtection", "Enabled"}).setValue(true).
                         setComment("This module disable player's interaction on main world spawn");
 
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border"}).setValue("enabled").
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "Enabled"}).setValue(true).
                         setComment("This module define world borders");
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "DefaultRadiusSize"}).setValue(250);
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "SmallRadiusSize"}).setValue(500);
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "MediumRadiusSize"}).setValue(750);
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "LargeRadiusSize"}).setValue(1000);
 
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "PlayTime"}).setValue("enabled").
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "PlayTime", "Enabled"}).setValue(true).
                         setComment("This module will count playtime of players (by simply adding 1 every minutes if player is online)");
 
                 this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql"}).
                         setComment("MySQL server, this configuration is needed as we don't handle sqlite atm");
 
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "sql_host"}).setValue("IP_ADDRESS");
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "sql_port"}).setValue(3306);
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "sql_database"}).setValue("DATABASE_NAME");
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "sql_username"}).setValue("DATABASE_USERNAME");
-                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "sql_password"}).setValue("PASSWORD");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "host"}).setValue("IP_ADDRESS");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "port"}).setValue(3306);
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "database"}).setValue("DATABASE_NAME");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "username"}).setValue("DATABASE_USERNAME");
+                this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "password"}).setValue("PASSWORD");
                 this.configurationLoader.save(this.configurationNode);
             }
 
@@ -204,17 +202,26 @@ public class Main implements MainInterface {
         this.cooldown = new Cooldown(this.database, this.servername, "sponge", this.commonLogger);
 
         // Log configs
-        Logger.info("[CONFIG] id: " + this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).getValue());
-        Logger.info("[CONFIG] main_worldname: " + this.configurationNode.getNode(new Object[]{"IsoWorlds", "main_worldname"}).getValue());
-        Logger.info("[CONFIG] main_world_spawn_coordinate: " + this.configurationNode.getNode(new Object[]{"IsoWorlds", "main_world_spawn_coordinates"}).getValue());
-        Logger.info("[CONFIG] inactivity_before_world_unload: " + this.configurationNode.getNode(new Object[]{"IsoWorlds", "inactivity_before_world_unload"}).getValue());
+        Logger.info("[CONFIG] id: " + Configuration.getId());
+        Logger.info("[CONFIG] main_worldname: " + Configuration.getMainWorld());
+        Logger.info("[CONFIG] main_world_spawn_coordinate: " + Configuration.getMainWorldSpawnCoordinate());
+        Logger.info("[CONFIG] inactivity_before_world_unload: " + Configuration.getInactivityTime());
 
         // ****** MODULES ******
 
-        // Start push action (unload task with tag)
-        Push.PushProcess((Integer) this.configurationNode.getNode(new Object[]{"IsoWorlds", "inactivity_before_world_unload"}).getValue());
-        // Start playtime task
-        PlayTime.IncreasePlayTime();
+        // Storage
+        if (Configuration.getStorage()) {
+            // Start push action (unload task with tag)
+            Push.PushProcess(Configuration.getInactivityTime());
+            // Set global status 1
+            StorageAction.setGlobalStatus();
+        }
+
+        // PlayTime
+        if (Configuration.getPlayTime()) {
+            // Start playtime task
+            PlayTime.IncreasePlayTime();
+        }
 
         // *********************
 
@@ -226,8 +233,15 @@ public class Main implements MainInterface {
     public void onGameStarted(GameStartedServerEvent event) {
         // Move iw from ISOWORLDS-SAS to main world folder
         PreventLoadingAtStart.moveBack();
-        // Gen alt dim
-        DimsAltAction.generateDim();
+
+        // ****** MODULES ******
+
+        // DimensionAlt
+        if (Configuration.getDimensionAlt()) {
+            // Gen alt dim
+            DimsAltAction.generateDim();
+        }
+        // *********************
     }
 
     public CommentedConfigurationNode rootNode() {
@@ -257,11 +271,11 @@ public class Main implements MainInterface {
 
         if (this.database == null) {
             this.database = new Mysql(
-                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_host"}).getValue(),
-                    (Integer) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_port"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_database"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_username"}).getValue(),
-                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql_password"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "host"}).getValue(),
+                    (Integer) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "port"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "database"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "username"}).getValue(),
+                    (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "sql", "password"}).getValue(),
                     true
             );
 
@@ -286,7 +300,7 @@ public class Main implements MainInterface {
             }
         }
         try {
-            this.servername = (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "id"}).getValue();
+            this.servername = (String) this.configurationNode.getNode(new Object[]{"IsoWorlds", "Id"}).getValue();
         } catch (NullPointerException npe) {
             npe.printStackTrace();
         }
@@ -305,5 +319,9 @@ public class Main implements MainInterface {
     @Override
     public Map<String, Integer> getLock() {
         return lock;
+    }
+
+    public CommentedConfigurationNode getConfig() {
+        return this.configurationNode;
     }
 }

@@ -10,7 +10,7 @@ MainWorldSpawnCoordinate: "0;60;0"
 # Differents modules, if enabled then adjust parameters if not (disabled) skip them
 Modules:
   # This module will unload every inactive IsoWorlds for a given time (check every minutes)
-  # One unload, plugin will add @PUSH to worlds forldername
+  # Once unload, plugin will add @PUSH to worlds forldername
   # Then the storage module will push them to the backup storage defined by IsoWorlds-SAS (script on github)
   # If automatic unload is disabled, storage still works on restarts (push every isoworlds on backup storage at start)
   AutomaticUnload: enabled
@@ -21,8 +21,8 @@ Modules:
 
   # This module creates automatically alt dimensions (Mining, Exploration) (Warps access on IsoWorlds menu)
   DimensionAlt: enabled
-    Mining: true
-    Exploration: true
+    Mining: enabled
+    Exploration: enabled
 
   # Generate a bedrock plateform on nether/end (0,60,0 default if no Y safe position found)
   # Clean 3*3 if filled, check at every warp action
@@ -32,7 +32,7 @@ Modules:
   # Breaking this dirt doesn't drop
   # If Y axis is not empty then it will teleport the player on the highest solid position
   # Handle lava and water
-  SafeSpawn:
+  SafeSpawn: enabled
 
   # This module disable player's interaction on main world spawn
   SpawnProtection: enabled
@@ -48,7 +48,7 @@ Modules:
   # This module will count playtime of players (by simply adding 1 every minutes if player is online)
   PlayTime: enabled
 
-# SQL server, this configuration is needed as we don't handle sqlite atm
+# MySQL server, this configuration is needed as we don't handle sqlite atm
 sql:
   server: "IP_ADDRESS"
   port: 3306

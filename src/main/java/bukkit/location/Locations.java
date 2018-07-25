@@ -73,7 +73,6 @@ public class Locations {
 
             // Téléportation du joueur
             if (player.teleport(destination)) {
-                player.sendMessage(Message.error(Msg.keys.SUCCES_TELEPORTATION));
                 plugin.cooldown.addPlayerCooldown(player, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
             }
 

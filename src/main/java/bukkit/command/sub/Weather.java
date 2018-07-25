@@ -32,6 +32,7 @@ import common.Cooldown;
 import common.Msg;
 import common.action.ChargeAction;
 import common.action.IsoWorldsAction;
+import common.action.TrustAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -40,11 +41,10 @@ import org.bukkit.entity.Player;
 
 public class Weather {
 
-    public static Main instance;
+    private final Main instance = Main.instance;
 
-    public static void Meteo(CommandSender sender, String[] args) {
+    public void Meteo(CommandSender sender, String[] args) {
 
-        instance = Main.getInstance();
         int num;
         Player pPlayer = (Player) sender;
         Integer len = args.length;
@@ -60,24 +60,27 @@ public class Weather {
             return;
         }
 
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
-            return;
+        // Check if actual world is an isoworld
+        if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+        }
+
+        // Check if player is trusted
+        if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
         }
 
         if (len < 3) {
-            pPlayer.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "IsoWorlds " + ChatColor.GOLD + "] ---------------------");
-            pPlayer.sendMessage(" ");
-            pPlayer.sendMessage(ChatColor.AQUA + "Sijania vous propose trois types de météo:");
-            pPlayer.sendMessage(ChatColor.GOLD + "- Pluie: " + ChatColor.AQUA + "/iw meteo " + ChatColor.GOLD + "[" + ChatColor.GREEN + "pluie"
-                    + ChatColor.GOLD + "/" + ChatColor.GREEN + "soleil" + ChatColor.GOLD + "] " + ChatColor.GREEN + "(durée en minute)");
-            pPlayer.sendMessage(" ");
+            pPlayer.sendMessage(Message.success(Msg.keys.HEADER_ISOWORLD));
+            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.success (Msg.keys.WEATHER_TYPES));
+            pPlayer.sendMessage(Message.success(Msg.keys.WEATHER_TYPES_DETAIL));
+            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
             return;
         } else {
             try {
                 num = Integer.parseInt(args[2]);
             } catch (NumberFormatException e) {
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania indique que vous n'avez pas renseigné de minutes.");
                 return;
             }
             World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
@@ -91,15 +94,14 @@ public class Weather {
                 // Message pour tous les joueurs
             }
             for (Player p : Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").getPlayers()) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds] Sijania indique que " + pPlayer.getName()
-                        + " vient de changer la météo à: " + args[1] + " pendant: " + num + " ticks.");
+                p.sendMessage(Message.success(Msg.keys.WEATHER_CHANGE_SUCCESS + pPlayer.getName()));
             }
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
+        pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
     }

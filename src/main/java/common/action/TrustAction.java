@@ -45,7 +45,7 @@ public class TrustAction {
             PreparedStatement check = database.prepare(CHECK);
             check.setString(1, playeruuid);
             // Server id
-            check.setString(2, IMain.servername);
+            check.setString(2, servername);
             // Request
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {

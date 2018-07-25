@@ -26,6 +26,7 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 import bukkit.util.console.Logger;
+import bukkit.util.message.Message;
 import common.Msg;
 import common.action.IsoWorldsAction;
 import common.action.TrustAction;
@@ -39,23 +40,17 @@ import java.util.UUID;
 
 public class Untrust {
 
-    static final String CHECK = "SELECT * FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-    static final String REMOVE = "DELETE FROM `autorisations` WHERE `UUID_P` = ? AND `UUID_W` = ?";
-
-    public static Main instance;
+    private final Main instance = Main.instance;
 
     @SuppressWarnings("deprecation")
-    public static void RetirerConfiance(CommandSender sender, String[] args) {
-
-        instance = Main.getInstance();
-        // SQL Variables
+    public void RetirerConfiance(CommandSender sender, String[] args) {
         Player pPlayer = (Player) sender;
         UUID uuidcible;
         Boolean is;
         Integer len = args.length;
 
         if (len > 2 || len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
+            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
@@ -63,13 +58,10 @@ public class Untrust {
         try {
             // SELECT WORLD
             if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-                pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_IWORLD);
                 return;
             }
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(Msg.keys.SQL);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 
@@ -84,7 +76,7 @@ public class Untrust {
 
         // IF TARGET NOT SET
         if (uuidcible == null) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
+            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
             return;
         }
 
@@ -96,13 +88,12 @@ public class Untrust {
 
         // CHECK AUTORISATIONS
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_PAS_TRUST);
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
             return;
         }
 
         // DELETE AUTORISATION
         if (!TrustAction.deleteTrust(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SQL);
             return;
         }
 
@@ -111,10 +102,10 @@ public class Untrust {
             if (Bukkit.getServer().getPlayer(uuidcible).getWorld().getName().equals(pPlayer.getUniqueId().toString() + "-IsoWorld")) {
                 Player player = Bukkit.getServer().getPlayer(args[1]);
                 player.teleport(spawn);
-                player.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.KICK_TRUST);
+                pPlayer.sendMessage(Message.error(Msg.keys.KICK_TRUST));
             }
         } // Gestion du kick offline à gérer dès que possible
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_RETIRER_CONFIANCE);
+        pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_UNTRUST));
     }
 }

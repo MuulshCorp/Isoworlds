@@ -24,6 +24,7 @@
  */
 package sponge.command.sub;
 
+import common.Cooldown;
 import common.Msg;
 import common.action.IsoWorldsAction;
 import common.action.TrustAction;
@@ -51,7 +52,7 @@ import java.util.*;
 
 public class UnTrust implements CommandCallable {
 
-    private final Main plugin = Main.instance;
+    private final Main instance = Main.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
@@ -62,9 +63,13 @@ public class UnTrust implements CommandCallable {
         int size = arg.length;
         Optional<User> player;
 
+        //If the method return true then the command is in lock
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
+            return CommandResult.success();
+        }
+
         if (size > 1) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
             return CommandResult.success();
         }
 
@@ -81,34 +86,26 @@ public class UnTrust implements CommandCallable {
                 uuidcible = player.get().getUniqueId();
             } catch (NoSuchElementException e){
                 e.printStackTrace();
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
                 return CommandResult.success();
             }
 
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
+                pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
             i.printStackTrace();
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         // CHECK AUTORISATIONS
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
-            pPlayer.sendMessage(Text.of(Text.builder("[iWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_PAS_TRUST_2).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
             return CommandResult.success();
         }
 
         // DELETE AUTORISATION
         if (!TrustAction.deleteTrust(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.SQL).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
@@ -118,19 +115,14 @@ public class UnTrust implements CommandCallable {
                     Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
                     Player playerOnline = Sponge.getServer().getPlayer(arg[0]).get();
                     playerOnline.setLocation(spawn);
-                    playerOnline.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(Msg.keys.KICK_TRUST).color(TextColors.AQUA))).build()));
+                    pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
                 }
             }
         } catch (NoSuchElementException nse) {
             nse.printStackTrace();
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.DATA).color(TextColors.AQUA))).build()));
-
         }
 
-        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder(Msg.keys.SUCCES_RETIRER_CONFIANCE).color(TextColors.AQUA))).build()));
+        pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_UNTRUST));
         return CommandResult.success();
     }
 

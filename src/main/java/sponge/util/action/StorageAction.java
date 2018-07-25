@@ -167,7 +167,7 @@ public class StorageAction {
 
     // Set status of IsoWorld (1 for Pushed, 0 for Present)
     // It returns true if pushed, false si envoyé ou à envoyer
-    public static void setStatus(String world, Integer status, String messageErreur) {
+    public static void setStatus(String world, Integer status) {
         String CHECK = "UPDATE `isoworlds` SET `status` = ? WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
@@ -185,7 +185,6 @@ public class StorageAction {
             check.executeUpdate();
         } catch (Exception se) {
             se.printStackTrace();
-            Logger.severe(messageErreur);
         }
     }
 

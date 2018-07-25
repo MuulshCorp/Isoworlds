@@ -54,14 +54,14 @@ public class Trust {
             return;
         }
 
-        // SELECT WORLD
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (len > 2 || len < 2) {
+            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
             return;
         }
 
-        if (len > 2 || len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.INVALIDE_JOUEUR);
+        // Check if world exists
+        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return;
         }
 
@@ -74,7 +74,7 @@ public class Trust {
 
         // CHECK AUTORISATIONS
         if (TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.EXISTE_TRUST);
+            pPlayer.sendMessage(Message.error(Msg.keys.ALREADY_TRUSTED));
             return;
         }
 
@@ -83,7 +83,8 @@ public class Trust {
             return;
         }
 
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TRUST);
+        pPlayer.sendMessage(Message.success(Msg.keys.SUCCES_TRUST));
+
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
     }
 }

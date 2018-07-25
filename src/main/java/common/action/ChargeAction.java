@@ -171,25 +171,4 @@ public class ChargeAction {
         }
         return true;
     }
-
-    // If player's not in database
-    public static Integer firstTime(String playeruuid) {
-        String CHECK = "SELECT `charges` FROM `players_info` WHERE `uuid_p` = ?";
-        Integer number;
-        try {
-            PreparedStatement check = database.prepare(CHECK);
-            // Player uuid
-            check.setString(1, playeruuid);
-            // Request
-            ResultSet rselect = check.executeQuery();
-            if (rselect.next()) {
-                number = rselect.getInt(1);
-                return number;
-            }
-        } catch (Exception se) {
-            se.printStackTrace();
-            return null;
-        }
-        return null;
-    }
 }

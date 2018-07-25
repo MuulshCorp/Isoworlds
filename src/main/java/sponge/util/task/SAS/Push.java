@@ -119,7 +119,7 @@ public class Push {
                                 // Si le dossier existe alors on met le statut à 1 (push)
                                 if (check.exists()) {
                                     Logger.info("debug 2");
-                                    StorageAction.setStatus(world.getName(), 1, Msg.keys.SQL);
+                                    StorageAction.setStatus(world.getName(), 1);
 
                                     // Suppression ID
                                     ManageFiles.deleteDir(new File(ManageFiles.getPath() + "/" + world.getName() + "/level_sponge.dat"));

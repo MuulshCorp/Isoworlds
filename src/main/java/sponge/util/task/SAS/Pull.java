@@ -70,7 +70,7 @@ public class Pull implements Consumer<Task> {
         // Si le dossier existe, alors on repasse le statut à 0 en BDD (présent)
         } else if (file.exists()) {
             // Passage du IsoWorld en statut présent
-            StorageAction.setStatus(file.getName(), 0, Msg.keys.SQL);
+            StorageAction.setStatus(file.getName(), 0);
 
             // Notification au joueur que le IsoWorld est disponible
             pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)

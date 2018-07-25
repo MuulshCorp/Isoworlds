@@ -38,6 +38,7 @@ import org.spongepowered.api.world.World;
 import sponge.Main;
 import sponge.location.Locations;
 import sponge.util.console.Logger;
+import sponge.util.message.Message;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -45,7 +46,7 @@ import java.util.Optional;
 
 public class Warp implements CommandCallable {
 
-    private final Main plugin = Main.instance;
+    private final Main instance = Main.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
@@ -55,24 +56,18 @@ public class Warp implements CommandCallable {
         Logger.info(arg[0]);
 
         //If the method return true then the command is in lock
-        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.WARP)) {
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.WARP)) {
             return CommandResult.success();
         }
 
         if (arg[0].equals("minage") || arg[0].equals("exploration") || arg[0].equals("end") || arg[0].equals("nether")) {
             // Téléportation du joueur
-            if (Locations.teleport(pPlayer, arg[0])) {
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION + pPlayer.getName()).color(TextColors.AQUA))).build()));
-            } else {
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder("Sijania ne parvient pas à vous téléporter, veuillez contacter un membre de l'équipe Isolonice.").color(TextColors.AQUA))).build()));
-            }
+            Locations.teleport(pPlayer, arg[0]);
         } else {
             return CommandResult.success();
         }
 
-        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.WARP, Cooldown.WARP_DELAY);
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.WARP, Cooldown.WARP_DELAY);
 
         return CommandResult.success();
     }

@@ -28,93 +28,84 @@ public class Msg {
     public interface keys {
         // ISOWORLD
         String ISOWORLD_NOT_FOUND
-                = "Sijania > Je ne puis trouver votre IsoWorld.";
+                = "IsoWorld introuvable";
         String ISOWORLD_ALREADY_EXISTS
-                = "Vous possédez déjà un IsoWorld";
+                = "Un IsoWorld t'appartient déjà";
         String ISOWORLD_SUCCESS_CREATE
-                = "Vous possédez déjà un IsoWorld";
+                = "IsoWorld créé avec succès !";
         String NOT_IN_A_ISOWORLD
-                = "Vous devez vous trouver dans un IsoWorld";
+                = "Tu dois être dans un IsoWorld pour faire ça";
         String CREATING_ISOWORLD
-                = "IsoWorld en cours de création";
+                = "Ton IsoWorld est en cours de création !";
         String PATERN_TYPES
                 = "4 types de IsoWorld sont disponibles:";
         String PATERN_TYPES_DETAIL
-                = "- Plat - Océan - Normal - Vide";
+                = "- Plat : Océan : Normal : Vide";
         String HEADER_ISOWORLD
                 = "--------------------- [ IsoWorlds ] ---------------------";
         String WELCOME_1
                 = "Bienvenue, ";
         String WELCOME_2
-                = "Sijania > Cet IsoWorld est désormais votre.";
+                = "Cet IsoWorld est désormais le tiens !";
         String SPACE_LINE
                 = " ";
         String CONFIRMATION
-                = "Veuillez de nouveau entrer la commande pour confirmer";
+                = "Entre de nouveau la commande pour confirmer";
         String REFORGE_KICK
-                = "Sijania entame une destruction entière de l'IsoWorld dans lequel vous vous trouviez sur demande de son propriétaire, vous avez été renvoyé au spawn pour votre protection";
-        String SUCCES_TELEPORTATION
-                = "Sijania > Vous êtes de confiance, continuez votre chemin...";
+                = "L'IsoWorld dans lequel tu te trouvais être entrain d'être reforgé, sur demande du propriétaire";
+
         String FAIL_REFORGE_ISOWORLD
-                = "Echec de la refonte de votre IsoWorld";
+                = "Echec de la refonte de ton IsoWorld, retente et demande aux staff si c'est sans succès";
         String SUCCES_REFORGE
-                = "Sijania > Mon pouvoir se vide... Mais, votre IsoWorld a été dissipé !";
+                = "Ton IsoWorld a été reforgé avec succès !";
 
         // TRUST
         String NOT_TRUSTED
-                = "Vous ne possédez pas les permissions sur cet IsoWorld";
+                = "Tu n'as pas les autorisations du propriétaire de cet IsoWorld";
         String KICK_TRUST
-                = "Vous venez d'être téléporté hors du IsoWorld sur lequel vous vous trouviez";
+                = "Tes droits sur cet IsoWorld viennent de t'être retirés, demande au propriétaire pour plus d'information";
+        String INVALID_PLAYER
+                = "Ce joueur n'existe pas ou ne s'est jamais connecté sur le serveur";
+        String ALREADY_TRUSTED
+                = "Ce joueur a déjà ton autorisation";
+        String SUCCESS_TRUST
+                = "Tu viens d'autoriser ce joueur à rejoindre ton IsoWorld, il peut maintenant intéragir avec alors attention !";
+        String SUCCESS_UNTRUST
+                = "Tu viens de retirer les accès de ce joueur à ton IsoWorld, il ne peut donc plus venir chez toi";
+        String DENY_TELEPORT
+                = "Tu n'as pas les droits pour te rendre ici";
+        String DENY_SELF_REMOVE
+                = "Ce qui est à toi est à toi, tu ne peux pas retirer ton propre accès !";
 
+        // TIME
+        String TIME_CHANGE_SUCCESS
+                = "Le temps de cet IsoWorld vient d'être changé par: ";
+        String TIME_TYPES
+                = "2 types de temps sont disponibles:";
+        String TIME_TYPES_DETAIL
+                = "- Jour : Nuit";
+
+        // WEATHER
+        String WEATHER_CHANGE_SUCCESS
+                = "Le temps de cet IsoWorld vient d'être changé par: ";
+        String WEATHER_TYPES
+                = "3 types de climat sont disponibles:";
+        String WEATHER_TYPES_DETAIL
+                = "- Soleil : Pluie : Orage";
 
         // CHARGE
         String CHARGE_USED
-                = "Vous venez d'utiliser une charge";
+                = "Tu viens d'utiliser une charge pour cette action";
         String CHARGE_EMPTY
-                = "Vous ne possédez plus de charge";
-
-        String EXISTE_TRUST
-                = "Sijania > Votre marque de confiance est déjà présente sur ce joueur.";
-        String EXISTE_PAS_TRUST
-                = "Sijania > Vous n'êtes pas autorisé à joindre cet IsoWorld, demandez l'autorisation.";
-        String EXISTE_PAS_TRUST_2
-                = "Sijania > Vous n'avez posé aucune marque de confiance sur ce joueur...";
-        String INVALIDE_JOUEUR
-                = "Sijania > Est-ce bien un joueur ?";
-
-        String SUCCES_TRUST
-                = "Sijania > Votre marque de confiance vient d'être posée sur ce joueur, il peut désormais fouler vos terres.";
-        String SUCCES_METEO
-                = "L'humeur de Sijania change...";
-        String SUCCES_CHARGEMENT
-                = "Sijania > Votre IsoWorld s'est reveillé";
-        String SUCCES_DECHARGEMENT
-                = "Sijania > Votre IsoWorld s'endort...";
-
-        String SUCCES_RETIRER_CONFIANCE
-                = "Sijania > Ce joueur ressent une brûlure... La marque de confiance vient de lui être retirée !";
-        String SUCCES_CREATION_1
-                = "Sijania vient de terminer son oeuvre et vous offre votre IsoWorld !";
-        String SUCCES_CREATION_2
-                = "Cet iWorld est désormais votre !";
-        String OFF_JOUEUR
-                = "Sijania > Ce joueur n'est pas reveillé...";
-        String ON_JOUEUR
-                = "Sijania > Ce joueur est présent.";
-        String DENY_SELF_REMOVE
-                = "Sijania > Vous ne pouvez retirer vos droit de ma création...";
-        String DENY_TELEPORT
-                = "Sijania > Vous ne pouvez pénétrer ce sanctuaire sans une marque de confiance.";
-        String SQL
-                = "[Erreur 1]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
-        String FICHIERS
-                = "[Erreur 2]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
-        String DATA
-                = "[Erreur 3]: Une erreur est survenue, veuillez contacter l'équipe Isolonice (discord/ticket/forum/mp).";
-        String UNAVAILABLE_COMMAND = "Sijania > Mon énergie doit se recharger..., vous pourrez retenter dans";
+                = "Tu n'as plus de charge !";
 
         // BIOME
-        String BIOME_NOT_FOUND = "Veuillez entrer le nom d'un biome existant";
-        String BIOME_CHANGED = "Sijania vient de changer le biome du chunk dans lequel vous êtes. (F9)";
+        String BIOME_NOT_FOUND = "Ce biome est inconnu";
+        String BIOME_CHANGED = "Tu viens de changer le biome du chunk dans lequel tu te trouves avec succès !";
+
+        // UTILS
+        String UNAVAILABLE_COMMAND = "Commande inconnue";
+
+
     }
 }

@@ -32,6 +32,7 @@ import bukkit.util.message.Message;
 import common.ManageFiles;
 import common.Msg;
 import common.action.ChargeAction;
+import common.action.IsoWorldsAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -84,8 +85,8 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
-        if (ChargeAction.firstTime(event.getPlayer().getUniqueId().toString()) == null) {
+        // Welcome message and open menu for those who do not have their own IsoWorld
+        if (!IsoWorldsAction.iwExists(event.getPlayer().getUniqueId().toString())) {
             new BukkitRunnable() {
 
                 @Override

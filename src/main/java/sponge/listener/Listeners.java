@@ -27,6 +27,7 @@ package sponge.listener;
 import common.ManageFiles;
 import common.Msg;
 import common.action.ChargeAction;
+import common.action.IsoWorldsAction;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.cause.Cause;
@@ -139,8 +140,8 @@ public class Listeners {
 
     @Listener
     public void onConnect(ClientConnectionEvent.Join event) {
-        // Message de bienvenue pour IsoWorlds (quelle commande), tutoriel après 5 secondes
-        if (ChargeAction.firstTime(event.getTargetEntity().getUniqueId().toString()) == null) {
+        // Welcome message and open menu for those who do not have their own IsoWorld
+        if (!IsoWorldsAction.iwExists(event.getTargetEntity().getUniqueId().toString())) {
             Task.builder().execute(new Runnable() {
                 @Override
                 public void run() {

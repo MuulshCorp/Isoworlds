@@ -63,7 +63,7 @@ public final class Main extends JavaPlugin implements IMain {
         Logger.info("Lecture de la configuration...");
 
         this.createConfig();
-        this.servername = getConfig().getString("id");
+        this.servername = getConfig().getString("Id");
 
         // Check if ISOWORLDS-SAS exists
         File checkSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");

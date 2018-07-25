@@ -30,6 +30,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.Main;
 import sponge.util.action.StatAction;
+import sponge.util.message.Message;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,9 +61,7 @@ public class Cooldown implements ICooldown {
         Timestamp cooldown = this.getPlayerLastCooldown(pPlayer, type);
         if (cooldown != null) {
             String timerMessage = this.getCooldownTimer(cooldown);
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.UNAVAILABLE_COMMAND + timerMessage).color(TextColors.AQUA))).build()));
-
+            pPlayer.sendMessage(Message.error(Msg.keys.UNAVAILABLE_COMMAND + timerMessage));
             Main.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
 
             return false;
@@ -78,7 +77,7 @@ public class Cooldown implements ICooldown {
         Timestamp cooldown = this.getPlayerLastCooldown(pPlayer, type);
         if (cooldown != null) {
             String timerMessage = this.getCooldownTimer(cooldown);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.UNAVAILABLE_COMMAND + timerMessage);
+            pPlayer.sendMessage(bukkit.util.message.Message.error(Msg.keys.UNAVAILABLE_COMMAND + timerMessage));
             bukkit.Main.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
 
             return false;
@@ -133,7 +132,6 @@ public class Cooldown implements ICooldown {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            this.logger.log(Msg.keys.SQL);
         }
 
         return null;
@@ -177,7 +175,6 @@ public class Cooldown implements ICooldown {
             insert.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
-            this.logger.log(Msg.keys.SQL);
         }
     }
 

@@ -28,6 +28,7 @@ import common.Cooldown;
 import common.Msg;
 import common.action.ChargeAction;
 import common.action.IsoWorldsAction;
+import common.action.TrustAction;
 import org.spongepowered.api.text.action.TextActions;
 import sponge.Main;
 import org.spongepowered.api.Sponge;
@@ -48,19 +49,18 @@ import java.util.*;
 
 public class Time implements CommandCallable {
 
-    private final Main plugin = Main.instance;
+    private final Main instance = Main.instance;
 
     @Override
     public CommandResult process(CommandSource source, String args) throws CommandException {
 
-        // SQL Variables
         Player pPlayer = (Player) source;
         String worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
         String[] arg = args.split(" ");
         int size = arg.length;
 
         //If the method return true then the command is in lock
-        if (!plugin.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
+        if (!instance.cooldown.isAvailable(pPlayer, Cooldown.TIME)) {
             return CommandResult.success();
         }
 
@@ -70,76 +70,47 @@ public class Time implements CommandCallable {
             return CommandResult.success();
         }
 
-        // Check if world exists
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
-            return CommandResult.success();
+        // Check if actual world is an isoworld
+        if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
         }
 
-        // Check if is world is loaded
-        if (!Sponge.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").isPresent()) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania indique que votre IsoWorld doit être chargé pour en changer le temps.").color(TextColors.AQUA))).build()));
-            return CommandResult.success();
+        // Check if player is trusted
+        if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
         }
 
         if (size == 0) {
-            pPlayer.sendMessage(Text.of(Text.builder("--------------------- [ ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("IsoWorlds ").color(TextColors.AQUA)))
-                    .append(Text.of(Text.builder("] ---------------------").color(TextColors.GOLD)))
-                    .build()));
-
-            pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
-
-            // Soleil
-            Text meteo = Text.of(Text.builder("Sijania vous propose deux temps:").color(TextColors.AQUA).build());
-            pPlayer.sendMessage(meteo);
-
-            // Jour
-            Text day = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Jour").color(TextColors.AQUA)))
-                    .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
-                    .append(Text.of(Text.builder("Day").color(TextColors.AQUA)))
-                    .append(Text.of(Text.builder("]")))
-                    .onClick(TextActions.runCommand("/iw time jour " + worldname)).build());
-            pPlayer.sendMessage(day);
-
-            // Nuit
-            Text night = Text.of(Text.builder("- [Temps: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Nuit").color(TextColors.AQUA)))
-                    .append(Text.of(Text.builder("/").color(TextColors.GOLD)))
-                    .append(Text.of(Text.builder("Night").color(TextColors.AQUA)))
-                    .append(Text.of(Text.builder("]")))
-                    .onClick(TextActions.runCommand("/iw time nuit " + worldname)).build());
-            pPlayer.sendMessage(night);
-
-            pPlayer.sendMessage(Text.of(Text.builder(" ").color(TextColors.GOLD).build()));
-
+            pPlayer.sendMessage(Message.success(Msg.keys.HEADER_ISOWORLD));
+            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.success (Msg.keys.TIME_TYPES));
+            pPlayer.sendMessage(Message.success(Msg.keys.TIME_TYPES_DETAIL));
+            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
             return CommandResult.success();
         } else if (size == 1) {
             if (arg[0].equals("jour") || arg[0].equals("day")) {
                 Sponge.getServer().getWorld(worldname).get().getProperties().setWorldTime(0);
+                pPlayer.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS));
             } else if (arg[0].equals("nuit") || arg[0].equals("night")) {
                 Sponge.getServer().getWorld(worldname).get().getProperties().setWorldTime(12000);
+                pPlayer.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS));
             }
         } else {
             return CommandResult.success();
         }
 
-        // Message pour tous les joueurs
+        // Send message to all players
         for (Player p : Sponge.getServer().getWorld(worldname).get().getPlayers()) {
-            p.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania indique que " + pPlayer.getName() + " vient de changer la temps à: " + arg[0])
-                    .color(TextColors.GOLD).build()));
+            p.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS + pPlayer.getName()));
         }
 
         if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
-        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder("Vous venez d'utiliser une charge, nouveau compte: ").color(TextColors.RED)
-                        .append(Text.of(Text.builder(charges - 1 + " charge(s)").color(TextColors.GREEN))))).build()));
 
-        plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);
+        pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
+
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);
         return CommandResult.success();
     }
 

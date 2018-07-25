@@ -54,7 +54,7 @@ public class Create {
         }
 
         // Create message
-        pPlayer.sendMessage(Message.success(Msg.keys.CREATING_ISOWORLD);
+        pPlayer.sendMessage(Message.success(Msg.keys.CREATING_ISOWORLD));
 
         fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-IsoWorld/");
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");

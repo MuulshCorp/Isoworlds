@@ -27,18 +27,18 @@ package bukkit.command.sub;
 import bukkit.Main;
 import bukkit.location.Locations;
 import bukkit.util.console.Logger;
+import bukkit.util.message.Message;
 import common.Cooldown;
+import common.Msg;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Warp {
 
-    public static Main instance;
+    private final Main instance = Main.instance;
 
-    public static void Warp(CommandSender sender, String[] args) {
-        // Variables
-        instance = Main.getInstance();
+    public void Warp(CommandSender sender, String[] args) {
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 
@@ -49,21 +49,14 @@ public class Warp {
 
         // Vérification taille args et retour si biome non indiqué
         if (len < 1) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vous requiert un warp.");
-            return;
-        }
-        // On boucle sur les blocks du chunk du joueur et si le biome est défini on stop, sinon on regarde
-        // si le biome indiqué existe et on l'applique
-        for (String s : args) {
-            Logger.info(s);
-        }
-        if (args[1].equals("exploration") || args[1].equals("minage") || args[1].equals("end") || args[1].equals("nether")) {
-            Locations.teleport(pPlayer, args[1]);
-        } else {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Sijania indique que ce warp n'existe pas.");
+            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
             return;
         }
 
-        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
+        if (args[1].equals("exploration") || args[1].equals("minage") || args[1].equals("end") || args[1].equals("nether")) {
+            Locations.teleport(pPlayer, args[1]);
+        }
+
+        instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.WARP, Cooldown.WARP_DELAY);
     }
 }

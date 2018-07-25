@@ -75,8 +75,7 @@ public class Teleport implements CommandCallable {
         }
 
         if (length != 2) {
-            Text message = Text.of(Msg.keys.INVALIDE_JOUEUR);
-            pPlayer.sendMessage(message);
+            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
             return CommandResult.success();
         }
 

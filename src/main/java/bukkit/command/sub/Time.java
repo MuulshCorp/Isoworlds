@@ -31,21 +31,20 @@ import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
 import common.action.ChargeAction;
-import common.action.IsoWorldsAction;
+import common.action.TrustAction;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Time {
 
-    public static Main instance;
+    private final Main instance = Main.instance;
 
-    public static void Time(CommandSender sender, String[] args) {
+    public void Time(CommandSender sender, String[] args) {
 
-        instance = Main.getInstance();
         Player pPlayer = (Player) sender;
+        String worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
         Integer len = args.length;
 
         //If the method return true then the command is in lock
@@ -59,36 +58,46 @@ public class Time {
             return;
         }
 
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
-            return;
+        // Check if actual world is an isoworld
+        if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+        }
+
+        // Check if player is trusted
+        if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
+            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
         }
 
         if (len < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "--------------------- [ " + ChatColor.AQUA + "IsoWorlds " + ChatColor.GOLD + "] ---------------------");
-            pPlayer.sendMessage(" ");
-            pPlayer.sendMessage(ChatColor.AQUA + "Sijania vous propose deux temps:");
-            pPlayer.sendMessage(ChatColor.GOLD + "- Jour: " + ChatColor.AQUA + "/iw time " + ChatColor.GOLD + "[" + ChatColor.GREEN + "jour"
-                    + ChatColor.GOLD + "/" + ChatColor.GREEN + "nuit" + ChatColor.GOLD + "]");
-            pPlayer.sendMessage(" ");
+            pPlayer.sendMessage(Message.success(Msg.keys.HEADER_ISOWORLD));
+            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.success (Msg.keys.TIME_TYPES));
+            pPlayer.sendMessage(Message.success(Msg.keys.TIME_TYPES_DETAIL));
+            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
             return;
         } else {
             World weather = Bukkit.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld");
             Logger.tracking("Time world: " + weather.getName());
             if (args[1].equals("jour") || args[1].equals("day")) {
                 weather.setTime(0);
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer le temps de votre IsoWorld.");
+                pPlayer.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS));
                 return;
             } else if (args[1].equals("nuit") || args[1].equals("night")) {
                 weather.setTime(12000);
-                pPlayer.sendMessage(ChatColor.AQUA + "Sijania vient de changer la météo de votre IsoWorld.");
+                pPlayer.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS));
                 return;
+            }
+
+            // Send message to all players
+            for (Player p : Bukkit.getServer().getWorld(worldname).getPlayers()) {
+                p.sendMessage(Message.success(Msg.keys.TIME_CHANGE_SUCCESS + pPlayer.getName()));
             }
 
             if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
                 ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
             }
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + "Vous venez d'utiliser une charge, nouveau compte: " + ChatColor.GREEN + (charges - 1) + " charge(s)");
+
+            pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
 
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.TIME, Cooldown.TIME_DELAY);

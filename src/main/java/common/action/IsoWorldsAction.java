@@ -103,7 +103,7 @@ public class IsoWorldsAction {
 
         // ****** MODULES ******
         // Border
-        if (sponge.configuration.Configuration.getBorder()) {
+        if (Configuration.getBorder()) {
             // Radius border 500
             int x;
             int y;
@@ -234,7 +234,6 @@ public class IsoWorldsAction {
 
         } catch (IOException | NoSuchElementException ie) {
             ie.printStackTrace();
-            sponge.util.console.Logger.severe(Msg.keys.SQL);
             lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return null;
         }

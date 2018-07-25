@@ -67,12 +67,11 @@ public class Trust implements CommandCallable {
         }
 
         if (size > 1) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
             return CommandResult.success();
         }
 
-        // SELECT WORLD
+        // Check if world exists
         if (!IsoWorldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
             return CommandResult.success();
@@ -85,28 +84,22 @@ public class Trust implements CommandCallable {
                 uuidcible = player.get().getUniqueId();
             } catch (NoSuchElementException e){
                 e.printStackTrace();
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
+                pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
                 return CommandResult.success();
             }
 
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                        .append(Text.of(Text.builder(Msg.keys.INVALIDE_JOUEUR).color(TextColors.AQUA))).build()));
-                // Suppression lock
+                pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
             i.printStackTrace();
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.DATA).color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
         // CHECK AUTORISATIONS
         if (TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder(Msg.keys.EXISTE_TRUST).color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.ALREADY_TRUSTED));
             return CommandResult.success();
         }
 
@@ -116,8 +109,8 @@ public class Trust implements CommandCallable {
             return CommandResult.success();
         }
 
-        pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                .append(Text.of(Text.builder(Msg.keys.SUCCES_TRUST).color(TextColors.AQUA))).build()));
+        pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_TRUST));
+
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
         return CommandResult.success();
     }

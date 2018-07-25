@@ -83,7 +83,7 @@ public class Trust {
             return;
         }
 
-        pPlayer.sendMessage(Message.success(Msg.keys.SUCCES_TRUST));
+        pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_TRUST));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
     }

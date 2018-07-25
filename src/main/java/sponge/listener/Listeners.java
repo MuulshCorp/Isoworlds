@@ -278,13 +278,12 @@ public class Listeners {
                     return;
                 }
 
+                // To clean
                 if (rselect.isBeforeFirst()) {
-                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION).color(TextColors.AQUA))).build()));
+                    return;
                     // Cas du untrust, pour ne pas rester bloquer
                 } else if (pPlayer.getWorld().getName() == eventworld) {
-                    pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(Msg.keys.SUCCES_TELEPORTATION).color(TextColors.AQUA))).build()));
+                    return;
                 } else {
                     event.setCancelled(true);
                     pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)

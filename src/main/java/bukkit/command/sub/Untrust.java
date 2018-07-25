@@ -40,10 +40,11 @@ import java.util.UUID;
 
 public class Untrust {
 
-    private final Main instance = Main.instance;
+    public static Main instance;
 
     @SuppressWarnings("deprecation")
-    public void RetirerConfiance(CommandSender sender, String[] args) {
+    public static void RetirerConfiance(CommandSender sender, String[] args) {
+        instance = Main.getInstance();
         Player pPlayer = (Player) sender;
         UUID uuidcible;
         Boolean is;

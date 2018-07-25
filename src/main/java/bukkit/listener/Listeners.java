@@ -174,12 +174,11 @@ public class Listeners implements Listener {
                     return;
                 }
 
+                // To clean
                 if (rselect.isBeforeFirst()) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
                     return;
                     // Cas du untrust, pour ne pas rester bloquer
                 } else if (pPlayer.getWorld().getName() == eventworld) {
-                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.SUCCES_TELEPORTATION);
                     return;
                 } else {
                     event.setCancelled(true);

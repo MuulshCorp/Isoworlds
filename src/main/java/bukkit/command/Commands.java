@@ -24,6 +24,7 @@
  */
 package bukkit.command;
 
+import bukkit.Main;
 import bukkit.command.sub.*;
 import bukkit.util.inventory.MainInv;
 import org.bukkit.command.Command;
@@ -32,6 +33,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Commands implements CommandExecutor {
+
+    public static Main instance;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {

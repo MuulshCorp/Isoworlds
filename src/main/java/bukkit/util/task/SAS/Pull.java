@@ -25,6 +25,8 @@
 package bukkit.util.task.SAS;
 
 import bukkit.Main;
+import bukkit.util.message.Message;
+import common.Msg;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -47,15 +49,17 @@ public class Pull extends BukkitRunnable {
     @Override
     public void run() {
         if (check == 20) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter... (Temps estimé: 1 minute)");
+            pPlayer.sendMessage(Message.error(Msg.keys.PROCESSING_PULL));
         }
         check --;
         if (check < 1) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania ne parvient pas à charger votre monde, veuillez re tenter ou contacter l'équipe Isolonice.");
+            pPlayer.sendMessage(Message.error(Msg.keys.FAIL_PULL));
+            instance.lock.remove(file.getName() + ";" + file.getName());
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
             cancel();
         } else if (file.exists()) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania vient de terminer son travail, l'IsoWorld est disponible !");
+            pPlayer.sendMessage(Message.error(Msg.keys.SUCCESS_PULL));
+            instance.lock.remove(file.getName() + ";" + file.getName());
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
             cancel();
         }

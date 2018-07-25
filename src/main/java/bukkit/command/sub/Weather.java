@@ -41,9 +41,11 @@ import org.bukkit.entity.Player;
 
 public class Weather {
 
-    private final Main instance = Main.instance;
+    public static Main instance;
 
-    public void Meteo(CommandSender sender, String[] args) {
+    public static void Meteo(CommandSender sender, String[] args) {
+
+        instance = Main.getInstance();
 
         int num;
         Player pPlayer = (Player) sender;

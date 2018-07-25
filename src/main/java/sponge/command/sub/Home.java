@@ -81,9 +81,7 @@ public class Home implements CommandExecutor {
         }
 
         // Teleport player
-        if (Locations.teleport(pPlayer, worldname)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.SUCCES_TELEPORTATION));
-        }
+        Locations.teleport(pPlayer, worldname);
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.MAISON, Cooldown.MAISON_DELAY);
 

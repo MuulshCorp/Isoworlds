@@ -28,7 +28,7 @@ public class Msg {
     public interface keys {
         // ISOWORLD
         String ISOWORLD_NOT_FOUND
-                = "IsoWorld introuvable";
+                = "IsoWorld introuvable, il n'est peut être pas chargé ? Tu peux le charger via le menu Maison";
         String ISOWORLD_ALREADY_EXISTS
                 = "Un IsoWorld t'appartient déjà";
         String ISOWORLD_SUCCESS_CREATE
@@ -46,18 +46,23 @@ public class Msg {
         String WELCOME_1
                 = "Bienvenue, ";
         String WELCOME_2
-                = "Cet IsoWorld est désormais le tiens !";
+                = "cet IsoWorld est désormais le tiens !";
         String SPACE_LINE
                 = " ";
         String CONFIRMATION
                 = "Entre de nouveau la commande pour confirmer";
         String REFORGE_KICK
                 = "L'IsoWorld dans lequel tu te trouvais être entrain d'être reforgé, sur demande du propriétaire";
-
         String FAIL_REFORGE_ISOWORLD
                 = "Echec de la refonte de ton IsoWorld, retente et demande aux staff si c'est sans succès";
         String SUCCES_REFORGE
                 = "Ton IsoWorld a été reforgé avec succès !";
+        String PROCESSING_PULL
+                = "Ton IsoWorld est en cours de transfert sur ce serveur, temps estimé: 60 secondes";
+        String FAIL_PULL
+                = "Ton IsoWorld n'a pas pu être transféré sur ce serveur, retente dans quelques minutes";
+        String SUCCESS_PULL
+                = "Ton IsoWorld a été transféré avec succès sur ce serveur, tu peux maintenant t'y rendre !";
 
         // TRUST
         String NOT_TRUSTED
@@ -105,7 +110,5 @@ public class Msg {
 
         // UTILS
         String UNAVAILABLE_COMMAND = "Commande inconnue";
-
-
     }
 }

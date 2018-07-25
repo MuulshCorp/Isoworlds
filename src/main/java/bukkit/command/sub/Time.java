@@ -39,9 +39,11 @@ import org.bukkit.entity.Player;
 
 public class Time {
 
-    private final Main instance = Main.instance;
+    public static Main instance;
 
-    public void Time(CommandSender sender, String[] args) {
+    public static void Time(CommandSender sender, String[] args) {
+
+        instance = Main.getInstance();
 
         Player pPlayer = (Player) sender;
         String worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");

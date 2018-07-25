@@ -36,9 +36,10 @@ import org.bukkit.entity.Player;
 
 public class Warp {
 
-    private final Main instance = Main.instance;
+    public static Main instance;
 
-    public void Warp(CommandSender sender, String[] args) {
+    public static void Warp(CommandSender sender, String[] args) {
+        instance = Main.getInstance();
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 

@@ -31,6 +31,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.Main;
 import sponge.util.action.StorageAction;
+import sponge.util.message.Message;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -54,15 +55,14 @@ public class Pull implements Consumer<Task> {
         // Message de démarrage process
         if (check == 60) {
             // Notification au joueur qu'il doit patienter
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania est sur le point de ramener votre IsoWorld dans ce royaume, veuillez patienter... (Temps estimé: 60 secondes)").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.PROCESSING_PULL));
+
         }
         check --;
         // Si inférieur à 1 alors tout le temps s'est écoulé sans que le IsoWorld soit présent en fichier
         if (check < 1) {
             // Notification au joueur de contacter l'équipe
-                pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania ne parvient pas à charger votre monde, veuillez re tenter ou contacter l'équipe Isolonice.").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("").color(TextColors.RED))).build()));
+            pPlayer.sendMessage(Message.error(Msg.keys.FAIL_PULL));
             // Suppression du TAG pour permettre l'utilisation de la commande maison et confiance access
             plugin.lock.remove(file.getName() + ";" + file.getName());
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
@@ -71,11 +71,8 @@ public class Pull implements Consumer<Task> {
         } else if (file.exists()) {
             // Passage du IsoWorld en statut présent
             StorageAction.setStatus(file.getName(), 0);
-
             // Notification au joueur que le IsoWorld est disponible
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: Sijania vient de terminer son travail, l'IsoWorld est disponible !").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
-
+            pPlayer.sendMessage(Message.error(Msg.keys.SUCCESS_PULL));
             // Suppression du TAG pour permettre l'utilisation de la commande maison et confiance access
             plugin.lock.remove(file.getName() + ";" + file.getName());
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");

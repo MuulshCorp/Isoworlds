@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -82,7 +82,7 @@ public class Locations {
                 // Set to 61 for official dimensions
                 Location<World> destination = new Location<>(spawn.getExtent(), getAxis(worldname).getX(), 61, getAxis(worldname).getZ());
 
-                // If dimensions if not autobuilt, return the same name so it can build isoworlds safe zone
+                // If dimensions if not autobuilt, return the same name so it can build Isoworlds safe zone
                 if (getOfficialDimSpawn(worldname).equals(worldname)) {
 
                     // Get max location, if Y axis is 0 then it will find from max, else find from the one set to lower

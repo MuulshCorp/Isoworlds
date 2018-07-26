@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -26,7 +26,7 @@ package sponge.command.sub;
 
 import sponge.util.message.Message;
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import common.action.TrustAction;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.world.Location;
@@ -57,13 +57,13 @@ public class Create implements CommandCallable {
         Player pPlayer = (Player) source;
 
         // Check if isoworld exists in database
-        if (IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_ALREADY_EXISTS));
+        if (sponge.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldAlreadyExists")));
             return CommandResult.success();
         }
 
         // Create message
-        pPlayer.sendMessage(Message.success(Msg.keys.CREATING_ISOWORLD));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("CreatingIsoworld")));
 
         fullpath = (ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
@@ -72,17 +72,17 @@ public class Create implements CommandCallable {
 
         // Check properties exists
         if (Sponge.getServer().getWorldProperties(worldname).isPresent()) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_ALREADY_EXISTS));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldAlreadyExists")));
             return CommandResult.success();
         }
 
         // Check arg lenght en send patern types message
         if (size < 1) {
-            pPlayer.sendMessage(Message.error(Msg.keys.HEADER_ISOWORLD));
-            pPlayer.sendMessage(Message.error(Msg.keys.SPACE_LINE));
-            pPlayer.sendMessage(Message.error(Msg.keys.PATERN_TYPES));
-            pPlayer.sendMessage(Message.error(Msg.keys.PATERN_TYPES_DETAIL));
-            pPlayer.sendMessage(Message.error(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("HeaderIsoworld")));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("SpaceLine")));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("PaternTypes")));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("PaternTypesDetail")));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("SpaceLine")));
             return CommandResult.success();
         }
 
@@ -119,20 +119,20 @@ public class Create implements CommandCallable {
         }
 
         //  Create world properties
-        IsoWorldsAction.setWorldProperties(worldname, pPlayer);
+        sponge.util.action.IsoworldsAction.setWorldProperties(worldname, pPlayer);
 
-        if (IsoWorldsAction.setIsoWorld(pPlayer.getUniqueId().toString())) {
+        if (sponge.util.action.IsoworldsAction.setIsoWorld(pPlayer)) {
             if (TrustAction.setTrust(pPlayer.getUniqueId().toString(), pPlayer.getUniqueId().toString())) {
                 // Loading
                 Sponge.getGame().getServer().loadWorld(worldname);
 
-                pPlayer.sendMessage(Message.success(Msg.keys.ISOWORLD_SUCCESS_CREATE));
+                pPlayer.sendMessage(Message.success(Msg.msgNode.get("IsoworldsuccessCreate")));
 
                 // Teleport
                 Locations.teleport(pPlayer, worldname);
 
                 // Welcome title (only sponge)
-                pPlayer.sendTitle(Logger.titleSubtitle(Msg.keys.WELCOME_1 + pPlayer.getName(), Msg.keys.WELCOME_2));
+                pPlayer.sendTitle(Logger.titleSubtitle(Msg.msgNode.get("Welcome1") + pPlayer.getName(), Msg.msgNode.get("Welcome2")));
             }
         }
         return CommandResult.success();

@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -54,6 +54,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static common.Msg.msgNode;
+
 public class MainInv implements Listener {
 
     private String name;
@@ -63,49 +65,47 @@ public class MainInv implements Listener {
     List<String> viewing = new ArrayList<String>();
 
     public static MainInv MenuPrincipal(Player pPlayer) {
-        MainInv menu = new MainInv(ChatColor.BLUE + "IsoWorlds", 1, new onClick() {
+        MainInv menu = new MainInv(ChatColor.BLUE + "Isoworlds", 1, new onClick() {
             @Override
             public boolean click(Player p, MainInv menu, Row row, int slot, ItemStack item) {
                 // MENU PRINCIPAL //
                 // BIOME
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
-                if (menuName.equals("Biome")) {
+                if (menuName.equals(msgNode.get("InvBiome"))) {
                     Logger.tracking("Clic menu BIOME: " + p.getName());
                     BiomeInv.getInv(pPlayer).open(pPlayer);
                     // CONFIANCE
-                } else if (menuName.equals("Confiance")) {
+                } else if (menuName.equals(msgNode.get("InvTrust"))) {
                     Logger.tracking("Clic menu CONFIANCE: " + p.getName());
                     TrustInv.getInv(pPlayer).open(pPlayer);
                     // CONSTRUCTION
-                } else if (menuName.equals("Construction")) {
+                } else if (menuName.equals(msgNode.get("InvBuild"))) {
                     Logger.tracking("Clic menu CONSTRUCTION: " + p.getName());
                     BuildInv.getInv(pPlayer).open(pPlayer);
                     // MAISON
-                } else if (menuName.equals("Maison")) {
+                } else if (menuName.equals(msgNode.get("InvHome"))) {
                     Logger.tracking("Clic menu MAISON: " + p.getName());
                     HomeInv.getInv(pPlayer).open(pPlayer);
                     // METEO
-                } else if (menuName.equals("Météo")) {
+                } else if (menuName.equals(msgNode.get("InvWeather"))) {
                     Logger.tracking("Clic menu METEO: " + p.getName());
                     WeatherInv.getInv(pPlayer).open(pPlayer);
                     // ACTIVATION
-                } else if (menuName.equals("Activation")) {
+                } else if (menuName.equals(msgNode.get("InvEnabe"))) {
                     Logger.tracking("Clic menu ACTIVATION: " + p.getName());
                     EnableInv.getInv(pPlayer).open(pPlayer);
                     // TELEPORTATION
-                } else if (menuName.equals("Téléportation")) {
+                } else if (menuName.equals(msgNode.get("InvTeleport"))) {
                     Logger.tracking("Clic menu TELEPORTATION: " + p.getName());
                     TeleportInv.getInv(pPlayer).open(pPlayer);
-                } else if (menuName.equals("Temps")) {
+                } else if (menuName.equals(msgNode.get("InvTime"))) {
                     Logger.tracking("Clic menu TEMPS: " + p.getName());
                     TimeInv.getInv(pPlayer).open(pPlayer);
-                } else if (menuName.equals("Warp")) {
+                } else if (menuName.equals(msgNode.get("InvWarp"))) {
                     Logger.tracking("Clic menu WARP: " + p.getName());
                     WarpInv.getInv(pPlayer).open(pPlayer);
-                } else if (menuName.equals("Menu principal")) {
-                    Logger.tracking("Clic menu PRINCIPAL: " + p.getName());
-                    MenuPrincipal(pPlayer).open(pPlayer);
                 }
+
                 return true;
             }
         });
@@ -116,20 +116,20 @@ public class MainInv implements Listener {
         String formatedPlayTime;
 
         if (playtime > 60) {
-            formatedPlayTime = playtime / 60 + " Heure(s) et " + playtime % 60 + " minute(s)";
+            formatedPlayTime = playtime / 60 + " H " + playtime % 60 + " m";
         } else {
-            formatedPlayTime = playtime + " minute(s)";
+            formatedPlayTime = playtime + " m";
         }
 
         // Création item
-        String[] list1 = new String[]{"Créez ou refondez votre IsoWorld"};
-        String[] list2 = new String[]{"Rendez-vous sur votre IsoWorld"};
-        String[] list3 = new String[]{"Gérez qui peut avoir accès à votre IsoWorld"};
-        String[] list4 = new String[]{"Gérez le biome de vos chunks"};
-        String[] list5 = new String[]{"Gérez l'heure de votre IsoWorld"};
-        String[] list6 = new String[]{"Gérez la pluie et le beau temps", "de votre IsoWorld"};
-        String[] list7 = new String[]{ChatColor.YELLOW + "Charges: " + ChatColor.GREEN + charges + " disponible(s)", ChatColor.YELLOW + "Temps de jeu: " + ChatColor.GREEN + formatedPlayTime};
-        String[] list8 = new String[]{"Rendez-vous sur les dimensions publiques"};
+        String[] list1 = new String[]{msgNode.get("InvBuildLore")};
+        String[] list2 = new String[]{msgNode.get("InvHomeLore")};
+        String[] list3 = new String[]{msgNode.get("InvTrustLore")};
+        String[] list4 = new String[]{msgNode.get("InvBiomeLore")};
+        String[] list5 = new String[]{msgNode.get("InvTimeLore")};
+        String[] list6 = new String[]{msgNode.get("InvWeatherLore"), msgNode.get("InvWeatherLore2")};
+        String[] list7 = new String[]{ChatColor.YELLOW + msgNode.get("InvStatChargeLore") + ChatColor.GREEN + charges, ChatColor.YELLOW + msgNode.get("InvStatPlayTimeLore") + ChatColor.GREEN + formatedPlayTime};
+        String[] list8 = new String[]{msgNode.get("InvWarpLore")};
         //String[] list7 = new String[]{"Chargez-Déchargez votre IsoWorld"};
         //String[] list8 = new String[]{"Téléportez vous sur un IsoWorld [STAFF]"};
 
@@ -139,14 +139,14 @@ public class MainInv implements Listener {
         sm.setOwner("Steve");
         item1.setItemMeta(sm);
 
-        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.DIAMOND_PICKAXE), ChatColor.GRAY + "Construction", list1);
-        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.BED), ChatColor.BLUE + "Maison", list2);
-        menu.addButton(menu.getRow(0), 2, item1, ChatColor.GREEN + "Confiance", list3);
-        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.LEAVES), ChatColor.GOLD + "Biome", list4);
-        menu.addButton(menu.getRow(0), 4, new ItemStack(Material.WATCH), ChatColor.LIGHT_PURPLE + "Temps", list5);
-        menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), ChatColor.YELLOW + "Météo", list6);
-        menu.addButton(menu.getRow(0), 6, new ItemStack(Material.COMPASS), ChatColor.DARK_GREEN + "Warp", list8);
-        menu.addButton(menu.getRow(0), 8, new ItemStack(Material.LEVER), ChatColor.AQUA + "Statistiques", list7);
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.DIAMOND_PICKAXE), ChatColor.GRAY + msgNode.get("InvBuild"), list1);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.BED), ChatColor.BLUE + msgNode.get("InvHome"), list2);
+        menu.addButton(menu.getRow(0), 2, item1, ChatColor.GREEN + msgNode.get("InvTrust"), list3);
+        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.LEAVES), ChatColor.GOLD + msgNode.get("InvBiome"), list4);
+        menu.addButton(menu.getRow(0), 4, new ItemStack(Material.WATCH), ChatColor.LIGHT_PURPLE + msgNode.get("InvTime"), list5);
+        menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), ChatColor.YELLOW + msgNode.get("InvWeather"), list6);
+        menu.addButton(menu.getRow(0), 6, new ItemStack(Material.COMPASS), ChatColor.DARK_GREEN + msgNode.get("InvWarp"), list8);
+        menu.addButton(menu.getRow(0), 8, new ItemStack(Material.LEVER), ChatColor.AQUA + msgNode.get("InvStat"), list7);
         //menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), ChatColor.RED + "Activation", list7);
         //menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), ChatColor.LIGHT_PURPLE + "Téléportation", list8);
 

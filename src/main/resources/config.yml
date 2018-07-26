@@ -9,19 +9,19 @@ MainWorldSpawnCoordinate: "0;60;0"
 
 # Differents modules, if enabled then adjust parameters if not (disabled) skip them
 Modules:
-  # This module will unload every inactive IsoWorlds for a given time (check every minutes)
+  # This module will unload every inactive Isoworlds for a given time (check every minutes)
   # Once unload, plugin will add @PUSH to worlds forldername
-  # Then the storage module will push them to the backup storage defined by IsoWorlds-SAS (script on github)
-  # If automatic unload is disabled, storage still works on restarts (push every isoworlds on backup storage at start)
+  # Then the storage module will push them to the backup storage defined by Isoworlds-SAS (script on github)
+  # If automatic unload is disabled, storage still works on restarts (push every Isoworlds on backup storage at start)
   AutomaticUnload:
     Enabled: true
     InactivityTime: 15
 
-  # This module will handle backup storage (script on github), isoworlds will be pushed at server start and worlds unload
+  # This module will handle backup storage (script on github), Isoworlds will be pushed at server start and worlds unload
   Storage:
     Enabled: true
 
-  # This module creates automatically alt dimensions (Mining, Exploration) (Warps access on IsoWorlds menu)
+  # This module creates automatically alt dimensions (Mining, Exploration) (Warps access on Isoworlds menu)
   DimensionAlt:
     Enabled: true
     Mining: true
@@ -32,7 +32,7 @@ Modules:
   SafePlateform:
     Enabled: true
 
-  # Generate 1*1 dirt on IsoWorlds spawn if the spawn coordinate is empty (Y axis), to avoid death
+  # Generate 1*1 dirt on Isoworlds spawn if the spawn coordinate is empty (Y axis), to avoid death
   # Breaking this dirt doesn't drop
   # If Y axis is not empty then it will teleport the player on the highest solid position
   # Handle lava and water

@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -24,7 +24,7 @@
  */
 package sponge.util.inventory.trust;
 
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.living.player.Player;
@@ -47,6 +47,7 @@ import sponge.util.inventory.trust.sub.TrustDeleteInv;
 import java.util.ArrayList;
 import java.util.List;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class TrustInv {
@@ -62,38 +63,40 @@ public class TrustInv {
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     Logger.info("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
                     clickInventoryEvent.setCancelled(true);
-                    if (menuName.contains("Ajouter")) {
-                        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+                    if (menuName.contains(msgNode.get("TrustAdd"))) {
+                        if (IsoworldsAction.iwExists(pPlayer.getUniqueId().toString())) {
                             MainInv.closeOpenMenu(pPlayer, TrustAddInv.getInv(pPlayer));
                         }
-                    } else if (menuName.contains("Retirer")) {
-                        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+                    } else if (menuName.contains(msgNode.get("TrustRemove"))) {
+                        if (IsoworldsAction.iwExists(pPlayer.getUniqueId().toString())) {
                             MainInv.closeOpenMenu(pPlayer, TrustDeleteInv.getInv(pPlayer));
                         }
-                    } else if (menuName.contains("Mes accès")) {
+                    } else if (menuName.contains(msgNode.get("TrustAccess"))) {
                         MainInv.closeOpenMenu(pPlayer, TrustAccessInv.getInv(pPlayer));
-                    } else if (menuName.contains("Menu principal")) {
+                    } else if (menuName.contains(msgNode.get("MainMenu"))) {
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance").color(TextColors.BLUE).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: " + msgNode.get("InvTrust")).color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
         List<Text> list1 = new ArrayList<Text>();
-        list1.add(Text.of("Autoriser l'accès à votre IsoWorld."));
+        list1.add(Text.of(msgNode.get("TrustAddLore")));
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Retirer l'accès à votre IsoWorld."));
+        list2.add(Text.of(msgNode.get("TrustRemoveLore")));
         List<Text> list3 = new ArrayList<Text>();
-        list3.add(Text.of("Retour au menu principal"));
+        list3.add(Text.of(msgNode.get("TrustAccessLore")));
+        List<Text> list4 = new ArrayList<Text>();
+        list4.add(Text.of(msgNode.get("MainMenuLore")));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Ajouter")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("TrustAdd"))
                 .color(TextColors.GREEN).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Retirer")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("TrustRemove"))
                 .color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.ORANGE).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Mes accès")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.ORANGE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("TrustAccess"))
                 .color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("MainMenu"))
                 .color(TextColors.RED).build())).quantity(1).build();
 
         menu.query(SlotPos.of(0, 0)).set(item1);

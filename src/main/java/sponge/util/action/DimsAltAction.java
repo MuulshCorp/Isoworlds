@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -102,7 +102,7 @@ public class DimsAltAction {
     }
 
     private static void setWorldProperties(String worldname) {
-        // Create world properties IsoWorlds
+        // Create world properties Isoworlds
 
         // Check si world properties en place, création else
         Optional<WorldProperties> wp = Sponge.getServer().getWorldProperties(worldname);

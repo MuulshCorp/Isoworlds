@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -54,8 +54,8 @@ public class Commands implements CommandExecutor {
 
     public static CommandSpec getCommand() {
         return CommandSpec.builder()
-                .description(Text.of("Commande IsoWorlds, permet de créer/refondre/lister"))
-                .permission("isoworlds.default")
+                .description(Text.of("Commande Isoworlds, permet de créer/refondre/lister"))
+                .permission("Isoworlds.default")
                 .child(new Create(), "creation", "créer", "creer", "create", "c")
                 .child(ListWorlds.getCommand(), "lister", "liste", "list", "l")
                 .child(Reforge.getCommand(), "refonte", "refondre", "r")

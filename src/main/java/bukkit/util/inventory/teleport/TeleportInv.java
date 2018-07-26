@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -41,7 +41,7 @@ public class TeleportInv implements Listener {
 
     @SuppressWarnings("deprecation")
     public static MainInv getInv(Player pPlayer) {
-        MainInv menu = new MainInv(ChatColor.BLUE + "IsoWorlds: Téléportation", 3, new MainInv.onClick() {
+        MainInv menu = new MainInv(ChatColor.BLUE + "Isoworlds: Téléportation", 3, new MainInv.onClick() {
             @Override
             public boolean click(Player p, MainInv menu, MainInv.Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());

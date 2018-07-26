@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class TrustAddInv {
@@ -71,14 +72,14 @@ public class TrustAddInv {
                         Logger.info("CURSOR 2 " + String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain()));
                         clickInventoryEvent.setCancelled(true);
                         // Si joueur, on ajouter le joueur
-                        if (menuName.contains("Joueur")) {
+                        if (menuName.contains(msgNode.get("Player"))) {
                             MainInv.commandMenu(pPlayer, "iw confiance " + menuPlayer);
                             MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
-                        } else if (menuName.contains("Menu principal")) {
+                        } else if (menuName.contains(msgNode.get("MainMenu"))) {
                             MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
                         }
                     })
-                    .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Ajouter").color(TextColors.BLUE).build())))
+                    .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: " + msgNode.get("InvTrust") + " > " + msgNode.get("TrustAdd")).color(TextColors.BLUE).build())))
                     .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                     .build(instance);
 
@@ -114,7 +115,7 @@ public class TrustAddInv {
 
                 // Construction du lore
                 List<Text> list1 = new ArrayList<Text>();
-                list1.add(Text.of("Joueur"));
+                list1.add(Text.of(msgNode.get("Player")));
 
                 // Construction des skin itemstack
                 SkullData data = Sponge.getGame().getDataManager().getManipulatorBuilder(SkullData.class).get().create();
@@ -135,9 +136,9 @@ public class TrustAddInv {
             }
 
             List<Text> list2 = new ArrayList<Text>();
-            list2.add(Text.of("Menu principal"));
+            list2.add(Text.of(msgNode.get("MainMenuLore")));
 
-            ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+            ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("MainMenu"))
                     .color(TextColors.RED).build())).quantity(1).build();
             menu.query(SlotPos.of(8, 3)).set(item2);
 

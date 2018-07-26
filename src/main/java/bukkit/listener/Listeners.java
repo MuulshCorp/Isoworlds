@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -31,8 +31,7 @@ import bukkit.util.console.Logger;
 import bukkit.util.message.Message;
 import common.ManageFiles;
 import common.Msg;
-import common.action.ChargeAction;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -86,16 +85,16 @@ public class Listeners implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         // Welcome message and open menu for those who do not have their own IsoWorld
-        if (!IsoWorldsAction.iwExists(event.getPlayer().getUniqueId().toString())) {
+        if (!IsoworldsAction.iwExists(event.getPlayer().getUniqueId().toString())) {
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Sijania vous souhaite la bienvenue !");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Sur Isolonice, vous possédez votre propre monde nommé: IsoWorld");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Vous êtes seul maître à bord, il est à vous !");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Pour commencer l'aventure entrez la commande: /iw");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + "Puis sélectionnez le premier menu (Construction)");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Sijania vous souhaite la bienvenue !");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Sur Isolonice, vous possédez votre propre monde nommé: IsoWorld");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Vous êtes seul maître à bord, il est à vous !");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Pour commencer l'aventure entrez la commande: /iw");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Puis sélectionnez le premier menu (Construction)");
                     event.getPlayer().performCommand("iw");
                 }
 
@@ -124,7 +123,7 @@ public class Listeners implements Listener {
         // Spawn Protection
         if (Configuration.getSpawnProtection()) {
             Player p = event.getPlayer();
-            if (p.hasPermission("isoworlds.bypass.spawn")) {
+            if (p.hasPermission("Isoworlds.bypass.spawn")) {
                 return;
             }
             if (p.getLocation().getWorld().getName().equals("Isolonice")) {
@@ -170,7 +169,7 @@ public class Listeners implements Listener {
                 check.setString(2, check_w);
                 // Requête
                 ResultSet rselect = check.executeQuery();
-                if (pPlayer.hasPermission("isoworlds.bypass.teleport")) {
+                if (pPlayer.hasPermission("Isoworlds.bypass.teleport")) {
                     return;
                 }
 
@@ -182,12 +181,12 @@ public class Listeners implements Listener {
                     return;
                 } else {
                     event.setCancelled(true);
-                    pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + Msg.keys.DENY_TELEPORT);
+                    pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + Msg.msgNode.get("DenyTeleport"));
                     return;
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             }
 
         }

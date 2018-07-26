@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -30,12 +30,12 @@ import org.spongepowered.api.text.format.TextColors;
 public class Message {
 
     public static Text success(String msg) {
-        return(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+        return(Text.of(Text.builder("[Isoworlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(msg).color(TextColors.GREEN))).build()));
     }
 
     public static Text error(String msg) {
-        return(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+        return(Text.of(Text.builder("[Isoworlds]: ").color(TextColors.GOLD)
                 .append(Text.of(Text.builder(msg).color(TextColors.RED))).build()));
     }
 }

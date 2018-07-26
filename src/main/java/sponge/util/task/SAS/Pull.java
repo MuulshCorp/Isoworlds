@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -27,8 +27,6 @@ package sponge.util.task.SAS;
 import common.Msg;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import sponge.Main;
 import sponge.util.action.StorageAction;
 import sponge.util.message.Message;
@@ -55,14 +53,14 @@ public class Pull implements Consumer<Task> {
         // Message de démarrage process
         if (check == 60) {
             // Notification au joueur qu'il doit patienter
-            pPlayer.sendMessage(Message.success(Msg.keys.PROCESSING_PULL));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("ProcessingPull")));
 
         }
         check --;
         // Si inférieur à 1 alors tout le temps s'est écoulé sans que le IsoWorld soit présent en fichier
         if (check < 1) {
             // Notification au joueur de contacter l'équipe
-            pPlayer.sendMessage(Message.error(Msg.keys.FAIL_PULL));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("FailPull")));
             // Suppression du TAG pour permettre l'utilisation de la commande maison et confiance access
             plugin.lock.remove(file.getName() + ";" + file.getName());
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
@@ -72,7 +70,7 @@ public class Pull implements Consumer<Task> {
             // Passage du IsoWorld en statut présent
             StorageAction.setStatus(file.getName(), 0);
             // Notification au joueur que le IsoWorld est disponible
-            pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_PULL));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccessPull")));
             // Suppression du TAG pour permettre l'utilisation de la commande maison et confiance access
             plugin.lock.remove(file.getName() + ";" + file.getName());
             plugin.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");

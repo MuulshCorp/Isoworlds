@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -23,8 +23,6 @@
  * THE SOFTWARE.
  */
 package common;
-
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
 import java.util.Map;
 

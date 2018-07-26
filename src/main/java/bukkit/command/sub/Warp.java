@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -26,11 +26,9 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 import bukkit.location.Locations;
-import bukkit.util.console.Logger;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -50,7 +48,7 @@ public class Warp {
 
         // Vérification taille args et retour si biome non indiqué
         if (len < 1) {
-            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
             return;
         }
 

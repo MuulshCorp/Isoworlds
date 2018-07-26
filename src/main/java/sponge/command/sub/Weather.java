@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -27,19 +27,15 @@ package sponge.command.sub;
 import common.Cooldown;
 import common.Msg;
 import common.action.ChargeAction;
-import common.action.IsoWorldsAction;
 import common.action.TrustAction;
-import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.world.weather.Weathers;
 import sponge.Main;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.util.action.StatAction;
@@ -75,22 +71,22 @@ public class Weather implements CommandCallable {
 
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotInAIsoworld")));
             return CommandResult.success();
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotTrusted")));
             return CommandResult.success();
         }
 
         if (size == 1) {
-            pPlayer.sendMessage(Message.success(Msg.keys.HEADER_ISOWORLD));
-            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
-            pPlayer.sendMessage(Message.success (Msg.keys.WEATHER_TYPES));
-            pPlayer.sendMessage(Message.success(Msg.keys.WEATHER_TYPES_DETAIL));
-            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("HeaderIsoworld")));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("SpaceLine")));
+            pPlayer.sendMessage(Message.success (Msg.msgNode.get("WeatherTypes")));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("WeatherTypesDetail")));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("SpaceLine")));
             return CommandResult.success();
 
         } else if (size == 3) {
@@ -103,16 +99,16 @@ public class Weather implements CommandCallable {
             }
             // Message pour tous les joueurs
             for (Player p : pPlayer.getWorld().getPlayers()) {
-                p.sendMessage(Message.success(Msg.keys.WEATHER_CHANGE_SUCCESS + pPlayer.getName()));
+                p.sendMessage(Message.success(Msg.msgNode.get("WeatherChangeSuccess") + pPlayer.getName()));
             }
         } else {
             return CommandResult.success();
         }
 
-        if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+        if (!pPlayer.hasPermission("Isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
-        pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("ChargeUsed")));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
 

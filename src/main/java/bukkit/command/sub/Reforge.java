@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -29,11 +29,9 @@ import bukkit.util.message.Message;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -62,14 +60,14 @@ public class Reforge {
         }
 
         // Check is IsoWorld exists in database
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (!bukkit.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return;
         }
 
         // Confirmation message (2 times cmd)
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
-            pPlayer.sendMessage(Message.error(Msg.keys.CONFIRMATION));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("Confirm")));
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             return;
         } else {
@@ -77,7 +75,7 @@ public class Reforge {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
             if (minutes >= 1) {
                 confirm.remove(pPlayer.getUniqueId().toString());
-                pPlayer.sendMessage(Message.error(Msg.keys.CONFIRMATION));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("Confirm")));
                 return;
             }
         }
@@ -85,11 +83,11 @@ public class Reforge {
         confirm.remove(pPlayer.getUniqueId().toString());
 
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
-        File destDir = new File(ManageFiles.getPath() + "/IsoWorlds-REFONTE/" + worldname);
+        File destDir = new File(ManageFiles.getPath() + "/Isoworlds-REFONTE/" + worldname);
         destDir.mkdir();
 
         if (Bukkit.getServer().getWorld(worldname) == null) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return;
         }
 
@@ -99,7 +97,7 @@ public class Reforge {
             Location overworld = new Location(Bukkit.getServer().getWorld("Isolonice"), 0, maxY, 0);
             for (Player player : colPlayers) {
                 player.teleport(overworld);
-                pPlayer.sendMessage(Message.error(Msg.keys.REFORGE_KICK));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("ReforgeKick")));
             }
             Bukkit.getServer().unloadWorld(Bukkit.getServer().getWorld(worldname), true);
         }
@@ -107,12 +105,12 @@ public class Reforge {
         // Deleting process
         File remove = new File((ManageFiles.getPath() + worldname));
         ManageFiles.deleteDir(remove);
-        if (!IsoWorldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.FAIL_REFORGE_ISOWORLD));
+        if (!IsoworldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("FailReforgeIsoworld")));
             return;
         }
 
-        pPlayer.sendMessage(Message.success(Msg.keys.SUCCES_REFORGE));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccesReforge")));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY);
 

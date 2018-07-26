@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -30,7 +30,6 @@ import common.ManageFiles;
 import bukkit.Main;
 import bukkit.location.Locations;
 import common.Msg;
-import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -48,30 +47,30 @@ public class Create {
         Integer len = args.length;
 
         // Check if isoworld exists in database
-        if (IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_ALREADY_EXISTS));
+        if (bukkit.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldAlreadyExists")));
             return;
         }
 
         // Create message
-        pPlayer.sendMessage(Message.success(Msg.keys.CREATING_ISOWORLD));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("CreatingIsoworld")));
 
         fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-IsoWorld/");
         worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
 
         // Check if isoworld exists
         if (Bukkit.getServer().getWorld(worldname) != null) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_ALREADY_EXISTS));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldAlreadyExists")));
             return;
         }
 
         // Check arg lenght en send patern types message
         if (len < 2) {
-            pPlayer.sendMessage(Message.error(Msg.keys.HEADER_ISOWORLD));
-            pPlayer.sendMessage(Message.error(Msg.keys.SPACE_LINE));
-            pPlayer.sendMessage(Message.error(Msg.keys.PATERN_TYPES));
-            pPlayer.sendMessage(Message.error(Msg.keys.PATERN_TYPES_DETAIL));
-            pPlayer.sendMessage(Message.error(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("HeaderIsoworld")));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("SpaceLine")));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("PaternTypes")));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("PaternTypesDetail")));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("SpaceLine")));
             return;
         }
 
@@ -117,7 +116,7 @@ public class Create {
 
         Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
-        if (!IsoWorldsAction.setIsoWorld(pPlayer.getUniqueId().toString())) {
+        if (!bukkit.util.action.IsoworldsAction.setIsoWorld(pPlayer)) {
             return;
         }
 
@@ -129,10 +128,10 @@ public class Create {
 
         // Set delayed world properties as WB doesn't know the newly created iw
         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, () -> Bukkit.getScheduler().runTask(Main.instance, () -> {
-            IsoWorldsAction.setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
+            bukkit.util.action.IsoworldsAction.setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
         }), 60);
 
-        pPlayer.sendMessage(Message.success(Msg.keys.ISOWORLD_SUCCESS_CREATE));
-        pPlayer.sendMessage(Message.success(Msg.keys.WELCOME_1) + Msg.keys.WELCOME_2);
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("IsoworldsuccessCreate")));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("Welcome1)" + Msg.msgNode.get("Welcome2"))));
     }
 }

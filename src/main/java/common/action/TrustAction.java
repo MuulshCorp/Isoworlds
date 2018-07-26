@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -24,6 +24,7 @@
  */
 package common.action;
 
+import bukkit.util.console.Logger;
 import common.IMain;
 import common.Manager;
 import common.Mysql;
@@ -37,7 +38,7 @@ public class TrustAction {
     private static final Mysql database = Manager.getInstance().getMysql();
     private static final String servername = Manager.getInstance().getServername();
 
-    // Get all isoworlds allowed for a player
+    // Get all Isoworlds allowed for a player
     public static ResultSet getAccess(String playeruuid) {
         String CHECK = "SELECT `uuid_w` FROM `autorisations` WHERE `uuid_p` = ? AND `server_id` = ?";
         ResultSet result = null;
@@ -123,7 +124,7 @@ public class TrustAction {
             // delete autorisation
             delete_autorisations.setString(1, playeruuid);
             delete_autorisations.setString(2, worldname);
-            delete_autorisations.setString(3, IMain.servername);
+            delete_autorisations.setString(3, servername);
 
             // execute
             delete_autorisations.executeUpdate();

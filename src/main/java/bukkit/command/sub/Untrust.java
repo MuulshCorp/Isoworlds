@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -25,10 +25,9 @@
 package bukkit.command.sub;
 
 import bukkit.Main;
-import bukkit.util.console.Logger;
 import bukkit.util.message.Message;
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import common.action.TrustAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,14 +50,14 @@ public class Untrust {
         Integer len = args.length;
 
         if (len > 2 || len < 2) {
-            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
             return;
         }
 
         try {
             // SELECT WORLD
-            if (!IsoWorldsAction.isPresent(pPlayer, false)) {
+            if (!bukkit.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
                 return;
             }
         } catch (Exception se) {
@@ -77,19 +76,19 @@ public class Untrust {
 
         // IF TARGET NOT SET
         if (uuidcible == null) {
-            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
             return;
         }
 
         // DENY SELF REMOVE
         if (uuidcible.toString().equals(pPlayer.getUniqueId().toString())) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.BLUE + Msg.keys.DENY_SELF_REMOVE);
+            pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.BLUE + Msg.msgNode.get("DenySelfRemove"));
             return;
         }
 
         // CHECK AUTORISATIONS
         if (!TrustAction.isTrusted(uuidcible.toString(), pPlayer.getUniqueId().toString())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotTrusted")));
             return;
         }
 
@@ -103,10 +102,10 @@ public class Untrust {
             if (Bukkit.getServer().getPlayer(uuidcible).getWorld().getName().equals(pPlayer.getUniqueId().toString() + "-IsoWorld")) {
                 Player player = Bukkit.getServer().getPlayer(args[1]);
                 player.teleport(spawn);
-                pPlayer.sendMessage(Message.error(Msg.keys.KICK_TRUST));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("KickTrust")));
             }
         } // Gestion du kick offline à gérer dès que possible
 
-        pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_UNTRUST));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccessUntrust")));
     }
 }

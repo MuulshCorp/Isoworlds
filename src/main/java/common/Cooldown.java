@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -24,10 +24,7 @@
  */
 package common;
 
-import org.bukkit.ChatColor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import sponge.Main;
 import sponge.util.action.StatAction;
 import sponge.util.message.Message;
@@ -61,7 +58,7 @@ public class Cooldown implements ICooldown {
         Timestamp cooldown = this.getPlayerLastCooldown(pPlayer, type);
         if (cooldown != null) {
             String timerMessage = this.getCooldownTimer(cooldown);
-            pPlayer.sendMessage(Message.error(Msg.keys.UNAVAILABLE_COMMAND + timerMessage));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("CommandCooldown") + timerMessage));
             Main.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
 
             return false;
@@ -77,7 +74,7 @@ public class Cooldown implements ICooldown {
         Timestamp cooldown = this.getPlayerLastCooldown(pPlayer, type);
         if (cooldown != null) {
             String timerMessage = this.getCooldownTimer(cooldown);
-            pPlayer.sendMessage(bukkit.util.message.Message.error(Msg.keys.UNAVAILABLE_COMMAND + timerMessage));
+            pPlayer.sendMessage(bukkit.util.message.Message.error(Msg.msgNode.get("CommandCooldown") + timerMessage));
             bukkit.Main.lock.remove(pPlayer.getUniqueId().toString() + ";" + String.class.getName());
 
             return false;

@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -25,7 +25,6 @@
 package sponge.util.inventory.trust.sub;
 
 import common.Cooldown;
-import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
@@ -60,6 +59,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class TrustAccessInv {
@@ -80,7 +80,7 @@ public class TrustAccessInv {
                     clickInventoryEvent.setCancelled(true);
 
                     // Si joueur, on ajoute le joueur
-                    if (menuPlayer.contains("IsoWorld Accessible")) {
+                    if (menuPlayer.contains(msgNode.get("TrustAccessLore2"))) {
                         // Récupération UUID
                         String[] tmp = menuName.split("-IsoWorld");
                         Logger.info("NAME " + menuName);
@@ -100,7 +100,7 @@ public class TrustAccessInv {
                                 // Removing iwInProcess in task
                                 if (StorageAction.checkTag(pPlayer, worldname)) {
                                     // Chargement du isoworld + tp
-                                    IsoWorldsAction.setWorldProperties(worldname, pPlayer);
+                                    sponge.util.action.IsoworldsAction.setWorldProperties(worldname, pPlayer);
                                     Sponge.getServer().loadWorld(worldname);
                                     Locations.teleport(pPlayer, worldname);
                                     plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
@@ -116,11 +116,11 @@ public class TrustAccessInv {
 
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
 
-                    } else if (menuName.contains("Menu principal")) {
+                    } else if (menuName.contains(msgNode.get("MainMenu"))) {
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Confiance > Accès").color(TextColors.BLUE).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: " + msgNode.get("InvTrust") + " > " + msgNode.get("TrustAccess")).color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                 .build(instance);
 
@@ -148,7 +148,7 @@ public class TrustAccessInv {
                 SkullData data = Sponge.getGame().getDataManager().getManipulatorBuilder(SkullData.class).get().create();
                 data.set(Keys.SKULL_TYPE, SkullTypes.PLAYER);
                 ItemStack stack = Sponge.getGame().getRegistry().createBuilder(ItemStack.Builder.class).itemType(ItemTypes.SKULL).itemData(data)
-                        .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("IsoWorld Accessible: " + user.get().getName())
+                        .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("TrustAccessLore") + ": " + user.get().getName())
                                 .color(TextColors.GOLD).build())).quantity(1)
                         .build();
                 RepresentedPlayerData skinData = Sponge.getGame().getDataManager().getManipulatorBuilder(RepresentedPlayerData.class).get().create();
@@ -167,9 +167,9 @@ public class TrustAccessInv {
         }
 
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Menu principal"));
+        list2.add(Text.of(msgNode.get("MainMenuLore")));
 
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("MainMenu"))
                 .color(TextColors.RED).build())).quantity(1).build();
         menu.query(SlotPos.of(8, 3)).set(item2);
 

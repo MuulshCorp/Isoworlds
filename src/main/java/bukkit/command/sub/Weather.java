@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -31,7 +31,6 @@ import common.Cooldown;
 import common.Msg;
 import common.action.ChargeAction;
 import common.action.TrustAction;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -61,22 +60,22 @@ public class Weather {
 
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotInAIsoworld")));
             return;
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotTrusted")));
             return;
         }
 
         if (len < 3) {
-            pPlayer.sendMessage(Message.success(Msg.keys.HEADER_ISOWORLD));
-            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
-            pPlayer.sendMessage(Message.success (Msg.keys.WEATHER_TYPES));
-            pPlayer.sendMessage(Message.success(Msg.keys.WEATHER_TYPES_DETAIL));
-            pPlayer.sendMessage(Message.success(Msg.keys.SPACE_LINE));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("HeaderIsoworld")));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("SpaceLine")));
+            pPlayer.sendMessage(Message.success (Msg.msgNode.get("WeatherTypes")));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("WeatherTypesDetail")));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("SpaceLine")));
             return;
         } else {
             try {
@@ -94,14 +93,14 @@ public class Weather {
                 // Message pour tous les joueurs
             }
             for (Player p : pPlayer.getWorld().getPlayers()) {
-                p.sendMessage(Message.success(Msg.keys.WEATHER_CHANGE_SUCCESS + " " + pPlayer.getName()));
+                p.sendMessage(Message.success(Msg.msgNode.get("WeatherChangeSuccess") + " " + pPlayer.getName()));
             }
         }
 
-        if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+        if (!pPlayer.hasPermission("Isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
-        pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("ChargeUsed")));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.METEO, Cooldown.METEO_DELAY);
     }

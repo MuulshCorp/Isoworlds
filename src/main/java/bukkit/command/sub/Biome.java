@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -25,7 +25,6 @@
 package bukkit.command.sub;
 
 import bukkit.Main;
-import bukkit.util.console.Logger;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
@@ -35,6 +34,8 @@ import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static common.Msg.msgNode;
 
 public class Biome {
 
@@ -59,19 +60,19 @@ public class Biome {
 
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            pPlayer.sendMessage(Message.error(msgNode.get("NotInAIsoworld")));
             return;
         }
 
         // Check lenght arg
         if (len < 1) {
-            pPlayer.sendMessage(Message.error(Msg.keys.BIOME_NOT_FOUND));
+            pPlayer.sendMessage(Message.error(msgNode.get("BiomeNotFound")));
             return;
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            pPlayer.sendMessage(Message.error(msgNode.get("NotTrusted")));
             return;
         }
 
@@ -99,7 +100,7 @@ public class Biome {
                 break;
             // Biome VOID not in 1.7.10
             default:
-                pPlayer.sendMessage(Message.error(Msg.keys.BIOME_NOT_FOUND));
+                pPlayer.sendMessage(Message.error(msgNode.get("BiomeNotFound")));
                 return;
         }
 
@@ -112,12 +113,12 @@ public class Biome {
             }
         }
 
-        if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+        if (!pPlayer.hasPermission("Isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
 
-        pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
-        pPlayer.sendMessage(Message.success(Msg.keys.BIOME_CHANGED));
+        pPlayer.sendMessage(Message.success(msgNode.get("ChargeUsed")));
+        pPlayer.sendMessage(Message.success(msgNode.get("BiomeChanged")));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
     }

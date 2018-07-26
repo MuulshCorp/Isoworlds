@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -68,13 +68,13 @@ public class ListWorlds implements CommandExecutor {
 
         // Check si isoworld existe
         if (check == true) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+            pPlayer.sendMessage(Text.of(Text.builder("[Isoworlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld dans le Royaume Isolonice").color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
-        // Construction des textes en fonction des isoworlds loadés
-        Text title = Text.of(Text.builder("[Liste des IsoWorlds (cliquables)]").color(TextColors.GOLD).build());
+        // Construction des textes en fonction des Isoworlds loadés
+        Text title = Text.of(Text.builder("[Liste des Isoworlds (cliquables)]").color(TextColors.GOLD).build());
         pPlayer.sendMessage(title);
         for(World w : worlds ) {
             String worldname = w.getName();
@@ -114,7 +114,7 @@ public class ListWorlds implements CommandExecutor {
     public static CommandSpec getCommand() {
         return CommandSpec.builder()
                 .description(Text.of("Commande pour lister les iWorlds"))
-                .permission("isoworlds.liste")
+                .permission("Isoworlds.liste")
                 .executor(new ListWorlds())
                 .build();
     }

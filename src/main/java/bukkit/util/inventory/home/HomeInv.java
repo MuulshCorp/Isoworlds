@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -31,27 +31,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import static common.Msg.msgNode;
+
 public class HomeInv implements Listener {
 
     @SuppressWarnings("deprecation")
     public static MainInv getInv(Player pPlayer) {
-        MainInv menu = new MainInv(ChatColor.BLUE + "IsoWorlds: Maison", 1, new MainInv.onClick() {
+        MainInv menu = new MainInv(ChatColor.BLUE + "Isoworlds: " + msgNode.get("InvHome"), 1, new MainInv.onClick() {
             @Override
             public boolean click(Player p, MainInv menu, MainInv.Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
-                if (menuName.contains("Maison")) {
+                if (menuName.contains(msgNode.get("InvHome"))) {
                     p.performCommand("iw h");
                     p.closeInventory();
-                } else if (menuName.contains("Menu principal")) {
+                } else if (menuName.contains(msgNode.get("MainMenu"))) {
                     MainInv.MenuPrincipal(pPlayer).open(pPlayer);
                 }
                 return true;
             }
         });
 
-        String[] list1 = new String[]{"Vous rendre sur votre IsoWorld"};
-        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.BED, 1), ChatColor.GOLD + "Maison", list1);
-        menu.addButton(menu.getRow(0), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        String[] list1 = new String[]{msgNode.get("InvHomeLore")};
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.BED, 1), ChatColor.GOLD + msgNode.get("InvHome"), list1);
+        menu.addButton(menu.getRow(0), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + msgNode.get("MainMenu"), msgNode.get("MainMenuLore"));
 
         return menu;
     }

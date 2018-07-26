@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -25,7 +25,7 @@
 package sponge.command.sub;
 
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import org.spongepowered.api.text.format.TextColors;
 import sponge.location.Locations;
 
@@ -57,14 +57,14 @@ public class Teleport implements CommandCallable {
         length = arg.length;
 
         // Check if world exists
-        if (!IsoWorldsAction.isPresent(pPlayer, true)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (!sponge.util.action.IsoworldsAction.isPresent(pPlayer, true)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return CommandResult.success();
         }
 
         // Check if is world is loaded
         if (!(Sponge.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").get().isLoaded())) {
-            pPlayer.sendMessage(Text.of(Text.builder("[IsoWorlds]: ").color(TextColors.GOLD)
+            pPlayer.sendMessage(Text.of(Text.builder("[Isoworlds]: ").color(TextColors.GOLD)
                     .append(Text.of(Text.builder("Sijania indique que votre IsoWorld doit être chargé pour en changer le temps.").color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
@@ -75,7 +75,7 @@ public class Teleport implements CommandCallable {
         }
 
         if (length != 2) {
-            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
             return CommandResult.success();
         }
 

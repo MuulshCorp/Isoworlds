@@ -105,7 +105,7 @@ public class ChargeAction {
             return -99;
         }
         if (charges <= 0) {
-            pPlayer.sendMessage(Message.error(Msg.keys.CHARGE_EMPTY));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("ChargeEmpty")));
             return -1;
         }
         return charges;
@@ -125,7 +125,7 @@ public class ChargeAction {
             return -99;
         }
         if (charges <= 0) {
-            pPlayer.sendMessage(sponge.util.message.Message.error(Msg.keys.CHARGE_EMPTY));
+            pPlayer.sendMessage(sponge.util.message.Message.error(Msg.msgNode.get("ChargeEmpty")));
             return -1;
         }
         return charges;
@@ -150,7 +150,7 @@ public class ChargeAction {
     }
 
     // Init charges and playtime on first connect
-    private static Boolean initCharges(String playeruuid) {
+    public static Boolean initCharges(String playeruuid) {
         String INSERT = "INSERT INTO `players_info` (`uuid_p`, `charges`, `playtimes`) VALUES (?, ?, ?)";
         Integer number;
         String Iuuid_p;

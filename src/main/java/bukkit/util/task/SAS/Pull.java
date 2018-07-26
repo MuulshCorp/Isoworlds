@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -27,7 +27,6 @@ package bukkit.util.task.SAS;
 import bukkit.Main;
 import bukkit.util.message.Message;
 import common.Msg;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -49,16 +48,16 @@ public class Pull extends BukkitRunnable {
     @Override
     public void run() {
         if (check == 20) {
-            pPlayer.sendMessage(Message.success(Msg.keys.PROCESSING_PULL));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("ProcessingPull")));
         }
         check --;
         if (check < 1) {
-            pPlayer.sendMessage(Message.error(Msg.keys.FAIL_PULL));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("FailPull")));
             instance.lock.remove(file.getName() + ";" + file.getName());
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
             cancel();
         } else if (file.exists()) {
-            pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_PULL));
+            pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccessPull")));
             instance.lock.remove(file.getName() + ";" + file.getName());
             instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
             cancel();

@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -26,8 +26,7 @@ package sponge.listener;
 
 import common.ManageFiles;
 import common.Msg;
-import common.action.ChargeAction;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.cause.Cause;
@@ -102,7 +101,7 @@ public class Listeners {
             String worldname = player.getWorld().getName();
 
             Player p = player;
-            if (p.hasPermission("isoworlds.bypass.spawn")) {
+            if (p.hasPermission("Isoworlds.bypass.spawn")) {
                 return;
             }
 
@@ -141,11 +140,11 @@ public class Listeners {
     @Listener
     public void onConnect(ClientConnectionEvent.Join event) {
         // Welcome message and open menu for those who do not have their own IsoWorld
-        if (!IsoWorldsAction.iwExists(event.getTargetEntity().getUniqueId().toString())) {
+        if (!IsoworldsAction.iwExists(event.getTargetEntity().getUniqueId().toString())) {
             Task.builder().execute(new Runnable() {
                 @Override
                 public void run() {
-                    event.getTargetEntity().sendMessage(Text.of(Text.builder("[IsoWorlds]").color(TextColors.GOLD)
+                    event.getTargetEntity().sendMessage(Text.of(Text.builder("[Isoworlds]").color(TextColors.GOLD)
                             .append(Text.of(Text.builder(" Sijania vous souhaite la bienvenue sur Isolonice !\n" +
                                     "Dans ce royaume, vous possédez votre propre monde nommé: IsoWorld.\n" +
                                     "Vous êtes seul maître à bord, il est à vous et vous pouvez choisir qui peut y accéder.\n" +
@@ -273,7 +272,7 @@ public class Listeners {
                 check.setString(3, plugin.servername);
                 ResultSet rselect = check.executeQuery();
                 Logger.info("Monde event: " + eventworld);
-                if (pPlayer.hasPermission("isoworlds.bypass.teleport")) {
+                if (pPlayer.hasPermission("Isoworlds.bypass.teleport")) {
                     return;
                 }
 
@@ -288,7 +287,7 @@ public class Listeners {
                 }
 
             } catch (Exception se) {
-                pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             }
 
         }
@@ -300,7 +299,7 @@ public class Listeners {
             return;
         }
         // Allow break if permission
-        if (p.hasPermission("isoworlds.bypass.spawn")) {
+        if (p.hasPermission("Isoworlds.bypass.spawn")) {
             return;
         }
         if (p.getWorld().getName().equals("Isolonice")) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -27,7 +27,7 @@ package sponge.command.sub;
 import common.Cooldown;
 import common.ManageFiles;
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import sponge.Main;
 
 import org.spongepowered.api.Sponge;
@@ -39,11 +39,9 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.*;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sponge.util.action.StatAction;
-import sponge.util.console.Logger;
 import sponge.util.message.Message;
 
 import java.io.File;
@@ -69,14 +67,14 @@ public class Reforge implements CommandExecutor {
         }
 
         // Check is IsoWorld exists in database
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (!sponge.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return CommandResult.success();
         }
 
         // Confirmation message (2 times cmd)
         if (!(confirm.containsKey(pPlayer.getUniqueId().toString()))) {
-            pPlayer.sendMessage(Message.error(Msg.keys.CONFIRMATION));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("Confirm")));
             confirm.put(pPlayer.getUniqueId().toString(), timestamp);
             return CommandResult.success();
         } else {
@@ -84,7 +82,7 @@ public class Reforge implements CommandExecutor {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
             if (minutes >= 1) {
                 confirm.remove(pPlayer.getUniqueId().toString());
-                pPlayer.sendMessage(Message.error(Msg.keys.CONFIRMATION));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("Confirm")));
                 return CommandResult.success();
             }
         }
@@ -92,11 +90,11 @@ public class Reforge implements CommandExecutor {
         confirm.remove(pPlayer.getUniqueId().toString());
 
         worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
-        File destDir = new File(ManageFiles.getPath() + "/IsoWorlds-REFONTE/" + worldname);
+        File destDir = new File(ManageFiles.getPath() + "/Isoworlds-REFONTE/" + worldname);
         destDir.mkdir();
 
         if (!Sponge.getServer().getWorld(worldname).isPresent()) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return CommandResult.success();
         }
         if (Sponge.getServer().getWorld(worldname).get().isLoaded()) {
@@ -104,7 +102,7 @@ public class Reforge implements CommandExecutor {
             Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
             for (Player player : colPlayers) {
                 player.setLocation(spawn);
-                pPlayer.sendMessage(Message.error(Msg.keys.REFORGE_KICK));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("ReforgeKick")));
             }
             Sponge.getServer().unloadWorld(Sponge.getServer().getWorld(worldname).get());
         }
@@ -117,12 +115,12 @@ public class Reforge implements CommandExecutor {
         } catch (InterruptedException | ExecutionException ie) {
             ie.printStackTrace();
         }
-        if (!IsoWorldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.FAIL_REFORGE_ISOWORLD));
+        if (!IsoworldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("FailReforgeIsoworld")));
             return CommandResult.success();
         }
 
-        pPlayer.sendMessage(Message.success(Msg.keys.SUCCES_REFORGE));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccesReforge")));
 
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.REFONTE, Cooldown.REFONTE_DELAY);
 

@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -24,8 +24,7 @@
  */
 package common;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.CopyOption;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +57,22 @@ public class ManageFiles {
 
     private static void copyFile(File source, File dest, CopyOption... options) throws IOException {
         java.nio.file.Files.copy(source.toPath(), dest.toPath(), options);
+    }
+
+    // Copy lang.Yml
+    public static void copy(InputStream in, File file) {
+        try {
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while((len=in.read(buf))>0){
+                out.write(buf,0,len);
+            }
+            out.close();
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void ensureParentFolder(File file) {
@@ -102,7 +117,7 @@ public class ManageFiles {
         if (!file.isDirectory()) {
             return false;
         }
-        // ISOWORLDS on unload auto
+        // Isoworlds on unload auto
         if (path.contains("@TEMP-PUSH")) {
             path = path.split("@TEMP-PUSH")[0];
         }
@@ -124,6 +139,23 @@ public class ManageFiles {
     public static String getPath() {
         String path = (System.getProperty("user.dir") + "/Isolonice/");
         return path;
+    }
+
+    // Get lang.yml path
+    // To set dynamic
+    public static String getLangPath() {
+        String pathBukkit = (System.getProperty("user.dir") + "/plugins/Isoworlds/lang.yml");
+        String pathSpongeDefault = (System.getProperty("user.dir") + "/config/isoworlds/lang.yml");
+        String pathSponge = (System.getProperty("user.dir") + "/plugins-config/isoworlds/lang.yml");
+
+        if (new File(pathBukkit).exists()) {
+            return pathBukkit;
+        } else if (new File(pathSpongeDefault).exists()) {
+            return pathSpongeDefault;
+        } else if (new File(pathSponge).exists()) {
+            return pathSponge;
+        }
+        return null;
     }
 
 }

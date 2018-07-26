@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -41,6 +41,7 @@ import sponge.util.inventory.MainInv;
 import java.util.ArrayList;
 import java.util.List;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class WarpInv {
@@ -53,63 +54,63 @@ public class WarpInv {
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
-                    if (menuName.contains("Exploration")) {
+                    if (menuName.contains(msgNode.get("WarpExploration"))) {
                         MainInv.commandMenu(pPlayer, "iw warp exploration");
                         MainInv.closeMenu(pPlayer);
-                    } else if (menuName.contains("Minage")) {
+                    } else if (menuName.contains(msgNode.get("WarpMining"))) {
                         MainInv.commandMenu(pPlayer, "iw warp minage");
                         MainInv.closeMenu(pPlayer);
-                    } else if (menuName.contains("End")) {
+                    } else if (menuName.contains(msgNode.get("WarpEnd"))) {
                         MainInv.commandMenu(pPlayer, "iw warp end");
                         MainInv.closeMenu(pPlayer);
-                    } else if (menuName.contains("Nether")) {
+                    } else if (menuName.contains(msgNode.get("WarpNether"))) {
                         MainInv.commandMenu(pPlayer, "iw warp nether");
                         MainInv.closeMenu(pPlayer);
-                    } else if (menuName.contains("Menu principal")) {
+                    } else if (menuName.contains(msgNode.get("MainMenu"))) {
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Warp").color(TextColors.DARK_GREEN).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: " + msgNode.get("InvWarp")).color(TextColors.DARK_GREEN).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 2))
                 .build(instance);
 
         // Minage
         List<Text> list1 = new ArrayList<Text>();
-        list1.add(Text.of("Exploitez les ressources (quarry...)"));
-        list1.add(Text.of("Réinitialisé tous 1er du mois à 19h"));
+        list1.add(Text.of(msgNode.get("WarpMiningLore")));
+        list1.add(Text.of(msgNode.get("WarpMiningLore2")));
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.STONE_PICKAXE).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Minage")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.STONE_PICKAXE).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("WarpMining"))
                 .color(TextColors.GREEN).build())).quantity(1).build();
 
         // Exploration
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Explorez, combattez, enrichissez vous !"));
-        list2.add(Text.of("Réinitialisé tous les vendredi à 19h"));
+        list2.add(Text.of(msgNode.get("WarpExplorationLore")));
+        list2.add(Text.of(msgNode.get("WarpExplorationLore2")));
 
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.FILLED_MAP).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Exploration")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.FILLED_MAP).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("WarpExploration"))
                 .color(TextColors.YELLOW).build())).quantity(1).build();
 
         // End
         List<Text> list3 = new ArrayList<Text>();
-        list3.add(Text.of("Un grondement sourd se fait entendre..."));
-        list3.add(Text.of("Réinitialisé tous les vendredi à 19h"));
+        list3.add(Text.of(msgNode.get("WarpEndLore")));
+        list3.add(Text.of(msgNode.get("WarpEndLore2")));
 
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.ENDER_PEARL).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("End")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.ENDER_PEARL).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("WarpEnd"))
                 .color(TextColors.DARK_GRAY).build())).quantity(1).build();
 
         // Nether
         List<Text> list4 = new ArrayList<Text>();
-        list4.add(Text.of("Lieu très hostile !"));
-        list4.add(Text.of("Réinitialisé tous les vendredi à 19h"));
+        list4.add(Text.of(msgNode.get("WarpNetherLore")));
+        list4.add(Text.of(msgNode.get("WarpNetherLore2")));
 
-        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.NETHER_STAR).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Nether")
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.NETHER_STAR).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("WarpNether"))
                 .color(TextColors.DARK_RED).build())).quantity(1).build();
 
         // Menu principal
         List<Text> list9 = new ArrayList<Text>();
-        list9.add(Text.of("Retour au menu principal"));
+        list9.add(Text.of(msgNode.get("MainMenuLore")));
 
-        ItemStack item9 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        ItemStack item9 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("MainMenu"))
                 .color(TextColors.RED).build())).quantity(1).build();
 
         menu.query(SlotPos.of(0, 0)).set(item1);

@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -29,10 +29,10 @@ import org.bukkit.ChatColor;
 public class Message {
 
     public static String success(String msg) {
-        return (ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.GREEN + msg);
+        return (ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + msg);
     }
 
     public static String error(String msg) {
-        return (ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.RED + msg);
+        return (ChatColor.GOLD + "[Isoworlds]: " + ChatColor.RED + msg);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -32,75 +32,75 @@ public class Configuration {
     private static final CommentedConfigurationNode configurationNode = Main.instance.getConfig();
 
     public static String getId() {
-        return ((String) configurationNode.getNode(new Object[]{"IsoWorlds", "Id"}).getValue());
+        return ((String) configurationNode.getNode(new Object[]{"Isoworlds", "Id"}).getValue());
     }
 
     public static String getMainWorld() {
-        return ((String) configurationNode.getNode(new Object[]{"IsoWorlds", "MainWorld"}).getValue());
+        return ((String) configurationNode.getNode(new Object[]{"Isoworlds", "MainWorld"}).getValue());
     }
 
     public static String getMainWorldSpawnCoordinate() {
-        return ((String) configurationNode.getNode(new Object[]{"IsoWorlds", "MainWorldSpawnCoordinate"}).getValue());
+        return ((String) configurationNode.getNode(new Object[]{"Isoworlds", "MainWorldSpawnCoordinate"}).getValue());
     }
 
     public static boolean getAutomaticUnload() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "AutomaticUnload", "Enabled"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "AutomaticUnload", "Enabled"}).getValue());
     }
 
     public static Integer getInactivityTime() {
-        return ((Integer) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "AutomaticUnload", "InactivityTime"}).getValue());
+        return ((Integer) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "AutomaticUnload", "InactivityTime"}).getValue());
     }
 
     public static boolean getStorage() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Storage", "Enabled"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "Storage", "Enabled"}).getValue());
     }
 
     public static boolean getDimensionAlt() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt", "Enabled"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "DimensionAlt", "Enabled"}).getValue());
     }
 
     public static boolean getMining() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt", "Mining"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "DimensionAlt", "Mining"}).getValue());
     }
 
     public static boolean getExploration() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "DimensionAlt", "Exploration"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "DimensionAlt", "Exploration"}).getValue());
     }
 
     public static boolean getSafePlateform() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SafePlateform", "Enabled"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "SafePlateform", "Enabled"}).getValue());
     }
 
     public static boolean getSafeSpawn() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SafeSpawn", "Enabled"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "SafeSpawn", "Enabled"}).getValue());
     }
 
     public static boolean getSpawnProtection() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "SpawnProtection", "Enabled"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "SpawnProtection", "Enabled"}).getValue());
     }
 
     public static boolean getBorder() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "Enabled"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "Border", "Enabled"}).getValue());
     }
 
     public static Integer getDefaultRadiusSize() {
-        return ((Integer) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "DefaultRadiusSize"}).getValue());
+        return ((Integer) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "Border", "DefaultRadiusSize"}).getValue());
     }
 
     public static Integer getSmallRadiusSize() {
-        return ((Integer) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "SmallRadiusSize"}).getValue());
+        return ((Integer) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "Border", "SmallRadiusSize"}).getValue());
     }
 
     public static Integer getMediumRadiusSize() {
-        return ((Integer) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "MediumRadiusSize"}).getValue());
+        return ((Integer) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "Border", "MediumRadiusSize"}).getValue());
     }
 
     public static Integer getLargeRadiusSize() {
-        return ((Integer) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "Border", "LargeRadiusSize"}).getValue());
+        return ((Integer) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "Border", "LargeRadiusSize"}).getValue());
     }
 
     public static boolean getPlayTime() {
-        return ((boolean) configurationNode.getNode(new Object[]{"IsoWorlds", "Modules", "PlayTime", "Enabled"}).getValue());
+        return ((boolean) configurationNode.getNode(new Object[]{"Isoworlds", "Modules", "PlayTime", "Enabled"}).getValue());
     }
 
 }

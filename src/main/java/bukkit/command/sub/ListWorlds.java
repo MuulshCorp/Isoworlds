@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -54,10 +54,10 @@ public class ListWorlds {
         }
 
         if (check == true) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania ne repère aucun IsoWorld dans le Royaume Isolonice");
+            pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + "Sijania ne repère aucun IsoWorld dans le Royaume Isolonice");
             return;
         }
-        pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "[Liste des IsoWorlds]");
+        pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + "[Liste des Isoworlds]");
         for (World w : worlds) {
             String[] split = w.getName().split("-IsoWorld");
             UUID uuid = UUID.fromString(split[0]);
@@ -77,7 +77,7 @@ public class ListWorlds {
 
             int numOfEntities = w.getEntities().size();
             int loadedChunks = (w.getLoadedChunks().length);
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + pname + " [" + status + "] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
+            pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + pname + " [" + status + "] | Chunks: " + loadedChunks + " | Entités: " + numOfEntities);
         }
     }
 }

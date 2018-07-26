@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -47,14 +47,14 @@ public class Push {
         Map<String, Integer> worlds = new HashMap<String, Integer>();
         int x = time;
 
-        // IsoWorlds task unload
+        // Isoworlds task unload
         Task.builder().execute(() -> {
             // Démarrage de la procédure, on log tout les élements du map à chaque fois
-            Logger.warning("Démarrage de l'analayse des IsoWorlds vides pour déchargement...");
+            Logger.warning("Démarrage de l'analayse des Isoworlds vides pour déchargement...");
             if (worlds.isEmpty()) {
-                Logger.info("IsoWorlds inactifs à l'analyse précédente: Aucun");
+                Logger.info("Isoworlds inactifs à l'analyse précédente: Aucun");
             } else {
-                Logger.info("IsoWorlds inactifs à l'analyse précédente:");
+                Logger.info("Isoworlds inactifs à l'analyse précédente:");
                 for (Map.Entry<String, Integer> entry : worlds.entrySet()) {
                     Logger.info("- " + entry);
                 }
@@ -156,11 +156,11 @@ public class Push {
                 Logger.info("Aucun IsoWorld n'est à " + x + " minutes d'inactivité...");
                 Logger.warning("Fin de l'analyse");
             } else {
-                Logger.info("Les IsoWorlds vides depuis " + x + " minutes viennent d'être déchargés");
+                Logger.info("Les Isoworlds vides depuis " + x + " minutes viennent d'être déchargés");
                 Logger.warning("Fin de l'analyse");
             }
         }).interval(1, TimeUnit.MINUTES).
-                name("Analyse des IsoWorlds vides...").
+                name("Analyse des Isoworlds vides...").
                 submit(Main.instance);
     }
 }

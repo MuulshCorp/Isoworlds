@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -24,36 +24,40 @@
  */
 package bukkit.util.inventory.trust;
 
+import bukkit.util.console.Logger;
 import bukkit.util.inventory.MainInv;
 import bukkit.util.inventory.trust.sub.TrustAccessInv;
 import bukkit.util.inventory.trust.sub.TrustAddInv;
 import bukkit.util.inventory.trust.sub.TrustDeleteInv;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import static common.Msg.msgNode;
+
 public class TrustInv implements Listener {
 
     @SuppressWarnings("deprecation")
     public static MainInv getInv(Player pPlayer) {
-        MainInv menu = new MainInv(ChatColor.BLUE + "IsoWorlds: Confiance", 2, new MainInv.onClick() {
+        MainInv menu = new MainInv(ChatColor.BLUE + "Isoworlds: " + msgNode.get("InvTrust"), 2, new MainInv.onClick() {
             @Override
             public boolean click(Player p, MainInv menu, MainInv.Row row, int slot, ItemStack item) {
                 String menuName = row.getRowItem(slot).getItemMeta().getDisplayName();
-                if (menuName.contains("Ajouter")) {
+                Logger.tracking(menuName);
+                if (menuName.contains(msgNode.get("TrustAdd"))) {
                     // Check if player has iw
-                    if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+                    if (IsoworldsAction.iwExists(pPlayer.getUniqueId().toString())) {
                         TrustAddInv.getInv(pPlayer).open(pPlayer);
                     }
-                } else if (menuName.contains("Retirer")) {
-                    if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+                } else if (menuName.contains(msgNode.get("TrustRemove"))) {
+                    if (IsoworldsAction.iwExists(pPlayer.getUniqueId().toString())) {
                         TrustDeleteInv.getInv(pPlayer).open(pPlayer);
                     }
-                } else if (menuName.contains("Mes accès")) {
+                } else if (menuName.contains(msgNode.get("TrustAccess"))) {
                     TrustAccessInv.getInv(pPlayer).open(pPlayer);
-                } else if (menuName.contains("Menu principal")) {
+                } else if (menuName.contains(msgNode.get("MainMenu"))) {
                     MainInv.MenuPrincipal(pPlayer).open(pPlayer);
                 }
                 return true;
@@ -61,15 +65,15 @@ public class TrustInv implements Listener {
         });
 
         // Lore
-        String[] list1 = new String[]{"Autoriser l'accès à votre IsoWorld."};
-        String[] list2 = new String[]{"Retirer l'accès à votre IsoWorld."};
-        String[] list3 = new String[]{"Vois les IsoWorlds accessibles"};
+        String[] list1 = new String[]{msgNode.get("TrustAddLore")};
+        String[] list2 = new String[]{msgNode.get("TrustRemoveLore")};
+        String[] list3 = new String[]{msgNode.get("TrustAccessLore")};
 
-        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + "Ajouter", list1);
-        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + "Retirer", list2);
-        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.ORANGE.getData()), ChatColor.RED + "Mes accès", list3);
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + msgNode.get("TrustAdd"), list1);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + msgNode.get("TrustRemove"), list2);
+        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.ORANGE.getData()), ChatColor.GOLD + msgNode.get("TrustAccess"), list3);
 
-        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + msgNode.get("MainMenu"), msgNode.get("MainMenuLore"));
 
         return menu;
     }

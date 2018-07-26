@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -39,21 +39,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static common.Msg.msgNode;
+
 public class TrustAddInv implements Listener {
 
     @SuppressWarnings("deprecation")
     public static MainInv getInv(Player pPlayer) {
-        MainInv menu = new MainInv(ChatColor.BLUE + "IsoWorlds: Confiance > Ajouter", 4, new MainInv.onClick() {
+        MainInv menu = new MainInv(ChatColor.BLUE + "Isoworlds: " + msgNode.get("TrustAdd"), 4, new MainInv.onClick() {
             @Override
             public boolean click(Player p, MainInv menu, MainInv.Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getLore().toString());
                 String menuPlayer = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
                 // Si joueur, on ajouter le joueur
-                if (menuName.contains("Joueur")) {
+                Logger.tracking(menuName);
+                if (menuName.contains(msgNode.get("Player"))) {
                     p.performCommand("iw confiance " + ChatColor.stripColor(menuPlayer));
                     Logger.info("Confiance:" + menuPlayer);
                     p.closeInventory();
-                } else if (menuName.contains("menu principal")) {
+                } else if (menuName.contains(msgNode.get("MainMenuLore"))) {
                     MainInv.MenuPrincipal(pPlayer).open(pPlayer);
                 }
 
@@ -98,7 +101,7 @@ public class TrustAddInv implements Listener {
             }
 
             // Construction du lore
-            String list1 = "Joueur";
+            String list1 = msgNode.get("Player");
 
             // Construction des skin itemstack
             ItemStack item1 = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
@@ -113,7 +116,7 @@ public class TrustAddInv implements Listener {
             i++;
         }
 
-        menu.addButton(menu.getRow(3), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        menu.addButton(menu.getRow(3), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "" + msgNode.get("MainMenu"), msgNode.get("MainMenuLore"));
 
         return menu;
     }

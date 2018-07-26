@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -26,7 +26,7 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import sponge.Main;
 import sponge.location.Locations;
 
@@ -38,7 +38,6 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import sponge.util.action.LockAction;
 import sponge.util.action.StatAction;
 import sponge.util.action.StorageAction;
@@ -75,8 +74,8 @@ public class Home implements CommandExecutor {
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // Check if IsoWorld exists and load it if need (true)
-        if (!IsoWorldsAction.isPresent(pPlayer, true)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (!sponge.util.action.IsoworldsAction.isPresent(pPlayer, true)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return CommandResult.success();
         }
 
@@ -92,7 +91,7 @@ public class Home implements CommandExecutor {
     public static CommandSpec getCommand() {
         return CommandSpec.builder()
                 .description(Text.of("Commande pour retourner dans son iWorld"))
-                .permission("isoworlds.maison")
+                .permission("Isoworlds.maison")
                 .executor(new Home())
                 .build();
     }

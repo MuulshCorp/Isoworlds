@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -36,10 +36,10 @@ import common.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import sun.security.krb5.Config;
 
 import java.io.File;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,11 +65,11 @@ public final class Main extends JavaPlugin implements IMain {
         this.createConfig();
         this.servername = getConfig().getString("Id");
 
-        // Check if ISOWORLDS-SAS exists
-        File checkSAS = new File(ManageFiles.getPath() + "ISOWORLDS-SAS");
+        // Check if Isoworlds-SAS exists
+        File checkSAS = new File(ManageFiles.getPath() + "Isoworlds-SAS");
         if (!checkSAS.exists()) {
             checkSAS.mkdir();
-            Logger.info("Dossier ISOWORLDS-SAS crée !");
+            Logger.info("Dossier Isoworlds-SAS crée !");
         }
 
         File source = new File(ManageFiles.getPath());
@@ -77,12 +77,12 @@ public final class Main extends JavaPlugin implements IMain {
         for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
             ManageFiles.deleteDir(new File(f.getPath() + "/uid.dat"));
             ManageFiles.deleteDir(new File(f.getPath() + "/session.lock"));
-            // Gestion des IsoWorlds non push, on les tag à @PUSH si pas de tag @PUSHED
-            // Tag IsoWorlds @PUSH if Storage config enabled
+            // Gestion des Isoworlds non push, on les tag à @PUSH si pas de tag @PUSHED
+            // Tag Isoworlds @PUSH if Storage config enabled
             if (Configuration.getStorage()) {
                 if (!f.getName().contains("@PUSHED")) {
                     ManageFiles.rename(ManageFiles.getPath() + "/" + f.getName(), "@PUSH");
-                    Logger.warning("[IsoWorlds-SAS]: IsoWorlds désormais TAG à PUSH");
+                    Logger.warning("[Isoworlds-SAS]: Isoworlds désormais TAG à PUSH");
                 }
             }
         }
@@ -104,7 +104,7 @@ public final class Main extends JavaPlugin implements IMain {
         try {
             this.database.connect();
             this.database.setStructure();
-            Logger.info("IsoWorlds connecté avec succès à la base de données !");
+            Logger.info("Isoworlds connecté avec succès à la base de données !");
         } catch (Exception ex) {
             Logger.severe("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
             ex.printStackTrace();
@@ -150,11 +150,16 @@ public final class Main extends JavaPlugin implements IMain {
         }
 
         // ********************
+
+        // Copy lang.yml file
+        if (ManageFiles.getLangPath() == null) {
+            ManageFiles.copy(getResource("lang.yml"), new File(System.getProperty("user.dir") + "/plugins/Isoworlds/lang.yml"));
+        }
     }
 
     @Override
     public void onDisable() {
-        Logger.info("IsoWorlds désactivé !");
+        Logger.info("Isoworlds désactivé !");
         Bukkit.getScheduler().cancelTasks(this);
         this.instance = null;
         this.servername = null;

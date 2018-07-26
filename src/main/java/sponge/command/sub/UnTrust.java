@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -26,7 +26,7 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import common.action.TrustAction;
 import sponge.Main;
 
@@ -41,7 +41,6 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
 
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.util.message.Message;
@@ -69,13 +68,13 @@ public class UnTrust implements CommandCallable {
         }
 
         if (size > 1) {
-            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
             return CommandResult.success();
         }
 
         // SELECT WORLD
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (!sponge.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return CommandResult.success();
         }
 
@@ -90,7 +89,7 @@ public class UnTrust implements CommandCallable {
             }
 
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
@@ -100,7 +99,7 @@ public class UnTrust implements CommandCallable {
 
         // CHECK AUTORISATIONS
         if (!TrustAction.isTrusted(uuidcible.toString(), pPlayer.getUniqueId().toString())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotTrusted")));
             return CommandResult.success();
         }
 
@@ -115,14 +114,14 @@ public class UnTrust implements CommandCallable {
                     Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
                     Player playerOnline = Sponge.getServer().getPlayer(arg[0]).get();
                     playerOnline.setLocation(spawn);
-                    pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+                    pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotTrusted")));
                 }
             }
         } catch (NoSuchElementException nse) {
             nse.printStackTrace();
         }
 
-        pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_UNTRUST));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccessUntrust")));
         return CommandResult.success();
     }
 

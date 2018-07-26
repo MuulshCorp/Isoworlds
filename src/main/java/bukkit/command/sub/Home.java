@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -31,7 +31,6 @@ import bukkit.util.action.StorageAction;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
-import common.action.IsoWorldsAction;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -66,8 +65,8 @@ public class Home {
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
         // Check if IsoWorld exists and load it if needed (true)
-        if (!IsoWorldsAction.isPresent(pPlayer, true)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (!bukkit.util.action.IsoworldsAction.isPresent(pPlayer, true)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return;
         }
 

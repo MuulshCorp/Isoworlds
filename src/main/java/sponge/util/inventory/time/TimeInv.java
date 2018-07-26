@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -42,6 +42,7 @@ import sponge.util.inventory.MainInv;
 import java.util.ArrayList;
 import java.util.List;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class TimeInv {
@@ -55,32 +56,32 @@ public class TimeInv {
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
-                    if (menuName.contains("Jour")) {
+                    if (menuName.contains(msgNode.get("TimeDay"))) {
                         MainInv.commandMenu(pPlayer, "iw temps jour");
                         MainInv.closeMenu(pPlayer);
-                    } else if (menuName.contains("Nuit")) {
+                    } else if (menuName.contains(msgNode.get("TimeNight"))) {
                         MainInv.commandMenu(pPlayer, "iw temps nuit");
                         MainInv.closeMenu(pPlayer);
-                    } else if (menuName.contains("Menu principal")) {
+                    } else if (menuName.contains(msgNode.get("MainMenu"))) {
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Temps").color(TextColors.BLUE).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: " + msgNode.get("InvTime")).color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
         List<Text> list1 = new ArrayList<Text>();
-        list1.add(Text.of("Le jour se lève"));
+        list1.add(Text.of(msgNode.get("TimeDayLore")));
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("La nuit tombe"));
+        list2.add(Text.of(msgNode.get("TimeNightLore")));
         List<Text> list3 = new ArrayList<Text>();
-        list3.add(Text.of("Menu principal"));
+        list3.add(Text.of(msgNode.get("MainMenuLore")));
 
         ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.WHITE).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Jour")
                 .color(TextColors.YELLOW).build())).quantity(1).build();
         ItemStack item2 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.BLACK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Nuit")
                 .color(TextColors.BLUE).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("MainMenu"))
                 .color(TextColors.RED).build())).quantity(1).build();
         menu.query(SlotPos.of(0, 0)).set(item1);
         menu.query(SlotPos.of(1, 0)).set(item2);

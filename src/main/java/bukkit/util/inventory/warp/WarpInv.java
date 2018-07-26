@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -31,27 +31,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import static common.Msg.msgNode;
+
 public class WarpInv implements Listener {
 
     @SuppressWarnings("deprecation")
     public static MainInv getInv(Player pPlayer) {
-        MainInv menu = new MainInv(ChatColor.DARK_GREEN + "IsoWorlds: Warp", 2, new MainInv.onClick() {
+        MainInv menu = new MainInv(ChatColor.DARK_GREEN + "Isoworlds: " + msgNode.get("InvWarp"), 2, new MainInv.onClick() {
             @Override
             public boolean click(Player p, MainInv menu, MainInv.Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
-                if (menuName.contains("Minage")) {
+                if (menuName.contains(msgNode.get("WarpMining"))) {
                     p.performCommand("iw warp minage");
                     p.closeInventory();
-                } else if (menuName.contains("Exploration")) {
+                } else if (menuName.contains(msgNode.get("WarpExploration"))) {
                     p.performCommand("iw warp exploration");
                     p.closeInventory();
-                } else if (menuName.contains("End")) {
+                } else if (menuName.contains(msgNode.get("WarpEnd"))) {
                     p.performCommand("iw warp end");
                     p.closeInventory();
-                } else if (menuName.contains("Nether")) {
+                } else if (menuName.contains(msgNode.get("WarpNether"))) {
                     p.performCommand("iw warp nether");
                     p.closeInventory();
-                } else if (menuName.contains("Menu principal")) {
+                } else if (menuName.contains(msgNode.get("MainMenu"))) {
                     MainInv.MenuPrincipal(pPlayer).open(pPlayer);
                 }
 
@@ -59,23 +61,23 @@ public class WarpInv implements Listener {
             }
         });
         // Minage
-        String[] list1 = new String[]{"Exploitez les ressources (quarry...)", "Réinitialisé tous 1er du mois à 19h"};
+        String[] list1 = new String[]{msgNode.get("WarpMiningLore"), msgNode.get("WarpMiningLore2")};
 
         // Exploration
-        String[] list2 = new String[]{"Explorez, combattez, enrichissez vous !", "Réinitialisé tous les vendredi à 19h"};
+        String[] list2 = new String[]{msgNode.get("WarpExplorationLore"), msgNode.get("WarpExplorationLore2")};
 
         // End
-        String[] list3 = new String[]{"Un grondement sourd se fait entendre...", "Réinitialisé tous les vendredi à 19h"};
+        String[] list3 = new String[]{msgNode.get("WarpEndLore"), msgNode.get("WarpEndLore2")};
 
         // Nether
-        String[] list4 = new String[]{"Lieu très hostile !", "Réinitialisé tous les vendredi à 19h"};
+        String[] list4 = new String[]{msgNode.get("WarpNetherLore"), msgNode.get("WarpNetherLore2")};
 
-        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.STONE_PICKAXE, 1), ChatColor.GREEN + "Minage", list1);
-        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.MAP, 1), ChatColor.YELLOW + "Exploration", list2);
-        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.ENDER_PEARL, 1), ChatColor.DARK_GRAY + "End", list3);
-        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.NETHER_STAR, 1), ChatColor.DARK_RED + "Nether", list4);
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.STONE_PICKAXE, 1), ChatColor.GREEN + msgNode.get("WarpMining"), list1);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.MAP, 1), ChatColor.YELLOW + msgNode.get("WarpExploration"), list2);
+        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.ENDER_PEARL, 1), ChatColor.DARK_GRAY + msgNode.get("WarpEnd"), list3);
+        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.NETHER_STAR, 1), ChatColor.DARK_RED + msgNode.get("WarpNether"), list4);
 
-        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + msgNode.get("MainMenu"), msgNode.get("MainMenuLore"));
 
         return menu;
     }

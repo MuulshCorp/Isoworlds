@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -24,7 +24,7 @@
  */
 package sponge.util.inventory.build;
 
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.living.player.Player;
@@ -45,6 +45,7 @@ import sponge.util.inventory.build.sub.CreateInv;
 import java.util.ArrayList;
 import java.util.List;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class BuildInv {
@@ -58,41 +59,41 @@ public class BuildInv {
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
                             .get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     clickInventoryEvent.setCancelled(true);
-                    if (menuName.contains("Création")) {
+                    if (menuName.contains(msgNode.get("BuildCreate"))) {
                         Logger.info("[TRACKING-IW] Clic menu CREATION: " + pPlayer.getName());
                         MainInv.closeOpenMenu(pPlayer, CreateInv.getInv(pPlayer));
-                    } else if (menuName.contains("Refonte")) {
+                    } else if (menuName.contains(msgNode.get("BuildReforge"))) {
                         Logger.info("[TRACKING-IW] Clic menu REFONTE: " + pPlayer.getName());
                         MainInv.commandMenu(pPlayer, "iw r");
                         MainInv.closeMenu(pPlayer);
-                    } else if (menuName.contains("Menu principal")) {
+                    } else if (menuName.contains(msgNode.get("MainMenu"))) {
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Construction").color(TextColors.BLUE).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: " + msgNode.get("InvBuild")).color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
 
 
         // Affiche la refonte si le monde est créé, sinon affiche la création
-        if (IsoWorldsAction.iwExists(pPlayer.getUniqueId().toString())) {
+        if (IsoworldsAction.iwExists(pPlayer.getUniqueId().toString())) {
             List<Text> list1 = new ArrayList<Text>();
-            list1.add(Text.of("Réinitialiser votre IsoWorld (choix du patern)."));
-            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Refonte")
+            list1.add(Text.of(msgNode.get("BuildReforgeLore")));
+            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("BuildReforge"))
                     .color(TextColors.GOLD).build())).quantity(1).build();
             menu.query(SlotPos.of(0, 0)).set(item1);
         } else {
             List<Text> list1 = new ArrayList<Text>();
-            list1.add(Text.of("Créer votre IsoWorld."));
-            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Création")
+            list1.add(Text.of(msgNode.get("BuildCreateLore")));
+            ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("BuildCreate"))
                     .color(TextColors.GOLD).build())).quantity(1).build();
             menu.query(SlotPos.of(0, 0)).set(item1);
         }
 
         // Bouton retour
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Retour au menu principal"));
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        list2.add(Text.of(msgNode.get("MainMenuLore")));
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("MainMenu"))
                 .color(TextColors.RED).build())).quantity(1).build();
 
         menu.query(SlotPos.of(8, 0)).set(item2);

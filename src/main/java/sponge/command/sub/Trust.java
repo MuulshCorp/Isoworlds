@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -26,7 +26,7 @@ package sponge.command.sub;
 
 import common.Cooldown;
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import common.action.TrustAction;
 import sponge.Main;
 
@@ -41,7 +41,6 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
 
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sponge.util.message.Message;
@@ -67,13 +66,13 @@ public class Trust implements CommandCallable {
         }
 
         if (size > 1) {
-            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
             return CommandResult.success();
         }
 
         // Check if world exists
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (!sponge.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return CommandResult.success();
         }
 
@@ -84,12 +83,12 @@ public class Trust implements CommandCallable {
                 uuidcible = player.get().getUniqueId();
             } catch (NoSuchElementException e){
                 e.printStackTrace();
-                pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
                 return CommandResult.success();
             }
 
             if (uuidcible.toString().isEmpty() || (size > 1)) {
-                pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+                pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
                 return CommandResult.success();
             }
         } catch (NoSuchElementException | IllegalArgumentException i) {
@@ -99,7 +98,7 @@ public class Trust implements CommandCallable {
 
         // CHECK AUTORISATIONS
         if (TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ALREADY_TRUSTED));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("AlreadyTrusted")));
             return CommandResult.success();
         }
 
@@ -109,7 +108,7 @@ public class Trust implements CommandCallable {
             return CommandResult.success();
         }
 
-        pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_TRUST));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccessTrust")));
 
         plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
         return CommandResult.success();

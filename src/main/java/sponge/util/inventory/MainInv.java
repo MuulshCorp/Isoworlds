@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -58,6 +58,7 @@ import sponge.util.inventory.weather.WeatherInv;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class MainInv {
@@ -73,43 +74,43 @@ public class MainInv {
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions().get(0).getOriginal().get(Keys.DISPLAY_NAME).get().toPlain());
                     // MENU PRINCIPAL //
                     // BIOME
-                    if (menuName.equals("Biome")) {
+                    if (menuName.equals(msgNode.get("InvBiome"))) {
                         Logger.tracking("Clic menu BIOME: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, BiomeInv.getInv(pPlayer));
                         // CONFIANCE
-                    } else if (menuName.equals("Confiance")) {
+                    } else if (menuName.equals(msgNode.get("InvTrust"))) {
                         Logger.tracking("Clic menu CONFIANCE: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, TrustInv.getInv(pPlayer));
                         // CONSTRUCTION
-                    } else if (menuName.equals("Construction")) {
+                    } else if (menuName.equals(msgNode.get("InvBuild"))) {
                         Logger.tracking("Clic menu CONSTRUCTION: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, BuildInv.getInv(pPlayer));
                         // MAISON
-                    } else if (menuName.equals("Maison")) {
+                    } else if (menuName.equals(msgNode.get("InvHome"))) {
                         Logger.tracking("Clic menu MAISON: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, HomeInv.getInv(pPlayer));
                         // METEO
-                    } else if (menuName.equals("Météo")) {
+                    } else if (menuName.equals(msgNode.get("InvWeather"))) {
                         Logger.tracking("Clic menu METEO: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, WeatherInv.getInv(pPlayer));
                         // ACTIVATION
-                    } else if (menuName.equals("Activation")) {
+                    } else if (menuName.equals(msgNode.get("InvEnable"))) {
                         Logger.tracking("Clic menu ACTIVATION: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, EnableInv.getInv(pPlayer));
                         // TELEPORTATION
-                    } else if (menuName.equals("Téléportation")) {
+                    } else if (menuName.equals(msgNode.get("InvTeleport"))) {
                         Logger.tracking("Clic menu TELEPORTATION: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, TeleportInv.getInv(pPlayer));
-                    } else if (menuName.equals("Temps")) {
+                    } else if (menuName.equals(msgNode.get("InvTime"))) {
                         Logger.tracking("Clic menu TEMPS: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, TimeInv.getInv(pPlayer));
-                    } else if (menuName.equals("Warp")) {
+                    } else if (menuName.equals(msgNode.get("InvWarp"))) {
                         Logger.tracking("Clic menu WARP: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, WarpInv.getInv(pPlayer));
                     }
 
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds")
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds")
                         .color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
                 .build(instance);
@@ -120,49 +121,49 @@ public class MainInv {
         String formatedPlayTime;
 
         if (playtime > 60) {
-            formatedPlayTime = playtime / 60 + " Heure(s) et " + playtime % 60 + " minute(s)";
+            formatedPlayTime = playtime / 60 + " H " + playtime % 60 + " m";
         } else {
-            formatedPlayTime = playtime + " minute(s)";
+            formatedPlayTime = playtime + " m";
         }
 
         // Création item
         List<Text> list1 = new ArrayList<Text>();
-        list1.add(Text.of("Gérez le biome des vos chunks"));
+        list1.add(Text.of(msgNode.get("InvBiomeLore")));
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Gérez qui peut avoir accès à votre IsoWorld"));
+        list2.add(Text.of(msgNode.get("InvTrustLore")));
         List<Text> list3 = new ArrayList<Text>();
-        list3.add(Text.of("Créez ou refondez votre IsoWorld"));
+        list3.add(Text.of(msgNode.get("InvBuildLore")));
         List<Text> list4 = new ArrayList<Text>();
-        list4.add(Text.of("Rendez-vous sur votre IsoWorld"));
+        list4.add(Text.of(msgNode.get("InvHomeLore")));
         List<Text> list5 = new ArrayList<Text>();
-        list5.add(Text.of("Gérez la pluie et le beau temps"));
-        list5.add(Text.of("de votre IsoWorld"));
+        list5.add(Text.of(msgNode.get("InvWeatherLore")));
+        list5.add(Text.of(msgNode.get("InvWeatherLore2")));
         List<Text> list6 = new ArrayList<Text>();
-        list6.add(Text.of("Chargez-Déchargez votre IsoWorld"));
+        list6.add(Text.of(msgNode.get("InvEnableLore")));
         List<Text> list7 = new ArrayList<Text>();
-        list7.add(Text.of("Rendez-vous sur les dimensions publiques"));
+        list7.add(Text.of(msgNode.get("InvWarpLore")));
         List<Text> list8 = new ArrayList<Text>();
-        list8.add(Text.of("Gérez l'heure de votre IsoWorld"));
+        list8.add(Text.of(msgNode.get("InvTimeLore")));
         List<Text> list9 = new ArrayList<Text>();
-        list9.add(Text.of(Text.builder("Charges: ").color(TextColors.YELLOW).append(Text.of(Text.builder(charges + " disponible(s)").color(TextColors.GREEN))).build()));
-        list9.add(Text.of(Text.builder("Temps de jeu: ").color(TextColors.YELLOW).append(Text.of(Text.builder(formatedPlayTime).color(TextColors.GREEN))).build()));
+        list9.add(Text.of(Text.builder(msgNode.get("InvStatChargeLore")).color(TextColors.YELLOW).append(Text.of(Text.builder(charges + " disponible(s)").color(TextColors.GREEN))).build()));
+        list9.add(Text.of(Text.builder(msgNode.get("InvStatPlayTimeLore")).color(TextColors.YELLOW).append(Text.of(Text.builder(formatedPlayTime).color(TextColors.GREEN))).build()));
 
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.DIAMOND_PICKAXE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Construction")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.DIAMOND_PICKAXE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvBuild"))
                 .color(TextColors.GRAY).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Maison")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.BED).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvHome"))
                 .color(TextColors.BLUE).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.SKULL).add(Keys.SKULL_TYPE, SkullTypes.PLAYER).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Confiance")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.SKULL).add(Keys.SKULL_TYPE, SkullTypes.PLAYER).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvTrust"))
                 .color(TextColors.GREEN).build())).quantity(1).build();
-        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.LEAVES).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Biome")
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.LEAVES).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvBiome"))
                 .color(TextColors.GOLD).build())).quantity(1).build();
-        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.CLOCK).add(Keys.ITEM_LORE, list8).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Temps")
+        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.CLOCK).add(Keys.ITEM_LORE, list8).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvTime"))
                 .color(TextColors.LIGHT_PURPLE).build())).quantity(1).build();
-        ItemStack item6 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Météo")
+        ItemStack item6 = ItemStack.builder().itemType(ItemTypes.DOUBLE_PLANT).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvWeather"))
                 .color(TextColors.YELLOW).build())).quantity(1).build();
-        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.COMPASS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Warp")
+        ItemStack item7 = ItemStack.builder().itemType(ItemTypes.COMPASS).add(Keys.ITEM_LORE, list7).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvWarp"))
                 .color(TextColors.DARK_GREEN).build())).quantity(1).build();
-        ItemStack item9 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Statistiques")
+        ItemStack item9 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvStat"))
                 .color(TextColors.AQUA).build())).quantity(1).build();
 
         //ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation")
@@ -185,7 +186,7 @@ public class MainInv {
         //if (pPlayer.hasPermission("isworlds.menu.activation")) {
         //    menu.query(SlotPos.of(6, 0)).set(item7);
         //}
-        //if (pPlayer.hasPermission("isoworlds.menu.teleportation")) {
+        //if (pPlayer.hasPermission("Isoworlds.menu.teleportation")) {
         //    menu.query(SlotPos.of(7, 0)).set(item8);
         //}
         //menu.query(SlotPos.of(7, 0)).set(item8);

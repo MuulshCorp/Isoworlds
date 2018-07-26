@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -36,7 +36,7 @@ public class LockAction {
     public static Boolean isLocked(Player pPlayer, String className) {
         // Si le lock est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
         if (checkLockFormat(pPlayer.getUniqueId().toString(), String.class.getName())) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + "Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.");
             return true;
         } else {
             // On set lock

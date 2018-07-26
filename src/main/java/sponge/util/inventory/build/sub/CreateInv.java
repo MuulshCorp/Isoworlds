@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -42,6 +42,7 @@ import sponge.util.inventory.MainInv;
 import java.util.ArrayList;
 import java.util.List;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class CreateInv {
@@ -65,41 +66,41 @@ public class CreateInv {
                         MainInv.commandMenu(pPlayer, "iw c o");
                     } else if (menuName.contains("Flat")) {
                         MainInv.commandMenu(pPlayer, "iw c f");
-                    } else if (menuName.contains("Menu principal")) {
+                    } else if (menuName.contains(msgNode.get("MainMenu"))) {
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
                     }
 
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("IsoWorlds: Choix de la carte").color(TextColors.BLUE).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: " + msgNode.get("InvBuild")).color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 2))
                 .build(instance);
 
         List<Text> list1 = new ArrayList<Text>();
-        list1.add(Text.of("Génération terrain (Classique"));
+        list1.add(Text.of(msgNode.get("BuildNormalLore")));
 
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Génération vide (Totalement vide)"));
+        list2.add(Text.of(msgNode.get("BuildVoidLore")));
 
         List<Text> list3 = new ArrayList<Text>();
-        list3.add(Text.of("Génération ocean (Plat avec uniquement de l'eau)"));
+        list3.add(Text.of(msgNode.get("BuildOceanLore")));
 
         List<Text> list4 = new ArrayList<Text>();
-        list4.add(Text.of("Génération plate (Plat avec uniquement de la dirt)"));
+        list4.add(Text.of(msgNode.get("BuildFlatLore")));
 
         List<Text> list5 = new ArrayList<Text>();
-        list5.add(Text.of("Retour au menu principal"));
+        list5.add(Text.of(msgNode.get("MainMenuLore")));
 
 
-        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.WHITE).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Normal]")
+        ItemStack item1 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.WHITE).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("BuildNormal"))
                 .color(TextColors.WHITE).build())).quantity(1).build();
-        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Void")
+        ItemStack item2 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.RED).add(Keys.ITEM_LORE, list2).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("BuildVoid"))
                 .color(TextColors.RED).build())).quantity(1).build();
-        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.BLUE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Ocean")
+        ItemStack item3 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.BLUE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("BuildOcean"))
                 .color(TextColors.BLUE).build())).quantity(1).build();
-        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Flat")
+        ItemStack item4 = ItemStack.builder().itemType(ItemTypes.WOOL).add(Keys.DYE_COLOR, DyeColors.GREEN).add(Keys.ITEM_LORE, list4).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("BuildFlat"))
                 .color(TextColors.GREEN).build())).quantity(1).build();
 
-        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Menu principal")
+        ItemStack item5 = ItemStack.builder().itemType(ItemTypes.GOLD_BLOCK).add(Keys.ITEM_LORE, list5).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("MainMenu"))
                 .color(TextColors.RED).build())).quantity(1).build();
 
         menu.query(SlotPos.of(0, 0)).set(item1);

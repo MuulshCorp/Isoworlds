@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -71,13 +71,13 @@ public class Biome implements CommandCallable {
 
         // Check if actual world is an isoworld
         if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_IN_A_ISOWORLD));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotInAIsoworld")));
             return CommandResult.success();
         }
 
         // Check if player is trusted
         if (!TrustAction.isTrusted(pPlayer.getUniqueId().toString(), pPlayer.getWorld().getName())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.NOT_TRUSTED));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotTrusted")));
             return CommandResult.success();
         }
 
@@ -123,12 +123,12 @@ public class Biome implements CommandCallable {
             }
         }
 
-        if (!pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+        if (!pPlayer.hasPermission("Isoworlds.unlimited.charges")) {
             ChargeAction.updateCharge(pPlayer.getUniqueId().toString(), charges - 1);
         }
 
-        pPlayer.sendMessage(Message.success(Msg.keys.CHARGE_USED));
-        pPlayer.sendMessage(Message.success(Msg.keys.BIOME_CHANGED));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("ChargeUsed")));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("BiomeChanged")));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.BIOME, Cooldown.BIOME_DELAY);
 

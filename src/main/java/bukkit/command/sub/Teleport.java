@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -42,12 +42,12 @@ public class Teleport {
         Player pPlayer = (Player) sender;
 
         if (args.length < 1 || args.length < 2) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Veuillez indiquer le joueur cible et le monde cible.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + "Veuillez indiquer le joueur cible et le monde cible.");
             return;
         }
 
         if (!Bukkit.getServer().getPlayer(args[0]).isOnline()) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[IsoWorlds]: " + ChatColor.AQUA + "Le joueur indiqué n'est pas connecté, ou vous avez mal entré son pseudonyme.");
+            pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + "Le joueur indiqué n'est pas connecté, ou vous avez mal entré son pseudonyme.");
             return;
         } else {
             Locations.teleport(Bukkit.getServer().getPlayer(args[0]), args[1]);

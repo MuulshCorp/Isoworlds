@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -28,10 +28,9 @@ import bukkit.Main;
 import bukkit.util.message.Message;
 import common.Cooldown;
 import common.Msg;
-import common.action.IsoWorldsAction;
+import common.action.IsoworldsAction;
 import common.action.TrustAction;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -55,13 +54,13 @@ public class Trust {
         }
 
         if (len > 2 || len < 2) {
-            pPlayer.sendMessage(Message.error(Msg.keys.INVALID_PLAYER));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("InvalidPlayer")));
             return;
         }
 
         // Check if world exists
-        if (!IsoWorldsAction.isPresent(pPlayer, false)) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ISOWORLD_NOT_FOUND));
+        if (!bukkit.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return;
         }
 
@@ -74,7 +73,7 @@ public class Trust {
 
         // CHECK AUTORISATIONS
         if (TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
-            pPlayer.sendMessage(Message.error(Msg.keys.ALREADY_TRUSTED));
+            pPlayer.sendMessage(Message.error(Msg.msgNode.get("AlreadyTrusted")));
             return;
         }
 
@@ -83,7 +82,7 @@ public class Trust {
             return;
         }
 
-        pPlayer.sendMessage(Message.success(Msg.keys.SUCCESS_TRUST));
+        pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccessTrust")));
 
         instance.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
     }

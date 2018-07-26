@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -28,7 +28,6 @@ import bukkit.location.Locations;
 import bukkit.util.action.StorageAction;
 import bukkit.util.console.Logger;
 import bukkit.util.inventory.MainInv;
-import common.action.IsoWorldsAction;
 import common.action.TrustAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -39,17 +38,19 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.sql.ResultSet;
 import java.util.UUID;
 
+import static common.Msg.msgNode;
+
 public class TrustAccessInv implements Listener {
 
     @SuppressWarnings("deprecation")
     public static MainInv getInv(Player pPlayer) {
-        MainInv menu = new MainInv(ChatColor.BLUE + "IsoWorlds: Confiance > Accès", 4, new MainInv.onClick() {
+        MainInv menu = new MainInv(ChatColor.BLUE + "Isoworlds: " + msgNode.get("TrustAccess"), 4, new MainInv.onClick() {
             @Override
             public boolean click(Player p, MainInv menu, MainInv.Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getLore().toString());
                 String menuPlayer = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
                 // Si joueur, on ajoute le joueur
-                if (menuPlayer.contains("IsoWorld Accessible")) {
+                if (menuPlayer.contains(msgNode.get("TrustAccessLore2"))) {
                     // Récupération UUID
                     String pname = menuName.split("-IsoWorld")[0].replace("[", "").replace("]", "");
                     String worldname = pname + "-IsoWorld";
@@ -60,12 +61,12 @@ public class TrustAccessInv implements Listener {
                     if (StorageAction.checkTag(pPlayer, worldname)) {
                         // Chargement du isoworld + tp
                         Bukkit.getServer().createWorld(new WorldCreator(pname + "-IsoWorld"));
-                        IsoWorldsAction.setWorldProperties(pname + "-IsoWorld", pPlayer);
+                        bukkit.util.action.IsoworldsAction.setWorldProperties(pname + "-IsoWorld", pPlayer);
                         Locations.teleport(pPlayer, pname + "-IsoWorld");
                         //plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
                     }
                     p.closeInventory();
-                } else if (menuName.contains("menu principal")) {
+                } else if (menuName.contains(msgNode.get("MainMenuLore"))) {
                     MainInv.MenuPrincipal(pPlayer).open(pPlayer);
                 }
 
@@ -104,14 +105,14 @@ public class TrustAccessInv implements Listener {
                 if (i >= 8) {
                     j = j++;
                 }
-                menu.addButton(menu.getRow(j), i, item1, ChatColor.GOLD + "IsoWorld Accessible: " + pname, list1);
+                menu.addButton(menu.getRow(j), i, item1, ChatColor.GOLD + msgNode.get("TrustAccessLore2") + ": " + pname, list1);
                 i++;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        menu.addButton(menu.getRow(3), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");
+        menu.addButton(menu.getRow(3), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "" + msgNode.get("MainMenu"), msgNode.get("MainMenuLore"));
 
         return menu;
     }

@@ -192,8 +192,6 @@ public class StorageAction {
     public static Boolean iwInProcess(Player pPlayer, String worldname) {
         // Si le lock est set, alors on renvoie false avec un message de sorte à stopper la commande et informer le jouer
         if (checkLockFormat(worldname, worldname)) {
-            pPlayer.sendMessage(Text.of(Text.builder("[Isoworlds]: Sijania indique que vous devez patienter avant de pouvoir utiliser de nouveau cette commande.").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("").color(TextColors.AQUA))).build()));
             return true;
         } else {
             // On set lock

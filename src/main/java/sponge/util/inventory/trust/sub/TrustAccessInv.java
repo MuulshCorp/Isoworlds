@@ -116,11 +116,11 @@ public class TrustAccessInv {
 
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
 
-                    } else if (menuName.contains(msgNode.get("MainMenu"))) {
+                    } else if (menuName.contains(msgNode.get("MainMenuLore"))) {
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
                     }
                 })
-                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: " + msgNode.get("InvTrust") + " > " + msgNode.get("TrustAccess")).color(TextColors.BLUE).build())))
+                .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds: > " + msgNode.get("TrustAccess")).color(TextColors.BLUE).build())))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 4))
                 .build(instance);
 

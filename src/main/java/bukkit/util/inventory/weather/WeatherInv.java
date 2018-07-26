@@ -74,17 +74,17 @@ public class WeatherInv implements Listener {
         String[] list2 = new String[]{msgNode.get("WeatherRainLore")};
         String[] list3 = new String[]{msgNode.get("WeatherStormLoreUnavailable")};
 
-        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.YELLOW.getData()), ChatColor.YELLOW + msgNode.get("WeatherSun") + " [10 minutes]", list1);
-        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.YELLOW.getData()), ChatColor.YELLOW + msgNode.get("WeatherSun") + " [30 minutes]", list1);
-        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.YELLOW.getData()), ChatColor.YELLOW + msgNode.get("WeatherSun") + " [1 heure]", list1);
+        menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.YELLOW.getData()), ChatColor.YELLOW + msgNode.get("WeatherSun") + " " + msgNode.get("Weather10min"), list1);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.YELLOW.getData()), ChatColor.YELLOW + msgNode.get("WeatherSun") + " " + msgNode.get("Weather30min"), list1);
+        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.YELLOW.getData()), ChatColor.YELLOW + msgNode.get("WeatherSun") + " " + msgNode.get("Weather1hour"), list1);
 
-        menu.addButton(menu.getRow(1), 0, new ItemStack(Material.WOOL, 1, DyeColor.LIGHT_BLUE.getData()), ChatColor.BLUE + msgNode.get("WeatherRain") + " [10 minutes]", list2);
-        menu.addButton(menu.getRow(1), 1, new ItemStack(Material.WOOL, 1, DyeColor.LIGHT_BLUE.getData()), ChatColor.BLUE + msgNode.get("WeatherRain") + " [30 minutes]", list2);
-        menu.addButton(menu.getRow(1), 2, new ItemStack(Material.WOOL, 1, DyeColor.LIGHT_BLUE.getData()), ChatColor.BLUE + msgNode.get("WeatherRain") + " [1 heure]", list2);
+        menu.addButton(menu.getRow(1), 0, new ItemStack(Material.WOOL, 1, DyeColor.LIGHT_BLUE.getData()), ChatColor.BLUE + msgNode.get("WeatherRain") + " " + msgNode.get("Weather10min"), list2);
+        menu.addButton(menu.getRow(1), 1, new ItemStack(Material.WOOL, 1, DyeColor.LIGHT_BLUE.getData()), ChatColor.BLUE + msgNode.get("WeatherRain") + " " + msgNode.get("Weather30min"), list2);
+        menu.addButton(menu.getRow(1), 2, new ItemStack(Material.WOOL, 1, DyeColor.LIGHT_BLUE.getData()), ChatColor.BLUE + msgNode.get("WeatherRain") + " " + msgNode.get("Weather1hour"), list2);
 
-        menu.addButton(menu.getRow(2), 0, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + msgNode.get("WeatherStorm") + " [10 minutes]", list3);
-        menu.addButton(menu.getRow(2), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + msgNode.get("WeatherStorm") + " [30 minutes]", list3);
-        menu.addButton(menu.getRow(2), 2, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + msgNode.get("WeatherStorm") + " [1 heure]", list3);
+        menu.addButton(menu.getRow(2), 0, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + msgNode.get("WeatherStorm") + " " + msgNode.get("Weather10min"), list3);
+        menu.addButton(menu.getRow(2), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + msgNode.get("WeatherStorm") + " " + msgNode.get("Weather30min"), list3);
+        menu.addButton(menu.getRow(2), 2, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.RED + msgNode.get("WeatherStorm") + " " + msgNode.get("Weather1hour"), list3);
 
         menu.addButton(menu.getRow(2), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + msgNode.get("MainMenu"), msgNode.get("MainMenuLore"));
 

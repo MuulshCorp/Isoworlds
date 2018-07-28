@@ -148,7 +148,7 @@ public class TrustAccessInv {
                 SkullData data = Sponge.getGame().getDataManager().getManipulatorBuilder(SkullData.class).get().create();
                 data.set(Keys.SKULL_TYPE, SkullTypes.PLAYER);
                 ItemStack stack = Sponge.getGame().getRegistry().createBuilder(ItemStack.Builder.class).itemType(ItemTypes.SKULL).itemData(data)
-                        .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("TrustAccessLore") + ": " + user.get().getName())
+                        .add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("TrustAccessLore2") + ": " + user.get().getName())
                                 .color(TextColors.GOLD).build())).quantity(1)
                         .build();
                 RepresentedPlayerData skinData = Sponge.getGame().getDataManager().getManipulatorBuilder(RepresentedPlayerData.class).get().create();

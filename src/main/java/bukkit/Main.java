@@ -103,7 +103,6 @@ public final class Main extends JavaPlugin implements IMain {
         Logger.info("Connexion à la base de données...");
         try {
             this.database.connect();
-            this.database.setStructure();
             Logger.info("Isoworlds connecté avec succès à la base de données !");
         } catch (Exception ex) {
             Logger.severe("Une erreur est survenue lors de la connexion à la base de données: " + ex.getMessage());
@@ -123,6 +122,9 @@ public final class Main extends JavaPlugin implements IMain {
         Logger.info("[CONFIG] inactivity-before-world-unload: " + Configuration.getInactivityTime());
 
         Manager.instance = Main.getInstance();
+
+        // Set structure if needed
+        this.database.setStructure();
 
         // ****** MODULES ******
 

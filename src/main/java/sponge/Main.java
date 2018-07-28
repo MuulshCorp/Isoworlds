@@ -219,6 +219,9 @@ public class Main implements IMain {
 
         // Init manager
         Manager.instance = Main.instance;
+
+        // Set structure if needed
+        this.database.setStructure();
     }
 
     @Listener

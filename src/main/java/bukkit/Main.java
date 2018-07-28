@@ -155,6 +155,9 @@ public final class Main extends JavaPlugin implements IMain {
         if (ManageFiles.getLangPath() == null) {
             ManageFiles.copy(getResource("lang.yml"), new File(System.getProperty("user.dir") + "/plugins/Isoworlds/lang.yml"));
         }
+
+        // Loading messages
+        Msg.keys();
     }
 
     @Override

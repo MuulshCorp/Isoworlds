@@ -130,8 +130,8 @@ public class MainInv implements Listener {
         String[] list6 = new String[]{msgNode.get("InvWeatherLore"), msgNode.get("InvWeatherLore2")};
         String[] list7 = new String[]{ChatColor.YELLOW + msgNode.get("InvStatChargeLore") + ChatColor.GREEN + charges, ChatColor.YELLOW + msgNode.get("InvStatPlayTimeLore") + ChatColor.GREEN + formatedPlayTime};
         String[] list8 = new String[]{msgNode.get("InvWarpLore")};
-        //String[] list7 = new String[]{"Chargez-Déchargez votre IsoWorld"};
-        //String[] list8 = new String[]{"Téléportez vous sur un IsoWorld [STAFF]"};
+        //String[] list7 = new String[]{"Chargez-Déchargez votre Isoworld"};
+        //String[] list8 = new String[]{"Téléportez vous sur un Isoworld [STAFF]"};
 
         // Construction des skin itemstack
         ItemStack item1 = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);

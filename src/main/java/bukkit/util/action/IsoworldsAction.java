@@ -24,8 +24,8 @@ public class IsoworldsAction {
 
     private static final String servername = Manager.getInstance().getServername();
 
-    // Create IsoWorld for pPlayer
-    public static Boolean setIsoWorld(Player pPlayer) {
+    // Create Isoworld for pPlayer
+    public static Boolean setIsoworld(Player pPlayer) {
         String INSERT = "INSERT INTO `isoworlds` (`uuid_p`, `uuid_w`, `date_time`, `server_id`, `status`) VALUES (?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
@@ -36,7 +36,7 @@ public class IsoworldsAction {
             Iuuid_p = pPlayer.getUniqueId().toString();
             insert.setString(1, Iuuid_p);
             // UUID_W
-            Iuuid_w = ((pPlayer.getUniqueId()) + "-IsoWorld");
+            Iuuid_w = ((pPlayer.getUniqueId()) + "-Isoworld");
             insert.setString(2, Iuuid_w);
             // Date
             insert.setString(3, (timestamp.toString()));
@@ -55,7 +55,7 @@ public class IsoworldsAction {
     // Create world properties Isoworlds
     public static void setWorldProperties(String worldname, Player pPlayer) {
 
-        // Properties of IsoWorld
+        // Properties of Isoworld
         World world = Bukkit.getServer().getWorld(worldname);
 
         // ****** MODULES ******
@@ -96,7 +96,7 @@ public class IsoworldsAction {
         Logger.info("WorldProperties à jour");
     }
 
-    // Check if isoworld exists and load it if load true
+    // Check if Isoworld exists and load it if load true
     public static Boolean isPresent(Player pPlayer, Boolean load) {
         Main instance;
         instance = Main.getInstance();
@@ -111,7 +111,7 @@ public class IsoworldsAction {
             check_p = pPlayer.getUniqueId().toString();
             check.setString(1, check_p);
             // Worldname
-            check_w = (check_p + "-IsoWorld");
+            check_w = (check_p + "-Isoworld");
             check.setString(2, check_w);
             // Server id
             check.setString(3, servername);
@@ -119,12 +119,12 @@ public class IsoworldsAction {
             ResultSet rselect = check.executeQuery();
             if (rselect.isBeforeFirst()) {
                 // Load if load param true
-                if (!StorageAction.getStatus(check_p + "-IsoWorld")) {
+                if (!StorageAction.getStatus(check_p + "-Isoworld")) {
                     if (load) {
-                        Bukkit.getServer().createWorld(new WorldCreator(check_p + "-IsoWorld"));
+                        Bukkit.getServer().createWorld(new WorldCreator(check_p + "-Isoworld"));
                     }
                 }
-                setWorldProperties(check_p + "-IsoWorld", pPlayer);
+                setWorldProperties(check_p + "-Isoworld", pPlayer);
                 return true;
             }
         } catch (Exception se) {

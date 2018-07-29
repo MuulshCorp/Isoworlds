@@ -47,19 +47,19 @@ public class ListWorlds {
 
         for (World world : Bukkit.getServer().getWorlds()) {
             if (world.getName() != null) {
-                if (world.getName().contains("-IsoWorld")) {
+                if (world.getName().contains("-Isoworld")) {
                     worlds.add(world);
                 }
             }
         }
 
         if (check == true) {
-            pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + "Sijania ne repère aucun IsoWorld dans le Royaume Isolonice");
+            pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + "Sijania ne repère aucun Isoworld dans le Royaume Isolonice");
             return;
         }
         pPlayer.sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.AQUA + "[Liste des Isoworlds]");
         for (World w : worlds) {
-            String[] split = w.getName().split("-IsoWorld");
+            String[] split = w.getName().split("-Isoworld");
             UUID uuid = UUID.fromString(split[0]);
             Player player = Bukkit.getServer().getPlayer(uuid);
             String pname;

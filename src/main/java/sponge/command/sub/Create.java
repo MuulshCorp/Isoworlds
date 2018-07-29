@@ -56,7 +56,7 @@ public class Create implements CommandCallable {
         String worldname = "";
         Player pPlayer = (Player) source;
 
-        // Check if isoworld exists in database
+        // Check if Isoworld exists in database
         if (sponge.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldAlreadyExists")));
             return CommandResult.success();
@@ -65,8 +65,8 @@ public class Create implements CommandCallable {
         // Create message
         pPlayer.sendMessage(Message.success(Msg.msgNode.get("CreatingIsoworld")));
 
-        fullpath = (ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
-        worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
+        fullpath = (ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-Isoworld");
+        worldname = (pPlayer.getUniqueId().toString() + "-Isoworld");
         String[] arg = args.split(" ");
         int size = arg.length;
 
@@ -121,7 +121,7 @@ public class Create implements CommandCallable {
         //  Create world properties
         sponge.util.action.IsoworldsAction.setWorldProperties(worldname, pPlayer);
 
-        if (sponge.util.action.IsoworldsAction.setIsoWorld(pPlayer)) {
+        if (sponge.util.action.IsoworldsAction.setIsoworld(pPlayer)) {
             if (TrustAction.setTrust(pPlayer.getUniqueId().toString(), pPlayer.getUniqueId().toString())) {
                 // Loading
                 Sponge.getGame().getServer().loadWorld(worldname);

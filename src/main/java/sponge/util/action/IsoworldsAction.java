@@ -32,8 +32,8 @@ public class IsoworldsAction {
     private static final Map<String, Integer> lock = Main.instance.getLock();
     public static final DataQuery toId = DataQuery.of("SpongeData", "dimensionId");
 
-    // Create IsoWorld for pPlayer
-    public static Boolean setIsoWorld(Player pPlayer) {
+    // Create Isoworld for pPlayer
+    public static Boolean setIsoworld(Player pPlayer) {
         String INSERT = "INSERT INTO `isoworlds` (`uuid_p`, `uuid_w`, `date_time`, `server_id`, `status`, `dimension_id`) VALUES (?, ?, ?, ?, ?, ?)";
         String Iuuid_w;
         String Iuuid_p;
@@ -44,7 +44,7 @@ public class IsoworldsAction {
             Iuuid_p = pPlayer.getUniqueId().toString();
             insert.setString(1, Iuuid_p);
             // UUID_W
-            Iuuid_w = ((pPlayer.getUniqueId()) + "-IsoWorld");
+            Iuuid_w = ((pPlayer.getUniqueId()) + "-Isoworld");
             insert.setString(2, Iuuid_w);
             // Date
             insert.setString(3, (timestamp.toString()));
@@ -77,7 +77,7 @@ public class IsoworldsAction {
             // Deal with permission of owner only
 
             int x;
-            String username = worldname.split("-IsoWorld")[0];
+            String username = worldname.split("-Isoworld")[0];
             Optional<User> user = StatAction.getPlayerFromUUID(UUID.fromString(username));
             if (!username.equals(pPlayer.getUniqueId().toString())) {
                 // Global
@@ -167,7 +167,7 @@ public class IsoworldsAction {
         return worldProperties;
     }
 
-    // Check if isoworld exists and load it if load true
+    // Check if Isoworld exists and load it if load true
     public static Boolean isPresent(Player pPlayer, Boolean load) {
 
         String CHECK = "SELECT * FROM `isoworlds` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
@@ -180,7 +180,7 @@ public class IsoworldsAction {
             check_p = StatAction.PlayerToUUID(pPlayer).toString();
             check.setString(1, check_p);
             // UUID_W
-            check_w = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
+            check_w = (StatAction.PlayerToUUID(pPlayer) + "-Isoworld");
             check.setString(2, check_w);
             // SERVEUR_ID
             check.setString(3, sponge.Main.instance.servername);
@@ -189,12 +189,12 @@ public class IsoworldsAction {
 
             if (rselect.isBeforeFirst()) {
                 // Chargement si load = true
-                setWorldProperties(StatAction.PlayerToUUID(pPlayer) + "-IsoWorld", pPlayer);
-                if (!sponge.util.action.StorageAction.getStatus(StatAction.PlayerToUUID(pPlayer) + "-IsoWorld")) {
+                setWorldProperties(StatAction.PlayerToUUID(pPlayer) + "-Isoworld", pPlayer);
+                if (!sponge.util.action.StorageAction.getStatus(StatAction.PlayerToUUID(pPlayer) + "-Isoworld")) {
                     if (load) {
 
                         // TEST
-                        Path levelSponge = Paths.get(ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-IsoWorld/" + "level_sponge.dat");
+                        Path levelSponge = Paths.get(ManageFiles.getPath() + StatAction.PlayerToUUID(pPlayer) + "-Isoworld/" + "level_sponge.dat");
                         if (Files.exists(levelSponge)) {
                             DataContainer dc;
                             boolean gz = false;
@@ -210,7 +210,7 @@ public class IsoworldsAction {
                                 // get id
                                 int dimId = IsoworldsAction.getDimensionId(pPlayer);
 
-                                // Si non isoworld ou non défini
+                                // Si non Isoworld ou non défini
                                 if (dimId == 0) {
                                     for (int i = 1000; i < Integer.MAX_VALUE; i++) {
                                         if (!allId.contains(i)) {
@@ -236,7 +236,7 @@ public class IsoworldsAction {
                             }
                         }
 
-                        Sponge.getServer().loadWorld(StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
+                        Sponge.getServer().loadWorld(StatAction.PlayerToUUID(pPlayer) + "-Isoworld");
                     }
                 }
                 return true;
@@ -280,7 +280,7 @@ public class IsoworldsAction {
         }
     }
 
-    // Get all trusted players of pPlayer's IsoWorld
+    // Get all trusted players of pPlayer's Isoworld
     public static Integer getDimensionId(Player pPlayer) {
         String CHECK = "SELECT `dimension_id` FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
@@ -288,7 +288,7 @@ public class IsoworldsAction {
             PreparedStatement check = sponge.Main.instance.database.prepare(CHECK);
 
             // UUID _W
-            check_w = pPlayer.getUniqueId().toString() + "-IsoWorld";
+            check_w = pPlayer.getUniqueId().toString() + "-Isoworld";
             check.setString(1, check_w);
             // SERVEUR_ID
             check.setString(2, sponge.Main.instance.servername);
@@ -317,7 +317,7 @@ public class IsoworldsAction {
         return 0;
     }
 
-    // set isoworld dimension ID
+    // set Isoworld dimension ID
     public static Boolean setDimensionId(org.spongepowered.api.entity.living.player.Player pPlayer, Integer number) {
         String CHECK = "UPDATE `isoworlds` SET `dimension_id` = ? WHERE `uuid_w` = ?";
         try {
@@ -326,7 +326,7 @@ public class IsoworldsAction {
             // Number
             check.setInt(1, number);
             // UUID_P
-            check.setString(2, pPlayer.getUniqueId().toString() + "-IsoWorld");
+            check.setString(2, pPlayer.getUniqueId().toString() + "-Isoworld");
             // Requête
             check.executeUpdate();
             return true;

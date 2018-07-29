@@ -45,7 +45,7 @@ public class StorageAction {
 
     public static final Main plugin = Main.instance;
 
-    // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
+    // Check tag of pPlayer Isoworld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
     public static Boolean checkTag(Player pPlayer, String worldname) {
 
         // Création des chemins pour vérification
@@ -54,17 +54,17 @@ public class StorageAction {
 
         // Si vrai alors en état @PUSHED en bdd
         if (StorageAction.getStatus(worldname)) {
-            Logger.info("ISOWORLD: " + worldname + " EN ETAT @PUSHED");
+            Logger.info("Isoworld: " + worldname + " EN ETAT @PUSHED");
 
             // !! Gestion des anomalies !!
             // Si le dossier sans tag et avec tag existe, alors il a été accédé par un moyen tier et on supprime le non TAG
             if (file.exists()) {
                 if (file2.exists()) {
-                    Logger.warning(" --- Anomalie (@PUSHED: Dossier isoworld et isoworld tag tous deux présents pour: " + worldname + " ---");
+                    Logger.warning(" --- Anomalie (@PUSHED: Dossier Isoworld et Isoworld tag tous deux présents pour: " + worldname + " ---");
                     // Déchargement au cas ou
                     if (Sponge.getServer().getWorld(worldname).isPresent()) {
                         Sponge.getServer().unloadWorld(Sponge.getServer().getWorld(worldname).get());
-                        Logger.warning(" --- Anomalie (@PUSHED: Déchargement du IsoWorld anormalement chargé: " + worldname + " ---");
+                        Logger.warning(" --- Anomalie (@PUSHED: Déchargement du Isoworld anormalement chargé: " + worldname + " ---");
                     }
                     // Suppression du dossier
                     ManageFiles.deleteDir(file);
@@ -88,33 +88,33 @@ public class StorageAction {
                         .name("Self-Cancelling Timer Task")
                         .submit(plugin);
             } else {
-                // Gestion du cas ou le dossier IsoWorld ne serait pas présent alors qu'il est @PUSHED en bdd
-                Logger.warning(" --- Anomalie (@PUSHED): Dossier isoworld tag n'existe pas: " + worldname + " ---");
+                // Gestion du cas ou le dossier Isoworld ne serait pas présent alors qu'il est @PUSHED en bdd
+                Logger.warning(" --- Anomalie (@PUSHED): Dossier Isoworld tag n'existe pas: " + worldname + " ---");
             }
 
             // Retourner faux pour indiquer que le dossier n'existe pas, il doit être en procédure
             return false;
 
         } else if (!StorageAction.getStatus(worldname)) {
-            Logger.info("ISOWORLD DISPONIBLE: " + worldname + " - ETAT NON @PUSHED");
+            Logger.info("Isoworld DISPONIBLE: " + worldname + " - ETAT NON @PUSHED");
 
             // Vérification si le dossier @PUSHED n'existe pas, on le supprime dans ce cas, anomalie
             if (file2.exists()) {
                 ManageFiles.deleteDir(file2);
                 Logger.info(": " + worldname);
-                Logger.warning(" --- Anomalie (NON @PUSHED): Dossier isoworld et isoworld tag tous deux présents pour: " + worldname + " ---");
+                Logger.warning(" --- Anomalie (NON @PUSHED): Dossier Isoworld et Isoworld tag tous deux présents pour: " + worldname + " ---");
             }
 
-            // IsoWorld disponible, retour vrai
+            // Isoworld disponible, retour vrai
             return true;
         } else {
             // Si ni @PUSHED ni NON @PUSHED en BDD alors on retourne faux car il doit y avoir un gros problème :)
-            Logger.warning(" --- Anomalie (NI @PUSHED NI NON @PUSHE): IsoWorld: " + worldname + " ---");
+            Logger.warning(" --- Anomalie (NI @PUSHED NI NON @PUSHE): Isoworld: " + worldname + " ---");
             return false;
         }
     }
 
-    // Check status of a IsoWorld, if is Pushed return true, else return false
+    // Check status of a Isoworld, if is Pushed return true, else return false
     public static Boolean getStatus(String world) {
         String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
@@ -165,7 +165,7 @@ public class StorageAction {
         return true;
     }
 
-    // Set status of IsoWorld (1 for Pushed, 0 for Present)
+    // Set status of Isoworld (1 for Pushed, 0 for Present)
     // It returns true if pushed, false si envoyé ou à envoyer
     public static void setStatus(String world, Integer status) {
         String CHECK = "UPDATE `isoworlds` SET `status` = ? WHERE `uuid_w` = ? AND `server_id` = ?";
@@ -207,7 +207,7 @@ public class StorageAction {
         File file = new File(ManageFiles.getPath() + "/" + worldname + "@PUSHED");
         File file2 = new File(ManageFiles.getPath() + "/" + worldname);
         // If exists and contains Isoworld
-        if (file.exists() & file2.exists() & worldname.contains("-IsoWorld")) {
+        if (file.exists() & file2.exists() & worldname.contains("-Isoworld")) {
             return 1;
         }
         return 0;

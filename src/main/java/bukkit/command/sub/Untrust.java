@@ -99,7 +99,7 @@ public class Untrust {
 
         Location spawn = Bukkit.getServer().getWorld("Isolonice").getSpawnLocation();
         if (is == true) {
-            if (Bukkit.getServer().getPlayer(uuidcible).getWorld().getName().equals(pPlayer.getUniqueId().toString() + "-IsoWorld")) {
+            if (Bukkit.getServer().getPlayer(uuidcible).getWorld().getName().equals(pPlayer.getUniqueId().toString() + "-Isoworld")) {
                 Player player = Bukkit.getServer().getPlayer(args[1]);
                 player.teleport(spawn);
                 pPlayer.sendMessage(Message.error(Msg.msgNode.get("KickTrust")));

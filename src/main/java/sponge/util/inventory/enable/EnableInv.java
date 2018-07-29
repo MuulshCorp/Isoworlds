@@ -70,9 +70,9 @@ public class EnableInv {
                 .build(instance);
 
         List<Text> list1 = new ArrayList<Text>();
-        list1.add(Text.of("Charge votre IsoWorld."));
+        list1.add(Text.of("Charge votre Isoworld."));
         List<Text> list2 = new ArrayList<Text>();
-        list2.add(Text.of("Décharge votre IsoWorld."));
+        list2.add(Text.of("Décharge votre Isoworld."));
         List<Text> list3 = new ArrayList<Text>();
         list3.add(Text.of("Retour au menu principal"));
 

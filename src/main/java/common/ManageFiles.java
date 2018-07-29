@@ -104,7 +104,7 @@ public class ManageFiles {
     public static List<File> getOutSAS(File currDir) {
         List<File> dirs = new ArrayList<>();
         for (File file : currDir.listFiles()) {
-            if (file.isDirectory() & file.getName().contains("-IsoWorld")) {
+            if (file.isDirectory() & file.getName().contains("-Isoworld")) {
                 dirs.add(file);
             }
         }
@@ -145,8 +145,8 @@ public class ManageFiles {
     // To set dynamic
     public static String getLangPath() {
         String pathBukkit = (System.getProperty("user.dir") + "/plugins/Isoworlds/lang.yml");
-        String pathSpongeDefault = (System.getProperty("user.dir") + "/config/isoworlds/lang.yml");
-        String pathSponge = (System.getProperty("user.dir") + "/plugins-config/isoworlds/lang.yml");
+        String pathSpongeDefault = (System.getProperty("user.dir") + "/config/Isoworlds/lang.yml");
+        String pathSponge = (System.getProperty("user.dir") + "/plugins-config/Isoworlds/lang.yml");
 
         if (new File(pathBukkit).exists()) {
             return pathBukkit;

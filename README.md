@@ -13,7 +13,7 @@ Isoworlds is a large scale personal worlds manager originally designed for Isolo
 ### Command
 | Command        | Permission           | Description  |
 | ------------- |:-------------:| -----:|
-| `/iw`      | isoworlds.default | Main command, open a gui with all features |
+| `/iw`      | Isoworlds.default | Main command, open a gui with all features |
 
 ### Why Isoworlds
 - Prevents grief

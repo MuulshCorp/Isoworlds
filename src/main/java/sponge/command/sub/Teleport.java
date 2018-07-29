@@ -63,9 +63,9 @@ public class Teleport implements CommandCallable {
         }
 
         // Check if is world is loaded
-        if (!(Sponge.getServer().getWorld(pPlayer.getUniqueId().toString() + "-IsoWorld").get().isLoaded())) {
+        if (!(Sponge.getServer().getWorld(pPlayer.getUniqueId().toString() + "-Isoworld").get().isLoaded())) {
             pPlayer.sendMessage(Text.of(Text.builder("[Isoworlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania indique que votre IsoWorld doit être chargé pour en changer le temps.").color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder("Sijania indique que votre Isoworld doit être chargé pour en changer le temps.").color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 

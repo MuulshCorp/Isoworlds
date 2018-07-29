@@ -45,7 +45,7 @@ public class Time {
         instance = Main.getInstance();
 
         Player pPlayer = (Player) sender;
-        String worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
+        String worldname = (pPlayer.getUniqueId().toString() + "-Isoworld");
         Integer len = args.length;
 
         //If the method return true then the command is in lock
@@ -59,8 +59,8 @@ public class Time {
             return;
         }
 
-        // Check if actual world is an isoworld
-        if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
+        // Check if actual world is an Isoworld
+        if (!pPlayer.getWorld().getName().contains("-Isoworld")) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotInAIsoworld")));
             return;
         }

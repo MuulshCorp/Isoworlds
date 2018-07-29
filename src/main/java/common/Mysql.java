@@ -197,7 +197,7 @@ public class Mysql {
                     + "server_id varchar(30) NOT NULL, "
                     + "PRIMARY KEY (date_time));").executeUpdate();
 
-            this.prepare("CREATE TABLE IF NOT EXISTS isoworlds ("
+            this.prepare("CREATE TABLE IF NOT EXISTS Isoworlds ("
                     + "uuid_p varchar(60) NOT NULL, "
                     + "uuid_w varchar(60) NOT NULL, "
                     + "date_time varchar(30) NOT NULL, "

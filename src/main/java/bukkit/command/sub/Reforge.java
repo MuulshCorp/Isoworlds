@@ -59,7 +59,7 @@ public class Reforge {
             return;
         }
 
-        // Check is IsoWorld exists in database
+        // Check is Isoworld exists in database
         if (!bukkit.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return;
@@ -82,7 +82,7 @@ public class Reforge {
 
         confirm.remove(pPlayer.getUniqueId().toString());
 
-        worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
+        worldname = (pPlayer.getUniqueId().toString() + "-Isoworld");
         File destDir = new File(ManageFiles.getPath() + "/Isoworlds-REFONTE/" + worldname);
         destDir.mkdir();
 
@@ -105,7 +105,7 @@ public class Reforge {
         // Deleting process
         File remove = new File((ManageFiles.getPath() + worldname));
         ManageFiles.deleteDir(remove);
-        if (!IsoworldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
+        if (!IsoworldsAction.deleteIsoworld(pPlayer.getUniqueId().toString())) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("FailReforgeIsoworld")));
             return;
         }

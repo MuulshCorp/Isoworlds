@@ -52,7 +52,7 @@ public class Listeners implements Listener {
     public void onRespawnPlayerEvent(PlayerRespawnEvent event) {
 
         Player p = event.getPlayer();
-        String worldname = p.getUniqueId() + "-IsoWorld";
+        String worldname = p.getUniqueId() + "-Isoworld";
 
         new BukkitRunnable() {
 
@@ -84,14 +84,14 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        // Welcome message and open menu for those who do not have their own IsoWorld
+        // Welcome message and open menu for those who do not have their own Isoworld
         if (!IsoworldsAction.iwExists(event.getPlayer().getUniqueId().toString())) {
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
                     event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Sijania vous souhaite la bienvenue !");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Sur Isolonice, vous possédez votre propre monde nommé: IsoWorld");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Sur Isolonice, vous possédez votre propre monde nommé: Isoworld");
                     event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Vous êtes seul maître à bord, il est à vous !");
                     event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Pour commencer l'aventure entrez la commande: /iw");
                     event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Puis sélectionnez le premier menu (Construction)");
@@ -150,7 +150,7 @@ public class Listeners implements Listener {
 
         // Deny teleport to unloaded world with /back that load world DIM number instead
         File checkFolder = new File(ManageFiles.getPath() + worldTo.getWorld().getName());
-        if (!checkFolder.exists() & worldTo.getWorld().getName().contains("IsoWorld")) {
+        if (!checkFolder.exists() & worldTo.getWorld().getName().contains("Isoworld")) {
             event.setCancelled(true);
             Logger.warning("Isoworld non actif, téléporation annulée !");
             return;
@@ -158,7 +158,7 @@ public class Listeners implements Listener {
 
         String eventworld = worldTo.getWorld().getName();
 
-        if (eventworld.contains("-IsoWorld")) {
+        if (eventworld.contains("-Isoworld")) {
             try {
                 PreparedStatement check = instance.database.prepare(CHECK);
                 // UUID_P

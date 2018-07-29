@@ -60,16 +60,16 @@ public class ListWorlds implements CommandExecutor {
 
         for(World world : Sponge.getServer().getWorlds()) {
             if (world.isLoaded()) {
-                if (world.getName().contains("-IsoWorld")) {
+                if (world.getName().contains("-Isoworld")) {
                     worlds.add(world);
                 }
             }
         }
 
-        // Check si isoworld existe
+        // Check si Isoworld existe
         if (check == true) {
             pPlayer.sendMessage(Text.of(Text.builder("[Isoworlds]: ").color(TextColors.GOLD)
-                    .append(Text.of(Text.builder("Sijania ne repère aucun IsoWorld dans le Royaume Isolonice").color(TextColors.AQUA))).build()));
+                    .append(Text.of(Text.builder("Sijania ne repère aucun Isoworld dans le Royaume Isolonice").color(TextColors.AQUA))).build()));
             return CommandResult.success();
         }
 
@@ -78,7 +78,7 @@ public class ListWorlds implements CommandExecutor {
         pPlayer.sendMessage(title);
         for(World w : worlds ) {
             String worldname = w.getName();
-            String[] split = w.getName().split("-IsoWorld");
+            String[] split = w.getName().split("-Isoworld");
             UUID uuid = UUID.fromString(split[0]);
             UserStorageService userStorage = Sponge.getServiceManager().provide(UserStorageService.class).get();
             Optional<User> player = userStorage.get(uuid);

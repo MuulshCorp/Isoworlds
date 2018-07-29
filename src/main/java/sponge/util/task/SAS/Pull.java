@@ -57,7 +57,7 @@ public class Pull implements Consumer<Task> {
 
         }
         check --;
-        // Si inférieur à 1 alors tout le temps s'est écoulé sans que le IsoWorld soit présent en fichier
+        // Si inférieur à 1 alors tout le temps s'est écoulé sans que le Isoworld soit présent en fichier
         if (check < 1) {
             // Notification au joueur de contacter l'équipe
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("FailPull")));
@@ -67,9 +67,9 @@ public class Pull implements Consumer<Task> {
             task.cancel();
         // Si le dossier existe, alors on repasse le statut à 0 en BDD (présent)
         } else if (file.exists()) {
-            // Passage du IsoWorld en statut présent
+            // Passage du Isoworld en statut présent
             StorageAction.setStatus(file.getName(), 0);
-            // Notification au joueur que le IsoWorld est disponible
+            // Notification au joueur que le Isoworld est disponible
             pPlayer.sendMessage(Message.success(Msg.msgNode.get("SuccessPull")));
             // Suppression du TAG pour permettre l'utilisation de la commande maison et confiance access
             plugin.lock.remove(file.getName() + ";" + file.getName());

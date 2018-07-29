@@ -58,8 +58,8 @@ public class Biome {
             return;
         }
 
-        // Check if actual world is an isoworld
-        if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
+        // Check if actual world is an Isoworld
+        if (!pPlayer.getWorld().getName().contains("-Isoworld")) {
             pPlayer.sendMessage(Message.error(msgNode.get("NotInAIsoworld")));
             return;
         }

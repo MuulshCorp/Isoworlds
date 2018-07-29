@@ -58,8 +58,8 @@ public class Weather {
             return;
         }
 
-        // Check if actual world is an isoworld
-        if (!pPlayer.getWorld().getName().contains("-IsoWorld")) {
+        // Check if actual world is an Isoworld
+        if (!pPlayer.getWorld().getName().contains("-Isoworld")) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("NotInAIsoworld")));
             return;
         }

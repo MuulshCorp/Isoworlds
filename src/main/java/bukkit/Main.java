@@ -73,7 +73,7 @@ public final class Main extends JavaPlugin implements IMain {
         }
 
         File source = new File(ManageFiles.getPath());
-        // Retourne la liste des isoworld tag
+        // Retourne la liste des Isoworld tag
         for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
             ManageFiles.deleteDir(new File(f.getPath() + "/uid.dat"));
             ManageFiles.deleteDir(new File(f.getPath() + "/session.lock"));

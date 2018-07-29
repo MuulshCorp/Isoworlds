@@ -68,9 +68,9 @@ public class Listeners {
     @Listener
     public void onRespawnPlayerEvent(RespawnPlayerEvent event) {
         Player p = event.getTargetEntity();
-        String worldname = (p.getUniqueId() + "-IsoWorld");
+        String worldname = (p.getUniqueId() + "-Isoworld");
 
-        // Teleport to spawn of own isoworld if is loaded
+        // Teleport to spawn of own Isoworld if is loaded
         if (Sponge.getServer().getWorld(worldname).isPresent() && Sponge.getServer().getWorld(worldname).get().isLoaded()) {
             Task.builder().execute(new Runnable() {
                 @Override
@@ -79,7 +79,7 @@ public class Listeners {
                 }
             }).delay(2, TimeUnit.MILLISECONDS).submit(instance);
         } else {
-            // If own isoworld not loaded then go to default world
+            // If own Isoworld not loaded then go to default world
             if (Sponge.getServer().getWorld("Isolonice").isPresent()) {
                 Task.builder().execute(new Runnable() {
                     @Override
@@ -139,14 +139,14 @@ public class Listeners {
 
     @Listener
     public void onConnect(ClientConnectionEvent.Join event) {
-        // Welcome message and open menu for those who do not have their own IsoWorld
+        // Welcome message and open menu for those who do not have their own Isoworld
         if (!IsoworldsAction.iwExists(event.getTargetEntity().getUniqueId().toString())) {
             Task.builder().execute(new Runnable() {
                 @Override
                 public void run() {
                     event.getTargetEntity().sendMessage(Text.of(Text.builder("[Isoworlds]").color(TextColors.GOLD)
                             .append(Text.of(Text.builder(" Sijania vous souhaite la bienvenue sur Isolonice !\n" +
-                                    "Dans ce royaume, vous possédez votre propre monde nommé: IsoWorld.\n" +
+                                    "Dans ce royaume, vous possédez votre propre monde nommé: Isoworld.\n" +
                                     "Vous êtes seul maître à bord, il est à vous et vous pouvez choisir qui peut y accéder.\n" +
                                     "Essayez dès maintenant via la commande: /iw").color(TextColors.GREEN))).build()));
                     Sponge.getCommandManager().process(event.getTargetEntity(), "iw");
@@ -225,7 +225,7 @@ public class Listeners {
         File file = new File(ManageFiles.getPath() + "/" + event.getTargetWorld().getName() + "@PUSHED");
         File file2 = new File(ManageFiles.getPath() + "/" + event.getTargetWorld().getName());
         // If exists and contains Isoworld
-        if (file.exists() & event.getTargetWorld().getName().contains("-IsoWorld")) {
+        if (file.exists() & event.getTargetWorld().getName().contains("-Isoworld")) {
             // Anomalie
             Logger.severe("--- Anomalie: UNLOADING " + event.getTargetWorld().getName() + " WORLD, CAUSED BY: " + event.getCause().toString() + " ---");
             // Check if players in there
@@ -252,14 +252,14 @@ public class Listeners {
 
         // Check if world folder is present
         File checkFolder = new File(ManageFiles.getPath() + eventworld);
-        if (!checkFolder.exists() & eventworld.contains("IsoWorld")) {
+        if (!checkFolder.exists() & eventworld.contains("Isoworld")) {
             event.setCancelled(true);
             return;
         }
 
         Sponge.getServer().loadWorld(event.getToTransform().getExtent().getName());
 
-        if (eventworld.contains("-IsoWorld")) {
+        if (eventworld.contains("-Isoworld")) {
             try {
                 PreparedStatement check = plugin.database.prepare(CHECK);
                 // UUID_P

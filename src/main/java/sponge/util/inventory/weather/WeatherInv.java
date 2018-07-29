@@ -70,13 +70,13 @@ public class WeatherInv {
 
                     if (menuName.contains(msgNode.get("Weather10min"))) {
                         // Check if charge higher than 0
-                        MainInv.commandMenu(pPlayer, "iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        MainInv.commandMenu(pPlayer, "iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-Isoworld");
                         MainInv.closeMenu(pPlayer);
                     } else if (menuName.contains(msgNode.get("Weather30min"))) {
-                        MainInv.commandMenu(pPlayer, "iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        MainInv.commandMenu(pPlayer, "iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-Isoworld");
                         MainInv.closeMenu(pPlayer);
                     } else if (menuName.contains(msgNode.get("Weather1hour"))) {
-                        MainInv.commandMenu(pPlayer, "iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                        MainInv.commandMenu(pPlayer, "iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-Isoworld");
                         MainInv.closeMenu(pPlayer);
                     }
 

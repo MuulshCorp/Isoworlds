@@ -104,7 +104,7 @@ public class Main implements IMain {
         registerEvents();
         logger.info("Chargement des Isoworlds...");
 
-        Sponge.getCommandManager().register(this, Commands.getCommand(), "iw", "isoworld", "Isoworlds");
+        Sponge.getCommandManager().register(this, Commands.getCommand(), "iw", "Isoworld", "Isoworlds");
         logger.info("Les Isoworlds sont chargés et opérationnels !");
     }
 

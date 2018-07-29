@@ -57,7 +57,7 @@ public class StorageAction {
         return true;
     }
 
-    // Set status of IsoWorld (1 for Pushed, 0 for Present)
+    // Set status of Isoworld (1 for Pushed, 0 for Present)
     // It returns true if pushed, false si envoyé ou à envoyer
     public static Boolean setStatus(String world, Integer status) {
         String CHECK = "UPDATE `isoworlds` SET `status` = ? WHERE `uuid_w` = ? AND `server_id` = ?";
@@ -81,38 +81,36 @@ public class StorageAction {
         return false;
     }
 
-    // Check tag of pPlayer IsoWorld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
+    // Check tag of pPlayer Isoworld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
     public static Boolean checkTag(Player pPlayer, String worldname) {
-        // Vérification si monde en statut pushed
-        if (getStatus(worldname)) {
+        // If Isoworld is pushed on database, then we return false and start pull process
+        if (StorageAction.getStatus(worldname)) {
             // Création des chemins pour vérification
             File file = new File(ManageFiles.getPath() + worldname);
             File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
-            // Si Isoworld dossier présent (sans tag), on repasse le status à 0 (présent) et on continue
-
-            if (file.exists()) {
-                setStatus(worldname, 0);
-                // Si le dossier est en @PULL et qu'un joueur le demande alors on le passe en @PULL
-                // Le script check ensutie
-                return true;
-            } else {
-                // Lance la task import/export
-                BukkitTask task = new Pull(pPlayer, file).runTaskTimer(instance, 20, 20);
-            }
-
+            // If pushed folder exists then untag folder shouldn't exists
             if (file2.exists()) {
+                // Deleting untagged folder if exists, we may add this remove on sas script
+                if (file.exists()) {
+                    ManageFiles.deleteDir(file);
+                }
+                // Start pull task
                 ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
-                Logger.info("PULL OK");
-                return false;
+                new Pull(pPlayer, file).runTaskTimer(instance, 20, 20);
+            } else if (file.exists()) {
+                // Set isoworld to pulled in database
+                setStatus(worldname, 0);
+                return true;
             }
             return false;
         }
+        // Isoworld is not on pushed stat in database
         return true;
     }
 
-    // Check status of a IsoWorld, if is Pushed return true, else return false
+    // Check status of a Isoworld, if is Pushed return true, else return false
     public static Boolean getStatus(String world) {
-        String CHECK = "SELECT STATUS FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
+        String CHECK = "SELECT status FROM `isoworlds` WHERE `uuid_w` = ? AND `server_id` = ?";
         String check_w;
         try {
             PreparedStatement check = instance.database.prepare(CHECK);

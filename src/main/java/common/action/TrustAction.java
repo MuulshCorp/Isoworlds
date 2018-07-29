@@ -60,15 +60,15 @@ public class TrustAction {
         return null;
     }
 
-    // Get all trusted players of pPlayer's IsoWorld
+    // Get all trusted players of pPlayer's Isoworld
     public static ResultSet getTrusts(String worldname) {
         String CHECK = "SELECT `uuid_p` FROM `autorisations` WHERE `uuid_w` = ? AND `server_id` = ?";
         ResultSet result = null;
         try {
             PreparedStatement check = database.prepare(CHECK);
             // World name
-            if (!worldname.contains("-IsoWorld")) {
-                worldname = (worldname + "-IsoWorld");
+            if (!worldname.contains("-Isoworld")) {
+                worldname = (worldname + "-Isoworld");
             }
             check.setString(1, worldname);
             // Server id
@@ -95,8 +95,8 @@ public class TrustAction {
             // Player uuid
             insert.setString(1, playeruuid);
             // World name
-            if (!worldname.contains("-IsoWorld")) {
-                worldname = (worldname + "-IsoWorld");
+            if (!worldname.contains("-Isoworld")) {
+                worldname = (worldname + "-Isoworld");
             }
             insert.setString(2, worldname);
             // Date
@@ -117,8 +117,8 @@ public class TrustAction {
         try {
             PreparedStatement delete_autorisations = database.prepare(DELETE_AUTORISATIONS);
             // World name
-            if (!worldname.contains("-IsoWorld")) {
-                worldname = (worldname + "-IsoWorld");
+            if (!worldname.contains("-Isoworld")) {
+                worldname = (worldname + "-Isoworld");
             }
 
             // delete autorisation
@@ -143,8 +143,8 @@ public class TrustAction {
             // Player uuid
             check.setString(1, playeruuid);
             // World name
-            if (!worldname.contains("-IsoWorld")) {
-                worldname = (worldname + "-IsoWorld");
+            if (!worldname.contains("-Isoworld")) {
+                worldname = (worldname + "-Isoworld");
             }
             check.setString(2, worldname);
             // Server id

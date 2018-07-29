@@ -57,13 +57,13 @@ public class WeatherInv implements Listener {
                 }
 
                 if (menuName.contains(msgNode.get("Weather10min"))) {
-                    p.performCommand("iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                    p.performCommand("iw meteo " + mtype + " 12000 " + pPlayer.getUniqueId().toString() + "-Isoworld");
                     p.closeInventory();
                 } else if (menuName.contains(msgNode.get("Weather30min"))) {
-                    p.performCommand("iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                    p.performCommand("iw meteo " + mtype + " 36000 " + pPlayer.getUniqueId().toString() + "-Isoworld");
                     p.closeInventory();
                 } else if (menuName.contains(msgNode.get("Weather1hour"))) {
-                    p.performCommand("iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-IsoWorld");
+                    p.performCommand("iw meteo " + mtype + " 72000 " + pPlayer.getUniqueId().toString() + "-Isoworld");
                     p.closeInventory();
                 }
                 return true;

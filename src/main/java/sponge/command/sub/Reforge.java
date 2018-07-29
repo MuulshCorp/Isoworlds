@@ -66,7 +66,7 @@ public class Reforge implements CommandExecutor {
             return CommandResult.success();
         }
 
-        // Check is IsoWorld exists in database
+        // Check is Isoworld exists in database
         if (!sponge.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return CommandResult.success();
@@ -89,7 +89,7 @@ public class Reforge implements CommandExecutor {
 
         confirm.remove(pPlayer.getUniqueId().toString());
 
-        worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
+        worldname = (StatAction.PlayerToUUID(pPlayer) + "-Isoworld");
         File destDir = new File(ManageFiles.getPath() + "/Isoworlds-REFONTE/" + worldname);
         destDir.mkdir();
 
@@ -115,7 +115,7 @@ public class Reforge implements CommandExecutor {
         } catch (InterruptedException | ExecutionException ie) {
             ie.printStackTrace();
         }
-        if (!IsoworldsAction.deleteIsoWorld(pPlayer.getUniqueId().toString())) {
+        if (!IsoworldsAction.deleteIsoworld(pPlayer.getUniqueId().toString())) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("FailReforgeIsoworld")));
             return CommandResult.success();
         }

@@ -82,24 +82,24 @@ public class TrustAccessInv {
                     // Si joueur, on ajoute le joueur
                     if (menuPlayer.contains(msgNode.get("TrustAccessLore2"))) {
                         // Récupération UUID
-                        String[] tmp = menuName.split("-IsoWorld");
+                        String[] tmp = menuName.split("-Isoworld");
                         Logger.info("NAME " + menuName);
                         Optional<User> user = StatAction.getPlayerFromUUID(UUID.fromString(tmp[0]));
-                        String worldname = user.get().getUniqueId().toString() + "-IsoWorld";
+                        String worldname = user.get().getUniqueId().toString() + "-Isoworld";
 
                         // Si la méthode renvoi vrai alors on return car le lock est défini pour l'import, sinon elle le set auto
                         if (StorageAction.iwInProcess(pPlayer, worldname)) {
                             return;
                         }
 
-                        // Pull du IsoWorld
+                        // Pull du Isoworld
                         Task.builder().execute(new Runnable() {
                             @Override
                             public void run() {
                                 // Si monde présent en dossier ?
                                 // Removing iwInProcess in task
                                 if (StorageAction.checkTag(pPlayer, worldname)) {
-                                    // Chargement du isoworld + tp
+                                    // Chargement du Isoworld + tp
                                     sponge.util.action.IsoworldsAction.setWorldProperties(worldname, pPlayer);
                                     Sponge.getServer().loadWorld(worldname);
                                     Locations.teleport(pPlayer, worldname);
@@ -112,7 +112,7 @@ public class TrustAccessInv {
                             }
                         })
                                 .delay(1, TimeUnit.SECONDS)
-                                .name("Pull du IsoWorld.").submit(instance);
+                                .name("Pull du Isoworld.").submit(instance);
 
                         MainInv.closeOpenMenu(pPlayer, MainInv.menuPrincipal(pPlayer));
 
@@ -130,7 +130,7 @@ public class TrustAccessInv {
         try {
             while (trusts.next()) {
                 // Récupération uuid
-                String[] tmp = trusts.getString(1).split("-IsoWorld");
+                String[] tmp = trusts.getString(1).split("-Isoworld");
                 UUID uuid = UUID.fromString(tmp[0]);
                 Optional<User> user = StatAction.getPlayerFromUUID(uuid);
 

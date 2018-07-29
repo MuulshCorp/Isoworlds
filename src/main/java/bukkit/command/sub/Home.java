@@ -26,6 +26,7 @@ package bukkit.command.sub;
 
 import bukkit.Main;
 import bukkit.location.Locations;
+import bukkit.util.action.IsoworldsAction;
 import bukkit.util.action.LockAction;
 import bukkit.util.action.StorageAction;
 import bukkit.util.message.Message;
@@ -42,7 +43,7 @@ public class Home {
     public static void Maison(CommandSender sender, String[] args) {
         String worldname = "";
         Player pPlayer = (Player) sender;
-        worldname = (pPlayer.getUniqueId() + "-IsoWorld");
+        worldname = (pPlayer.getUniqueId() + "-Isoworld");
 
         //If the method return true then the command is in lock
         if (!instance.cooldown.isAvailable(pPlayer, Cooldown.MAISON)) {
@@ -55,8 +56,8 @@ public class Home {
         }
 
         // Pull / Push
-        // False if processing on isoworld as @PUSHED state in database
-        // True if IsoWorld avalable
+        // False if processing on Isoworld as @PUSHED state in database
+        // True if Isoworld avalable
         if (!StorageAction.checkTag(pPlayer, worldname)) {
             return;
         }
@@ -64,8 +65,8 @@ public class Home {
         // Removing lock
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
-        // Check if IsoWorld exists and load it if needed (true)
-        if (!bukkit.util.action.IsoworldsAction.isPresent(pPlayer, true)) {
+        // Check if Isoworld exists and load it if needed (true)
+        if (!IsoworldsAction.isPresent(pPlayer, true)) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return;
         }

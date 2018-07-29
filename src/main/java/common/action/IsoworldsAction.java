@@ -11,8 +11,8 @@ public class IsoworldsAction {
     private static final Mysql database = Manager.getInstance().getMysql();
     private static final String servername = Manager.getInstance().getServername();
 
-    // Delete IsoWorld
-    public static Boolean deleteIsoWorld(String playeruuid) {
+    // Delete Isoworld
+    public static Boolean deleteIsoworld(String playeruuid) {
         String Iuuid_p;
         String Iuuid_w;
         String DELETE_AUTORISATIONS = "DELETE FROM `autorisations` WHERE `uuid_w` = ? AND `server_id` = ?";
@@ -21,13 +21,13 @@ public class IsoworldsAction {
             PreparedStatement delete_autorisations = database.prepare(DELETE_AUTORISATIONS);
             PreparedStatement delete_iworlds = database.prepare(DELETE_IWORLDS);
             Iuuid_p = playeruuid;
-            Iuuid_w = (playeruuid + "-IsoWorld");
+            Iuuid_w = (playeruuid + "-Isoworld");
 
             // delete autorisations
             delete_autorisations.setString(1, Iuuid_w);
             delete_autorisations.setString(2, servername);
 
-            // delete isoworld
+            // delete Isoworld
             delete_iworlds.setString(1, Iuuid_p);
             delete_iworlds.setString(2, Iuuid_w);
             delete_iworlds.setString(3, servername);
@@ -42,7 +42,7 @@ public class IsoworldsAction {
         return true;
     }
 
-    // Used for construction, check if isoworld is in database (don't care charged or not)
+    // Used for construction, check if Isoworld is in database (don't care charged or not)
     public static Boolean iwExists(String playeruuid) {
         String CHECK = "SELECT * FROM `isoworlds` WHERE `uuid_p` = ? AND `uuid_w` = ? AND `server_id` = ?";
         String check_w;
@@ -53,7 +53,7 @@ public class IsoworldsAction {
             check_p = playeruuid;
             check.setString(1, check_p);
             // Worldname
-            check_w = playeruuid + "-IsoWorld";
+            check_w = playeruuid + "-Isoworld";
             check.setString(2, check_w);
             // Server id
             check.setString(3, servername);

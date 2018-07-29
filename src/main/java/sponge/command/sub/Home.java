@@ -51,7 +51,7 @@ public class Home implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         String worldname = "";
         Player pPlayer = (Player) source;
-        worldname = (StatAction.PlayerToUUID(pPlayer) + "-IsoWorld");
+        worldname = (StatAction.PlayerToUUID(pPlayer) + "-Isoworld");
 
         //If return true then the command is in lock
         if (!instance.cooldown.isAvailable(pPlayer, Cooldown.MAISON)) {
@@ -64,8 +64,8 @@ public class Home implements CommandExecutor {
         }
 
         // Pull / Push
-        // False if processing on isoworld as @PUSHED state in database
-        // True if IsoWorld avalable
+        // False if processing on Isoworld as @PUSHED state in database
+        // True if Isoworld avalable
         if (!StorageAction.checkTag(pPlayer, worldname)) {
             return CommandResult.success();
         }
@@ -73,7 +73,7 @@ public class Home implements CommandExecutor {
         // Removing lock
         instance.lock.remove(pPlayer.getUniqueId().toString() + ";" + "checkTag");
 
-        // Check if IsoWorld exists and load it if need (true)
+        // Check if Isoworld exists and load it if need (true)
         if (!sponge.util.action.IsoworldsAction.isPresent(pPlayer, true)) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldNotFound")));
             return CommandResult.success();

@@ -238,6 +238,6 @@ public class MainInv {
             }
         })
                 .delay(10, TimeUnit.MILLISECONDS)
-                .name("Téléporte le joueur dans un isoworld.").submit(instance);
+                .name("Téléporte le joueur dans un Isoworld.").submit(instance);
     }
 }

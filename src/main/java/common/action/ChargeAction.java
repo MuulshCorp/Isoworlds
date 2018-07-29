@@ -1,5 +1,5 @@
 /*
- * This file is part of IsoWorlds, licensed under the MIT License (MIT).
+ * This file is part of Isoworlds, licensed under the MIT License (MIT).
  *
  * Copyright (c) Edwin Petremann <https://github.com/Isolonice/>
  * Copyright (c) contributors
@@ -43,7 +43,7 @@ public class ChargeAction {
         String CHECK = "SELECT `charges` FROM `players_info` WHERE `uuid_p` = ?";
         Integer number;
         // If unlimited
-        if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+        if (pPlayer.hasPermission("Isoworlds.unlimited.charges")) {
             return 1;
         }
         try {
@@ -70,7 +70,7 @@ public class ChargeAction {
         String CHECK = "SELECT `charges` FROM `players_info` WHERE `uuid_p` = ?";
         Integer number;
         // If unlimited
-        if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+        if (pPlayer.hasPermission("Isoworlds.unlimited.charges")) {
             return 1;
         }
         try {
@@ -101,7 +101,7 @@ public class ChargeAction {
             return -1;
         }
         // Permissions unlimited for player
-        if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+        if (pPlayer.hasPermission("Isoworlds.unlimited.charges")) {
             return -99;
         }
         if (charges <= 0) {
@@ -121,7 +121,7 @@ public class ChargeAction {
             return -1;
         }
         // Permissions unlimited for player
-        if (pPlayer.hasPermission("isoworlds.unlimited.charges")) {
+        if (pPlayer.hasPermission("Isoworlds.unlimited.charges")) {
             return -99;
         }
         if (charges <= 0) {

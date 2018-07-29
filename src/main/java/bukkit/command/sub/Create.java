@@ -46,7 +46,7 @@ public class Create {
         Player pPlayer = (Player) sender;
         Integer len = args.length;
 
-        // Check if isoworld exists in database
+        // Check if Isoworld exists in database
         if (bukkit.util.action.IsoworldsAction.isPresent(pPlayer, false)) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldAlreadyExists")));
             return;
@@ -55,10 +55,10 @@ public class Create {
         // Create message
         pPlayer.sendMessage(Message.success(Msg.msgNode.get("CreatingIsoworld")));
 
-        fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-IsoWorld/");
-        worldname = (pPlayer.getUniqueId().toString() + "-IsoWorld");
+        fullpath = (ManageFiles.getPath() + pPlayer.getUniqueId().toString() + "-Isoworld/");
+        worldname = (pPlayer.getUniqueId().toString() + "-Isoworld");
 
-        // Check if isoworld exists
+        // Check if Isoworld exists
         if (Bukkit.getServer().getWorld(worldname) != null) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("IsoworldAlreadyExists")));
             return;
@@ -116,7 +116,7 @@ public class Create {
 
         Bukkit.getServer().createWorld(new WorldCreator(worldname));
 
-        if (!bukkit.util.action.IsoworldsAction.setIsoWorld(pPlayer)) {
+        if (!bukkit.util.action.IsoworldsAction.setIsoworld(pPlayer)) {
             return;
         }
 
@@ -128,7 +128,7 @@ public class Create {
 
         // Set delayed world properties as WB doesn't know the newly created iw
         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, () -> Bukkit.getScheduler().runTask(Main.instance, () -> {
-            bukkit.util.action.IsoworldsAction.setWorldProperties(pPlayer.getDisplayName() + "-IsoWorld", pPlayer);
+            bukkit.util.action.IsoworldsAction.setWorldProperties(pPlayer.getDisplayName() + "-Isoworld", pPlayer);
         }), 60);
 
         pPlayer.sendMessage(Message.success(Msg.msgNode.get("IsoworldsuccessCreate")));

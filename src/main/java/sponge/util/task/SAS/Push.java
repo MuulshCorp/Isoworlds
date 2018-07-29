@@ -61,8 +61,8 @@ public class Push {
             }
             // Boucle de tous les mondes
             for (World world : Sponge.getServer().getWorlds()) {
-                // Si le monde est chargé et contient IsoWorld
-                if (world.isLoaded() & world.getName().contains("-IsoWorld")) {
+                // Si le monde est chargé et contient Isoworld
+                if (world.isLoaded() & world.getName().contains("-Isoworld")) {
 
                     // Si le nombre de joueurs == 0
                     if (world.getPlayers().size() == 0) {
@@ -96,11 +96,11 @@ public class Push {
                                     Logger.severe("--- Anomalie détectée, unload interrompu et suppression de l'anomalie: " + world.getName() + " ---");
                                     Sponge.getServer().unloadWorld(world);
                                     Sponge.getServer().deleteWorld(world.getProperties());
-                                    Logger.severe("--- Anomalie: Corrigée, suppression effectuée avec succès de l'isoworld: " + world.getName() + " ---");
+                                    Logger.severe("--- Anomalie: Corrigée, suppression effectuée avec succès de l'Isoworld: " + world.getName() + " ---");
                                     continue;
                                 } else {
                                     if (!Sponge.getServer().unloadWorld(world)) {
-                                        Logger.severe("--- Echec du déchargement de l'IsoWorld: " + world.getName() + " ---");
+                                        Logger.severe("--- Echec du déchargement de l'Isoworld: " + world.getName() + " ---");
                                         continue;
                                     }
                                 }
@@ -145,7 +145,7 @@ public class Push {
                                 continue;
                             }
                         }
-                        // Si le nombre de joueur est supérieur à 0, purge le tableau du IsoWorld
+                        // Si le nombre de joueur est supérieur à 0, purge le tableau du Isoworld
                     } else if (worlds.get(world.getName()) != null) {
                         worlds.remove(world.getName());
                         Logger.warning(world.getName() + " de nouveau actif, supprimé de l'analyse");
@@ -153,7 +153,7 @@ public class Push {
                 }
             }
             if (worlds.isEmpty()) {
-                Logger.info("Aucun IsoWorld n'est à " + x + " minutes d'inactivité...");
+                Logger.info("Aucun Isoworld n'est à " + x + " minutes d'inactivité...");
                 Logger.warning("Fin de l'analyse");
             } else {
                 Logger.info("Les Isoworlds vides depuis " + x + " minutes viennent d'être déchargés");

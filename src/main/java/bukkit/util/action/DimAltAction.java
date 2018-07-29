@@ -71,7 +71,7 @@ public class DimAltAction {
 
     private static void setWorldProperties(String worldname) {
 
-        // Properties of IsoWorld
+        // Properties of Isoworld
         World world = Bukkit.getServer().getWorld(worldname);
 
         Logger.severe("Size: " + 3000 + " " + 3000);

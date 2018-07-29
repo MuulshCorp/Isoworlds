@@ -60,7 +60,7 @@ public class TeleportInv {
                     String menuName = String.valueOf(clickInventoryEvent.getTransactions()
                             .get(0).getOriginal().get(Keys.ITEM_LORE).get().toString());
                     clickInventoryEvent.setCancelled(true);
-                    if (menuName.contains("IsoWorld")) {
+                    if (menuName.contains("Isoworld")) {
                         Logger.info("NOM: " + menuName);
                         MainInv.teleportMenu(pPlayer, menuName);
                         MainInv.closeMenu(pPlayer);
@@ -76,15 +76,15 @@ public class TeleportInv {
         int i = 0;
         int j = 0;
         for (World w : Sponge.getServer().getWorlds()) {
-            if (w.getName().contains("-IsoWorld") & w.isLoaded()) {
-                String[] split = w.getName().split("-IsoWorld");
+            if (w.getName().contains("-Isoworld") & w.isLoaded()) {
+                String[] split = w.getName().split("-Isoworld");
                 UUID uuid = UUID.fromString(split[0]);
                 String name = Sponge.getServer().getPlayer(uuid).get().getName();
                 List<Text> list1 = new ArrayList<Text>();
                 list1.add(Text.of(w.getName()));
                 WorldProperties worldProperties = Sponge.getServer().getWorldProperties(w.getName()).get();
                 String id = worldProperties.getAdditionalProperties().getInt(DataQuery.of("SpongeData", "dimensionId")).get().toString();
-                ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("IsoWorld: ID " + id)
+                ItemStack item1 = ItemStack.builder().itemType(ItemTypes.GRASS).add(Keys.ITEM_LORE, list1).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Isoworld: ID " + id)
                         .color(TextColors.GOLD).build())).quantity(1).build();
                 if (i >= 8) {
                     j = j++;

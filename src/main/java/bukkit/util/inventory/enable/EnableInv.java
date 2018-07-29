@@ -53,8 +53,8 @@ public class EnableInv implements Listener {
             }
         });
 
-        String[] list1 = new String[]{"Charge votre IsoWorld."};
-        String[] list2 = new String[]{"Décharge votre IsoWorld."};
+        String[] list1 = new String[]{"Charge votre Isoworld."};
+        String[] list2 = new String[]{"Décharge votre Isoworld."};
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + "Activer", list1);
         menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GREEN + "Désactiver", list2);
         menu.addButton(menu.getRow(0), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + "Menu principal", "Retour au menu principal");

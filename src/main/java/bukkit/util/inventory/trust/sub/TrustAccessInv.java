@@ -52,17 +52,17 @@ public class TrustAccessInv implements Listener {
                 // Si joueur, on ajoute le joueur
                 if (menuPlayer.contains(msgNode.get("TrustAccessLore2"))) {
                     // Récupération UUID
-                    String pname = menuName.split("-IsoWorld")[0].replace("[", "").replace("]", "");
-                    String worldname = pname + "-IsoWorld";
+                    String pname = menuName.split("-Isoworld")[0].replace("[", "").replace("]", "");
+                    String worldname = pname + "-Isoworld";
 
-                    // Pull du IsoWorld
+                    // Pull du Isoworld
 
                     // Si monde présent en dossier ?
                     if (StorageAction.checkTag(pPlayer, worldname)) {
-                        // Chargement du isoworld + tp
-                        Bukkit.getServer().createWorld(new WorldCreator(pname + "-IsoWorld"));
-                        bukkit.util.action.IsoworldsAction.setWorldProperties(pname + "-IsoWorld", pPlayer);
-                        Locations.teleport(pPlayer, pname + "-IsoWorld");
+                        // Chargement du Isoworld + tp
+                        Bukkit.getServer().createWorld(new WorldCreator(pname + "-Isoworld"));
+                        bukkit.util.action.IsoworldsAction.setWorldProperties(pname + "-Isoworld", pPlayer);
+                        Locations.teleport(pPlayer, pname + "-Isoworld");
                         //plugin.cooldown.addPlayerCooldown(pPlayer, Cooldown.CONFIANCE, Cooldown.CONFIANCE_DELAY);
                     }
                     p.closeInventory();
@@ -80,7 +80,7 @@ public class TrustAccessInv implements Listener {
         try {
             while (trusts.next()) {
                 // Récupération uuid
-                String[] tmp = trusts.getString(1).split("-IsoWorld");
+                String[] tmp = trusts.getString(1).split("-Isoworld");
                 UUID uuid = UUID.fromString(tmp[0]);
                 String pname;
 

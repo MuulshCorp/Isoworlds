@@ -57,8 +57,8 @@ public class Push {
             }
             // Boucle de tous les mondes
             for (World world : Bukkit.getServer().getWorlds()) {
-                // Si le monde est chargé et contient IsoWorld
-                if (world != null & world.getName().contains("-IsoWorld")) {
+                // Si le monde est chargé et contient Isoworld
+                if (world != null & world.getName().contains("-Isoworld")) {
 
                     // Si le nombre de joueurs == 0
                     if (world.getPlayers().size() == 0) {
@@ -120,7 +120,7 @@ public class Push {
                             }
 
                         }
-                        // Si le nombre de joueur est supérieur à 0, purge le tableau du IsoWorld
+                        // Si le nombre de joueur est supérieur à 0, purge le tableau du Isoworld
                     } else if (worlds.get(world.getName()) != null) {
                         worlds.remove(world.getName());
                         Logger.warning(world.getName() + " de nouveau actif, supprimé de l'analyse");
@@ -128,7 +128,7 @@ public class Push {
                 }
             }
             if (worlds.isEmpty()) {
-                Logger.info("Aucun IsoWorld n'est à " + x + " minutes d'inactivité...");
+                Logger.info("Aucun Isoworld n'est à " + x + " minutes d'inactivité...");
                 Logger.warning("Fin de l'analyse");
             } else {
                 Logger.info("Les Isoworlds vides depuis " + x + " minutes viennent d'être déchargés");

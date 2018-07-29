@@ -45,7 +45,7 @@ public class TeleportInv implements Listener {
             @Override
             public boolean click(Player p, MainInv menu, MainInv.Row row, int slot, ItemStack item) {
                 String menuName = ChatColor.stripColor(row.getRowItem(slot).getItemMeta().getDisplayName());
-                if (menuName.contains("IsoWorld")) {
+                if (menuName.contains("Isoworld")) {
                     Logger.info("NOM: " + menuName);
                     Locations.teleport(pPlayer, menuName);
                     p.closeInventory();
@@ -59,8 +59,8 @@ public class TeleportInv implements Listener {
         int i = 0;
         int j = 0;
         for (World w : Bukkit.getServer().getWorlds()) {
-            if (w.getName().contains("-IsoWorld") & w != null) {
-                String[] split = w.getName().split("-IsoWorld");
+            if (w.getName().contains("-Isoworld") & w != null) {
+                String[] split = w.getName().split("-Isoworld");
                 UUID uuid = UUID.fromString(split[0]);
                 String name = Bukkit.getServer().getPlayer(uuid).getDisplayName();
                 String[] list1 = new String[]{w.getName()};
@@ -68,7 +68,7 @@ public class TeleportInv implements Listener {
                 if (i >= 8) {
                     j = j++;
                 }
-                //menu.addButton(menu.getRow(j), i, item1, ChatColor.GOLD + "IsoWorld Accessible: " + pname, list1);
+                //menu.addButton(menu.getRow(j), i, item1, ChatColor.GOLD + "Isoworld Accessible: " + pname, list1);
             }
         }
 

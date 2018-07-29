@@ -10,7 +10,7 @@ commands:
     iw:
         description: Base command
         usage: /<iw> [creation][liste][maison][confiance][on][off][teleport]
-        aliases: [Isoworlds, isoworld]
+        aliases: [Isoworlds, Isoworld]
 
 permissions:
     Isoworlds.default:

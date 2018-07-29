@@ -110,7 +110,7 @@ public class UnTrust implements CommandCallable {
 
         try {
             if (player.get().isOnline()) {
-                if (player.get().getPlayer().get().getWorld().getName().equals(pPlayer.getUniqueId().toString() + "-IsoWorld")) {
+                if (player.get().getPlayer().get().getWorld().getName().equals(pPlayer.getUniqueId().toString() + "-Isoworld")) {
                     Location<World> spawn = Sponge.getServer().getWorld("Isolonice").get().getSpawnLocation();
                     Player playerOnline = Sponge.getServer().getPlayer(arg[0]).get();
                     playerOnline.setLocation(spawn);

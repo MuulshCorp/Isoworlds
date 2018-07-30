@@ -111,12 +111,8 @@ public class Main implements IMain {
     @Listener
     public void onGameInit(GameInitializationEvent event) {
 
-        // Check if Isoworlds-SAS folder exists
-        File checkSAS = new File(ManageFiles.getPath() + "Isoworlds-SAS");
-        if (!checkSAS.exists()) {
-            checkSAS.mkdir();
-            Logger.info("Dossier Isoworlds-SAS crée !");
-        }
+        // Create needed dirs
+        ManageFiles.initIsoworldsDirs();
 
         try {
             if (!this.configuration.exists()) {

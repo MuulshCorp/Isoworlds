@@ -86,24 +86,19 @@ public class Create implements CommandCallable {
             return CommandResult.success();
         }
 
-        Logger.tracking(arg[0]);
         File sourceFile;
         switch (arg[0]) {
             case ("n"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Logger.tracking("PATERN NORMAL: " + pPlayer.getName());
+                sourceFile = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN/");
                 break;
             case ("v"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Logger.tracking("PATERN VOID: " + pPlayer.getName());
+                sourceFile = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-V/");
                 break;
             case ("o"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Logger.tracking("PATERN OCEAN: " + pPlayer.getName());
+                sourceFile = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-O/");
                 break;
             case ("f"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
-                Logger.tracking("PATERN FLAT: " + pPlayer.getName());
+                sourceFile = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-F/");
                 break;
             default:
                 return CommandResult.success();

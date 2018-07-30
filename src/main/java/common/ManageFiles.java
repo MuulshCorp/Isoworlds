@@ -145,8 +145,8 @@ public class ManageFiles {
     // To set dynamic
     public static String getLangPath() {
         String pathBukkit = (System.getProperty("user.dir") + "/plugins/Isoworlds/lang.yml");
-        String pathSpongeDefault = (System.getProperty("user.dir") + "/config/Isoworlds/lang.yml");
-        String pathSponge = (System.getProperty("user.dir") + "/plugins-config/Isoworlds/lang.yml");
+        String pathSpongeDefault = (System.getProperty("user.dir") + "/config/isoworlds/lang.yml");
+        String pathSponge = (System.getProperty("user.dir") + "/plugins-config/isoworlds/lang.yml");
 
         if (new File(pathBukkit).exists()) {
             return pathBukkit;
@@ -156,6 +156,29 @@ public class ManageFiles {
             return pathSponge;
         }
         return null;
+    }
+
+    // Init needed dirs
+    public static void initIsoworldsDirs() {
+
+        File utils = new File(ManageFiles.getPath() + "Isoworlds-UTILS/");
+        File sas = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-SAS");
+        File patern = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN");
+        File paternF = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-F");
+        File paternO = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-O");
+        File paternV = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-V");
+
+        // Create main dir
+        utils.mkdir();
+
+        // Isoworlds-SAS dir
+        sas.mkdir();
+
+        // Isoworlds-PATERN dir
+        patern.mkdir();
+        paternF.mkdir();
+        paternO.mkdir();
+        paternV.mkdir();
     }
 
 }

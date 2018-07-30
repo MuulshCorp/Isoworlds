@@ -35,8 +35,10 @@ import common.action.IsoworldsAction;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -191,4 +193,14 @@ public class Listeners implements Listener {
 
         }
     }
+
+//    // Method from worldborder
+//    // https://github.com/Brettflan/WorldBorder/blob/master/src/main/java/com/wimbli/WorldBorder/WBListener.java
+//    @EventHandler(priority = EventPriority.MONITOR)
+//    public void onChunkLoad(ChunkLoadEvent event) {
+//        if (event.isNewChunk() & event.getWorld().getName().contains("-Isoworld")) {
+//            Chunk chunk = event.getChunk();
+//            chunk.unload(false, false);
+//        }
+//    }
 }

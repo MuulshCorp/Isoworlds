@@ -39,7 +39,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,12 +64,8 @@ public final class Main extends JavaPlugin implements IMain {
         this.createConfig();
         this.servername = getConfig().getString("Id");
 
-        // Check if Isoworlds-SAS exists
-        File checkSAS = new File(ManageFiles.getPath() + "Isoworlds-SAS");
-        if (!checkSAS.exists()) {
-            checkSAS.mkdir();
-            Logger.info("Dossier Isoworlds-SAS crée !");
-        }
+        // Create needed dirs
+        ManageFiles.initIsoworldsDirs();
 
         File source = new File(ManageFiles.getPath());
         // Retourne la liste des Isoworld tag
@@ -124,7 +119,7 @@ public final class Main extends JavaPlugin implements IMain {
         Manager.instance = Main.getInstance();
 
         // Set structure if needed
-        this.database.setStructure();
+        getMysql().setStructure();
 
         // ****** MODULES ******
 

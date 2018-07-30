@@ -78,16 +78,16 @@ public class Create {
         File sourceFile;
         switch (args[1]) {
             case ("n"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
+                sourceFile = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN/");
                 break;
             case ("v"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
+                sourceFile = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-V/");
                 break;
             case ("o"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
+                sourceFile = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-O/");
                 break;
             case ("f"):
-                sourceFile = new File(ManageFiles.getPath() + "PATERN/");
+                sourceFile = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-PATERN-F/");
                 break;
             default:
                 return;

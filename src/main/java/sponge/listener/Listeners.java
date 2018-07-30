@@ -28,14 +28,17 @@ import common.ManageFiles;
 import common.Msg;
 import common.action.IsoworldsAction;
 import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.entity.living.humanoid.HandInteractEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
+import org.spongepowered.api.event.world.ChunkPreGenerationEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.event.world.UnloadWorldEvent;
+import org.spongepowered.api.event.world.chunk.LoadChunkEvent;
 import org.spongepowered.api.scheduler.Task;
 import sponge.configuration.Configuration;
 import sponge.location.Locations;
@@ -306,5 +309,12 @@ public class Listeners {
             event.setCancelled(true);
         }
     }
+
+//    @Listener
+//    public void onChunkPregen(ChunkPreGenerationEvent.Pre event) {
+//        if (event.getTargetWorld().getName().contains("-Isoworld")) {
+//            event.getChunkPreGenerate().cancel();
+//        }
+//    }
 
 }

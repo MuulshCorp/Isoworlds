@@ -83,29 +83,52 @@ public class StorageAction {
 
     // Check tag of pPlayer Isoworld (@PUSH, @PUSHED, @PULL, @PULLED, @PUSHED@PULL, @PUSHED@PULLED)
     public static Boolean checkTag(Player pPlayer, String worldname) {
-        // If Isoworld is pushed on database, then we return false and start pull process
+        // Setting path
+        File file = new File(ManageFiles.getPath() + worldname);
+        File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
+
+        // If 1 (Pushed) in database
         if (StorageAction.getStatus(worldname)) {
-            // Création des chemins pour vérification
-            File file = new File(ManageFiles.getPath() + worldname);
-            File file2 = new File(ManageFiles.getPath() + worldname + "@PUSHED");
-            // If pushed folder exists then untag folder shouldn't exists
+            // Safe check for both tag and untag folders, removing untag
+            if (file.exists() & file2.exists()) {
+                ManageFiles.deleteDir(file);
+            }
+
+            // Starting pull process
             if (file2.exists()) {
-                // Deleting untagged folder if exists, we may add this remove on sas script
-                if (file.exists()) {
-                    ManageFiles.deleteDir(file);
-                }
-                // Start pull task
                 ManageFiles.rename(ManageFiles.getPath() + worldname + "@PUSHED", "@PULL");
                 new Pull(pPlayer, file).runTaskTimer(instance, 20, 20);
-            } else if (file.exists()) {
-                // Set isoworld to pulled in database
-                setStatus(worldname, 0);
+                return false;
+            }
+
+            // End pull process (Isoworld should be successfully pulled)
+            if (file.exists()) {
+                StorageAction.setStatus(worldname, 0);
                 return true;
             }
+
+            // Else we return false, something wrong
             return false;
+        } else {
+            // If 0 (Pulled) in database
+
+            // Safe check for both tag and untag folders
+            // We remove the untag one because the pull process seems to be unfinished
+            // Then we set the Isoworld to 1 (Pushed), player will redo the command and it will pull it
+            if (file.exists() & file2.exists()) {
+                ManageFiles.deleteDir(file);
+                StorageAction.setStatus(worldname, 1);
+                return false;
+            }
+
+            // If folder untag exists them everying seems ok, we return true;
+            if (file.exists()) {
+                return true;
+            }
         }
-        // Isoworld is not on pushed stat in database
-        return true;
+
+        // Return false if not 1 or 0 in database, something wrong happened
+        return false;
     }
 
     // Check status of a Isoworld, if is Pushed return true, else return false

@@ -64,14 +64,14 @@ public class CreateInv implements Listener {
         });
 
         String[] list1 = new String[]{msgNode.get("BuildNormalLore")};
-//        String[] list2 = new String[]{msgNode.get("BuildVoidLore")"};
-//        String[] list3 = new String[]{msgNode.get("BuildOceanLore")"};
-//        String[] list4 = new String[]{"msgNode.get("BuildFlatLore")"};
+        String[] list2 = new String[]{msgNode.get("BuildVoidLore")};
+        String[] list3 = new String[]{msgNode.get("BuildOceanLore")};
+        String[] list4 = new String[]{msgNode.get("BuildFlatLore")};
 
         menu.addButton(menu.getRow(0), 0, new ItemStack(Material.WOOL, 1, DyeColor.WHITE.getData()), ChatColor.GREEN + msgNode.get("BuildNormal"), list1);
-//        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GREEN + msgNode.get("BuildVoid"), list2);
-//        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.BLUE.getData()), ChatColor.GREEN + msgNode.get("BuildOcean"), list3);
-//        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + msgNode.get("BuildFlat"), list4);
+        menu.addButton(menu.getRow(0), 1, new ItemStack(Material.WOOL, 1, DyeColor.RED.getData()), ChatColor.GREEN + msgNode.get("BuildVoid"), list2);
+        menu.addButton(menu.getRow(0), 2, new ItemStack(Material.WOOL, 1, DyeColor.BLUE.getData()), ChatColor.GREEN + msgNode.get("BuildOcean"), list3);
+        menu.addButton(menu.getRow(0), 3, new ItemStack(Material.WOOL, 1, DyeColor.GREEN.getData()), ChatColor.GREEN + msgNode.get("BuildFlat"), list4);
 
         menu.addButton(menu.getRow(1), 8, new ItemStack(Material.GOLD_BLOCK), ChatColor.RED + msgNode.get("MainMenu"), msgNode.get("MainMenuLore"));
 

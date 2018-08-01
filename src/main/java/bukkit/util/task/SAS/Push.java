@@ -91,18 +91,13 @@ public class Push {
                                     // World name
                                     String wname = world.getName();
 
-                                    // Save before unload
-                                    Bukkit.getServer().getWorld(wname).save();
-
                                     //Kick all players
                                     for (Player p : world.getPlayers()) {
                                         Locations.teleport(p, "Isolonice");
                                     }
 
                                     //Unload world
-                                    if (!Bukkit.getServer().unloadWorld(wname, false)) {
-                                        Logger.info("Unloading of world failed");
-                                    }
+                                    Bukkit.getServer().unloadWorld(wname, true);
 
                                     //Set pushed status bdd
                                     StorageAction.setStatus(wname, 1);

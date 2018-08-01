@@ -25,25 +25,27 @@
 package sponge;
 
 import com.google.inject.Inject;
-
 import common.*;
-import org.spongepowered.api.asset.Asset;
-import org.spongepowered.api.event.game.state.*;
-import org.spongepowered.api.plugin.PluginContainer;
-import sponge.configuration.Configuration;
-import sponge.listener.Listeners;
-import sponge.util.action.DimsAltAction;
-import sponge.util.action.StorageAction;
-import sponge.util.console.Logger;
-
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.asset.Asset;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GameAboutToStartServerEvent;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
+import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
-import sponge.command.*;
+import org.spongepowered.api.plugin.PluginContainer;
+import sponge.command.Commands;
+import sponge.configuration.Configuration;
+import sponge.listener.ChatListeners;
+import sponge.listener.Listeners;
+import sponge.util.action.DimsAltAction;
+import sponge.util.action.StorageAction;
+import sponge.util.console.Logger;
 import sponge.util.task.PlayerStatistic.PlayTime;
 import sponge.util.task.SAS.PreventLoadingAtStart;
 import sponge.util.task.SAS.Push;
@@ -267,6 +269,7 @@ public class Main implements IMain {
 
     private void registerEvents() {
         Sponge.getEventManager().registerListeners(this, new Listeners());
+        Sponge.getEventManager().registerListeners(this, new ChatListeners());
     }
 
     public Game getGame() {

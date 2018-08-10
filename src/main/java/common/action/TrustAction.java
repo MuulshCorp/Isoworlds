@@ -24,8 +24,6 @@
  */
 package common.action;
 
-import bukkit.util.console.Logger;
-import common.IMain;
 import common.Manager;
 import common.Mysql;
 

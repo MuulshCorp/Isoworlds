@@ -60,7 +60,7 @@ import java.util.Map;
         name = "Isoworlds",
         description = "Large scale personal world manager",
         url = "https://isolonice.fr",
-        version = "1.9.4.2-hotfix-S6",
+        version = "1.9.4-S6",
         authors = {
                 "Sythiel"
         }

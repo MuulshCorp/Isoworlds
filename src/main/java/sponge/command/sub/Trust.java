@@ -97,7 +97,7 @@ public class Trust implements CommandCallable {
         }
 
         // CHECK AUTORISATIONS
-        if (TrustAction.isTrusted(pPlayer.getUniqueId().toString(), uuidcible.toString())) {
+        if (TrustAction.isTrusted(uuidcible.toString(), pPlayer.getUniqueId().toString())) {
             pPlayer.sendMessage(Message.error(Msg.msgNode.get("AlreadyTrusted")));
             return CommandResult.success();
         }

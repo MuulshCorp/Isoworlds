@@ -26,6 +26,7 @@ package bukkit;
 
 import bukkit.command.Commands;
 import bukkit.configuration.Configuration;
+import bukkit.listener.ChatListeners;
 import bukkit.listener.Listeners;
 import bukkit.util.action.DimAltAction;
 import bukkit.util.action.StorageAction;
@@ -38,7 +39,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,6 +84,7 @@ public final class Main extends JavaPlugin implements IMain {
 
         // Register listeners
         Bukkit.getServer().getPluginManager().registerEvents(new Listeners(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ChatListeners(), this);
 
         this.getCommand("iw").setExecutor(new Commands());
 

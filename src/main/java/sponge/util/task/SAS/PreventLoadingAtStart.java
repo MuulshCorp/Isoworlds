@@ -42,7 +42,7 @@ public class PreventLoadingAtStart {
 
         // Isoworlds-SAS
         logger.info("[Isoworlds-SAS]: Stockage des Isoworlds un tag dans le SAS");
-        File dest = new File(ManageFiles.getPath() + "/Isoworlds-SAS/");
+        File dest = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-SAS/");
         File source = new File(ManageFiles.getPath());
         // Retourne la liste des Isoworld tag
         for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {
@@ -53,15 +53,15 @@ public class PreventLoadingAtStart {
                 // Si le dossier n'est pas TAG et que le dossier de ce même nom avec TAG n'existe pas
                 if (!f.getName().contains("@PUSHED")) {
                     // Si le Isoworld possède pas de @PUSHED dans le dossier de base ou le SAS alors on supprime
-                    if ((new File(ManageFiles.getPath() + "Isoworlds-SAS/" + f.getName() + "@PUSHED").exists())
+                    if ((new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-SAS/" + f.getName() + "@PUSHED").exists())
                             || (new File(f.getPath() + f.getName() + "@PUSHED").exists())) {
-                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "Isoworlds-SAS/" + f.getName()));
+                        ManageFiles.deleteDir(new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-SAS/" + f.getName()));
                         logger.info("[Isoworlds-SAS: Anomalie sur le Isoworld " + f.getName());
                         continue;
                     }
                     // Tag Isoworlds @PUSH if Storage config enabled
                     if (Configuration.getStorage()) {
-                        ManageFiles.rename(ManageFiles.getPath() + "Isoworlds-SAS/" + f.getName(), "@PUSH");
+                        ManageFiles.rename(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-SAS/" + f.getName(), "@PUSH");
                     }
                     logger.info("[Isoworlds-SAS]: Isoworlds désormais TAG à PUSH");
                 }
@@ -76,7 +76,7 @@ public class PreventLoadingAtStart {
             @Override
             public void run() {
                 sponge.util.console.Logger.info("[Isoworlds-SAS]: Remise en place des Isoworlds dans le SAS");
-                File source = new File(ManageFiles.getPath() + "/Isoworlds-SAS/");
+                File source = new File(ManageFiles.getPath() + "Isoworlds-UTILS/Isoworlds-SAS/");
                 File dest = new File(ManageFiles.getPath());
                 // Retourne la liste des Isoworld tag
                 for (File f : ManageFiles.getOutSAS(new File(source.getPath()))) {

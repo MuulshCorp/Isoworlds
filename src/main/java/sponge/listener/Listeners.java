@@ -63,6 +63,7 @@ import java.sql.ResultSet;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static common.Msg.msgNode;
 import static sponge.Main.instance;
 
 public class Listeners {
@@ -148,10 +149,7 @@ public class Listeners {
                 @Override
                 public void run() {
                     event.getTargetEntity().sendMessage(Text.of(Text.builder("[Isoworlds]").color(TextColors.GOLD)
-                            .append(Text.of(Text.builder(" Sijania vous souhaite la bienvenue sur Isolonice !\n" +
-                                    "Dans ce royaume, vous possédez votre propre monde nommé: Isoworld.\n" +
-                                    "Vous êtes seul maître à bord, il est à vous et vous pouvez choisir qui peut y accéder.\n" +
-                                    "Essayez dès maintenant via la commande: /iw").color(TextColors.GREEN))).build()));
+                            .append(Text.of(Text.builder(msgNode.get("FirstJoin")).color(TextColors.GREEN))).build()));
                     Sponge.getCommandManager().process(event.getTargetEntity(), "iw");
                 }
             }).delay(5, TimeUnit.SECONDS).submit(instance);

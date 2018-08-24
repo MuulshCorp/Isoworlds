@@ -46,6 +46,8 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import static common.Msg.msgNode;
+
 public class Listeners implements Listener {
 
     private final Main instance = Main.getInstance();
@@ -92,11 +94,7 @@ public class Listeners implements Listener {
 
                 @Override
                 public void run() {
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Sijania vous souhaite la bienvenue !");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Sur Isolonice, vous possédez votre propre monde nommé: Isoworld");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Vous êtes seul maître à bord, il est à vous !");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Pour commencer l'aventure entrez la commande: /iw");
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + "Puis sélectionnez le premier menu (Construction)");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[Isoworlds]: " + ChatColor.GREEN + msgNode.get("InvIsochat"));
                     event.getPlayer().performCommand("iw");
                 }
 

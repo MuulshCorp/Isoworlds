@@ -17,7 +17,6 @@ public class ChatListeners implements Listener {
                 sender.getWorld().getPlayers().forEach(p -> p.sendMessage(ChatColor.BLUE + "[Isochat] " + sender.getName() + ": " + event.getMessage()));
             } else {
                 IsoChat.toggle(sender.getUniqueId());
-                sender.sendMessage("You are not in a isoworld, isochat deactivated");
             }
         }
     }

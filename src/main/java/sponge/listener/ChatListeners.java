@@ -19,7 +19,6 @@ public class ChatListeners {
                 sender.getWorld().getPlayers().forEach(p -> p.sendMessage(Text.of(Text.builder("[Isochat]" + sender.getDisplayName() + ": " + event.getMessage()).color(TextColors.BLUE).build()).toPlain()));
             } else {
                 IsoChat.toggle(sender.getUniqueId());
-                sender.sendMessage("You are not in a isoworld, isochat deactivated");
             }
         }
     }

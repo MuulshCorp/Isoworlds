@@ -5,7 +5,7 @@
 
     <groupId>isolonice</groupId>
     <artifactId>Isoworlds</artifactId>
-    <version>1.9.4-S6</version>
+    <version>1.9.4.0-S6</version>
     <packaging>jar</packaging>
 
     <properties>

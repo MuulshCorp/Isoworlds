@@ -152,8 +152,9 @@ public class MainInv {
         list8.add(Text.of(msgNode.get("InvTimeLore")));
         List<Text> list9 = new ArrayList<Text>();
         list9.add(Text.of(Text.builder(msgNode.get("InvStatChargeLore")).color(TextColors.YELLOW).append(Text.of(Text.builder(charges + " disponible(s)").color(TextColors.GREEN))).build()));
-        list9.add(Text.of(Text.builder(msgNode.get("InvStatPlayTimeLore")).color(TextColors.YELLOW).append(Text.of(Text.builder(formatedPlayTime).color(TextColors.GREEN))).build()));
-
+        List<Text> list10 = new ArrayList<Text>();
+        list10.add(Text.of(IsoChat.isActivated(pPlayer.getUniqueId()) ? Text.builder(msgNode.get("InvIsochatEnabled")).color(TextColors.GREEN) : Text.builder(msgNode.get("InvIsochatDisabled")).
+                color(TextColors.RED).build()));
 
         ItemStack item1 = ItemStack.builder().itemType(ItemTypes.DIAMOND_PICKAXE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvBuild"))
                 .color(TextColors.GRAY).build())).quantity(1).build();
@@ -171,6 +172,8 @@ public class MainInv {
                 .color(TextColors.DARK_GREEN).build())).quantity(1).build();
         ItemStack item9 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list9).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvStat"))
                 .color(TextColors.AQUA).build())).quantity(1).build();
+        ItemStack item10 = ItemStack.builder().itemType(ItemTypes.SIGN).add(Keys.ITEM_LORE, list10).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvIsochat"))
+                .color(TextColors.WHITE).build())).quantity(1).build();
 
         //ItemStack item7 = ItemStack.builder().itemType(ItemTypes.LEVER).add(Keys.ITEM_LORE, list6).add(Keys.DISPLAY_NAME, Text.of(Text.builder("Activation")
         //        .color(TextColors.RED).build())).quantity(1).build();
@@ -187,16 +190,6 @@ public class MainInv {
         menu.query(SlotPos.of(5, 0)).set(item6);
         menu.query(SlotPos.of(6, 0)).set(item7);
         menu.query(SlotPos.of(8, 0)).set(item9);
-
-        //ISOCHAT
-
-        menu.query(SlotPos.of(1, 0)).set(
-                ItemStack.builder()
-                        .itemType(ItemTypes.SIGN).quantity(1)
-                        .add(Keys.DISPLAY_NAME, Text.of(Text.builder("Toogle IsoChat")))
-                        .add(Keys.ITEM_LORE, Collections.singletonList(Text.of(IsoChat.isActivated(pPlayer.getUniqueId()) ? "Deactivate IsoChat" : "Activate IsoChat")))
-                        .build()
-        );
 
         // STAFF
         //if (pPlayer.hasPermission("isworlds.menu.activation")) {

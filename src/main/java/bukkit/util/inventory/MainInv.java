@@ -134,6 +134,7 @@ public class MainInv implements Listener {
         String[] list6 = new String[]{msgNode.get("InvWeatherLore"), msgNode.get("InvWeatherLore2")};
         String[] list7 = new String[]{ChatColor.YELLOW + msgNode.get("InvStatChargeLore") + ChatColor.GREEN + charges, ChatColor.YELLOW + msgNode.get("InvStatPlayTimeLore") + ChatColor.GREEN + formatedPlayTime};
         String[] list8 = new String[]{msgNode.get("InvWarpLore")};
+        String[] list9 = new String[]{IsoChat.isActivated(pPlayer.getUniqueId()) ? ChatColor.GREEN + msgNode.get("InvIsochatEnabled") : ChatColor.RED + msgNode.get("InvIsochatDisabled")};
         //String[] list7 = new String[]{"Chargez-Déchargez votre Isoworld"};
         //String[] list8 = new String[]{"Téléportez vous sur un Isoworld [STAFF]"};
 
@@ -151,7 +152,7 @@ public class MainInv implements Listener {
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), ChatColor.YELLOW + msgNode.get("InvWeather"), list6);
         menu.addButton(menu.getRow(0), 6, new ItemStack(Material.COMPASS), ChatColor.DARK_GREEN + msgNode.get("InvWarp"), list8);
         menu.addButton(menu.getRow(0), 8, new ItemStack(Material.LEVER), ChatColor.AQUA + msgNode.get("InvStat"), list7);
-        menu.addButton(menu.getRow(1), 0, new ItemStack(Material.SIGN), "Toogle IsoChat", IsoChat.isActivated(pPlayer.getUniqueId()) ? "Deactivate IsoChat" : "Activate IsoChat");
+        menu.addButton(menu.getRow(1), 0, new ItemStack(Material.SIGN), ChatColor.WHITE + msgNode.get("InvIsochat"), list9);
         //menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), ChatColor.RED + "Activation", list7);
         //menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), ChatColor.LIGHT_PURPLE + "Téléportation", list8);
 

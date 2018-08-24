@@ -24,6 +24,7 @@
  */
 package sponge.util.inventory;
 
+import common.IsoChat;
 import common.action.ChargeAction;
 import common.action.PlayTimeAction;
 import org.spongepowered.api.Sponge;
@@ -55,7 +56,9 @@ import sponge.util.inventory.trust.TrustInv;
 import sponge.util.inventory.warp.WarpInv;
 import sponge.util.inventory.weather.WeatherInv;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static common.Msg.msgNode;
@@ -107,6 +110,9 @@ public class MainInv {
                     } else if (menuName.equals(msgNode.get("InvWarp"))) {
                         Logger.tracking("Clic menu WARP: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, WarpInv.getInv(pPlayer));
+                    } else if (menuName.equals("Toogle IsoChat")) {
+                        IsoChat.toggle(pPlayer.getUniqueId());
+                        closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
 
                 })
@@ -181,6 +187,16 @@ public class MainInv {
         menu.query(SlotPos.of(5, 0)).set(item6);
         menu.query(SlotPos.of(6, 0)).set(item7);
         menu.query(SlotPos.of(8, 0)).set(item9);
+
+        //ISOCHAT
+
+        menu.query(SlotPos.of(1, 0)).set(
+                ItemStack.builder()
+                        .itemType(ItemTypes.SIGN).quantity(1)
+                        .add(Keys.DISPLAY_NAME, Text.of(Text.builder("Toogle IsoChat")))
+                        .add(Keys.ITEM_LORE, Collections.singletonList(Text.of(IsoChat.isActivated(pPlayer.getUniqueId()) ? "Deactivate IsoChat" : "Activate IsoChat")))
+                        .build()
+        );
 
         // STAFF
         //if (pPlayer.hasPermission("isworlds.menu.activation")) {

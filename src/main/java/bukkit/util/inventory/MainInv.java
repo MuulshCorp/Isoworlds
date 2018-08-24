@@ -24,6 +24,7 @@
  */
 package bukkit.util.inventory;
 
+import bukkit.util.console.Logger;
 import bukkit.util.inventory.biome.BiomeInv;
 import bukkit.util.inventory.build.BuildInv;
 import bukkit.util.inventory.enable.EnableInv;
@@ -33,6 +34,7 @@ import bukkit.util.inventory.time.TimeInv;
 import bukkit.util.inventory.trust.TrustInv;
 import bukkit.util.inventory.warp.WarpInv;
 import bukkit.util.inventory.weather.WeatherInv;
+import common.IsoChat;
 import common.action.ChargeAction;
 import common.action.PlayTimeAction;
 import org.bukkit.Bukkit;
@@ -48,7 +50,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import bukkit.util.console.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -104,6 +105,9 @@ public class MainInv implements Listener {
                 } else if (menuName.equals(msgNode.get("InvWarp"))) {
                     Logger.tracking("Clic menu WARP: " + p.getName());
                     WarpInv.getInv(pPlayer).open(pPlayer);
+                } else if (menuName.equals("Toogle IsoChat")) {
+                    IsoChat.toggle(pPlayer.getUniqueId());
+                    MenuPrincipal(pPlayer).open(pPlayer);
                 }
 
                 return true;
@@ -147,6 +151,7 @@ public class MainInv implements Listener {
         menu.addButton(menu.getRow(0), 5, new ItemStack(Material.DOUBLE_PLANT), ChatColor.YELLOW + msgNode.get("InvWeather"), list6);
         menu.addButton(menu.getRow(0), 6, new ItemStack(Material.COMPASS), ChatColor.DARK_GREEN + msgNode.get("InvWarp"), list8);
         menu.addButton(menu.getRow(0), 8, new ItemStack(Material.LEVER), ChatColor.AQUA + msgNode.get("InvStat"), list7);
+        menu.addButton(menu.getRow(1), 0, new ItemStack(Material.SIGN), "Toogle IsoChat", IsoChat.isActivated(pPlayer.getUniqueId()) ? "Deactivate IsoChat" : "Activate IsoChat");
         //menu.addButton(menu.getRow(0), 6, new ItemStack(Material.LEVER), ChatColor.RED + "Activation", list7);
         //menu.addButton(menu.getRow(0), 7, new ItemStack(Material.DIAMOND_BOOTS), ChatColor.LIGHT_PURPLE + "Téléportation", list8);
 

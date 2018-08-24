@@ -110,7 +110,7 @@ public class MainInv {
                     } else if (menuName.equals(msgNode.get("InvWarp"))) {
                         Logger.tracking("Clic menu WARP: " + pPlayer.getName());
                         closeOpenMenu(pPlayer, WarpInv.getInv(pPlayer));
-                    } else if (menuName.equals("Toogle IsoChat")) {
+                    } else if (menuName.equals(msgNode.get("Isochat"))) {
                         IsoChat.toggle(pPlayer.getUniqueId());
                         closeOpenMenu(pPlayer, menuPrincipal(pPlayer));
                     }
@@ -153,8 +153,9 @@ public class MainInv {
         List<Text> list9 = new ArrayList<Text>();
         list9.add(Text.of(Text.builder(msgNode.get("InvStatChargeLore")).color(TextColors.YELLOW).append(Text.of(Text.builder(charges + " disponible(s)").color(TextColors.GREEN))).build()));
         List<Text> list10 = new ArrayList<Text>();
-        list10.add(Text.of(IsoChat.isActivated(pPlayer.getUniqueId()) ? Text.builder(msgNode.get("InvIsochatEnabled")).color(TextColors.GREEN) : Text.builder(msgNode.get("InvIsochatDisabled")).
-                color(TextColors.RED).build()));
+        list10.add(Text.of(Text.builder(msgNode.get("InvIsochatLore")).append(Text.builder(msgNode.get("InvIsochatLore2")).
+                append((IsoChat.isActivated(pPlayer.getUniqueId()) ? Text.builder(msgNode.get("InvIsochatEnabled")).color(TextColors.GREEN) : Text.builder(msgNode.get("InvIsochatDisabled"))).
+                                color(TextColors.RED).build()).build())));
 
         ItemStack item1 = ItemStack.builder().itemType(ItemTypes.DIAMOND_PICKAXE).add(Keys.ITEM_LORE, list3).add(Keys.DISPLAY_NAME, Text.of(Text.builder(msgNode.get("InvBuild"))
                 .color(TextColors.GRAY).build())).quantity(1).build();
@@ -190,6 +191,7 @@ public class MainInv {
         menu.query(SlotPos.of(5, 0)).set(item6);
         menu.query(SlotPos.of(6, 0)).set(item7);
         menu.query(SlotPos.of(8, 0)).set(item9);
+        menu.query(SlotPos.of(0, 1)).set(item10);
 
         // STAFF
         //if (pPlayer.hasPermission("isworlds.menu.activation")) {

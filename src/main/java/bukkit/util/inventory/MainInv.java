@@ -105,7 +105,7 @@ public class MainInv implements Listener {
                 } else if (menuName.equals(msgNode.get("InvWarp"))) {
                     Logger.tracking("Clic menu WARP: " + p.getName());
                     WarpInv.getInv(pPlayer).open(pPlayer);
-                } else if (menuName.equals("Toogle IsoChat")) {
+                } else if (menuName.equals(msgNode.get("InvIsochat"))) {
                     IsoChat.toggle(pPlayer.getUniqueId());
                     MenuPrincipal(pPlayer).open(pPlayer);
                 }
@@ -134,7 +134,7 @@ public class MainInv implements Listener {
         String[] list6 = new String[]{msgNode.get("InvWeatherLore"), msgNode.get("InvWeatherLore2")};
         String[] list7 = new String[]{ChatColor.YELLOW + msgNode.get("InvStatChargeLore") + ChatColor.GREEN + charges, ChatColor.YELLOW + msgNode.get("InvStatPlayTimeLore") + ChatColor.GREEN + formatedPlayTime};
         String[] list8 = new String[]{msgNode.get("InvWarpLore")};
-        String[] list9 = new String[]{IsoChat.isActivated(pPlayer.getUniqueId()) ? ChatColor.GREEN + msgNode.get("InvIsochatEnabled") : ChatColor.RED + msgNode.get("InvIsochatDisabled")};
+        String[] list9 = new String[]{msgNode.get("InvIsochatLore"), msgNode.get("InvIsochatLore2"), IsoChat.isActivated(pPlayer.getUniqueId()) ? ChatColor.GREEN + msgNode.get("InvIsochatEnabled") : ChatColor.RED + msgNode.get("InvIsochatDisabled")};
         //String[] list7 = new String[]{"Chargez-Déchargez votre Isoworld"};
         //String[] list8 = new String[]{"Téléportez vous sur un Isoworld [STAFF]"};
 

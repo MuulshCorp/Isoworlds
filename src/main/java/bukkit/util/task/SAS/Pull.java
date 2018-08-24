@@ -47,7 +47,7 @@ public class Pull extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (check == 20) {
+        if (check == 60) {
             pPlayer.sendMessage(Message.success(Msg.msgNode.get("ProcessingPull")));
         }
         check --;

@@ -66,7 +66,7 @@ public class MainInv implements Listener {
     List<String> viewing = new ArrayList<String>();
 
     public static MainInv MenuPrincipal(Player pPlayer) {
-        MainInv menu = new MainInv(ChatColor.BLUE + "Isoworlds", 1, new onClick() {
+        MainInv menu = new MainInv(ChatColor.BLUE + "Isoworlds", 2, new onClick() {
             @Override
             public boolean click(Player p, MainInv menu, Row row, int slot, ItemStack item) {
                 // MENU PRINCIPAL //

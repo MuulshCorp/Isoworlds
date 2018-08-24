@@ -118,7 +118,7 @@ public class MainInv {
                 })
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(Text.of(Text.builder("Isoworlds")
                         .color(TextColors.BLUE).build())))
-                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 1))
+                .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(9, 2))
                 .build(instance);
 
         // Récupération nombre charge

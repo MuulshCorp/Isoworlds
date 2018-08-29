@@ -85,7 +85,7 @@ public class StorageAction {
                         .execute(new Pull(pPlayer, file))
                         .async()
                         .interval(1, TimeUnit.SECONDS)
-                        .name("Self-Cancelling Timer Task")
+                        .name(pPlayer.getUniqueId().toString())
                         .submit(plugin);
             } else {
                 // Gestion du cas ou le dossier Isoworld ne serait pas présent alors qu'il est @PUSHED en bdd
